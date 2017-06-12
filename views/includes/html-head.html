@@ -1,0 +1,183 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{# resource hints #}
+<link rel="preconnect" href="https://origami-build.ft.com">
+<link rel="preconnect" href="https://build.origami.ft.com" crossorigin>
+<link rel="preconnect" href="https://cdn.polyfill.io">
+
+{# Stylesheets #}
+<link inline rel="stylesheet" href="components/core/top.css">
+<link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-ads@^6.1.5,o-normalise@^1,o-fonts@^2,o-grid@^4.2.1,o-typography@^4.3.1,o-header@^6.5.1,o-card@^2.1.8,o-footer@^5.0.3{{',o-comments@^3.2.0' if flags.comments}}{{ ',o-share@^3' if flags.shareButtons }}">
+<link rel="stylesheet" href="styles.css">
+{%- if stylesheets %}{% for stylesheet in stylesheets %}
+<link rel="stylesheet" href="{{ stylesheet | safe }}">
+{% endfor %}{% endif -%}
+
+
+<link href="https://plus.google.com/113457471429583444041/" rel="publisher" />
+<meta property="fb:app_id" content="429755910551755" />
+<link rel="shortcut icon" href="https://ig.ft.com/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="https://ig.ft.com/apple-touch-icon.png">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="index,follow">
+<meta name="copyright" content="Financial Times">
+<meta name="theme-color" content="#fff1e0" />
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "name": "Financial Times",
+  "alternateName": "FT.com",
+  "url": "http://www.ft.com"
+}
+</script>
+{%- if topic.name and topic.url -%}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "item": {
+      "@id": "{{ topic.url }}",
+      "name": "{{ topic.name }}",
+      "image": ""
+    }
+  }]
+}
+</script>
+{%- endif -%}
+{%- if flags.errorReporting -%}
+<script type="application/json" data-o-errors-config>
+{"sentryEndpoint": "https://ddbd80489ff549538250bbe37fa52bbd@sentry.io/71130"}
+</script>
+{%- endif -%}
+
+{# Prioritised JavaScript #}
+
+<!-- Add polyfill service -->
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?callback=client&amp;features=default,fetch"></script>
+
+<!-- Add CTM checks -->
+<script type="text/javascript">
+  window.cutsTheMustard = ('querySelector' in document && 'localStorage' in window && 'addEventListener' in window && typeof Function.prototype.bind !== 'undefined')
+  document.documentElement.className = document.documentElement.className.replace(/core/g, 'enhanced');
+</script>
+
+{%- if flags.analytics %}
+<link rel="preconnect" href="https://spoor-api.ft.com">
+<meta property="ft.track:is_live" content="true"/>
+  {% if tracking.product %}
+<meta property="ft.track:product" content="{{ tracking.product }}"/>
+  {% endif %}
+  {% if tracking.micrositeName %}
+<meta property="ft.track:microsite_name" content="{{ tracking.micrositeName }}"/>
+  {% endif %}
+<script type="text/javascript">
+  function oTrackinginit() {
+    var oTracking = Origami['o-tracking'];
+
+    var page_data = {
+      content: { asset_type: 'interactive' }
+    };
+
+    var properties = [].reduce.call(document.querySelectorAll('head meta[property^="ft.track:"]')||[], function(o, el) {
+      o[el.getAttribute('property').replace('ft.track:', '')] = el.getAttribute('content');
+      return o;
+    }, {});
+
+    var id = document.documentElement.getAttribute('data-content-id');
+
+    if (id) {
+      page_data.content.uuid = id;
+    }
+
+    if (properties.microsite_name) {
+      page_data.microsite_name = properties.microsite_name;
+    }
+
+    // Setup
+    oTracking.init({
+      server: 'https://spoor-api.ft.com/px.gif',
+      system: {
+        is_live: typeof properties.is_live === 'string' ? properties.is_live.toLowerCase() : false
+      },
+      context: { product: properties.product || 'IG' }
+    });
+
+    // Page
+    oTracking.page(page_data);
+
+    // Links
+    oTracking.link.init();
+  }
+</script>
+{% endif -%}
+
+<!-- Add Origami Build Service -->
+<script type="text/javascript">
+  (function(src) {
+    if (cutsTheMustard) {
+      var o = document.createElement('script');
+      o.async = o.defer = true;
+      o.src = src;
+      var s = document.getElementsByTagName('script')[0];
+{%- if flags.analytics %}
+      if (o.hasOwnProperty('onreadystatechange')) {
+          o.onreadystatechange = function() {
+              if (o.readyState === "loaded") {
+                  oTrackinginit();
+              }
+          };
+      } else {
+          o.onload = oTrackinginit;
+      }
+{% endif -%}
+      s.parentNode.insertBefore(o, s);
+    }
+  }('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-ads@^6.1.5,o-header@^6.5.1,o-footer@^5.0.3,o-date@^2.8.0,o-errors@^3.5.1{{ ",o-comments@^3.1.0" if flags.comments }}{{ ",o-share@^3" if flags.shareButtons }}{{ ",o-tracking@^1.2.3" if flags.analytics }}'));
+</script>
+
+<title>{{ title | default(headline, true) }} &mdash; FT.com</title>
+<meta name="twitter:title" content="{{ twitterHeadline | default(socialHeadline) | default(headline, true) }}">
+<meta property="og:title" content="{{ facebookHeadline | default (socialHeadline) | default(headline, true) }}">
+
+<meta name="description" content="{{ description }}">
+<meta name="twitter:description" content="{{ twitterDescription | default(socialDescription) | default(description) }}">
+<meta property="og:description" content="{{ facebookDescription | default(socialDescription) | default(description) }}">
+
+<link rel="canonical" href="{{ url }}">
+<meta name="twitter:url" content="{{ url }}">
+<meta property="og:url" content="{{ url }}">
+
+{% if mainImage.url %}
+<link rel="image_src" href="{{ mainImage.url }}">
+{% endif %}
+{% if twitterImage | default(socialImage) | default(mainImage.url) %}
+<meta name="twitter:image" content="{{ twitterImage | default(socialImage) | default(mainImage.url) }}">
+{% endif %}
+{% if facebookImage | default(socialImage) | default(mainImage.url) %}
+<meta property="og:image" content="{{ facebookImage | default(socialImage) | default(mainImage.url) }}">
+{% endif %}
+
+<meta name="twitter:card" content="{{ twitterCard }}">
+<meta name="twitter:site" content="@ft">
+
+{%- if twitterCreator %}
+<meta name="twitter:creator" content="{{ twitterCreator }}">
+{% endif -%}
+
+{% if ads  %}
+<script data-o-ads-config type="application/json">
+{
+ "gpt": {
+   "network": 5887,
+   "adUnit": "{{ ads.gptAdunit }}"
+ },
+ "dfp_targeting": "{{ ads.dftTargeting }}"
+}
+</script>
+{% endif %}
