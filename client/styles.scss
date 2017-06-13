@@ -2,16 +2,28 @@
 @import 'o-grid/main';
 @import 'components/core/main';
 
-/*
-      TODO: delete this comment
+body {
+  background-color: #333;
+}
 
-      Write your code here - keep it neat!
-      Split logical parts of you project into components e.g.
+.article-head {
+  color: #fff;
+}
 
-      /client
-        - /components
-            - /component-name
-                - styles.scss
-                - index.js
-                - template.html
-*/
+.o-typography-body-wrapper {
+  color: #fff;
+  p {
+    color: inherit;
+  }
+  .game {
+    .screen {
+      p {
+        opacity: 0.0;
+        transition: opacity 1.0s;
+      }
+      p.show {
+        opacity: 1.0;
+      }
+    }
+  }
+}
