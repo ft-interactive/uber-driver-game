@@ -15,7 +15,7 @@
       {% include "includes/analytics.html" %}
     {% endif %}
 
-    {% if ads %}{{ macros.topAd() }}{% endif %}
+    <!-- {% if ads %}{{ macros.topAd() }}{% endif %} -->
 
     {% if flags.header %}
       {% include "includes/header.html" %}
@@ -23,28 +23,28 @@
 
     <main role="main">
       <article class="article" itemscope itemtype="http://schema.org/Article">
-        <div class="article-head o-grid-container">
-          <div class="o-grid-row">
-            <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-              {% block article_head %}
-              {% include "includes/article-head.html" %}
-              {% endblock %}
-            </header>
-          </div>
-        </div>
-        <div class="article-body o-typography-body-wrapper" itemprop="articleBody">
-
-          <div class="o-grid-container">
+        <div class="game-container">
+          <div class="article-head o-grid-container">
             <div class="o-grid-row">
-              <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-                <div>
-                  {% block article_body %}{% endblock %}
+              <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+                <img src="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square?source=ig&quality=high" alt="FT" class="header-logo">
+              </header>
+            </div>
+          </div>
+
+          <div class="article-body o-typography-body-wrapper" itemprop="articleBody">
+            <div class="o-grid-container">
+              <div class="o-grid-row">
+                <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+                  <div>
+                    {% block article_body %}{% endblock %}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <footer class="o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <footer class="o-typography-body-wrapper o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
             <div class="o-grid-container">
               <div class="o-grid-row">
                 <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
@@ -54,7 +54,6 @@
               </div>
             </div>
           </footer>
-
         </div>
       </article>
     </main>

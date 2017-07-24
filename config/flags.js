@@ -6,10 +6,10 @@ export default () => ({ // eslint-disable-line
   analytics: prod,
   googleAnalytics: prod,
   ads: false,
-  onwardjourney: true,
-  shareButtons: true,
-  header: true,
-  footer: true,
+  onwardjourney: false,
+  shareButtons: false,
+  header: false,
+  footer: false,
 
   /*
     NOTE ABOUT COMMENTS:
