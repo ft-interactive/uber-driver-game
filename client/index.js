@@ -5,19 +5,38 @@ const story = new Story(json);
 const storyContainer = document.getElementById('story');
 const startButton = document.getElementById('start-button');
 
+function hideElements(arr) {
+  arr.map((e) => {
+    const elementToHide = e;
+
+    elementToHide.style.display = 'none';
+
+    return elementToHide;
+  });
+}
+
+function showElements(arr) {
+  arr.map((e) => {
+    const elementToShow = e;
+
+    elementToShow.style.display = 'block';
+
+    return elementToShow;
+  });
+}
+
 function startStory() {
   const tint = document.getElementsByClassName('tint')[0];
   const introScreen = document.getElementById('intro');
   const storyEl = document.getElementById('story');
 
-  tint.style.webkitBackdropFilter = 'none';
-  tint.style.backdropFilter = 'none';
-  tint.style.backgroundImage = 'none';
+  tint.classList.remove('pre-game');
+  tint.classList.add('in-game');
 
   introScreen.style.opacity = '0';
-  introScreen.style.display = 'none';
+  hideElements([introScreen]);
 
-  setTimeout(() => (storyEl.style.display = 'block'), 300);
+  setTimeout(() => showElements([storyEl]), 300);
 }
 
 startButton.onclick = startStory;
