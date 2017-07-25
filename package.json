@@ -87,6 +87,7 @@
     "start": "nodemon --watch gulpfile.babel.js --exec 'gulp watch'"
   },
   "dependencies": {
+    "fscreen": "^1.0.1",
     "inkjs": "^1.5.2"
   }
 }

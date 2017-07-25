@@ -1,5 +1,6 @@
 @import 'o-colors/main';
 @import 'o-grid/main';
+@import 'o-buttons/main';
 @import 'components/core/main';
 
 html, body {
@@ -13,24 +14,37 @@ html, body {
   width: 100%;
   height: 100vh;
   color: #fff;
-  background: url(https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fft-ig-content-prod%2Fimages%2Fv1%2Foverview-art.png?source=ig&quality=high) no-repeat center center fixed / cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fft-ig-content-prod%2Fimages%2Fv1%2Foverview-art.png?source=ig&quality=high);
+  background-size: cover;
+  background-attachment: fixed;
+
+  .tint {
+    position: fixed;
+    width: inherit;
+    height: inherit;
+    background-image: linear-gradient(rgba(26, 140, 255, 0.4), rgba(255, 26, 102, 0.4));
+    -webkit-backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+    backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+  }
 
   .article-head.o-grid-container {
     order: 1;
     width: 100%;
+    z-index: 1;
 
     img.header-logo {
       float: left;
       width: 40px;
       height: auto;
-      opacity: 0.6;
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
+      opacity: 0.8;
     }
 
     .article__share {
       display: inline;
       float: right;
+      opacity: 0.8;
 
       ul {
         li:last-child {
@@ -48,20 +62,33 @@ html, body {
 
   .article-body.o-typography-body-wrapper {
     order: 2;
+    z-index: 1;
+
     p {
       color: inherit;
     }
 
-    >.game {
-      .screen {
-        p {
-          opacity: 0.0;
-          transition: opacity 1.0s;
-        }
+    .screen {
+      button {
+        @include oButtons();
+        @include oButtonsTheme(inverse);
+      }
 
-        p.show {
-          opacity: 1.0;
-        }
+      &--intro {
+        text-align: center;
+      }
+    }
+
+    .game {
+      display: none;
+
+      p {
+        opacity: 0.0;
+        transition: opacity 1.0s;
+      }
+
+      p.show {
+        opacity: 1.0;
       }
     }
   }

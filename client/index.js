@@ -3,6 +3,18 @@ import json from './uber.json';
 
 const story = new Story(json);
 const storyContainer = document.getElementById('story');
+const startButton = document.getElementById('start-button');
+
+function startStory() {
+  const introScreen = document.getElementById('intro');
+  const story = document.getElementById('story');
+
+  introScreen.style.display = 'none';
+
+  story.style.display = 'block';
+}
+
+startButton.onclick = startStory;
 
 function showAfter(delay, el) {
   setTimeout(() => {
