@@ -5,6 +5,16 @@ const story = new Story(json);
 const storyContainer = document.getElementById('story');
 const startButton = document.getElementById('start-button');
 
+function showElements(arr) {
+  arr.map((e) => {
+    const elementToShow = e;
+
+    elementToShow.style.display = 'block';
+
+    return elementToShow;
+  });
+}
+
 function hideElements(arr) {
   arr.map((e) => {
     const elementToHide = e;
@@ -15,14 +25,28 @@ function hideElements(arr) {
   });
 }
 
-function showElements(arr) {
-  arr.map((e) => {
-    const elementToShow = e;
+function fadeInElements(arr, delay) {
+  setTimeout(() => {
+    arr.map((e) => {
+      const elementToFadeIn = e;
 
-    elementToShow.style.display = 'block';
+      elementToFadeIn.style.opacity = 1;
 
-    return elementToShow;
-  });
+      return elementToFadeIn;
+    });
+  }, delay);
+}
+
+function fadeOutElements(arr, delay) {
+  setTimeout(() => {
+    arr.map((e) => {
+      const elementToFadeOut = e;
+
+      elementToFadeOut.style.opacity = 0;
+
+      return elementToFadeOut;
+    });
+  }, delay);
 }
 
 function startStory() {
@@ -41,18 +65,11 @@ function startStory() {
 
 startButton.onclick = startStory;
 
-function showAfter(delay, el) {
-  setTimeout(() => {
-    el.classList.add('show');
-  }, delay);
-}
-
 function continueStory() {
   // const paragraphIndex = 0;
   const storyScreen = document.createElement('div');
   const totalDisplay = document.getElementById('total');
   const total = story.variablesState.$('fares_earned_total');
-  const delay = 200;
 
   storyScreen.classList.add('screen');
 
@@ -72,7 +89,7 @@ function continueStory() {
     storyScreen.appendChild(paragraphElement);
 
     // Fade in paragraph after a short delay
-    showAfter(delay, paragraphElement);
+    fadeInElements([paragraphElement], 300);
   }
 
   // Create HTML choices from ink choices
@@ -87,7 +104,7 @@ function continueStory() {
     storyScreen.appendChild(choiceParagraphElement);
 
     // Fade choice in after a short delay
-    showAfter(delay, choiceParagraphElement);
+    fadeInElements([choiceParagraphElement], 300);
 
     // Click on choice
     const choiceAnchorEl = choiceParagraphElement.querySelectorAll('a')[0];
