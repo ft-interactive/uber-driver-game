@@ -1,17 +1,110 @@
 @import 'o-colors/main';
 @import 'o-grid/main';
+@import 'o-buttons/main';
 @import 'components/core/main';
 
-/*
-      TODO: delete this comment
+html, body {
+  background-color: #333;
+}
 
-      Write your code here - keep it neat!
-      Split logical parts of you project into components e.g.
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+  color: #fff;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fft-ig-content-prod%2Fimages%2Fv1%2Foverview-art.png?source=ig&quality=high);
+  background-size: cover;
+  background-attachment: fixed;
 
-      /client
-        - /components
-            - /component-name
-                - styles.scss
-                - index.js
-                - template.html
-*/
+  .tint {
+    position: fixed;
+    width: inherit;
+    height: inherit;
+    -webkit-transition: 300ms -webkit-backdrop-filter linear;
+    transition: 300ms backdrop-filter linear;
+
+    &.pre-game {
+      background-image: linear-gradient(rgba(26, 140, 255, 0.4), rgba(255, 26, 102, 0.4));
+      -webkit-backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+      backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+    }
+    &.in-game {
+      background-image: linear-gradient(rgba(51, 51, 51, 0.2), rgba(51, 51, 51, 0.2) 67%, rgba(51, 51, 51, 1) 95%);
+    }
+  }
+
+  .article-head.o-grid-container {
+    order: 1;
+    width: 100%;
+    z-index: 1;
+
+    img.header-logo {
+      float: left;
+      width: 40px;
+      height: auto;
+      opacity: 0.8;
+    }
+
+    .article__share {
+      display: inline;
+      float: right;
+      opacity: 0.8;
+
+      ul {
+        li:last-child {
+          margin-right: 0;
+        }
+
+        @include oGridRespondTo(S) {
+          li:nth-child(3) {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .article-body.o-typography-body-wrapper {
+    order: 2;
+    z-index: 1;
+
+    p {
+      color: inherit;
+    }
+
+    .screen {
+      button {
+        @include oButtons();
+        @include oButtonsTheme(inverse);
+      }
+
+      &--intro {
+        text-align: center;
+        -webkit-transition: 300ms opacity linear;
+        transition: 300ms opacity linear;
+      }
+    }
+
+    .game {
+      display: none;
+
+      p {
+        opacity: 0.0;
+        transition: opacity 1.0s;
+      }
+
+      p.show {
+        opacity: 1.0;
+      }
+    }
+  }
+
+  footer.o-typography-footer {
+    order: 3;
+    margin-bottom: 18px;
+  }
+}
