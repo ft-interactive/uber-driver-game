@@ -27,6 +27,8 @@ html, body {
     background-image: linear-gradient(rgba(26, 140, 255, 0.4), rgba(255, 26, 102, 0.4));
     -webkit-backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
     backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+    -webkit-transition: 300ms -webkit-backdrop-filter linear;
+    transition: 300ms backdrop-filter linear;
   }
 
   .article-head.o-grid-container {
@@ -76,6 +78,8 @@ html, body {
 
       &--intro {
         text-align: center;
+        -webkit-transition: 300ms opacity linear;
+        transition: 300ms opacity linear;
       }
     }
 

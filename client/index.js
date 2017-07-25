@@ -6,12 +6,18 @@ const storyContainer = document.getElementById('story');
 const startButton = document.getElementById('start-button');
 
 function startStory() {
+  const tint = document.getElementsByClassName('tint')[0];
   const introScreen = document.getElementById('intro');
-  const story = document.getElementById('story');
+  const storyEl = document.getElementById('story');
 
+  tint.style.webkitBackdropFilter = 'none';
+  tint.style.backdropFilter = 'none';
+  tint.style.backgroundImage = 'none';
+
+  introScreen.style.opacity = '0';
   introScreen.style.display = 'none';
 
-  story.style.display = 'block';
+  setTimeout(() => (storyEl.style.display = 'block'), 300);
 }
 
 startButton.onclick = startStory;
