@@ -1,66 +1,44 @@
 import { Story } from 'inkjs';
+import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
+const tint = document.querySelector('.tint');
+const introScreen = document.getElementById('intro');
 const storyContainer = document.getElementById('story');
 const startButton = document.getElementById('start-button');
-
-function showElements(arr) {
-  arr.map((e) => {
-    const elementToShow = e;
-
-    elementToShow.style.display = 'block';
-
-    return elementToShow;
-  });
-}
-
-function hideElements(arr) {
-  arr.map((e) => {
-    const elementToHide = e;
-
-    elementToHide.style.display = 'none';
-
-    return elementToHide;
-  });
-}
-
-function fadeInElements(arr, delay) {
-  setTimeout(() => {
-    arr.map((e) => {
-      const elementToFadeIn = e;
-
-      elementToFadeIn.style.opacity = 1;
-
-      return elementToFadeIn;
-    });
-  }, delay);
-}
-
-function fadeOutElements(arr, delay) {
-  setTimeout(() => {
-    arr.map((e) => {
-      const elementToFadeOut = e;
-
-      elementToFadeOut.style.opacity = 0;
-
-      return elementToFadeOut;
-    });
-  }, delay);
-}
+const shareButtons = document.querySelector('.article__share');
+const footer = document.querySelector('.o-typography-footer');
+const inDuration = 1000;
+const outDuration = 2000;
 
 function startStory() {
-  const tint = document.getElementsByClassName('tint')[0];
-  const introScreen = document.getElementById('intro');
-  const storyEl = document.getElementById('story');
-
   tint.classList.remove('pre-game');
   tint.classList.add('in-game');
 
-  introScreen.style.opacity = '0';
-  hideElements([introScreen]);
+  const fadeOutIntro = anime({
+    targets: [introScreen, shareButtons, footer],
+    opacity: 0,
+    duration: inDuration,
+    easing: 'linear',
+  });
 
-  setTimeout(() => showElements([storyEl]), 300);
+  const fadeInGame = anime({
+    targets: storyContainer,
+    opacity: 1,
+    duration: outDuration,
+    easing: 'linear',
+  });
+
+  fadeOutIntro.update = (anim) => {
+    if (anim.completed) {
+      introScreen.style.display = 'none';
+
+      storyContainer.style.display = 'block';
+
+      fadeInGame.play();
+    }
+  };
 }
 
 startButton.onclick = startStory;
@@ -72,6 +50,7 @@ function continueStory() {
   const total = story.variablesState.$('fares_earned_total');
 
   storyScreen.classList.add('screen');
+  // storyScreen.classList.add('game');
 
   totalDisplay.innerHTML = total;
 
@@ -89,7 +68,12 @@ function continueStory() {
     storyScreen.appendChild(paragraphElement);
 
     // Fade in paragraph after a short delay
-    fadeInElements([paragraphElement], 300);
+    anime({
+      targets: paragraphElement,
+      opacity: 1,
+      duration: inDuration,
+      delay: 300,
+    });
   }
 
   // Create HTML choices from ink choices
@@ -104,7 +88,12 @@ function continueStory() {
     storyScreen.appendChild(choiceParagraphElement);
 
     // Fade choice in after a short delay
-    fadeInElements([choiceParagraphElement], 300);
+    anime({
+      targets: choiceParagraphElement,
+      opacity: 1,
+      duration: inDuration,
+      delay: 300,
+    });
 
     // Click on choice
     const choiceAnchorEl = choiceParagraphElement.querySelectorAll('a')[0];

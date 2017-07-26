@@ -24,13 +24,13 @@ html, body {
     position: fixed;
     width: inherit;
     height: inherit;
-    -webkit-transition: 300ms -webkit-backdrop-filter linear;
-    transition: 300ms backdrop-filter linear;
+    -webkit-transition: -webkit-backdrop-filter 600ms linear;
+    transition: backdrop-filter 600ms linear;
 
     &.pre-game {
       background-image: linear-gradient(rgba(26, 140, 255, 0.4), rgba(255, 26, 102, 0.4));
-      -webkit-backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
-      backdrop-filter: grayscale(100%) blur(12px) brightness(40%);
+      -webkit-backdrop-filter: blur(12px) brightness(40%);
+      backdrop-filter: blur(12px) brightness(40%);
     }
     &.in-game {
       background-image: linear-gradient(rgba(51, 51, 51, 0.2), rgba(51, 51, 51, 0.2) 67%, rgba(51, 51, 51, 1) 95%);
@@ -77,24 +77,22 @@ html, body {
     }
 
     .screen {
+      &--intro {
+        text-align: center;
+      }
+
       button {
         @include oButtons();
         @include oButtonsTheme(inverse);
       }
 
-      &--intro {
-        text-align: center;
-        -webkit-transition: 300ms opacity linear;
-        transition: 300ms opacity linear;
-      }
-    }
+      &--story {
+        display: none;
+        opacity: 0;
 
-    .game {
-      display: none;
-
-      p {
-        opacity: 0.0;
-        transition: opacity 1.0s;
+        p {
+          opacity: 0;
+        }
       }
     }
   }
