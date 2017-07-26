@@ -5,12 +5,12 @@ import json from './uber.json';
 const story = new Story(json);
 const tint = document.querySelector('.tint');
 const introScreen = document.getElementById('intro');
-const storyContainer = document.getElementById('story');
+const storyScreen = document.getElementById('story');
 const startButton = document.getElementById('start-button');
 const shareButtons = document.querySelector('.article__share');
 const footer = document.querySelector('.o-typography-footer');
-const inDuration = 1000;
-const outDuration = 2000;
+const defaultInDuration = 1000;
+const defaultOutDuration = 1500;
 
 function startStory() {
   tint.classList.remove('pre-game');
@@ -19,22 +19,24 @@ function startStory() {
   const fadeOutIntro = anime({
     targets: [introScreen, shareButtons, footer],
     opacity: 0,
-    duration: inDuration,
+    duration: defaultInDuration,
     easing: 'linear',
   });
 
   const fadeInGame = anime({
-    targets: storyContainer,
+    targets: storyScreen,
     opacity: 1,
-    duration: outDuration,
+    duration: defaultOutDuration,
     easing: 'linear',
   });
 
   fadeOutIntro.update = (anim) => {
     if (anim.completed) {
       introScreen.style.display = 'none';
+      shareButtons.style.display = 'none';
+      footer.style.display = 'none';
 
-      storyContainer.style.display = 'block';
+      storyScreen.style.display = 'block';
 
       fadeInGame.play();
     }
@@ -44,13 +46,11 @@ function startStory() {
 startButton.onclick = startStory;
 
 function continueStory() {
-  // const paragraphIndex = 0;
-  const storyScreen = document.createElement('div');
+  const knotElement = document.createElement('div');
   const totalDisplay = document.getElementById('total');
   const total = story.variablesState.$('fares_earned_total');
 
-  storyScreen.classList.add('screen');
-  // storyScreen.classList.add('game');
+  knotElement.classList.add('knot');
 
   totalDisplay.innerHTML = total;
 
@@ -63,62 +63,65 @@ function continueStory() {
 
     paragraphElement.innerHTML = paragraphText;
 
-    storyContainer.appendChild(storyScreen);
+    knotElement.appendChild(paragraphElement);
 
-    storyScreen.appendChild(paragraphElement);
+    storyScreen.appendChild(knotElement);
 
-    // Fade in paragraph after a short delay
+    // Slide in paragraph after a short delay
     anime({
-      targets: paragraphElement,
-      opacity: 1,
-      duration: inDuration,
-      delay: 300,
+      targets: knotElement,
+      marginTop: 0,
+      duration: defaultInDuration,
+      easing: 'easeOutQuad',
     });
   }
 
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
     // Create paragraph with anchor element
-    const choiceParagraphElement = document.createElement('p');
+    const choiceElement = document.createElement('p');
 
-    choiceParagraphElement.classList.add('choice');
+    choiceElement.classList.add('choice');
+    choiceElement.innerHTML = `<a href='#'>${choice.text}</a>`;
 
-    choiceParagraphElement.innerHTML = `<a href='#'>${choice.text}</a>`;
+    knotElement.appendChild(choiceElement);
 
-    storyScreen.appendChild(choiceParagraphElement);
-
-    // Fade choice in after a short delay
-    anime({
-      targets: choiceParagraphElement,
-      opacity: 1,
-      duration: inDuration,
-      delay: 300,
-    });
+    const choiceAnchorEl = choiceElement.querySelector('a');
 
     // Click on choice
-    const choiceAnchorEl = choiceParagraphElement.querySelectorAll('a')[0];
-
-    choiceAnchorEl.addEventListener('click', (event) => {
+    function handleClick(event) {
       // Don't follow <a> link
       event.preventDefault();
 
       // Remove all existing choices
-      // const existingChoices = storyContainer.querySelectorAll('p.choice');
-      //
-      // existingChoices.forEach((existingChoice) => {
-      //   const c = existingChoice;
-      //
-      //   c.parentNode.removeChild(c);
-      // });
+      const prevChoices = Array.from(storyScreen.querySelectorAll('p.choice'));
+      const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
 
-      storyContainer.removeChild(storyScreen);
+      prevChoices.forEach((prevChoice, i) => {
+        const el = prevChoice;
 
-      // Tell the story where to go next
-      story.ChooseChoiceIndex(choice.index);
+        if (i !== clickedChoiceIndex) {
+          el.style.opacity = 0;
+        }
+      });
 
-      // Aaand loop
-      continueStory();
-    });
+      anime({
+        targets: knotElement,
+        marginTop: '100vh',
+        duration: defaultOutDuration,
+        delay: defaultOutDuration / 2,
+        easing: 'easeOutQuad',
+        complete: () => {
+          storyScreen.removeChild(knotElement);
+          // Tell the story where to go next
+          story.ChooseChoiceIndex(choice.index);
+          // Aaand loop
+          continueStory();
+        },
+      });
+    }
+
+    choiceAnchorEl.onclick = handleClick;
   });
 }
 
