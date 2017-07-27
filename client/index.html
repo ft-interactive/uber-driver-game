@@ -5,16 +5,24 @@
 
 {% markdown %}
 
+<div id="landscape" class="landscape">
+  Please return your device to portrait orientation.
+</div>
+
 <div id="intro" class="screen screen--intro">
   <h1>Do you have what it takes?</h1>
 
-  <p>To make it as an Uber driver</p>
+  <p class="subtitle">To make it as an Uber driver</p>
 
   <button type="button" id="start-button">Let's Go</button>
 </div>
 
 <div id="story" class="screen screen--story">
-  Dollah: $<span id="total">0</span>
+  <div class="meters">
+    Dollah: $<span id="total">0</span>
+  </div>
+
+  <div class="knot"></div>
 </div>
 
 {% endmarkdown %}
