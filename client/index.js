@@ -44,11 +44,11 @@ function continueStory() {
     knotElement.appendChild(choiceElement);
 
     const knotHeight = knotElement.offsetHeight;
-    let knotMarginTop = articleBodyHeight - knotHeight;
+    const knotTranslateY = articleBodyHeight - knotHeight;
 
     anime({
       targets: knotElement,
-      marginTop: knotMarginTop,
+      translateY: knotTranslateY,
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -97,8 +97,6 @@ function continueStory() {
 
 
 function startStory() {
-  // tint.classList.remove('pre-game');
-  // tint.classList.add('in-game');
   tint.style.opacity = 0;
   tint.style.backdropFilter = 'none';
 
