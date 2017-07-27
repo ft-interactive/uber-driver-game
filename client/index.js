@@ -74,7 +74,7 @@ function continueStory() {
 
       anime({
         targets: knotElement,
-        marginTop: viewportHeight,
+        translateY: articleBodyHeight,
         duration: 3000,
         delay: defaultOutDuration / 2,
         easing: 'easeOutQuad',
@@ -118,6 +118,7 @@ function startStory() {
 
         introScreen.style.display = 'none';
         shareButtons.style.display = 'none';
+        footer.style.display = 'none';
 
         continueStory();
       }
