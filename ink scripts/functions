@@ -1,0 +1,87 @@
+=== function alter(ref x, k) ===
+    ~ x = x + k
+
+=== function time_passes(hours, peak, mult)  ===
+~ temp rides=0
+~ temp fares=0
+~ temp avg_hourly_fare=15.38
+// avg_fare_per_ride=6.83
+
+~ time_passing = true
+
+{ peak==1: 
+~ rides = RANDOM((hours*2),(hours*4))
+    {current_city=="sac":
+    ~ alter(rides, -2)
+    }
+~ fares = rides*RANDOM(5,8)*1.25
+
+- else:
+~ rides = RANDOM((hours*2),(hours*3))
+    {current_city=="sac":
+    ~ alter(rides, -2)
+        {rides<0:
+        ~rides=0
+        }
+    }
+~ fares = rides*RANDOM(5,8)
+}
+
+~ fares = fares * mult
+~ alter(day_ride_count, rides)
+~ alter(day_fares_earned, fares)
+~ alter(day_hours_driven, hours)
+~ alter(quest_rides, -rides)
+~ alter(ride_count_total, rides)
+~ alter(fares_earned_total, fares)
+~ alter(hours_driven_total, hours)
+
+You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares. 
+/*{tip_sign:
+~check_tip_sign()
+}
+*/
+{
+- quest_rides < 0 :
+~ quest_rides=0
+
+- quest_rides > 0:
+You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.
+}
+
+=== function day_end ===
+{home=="sac":
+~alter(hours_driven_total,2)
+}
+Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating}.
+
+{ quest_completion==true:
+ You finished the quest and netted a ${quest_bonus} bonus.
+- else:
+You still need {quest_rides} rides before {day_5_start:Sunday}{!day_5_start:Friday} to get the bonus.
+}
+
+~ day_ride_count=0
+~ day_fares_earned=0
+~ day_hours_driven=0
+
+=== function UberXL ===
+{car=="Minivan": 
+    "You also got a few UberXL rides that earned you an extra $24"
+    ~ alter(day_fares_earned,24)
+    ~ alter(XL_total,24)
+}
+
+=== function check_tip_sign ===
+~ temp x = RANDOM(1,10)
+~ temp tip = RANDOM(3,10)
+{ 
+- x <= 2:
+    Prompted by your tip sign, a passenger gives you a ${tip} tip!
+    ~alter(tip_total,tip)
+- x > 9:
+  Unfortunately, it seems your tip sign has annoyed your passenger...
+  ~alter(rating,-0.02)
+  
+}
+

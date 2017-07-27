@@ -1,0 +1,10 @@
+=== quest_finish ===
+{ quest_rides == 0 :
+You finished the quest! You get the ${quest_bonus} bonus.
+
+Well done!
+~ quest_completion = true
+}
+
+->->
+
