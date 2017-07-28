@@ -79,6 +79,11 @@ html, body {
           .screen {
             position: relative;
 
+            button {
+              @include oButtons();
+              @include oButtonsTheme(inverse);
+            }
+
             p {
               color: inherit;
             }
@@ -94,11 +99,12 @@ html, body {
                 letter-spacing: 2px;
                 text-transform: uppercase;
               }
+            }
 
-              button {
-                @include oButtons();
-                @include oButtonsTheme(inverse);
-              }
+            &--caveats {
+              display: none;
+              opacity: 0;
+              text-align: center;
             }
 
             &--story {

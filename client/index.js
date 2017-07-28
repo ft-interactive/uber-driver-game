@@ -7,6 +7,8 @@ const shareButtons = document.querySelector('.article__share');
 let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
 const introScreen = document.getElementById('intro');
+const caveatsButton = document.getElementById('caveats-button');
+const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
 let metersElementHeight;
@@ -30,6 +32,28 @@ function handleResize() {
 window.addEventListener('load', handleResize);
 
 window.addEventListener('resize', handleResize);
+
+function showCaveats() {
+  console.log('fired');
+
+  anime({
+    targets: introScreen,
+    opacity: 0,
+    duration: defaultOutDuration,
+    easing: 'linear',
+    complete: () => {
+      introScreen.style.display = 'none';
+      caveatsScreen.style.display = 'block';
+
+      anime({
+        targets: caveatsScreen,
+        opacity: 1,
+        duration: defaultInDuration,
+        easing: 'linear',
+      });
+    },
+  });
+}
 
 function continueStory() {
   const totalDisplay = document.getElementById('total');
@@ -112,33 +136,31 @@ function startStory() {
   tint.style.backdropFilter = 'none';
 
   anime({
-    targets: [introScreen, shareButtons, footer],
+    targets: [shareButtons, caveatsScreen, footer],
     opacity: 0,
     duration: defaultOutDuration,
     easing: 'linear',
-    update: (anim) => {
-      if (anim.completed) {
-        storyScreen.style.display = 'block';
+    complete: () => {
+      shareButtons.style.display = 'none';
+      caveatsScreen.style.display = 'none';
+      footer.style.display = 'none';
+      storyScreen.style.display = 'block';
+      articleBodyHeight = document.querySelector('.article-body').offsetHeight;
+      metersElementHeight = document.querySelector('.meters').offsetHeight;
+      knotElementMaxHeight = articleBodyHeight - metersElementHeight;
+      knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
 
-        anime({
-          targets: storyScreen,
-          opacity: 1,
-          duration: defaultInDuration,
-          easing: 'linear',
-        });
-
-        introScreen.style.display = 'none';
-        shareButtons.style.display = 'none';
-        footer.style.display = 'none';
-        articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-        metersElementHeight = document.querySelector('.meters').offsetHeight;
-        knotElementMaxHeight = articleBodyHeight - metersElementHeight;
-        knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
-
-        continueStory();
-      }
+      anime({
+        targets: storyScreen,
+        opacity: 1,
+        duration: defaultInDuration,
+        easing: 'linear',
+        complete: continueStory,
+      });
     },
   });
 }
 
-startButton.onclick = startStory;
+caveatsButton.addEventListener('click', showCaveats);
+
+startButton.addEventListener('click', startStory);
