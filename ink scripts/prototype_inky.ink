@@ -201,7 +201,7 @@ You start bright and early on a Monday morning.
 
 =weekday_quest_message
 #weekday_quest_message
-#type:next
+# type: next
 ~quest_rides=75
 ~quest_bonus=180
 ~weekday_quest_bonus=quest_bonus
@@ -842,7 +842,7 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
     ~ alter(day_fares_earned, remaining*6)
     ~ alter(day_hours_driven, 9)
     ~ quest_rides=3
-    #type:next    
+    # type: next    
     * [MESSAGE FROM UBER] Just three more trips until you complete your quest!
     But it's already 7pm and you promised to be home by 8.
     ->quest_nudge
