@@ -3,17 +3,33 @@ import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
-const viewportHeight = window.innerHeight;
-const tint = document.querySelector('.tint');
-const articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-const introScreen = document.getElementById('intro');
 const shareButtons = document.querySelector('.article__share');
+let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
+const introScreen = document.getElementById('intro');
+const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
+let metersElementHeight;
 const knotElement = document.querySelector('.knot');
+let knotElementMaxHeight;
+const tint = document.querySelector('.tint');
 const defaultInDuration = 600;
 const defaultOutDuration = 600;
-const startButton = document.getElementById('start-button');
+
+function handleResize() {
+  const d = new Date();
+
+  articleBodyHeight = document.querySelector('.article-body').offsetHeight;
+  metersElementHeight = document.querySelector('.meters').offsetHeight;
+  knotElementMaxHeight = articleBodyHeight - metersElementHeight;
+  knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
+
+  console.log(`Window resized ${d.toLocaleTimeString()}`);
+}
+
+window.addEventListener('load', handleResize);
+
+window.addEventListener('resize', handleResize);
 
 function continueStory() {
   const totalDisplay = document.getElementById('total');
@@ -91,7 +107,6 @@ function continueStory() {
   });
 }
 
-
 function startStory() {
   tint.style.opacity = 0;
   tint.style.backdropFilter = 'none';
@@ -115,6 +130,10 @@ function startStory() {
         introScreen.style.display = 'none';
         shareButtons.style.display = 'none';
         footer.style.display = 'none';
+        articleBodyHeight = document.querySelector('.article-body').offsetHeight;
+        metersElementHeight = document.querySelector('.meters').offsetHeight;
+        knotElementMaxHeight = articleBodyHeight - metersElementHeight;
+        knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
 
         continueStory();
       }
