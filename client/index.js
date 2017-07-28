@@ -3,19 +3,59 @@ import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
-const viewportHeight = window.innerHeight;
-const tint = document.querySelector('.tint');
-const articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-const introScreen = document.getElementById('intro');
 const shareButtons = document.querySelector('.article__share');
+let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
-const storyScreen = document.getElementById('story');
-const defaultInDuration = 1000;
-const defaultOutDuration = 1500;
+const introScreen = document.getElementById('intro');
+const caveatsButton = document.getElementById('caveats-button');
+const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
+const storyScreen = document.getElementById('story');
+let metersElementHeight;
+const knotElement = document.querySelector('.knot');
+let knotElementMaxHeight;
+const tint = document.querySelector('.tint');
+const defaultInDuration = 600;
+const defaultOutDuration = 600;
+
+function handleResize() {
+  const d = new Date();
+
+  articleBodyHeight = document.querySelector('.article-body').offsetHeight;
+  metersElementHeight = document.querySelector('.meters').offsetHeight;
+  knotElementMaxHeight = articleBodyHeight - metersElementHeight;
+  knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
+
+  console.log(`Window resized ${d.toLocaleTimeString()}`);
+}
+
+window.addEventListener('load', handleResize);
+
+window.addEventListener('resize', handleResize);
+
+function showCaveats() {
+  console.log('fired');
+
+  anime({
+    targets: introScreen,
+    opacity: 0,
+    duration: defaultOutDuration,
+    easing: 'linear',
+    complete: () => {
+      introScreen.style.display = 'none';
+      caveatsScreen.style.display = 'block';
+
+      anime({
+        targets: caveatsScreen,
+        opacity: 1,
+        duration: defaultInDuration,
+        easing: 'linear',
+      });
+    },
+  });
+}
 
 function continueStory() {
-  const knotElement = document.querySelector('.knot');
   const totalDisplay = document.getElementById('total');
   const total = story.variablesState.$('fares_earned_total');
 
@@ -43,12 +83,9 @@ function continueStory() {
 
     knotElement.appendChild(choiceElement);
 
-    const knotHeight = knotElement.offsetHeight;
-    let knotMarginTop = articleBodyHeight - knotHeight;
-
     anime({
       targets: knotElement,
-      marginTop: knotMarginTop,
+      bottom: '18px',
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -74,9 +111,9 @@ function continueStory() {
 
       anime({
         targets: knotElement,
-        marginTop: viewportHeight,
-        duration: 3000,
-        delay: defaultOutDuration / 2,
+        bottom: `-${articleBodyHeight}px`,
+        duration: defaultOutDuration,
+        delay: defaultOutDuration,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all remaining child elements
@@ -95,36 +132,33 @@ function continueStory() {
   });
 }
 
-
 function startStory() {
-  // tint.classList.remove('pre-game');
-  // tint.classList.add('in-game');
   tint.style.opacity = 0;
   tint.style.backdropFilter = 'none';
 
   anime({
-    targets: [introScreen, shareButtons, footer],
+    targets: [shareButtons, caveatsScreen, footer],
     opacity: 0,
     duration: defaultOutDuration,
     easing: 'linear',
-    update: (anim) => {
-      if (anim.completed) {
-        storyScreen.style.display = 'block';
+    begin: () => { knotElement.style.bottom = `-${articleBodyHeight}px`; },
+    complete: () => {
+      shareButtons.style.display = 'none';
+      caveatsScreen.style.display = 'none';
+      footer.style.display = 'none';
 
-        anime({
-          targets: storyScreen,
-          opacity: 1,
-          duration: defaultInDuration,
-          easing: 'linear',
-        });
-
-        introScreen.style.display = 'none';
-        shareButtons.style.display = 'none';
-
-        continueStory();
-      }
+      anime({
+        targets: storyScreen,
+        opacity: 1,
+        duration: defaultInDuration,
+        easing: 'linear',
+        begin: () => { storyScreen.style.display = 'block'; },
+        complete: continueStory,
+      });
     },
   });
 }
 
-startButton.onclick = startStory;
+caveatsButton.addEventListener('click', showCaveats);
+
+startButton.addEventListener('click', startStory);

@@ -4,26 +4,31 @@
 {% block article_body %}
 
 {% markdown %}
-
-<div id="landscape" class="landscape">
-  Please return your device to portrait orientation.
-</div>
-
-<div id="intro" class="screen screen--intro">
-  <h1>Do you have what it takes?</h1>
-
-  <p class="subtitle">To make it as an Uber driver</p>
-
-  <button type="button" id="start-button">Let's Go</button>
-</div>
-
-<div id="story" class="screen screen--story">
-  <div class="meters">
-    Dollah: $<span id="total">0</span>
+<div class="screen-container">
+  <div id="intro" class="screen screen--intro">
+    <h1>Do you have what it takes</h1>
+    <p class="subtitle">To make it as an Uber driver?</p>
+    <button type="button" id="caveats-button">Let's Go</button>
   </div>
 
-  <div class="knot"></div>
-</div>
+  <div id="caveats" class="screen screen--caveats">
+    <p>This game was designed for and tested in the current (July 2017) versions of <a href="https://www.google.com/chrome/index.html" target="_blank">Chrome</a>, <a href="https://www.apple.com/safari/" target="_blank">Safari</a> and <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Firefox</a>. Other browsers or versions may not be fully supported.</p>
+    <div>
+      <button type="button" id="start-button">Cool</button>
+    </div>
+  </div>
 
+  <div id="story" class="screen screen--story">
+    <div class="meters">
+      Dollah: $<span id="total">0</span>
+    </div>
+    <div class="knot"></div>
+  </div>
+
+  <div id="landscape" class="screen screen--landscape">
+    Please return your device to portrait orientation.
+  </div>
+</div>
 {% endmarkdown %}
+
 {% endblock %}
