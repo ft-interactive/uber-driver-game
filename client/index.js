@@ -12,8 +12,9 @@ const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
 let metersElementHeight;
+const knotContainer = document.querySelector('.knot-container');
+let knotContainerMaxHeight;
 const knotElement = document.querySelector('.knot');
-let knotElementMaxHeight;
 const tint = document.querySelector('.tint');
 const defaultInDuration = 600;
 const defaultOutDuration = 600;
@@ -23,8 +24,8 @@ function handleResize() {
 
   articleBodyHeight = document.querySelector('.article-body').offsetHeight;
   metersElementHeight = document.querySelector('.meters').offsetHeight;
-  knotElementMaxHeight = articleBodyHeight - metersElementHeight;
-  knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
+  knotContainerMaxHeight = articleBodyHeight - metersElementHeight;
+  knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`);
 }
@@ -34,8 +35,6 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', handleResize);
 
 function showCaveats() {
-  console.log('fired');
-
   anime({
     targets: introScreen,
     opacity: 0,
@@ -61,16 +60,26 @@ function continueStory() {
 
   totalDisplay.innerHTML = total;
 
+
   // Generate story text - loop through available content
   while (story.canContinue) {
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
+
+    // console.log(story.currentTags);
+
     // Create paragraph element
     const paragraphElement = document.createElement('p');
 
     paragraphElement.innerHTML = paragraphText;
 
     knotElement.appendChild(paragraphElement);
+
+    // if (story.currentTags.indexOf('type: choice') > -1) {
+    //   knotElement.style.color = 'red';
+    // } else {
+    //   knotElement.style.color = '#fff';
+    // }
   }
 
   // Create HTML choices from ink choices
@@ -84,7 +93,7 @@ function continueStory() {
     knotElement.appendChild(choiceElement);
 
     anime({
-      targets: knotElement,
+      targets: knotContainer,
       bottom: '18px',
       duration: defaultInDuration,
       easing: 'easeOutQuad',
@@ -110,7 +119,7 @@ function continueStory() {
       });
 
       anime({
-        targets: knotElement,
+        targets: knotContainer,
         bottom: `-${articleBodyHeight}px`,
         duration: defaultOutDuration,
         delay: defaultOutDuration,
@@ -141,7 +150,7 @@ function startStory() {
     opacity: 0,
     duration: defaultOutDuration,
     easing: 'linear',
-    begin: () => { knotElement.style.bottom = `-${articleBodyHeight}px`; },
+    begin: () => { knotContainer.style.bottom = `-${articleBodyHeight}px`; },
     complete: () => {
       shareButtons.style.display = 'none';
       caveatsScreen.style.display = 'none';
