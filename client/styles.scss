@@ -71,10 +71,16 @@ html, body {
         height: 100%;
 
         .screen-container {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          bottom: 0px;
+          left: 0px;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          height: 100%;
+          max-width: 100%;
+          padding: inherit;
 
           .screen {
             position: relative;

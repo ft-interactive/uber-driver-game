@@ -113,6 +113,7 @@ function continueStory() {
         targets: knotElement,
         bottom: `-${articleBodyHeight}px`,
         duration: defaultOutDuration,
+        delay: defaultOutDuration,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all remaining child elements
