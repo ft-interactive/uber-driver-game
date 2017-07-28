@@ -90,7 +90,7 @@ First, pick your character. Do you live in San Francisco or in Sacramento, where
 - ~current_city=home
 ->credit
 
-=credit
+===credit===
 # type: choice
 How is your credit rating?
 * I have excellent credit (easy)
