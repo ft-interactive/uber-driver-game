@@ -156,12 +156,17 @@ html, body {
 
 @media only screen and (min-aspect-ratio: 1/1) and (max-width: 740px) {
   .screen {
-    &--intro, &--story {
+    &--intro, &--caveats, &--story {
       display: none !important;
     }
 
     &--landscape {
       display: block !important;
     }
+  }
+
+  .article__share {
+    display: inline !important;
+    opacity: 1 !important;
   }
 }

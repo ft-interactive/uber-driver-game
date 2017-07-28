@@ -140,21 +140,18 @@ function startStory() {
     opacity: 0,
     duration: defaultOutDuration,
     easing: 'linear',
+    begin: () => { knotElement.style.bottom = `-${articleBodyHeight}px`; },
     complete: () => {
       shareButtons.style.display = 'none';
       caveatsScreen.style.display = 'none';
       footer.style.display = 'none';
-      storyScreen.style.display = 'block';
-      articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-      metersElementHeight = document.querySelector('.meters').offsetHeight;
-      knotElementMaxHeight = articleBodyHeight - metersElementHeight;
-      knotElement.style.maxHeight = `${knotElementMaxHeight}px`;
 
       anime({
         targets: storyScreen,
         opacity: 1,
         duration: defaultInDuration,
         easing: 'linear',
+        begin: () => { storyScreen.style.display = 'block'; },
         complete: continueStory,
       });
     },
