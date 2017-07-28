@@ -62,12 +62,14 @@ VAR time_passing=false
 
 ->intro
 === intro ===
+# intro
 # type: next
 Welcome!
 
 * [Start] ->intro_1
 
 = intro_1
+# intro_1
 # type: next
 You're a full-time Uber driver trying to make ends meet.
 
