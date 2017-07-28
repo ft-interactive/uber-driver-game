@@ -192,11 +192,13 @@ It cost you ${accessories_cost}. You're ready to start driving!
 -> day_1_start
 
 === day_1_start ===
+# day_1_start
 # type: next
 You start bright and early on a Monday morning.
 * [Next] ->weekday_quest_message
 
 =weekday_quest_message
+#weekday_quest_message
 #type:next
 ~quest_rides=75
 ~quest_bonus=180
