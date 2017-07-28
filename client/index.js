@@ -10,12 +10,12 @@ const introScreen = document.getElementById('intro');
 const shareButtons = document.querySelector('.article__share');
 const footer = document.querySelector('.o-typography-footer');
 const storyScreen = document.getElementById('story');
-const defaultInDuration = 1000;
-const defaultOutDuration = 1500;
+const knotElement = document.querySelector('.knot');
+const defaultInDuration = 600;
+const defaultOutDuration = 600;
 const startButton = document.getElementById('start-button');
 
 function continueStory() {
-  const knotElement = document.querySelector('.knot');
   const totalDisplay = document.getElementById('total');
   const total = story.variablesState.$('fares_earned_total');
 
@@ -43,12 +43,9 @@ function continueStory() {
 
     knotElement.appendChild(choiceElement);
 
-    const knotHeight = knotElement.offsetHeight;
-    const knotTranslateY = articleBodyHeight - knotHeight;
-
     anime({
       targets: knotElement,
-      translateY: knotTranslateY,
+      bottom: '18px',
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -74,9 +71,8 @@ function continueStory() {
 
       anime({
         targets: knotElement,
-        translateY: articleBodyHeight,
-        duration: 3000,
-        delay: defaultOutDuration / 2,
+        bottom: `-${articleBodyHeight}px`,
+        duration: defaultOutDuration,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all remaining child elements
