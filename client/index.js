@@ -1,5 +1,6 @@
 import { Story } from 'inkjs';
 import anime from 'animejs';
+import fscreen from 'fscreen';
 import json from './uber.json';
 
 const story = new Story(json);
@@ -9,6 +10,8 @@ const footer = document.querySelector('.o-typography-footer');
 const introScreen = document.getElementById('intro');
 const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
+const enterFullscreenButton = document.getElementById('enter-fullscreen-button');
+const exitFullscreenButton = document.getElementById('exit-fullscreen-button');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
 let metersElementHeight;
@@ -20,21 +23,45 @@ const defaultInDuration = 600;
 const defaultOutDuration = 600;
 
 function handleResize() {
+  const articleBody = document.querySelector('.article-body');
+  const metersElement = document.querySelector('.meters');
   const d = new Date();
 
-  articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-  metersElementHeight = document.querySelector('.meters').offsetHeight;
+  articleBodyHeight = articleBody.offsetHeight;
+  metersElementHeight = metersElement.offsetHeight;
   knotContainerMaxHeight = articleBodyHeight - metersElementHeight;
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`);
+
+  console.log(window.outerWidth);
 }
 
 window.addEventListener('load', handleResize);
 
 window.addEventListener('resize', handleResize);
 
+function handleFullscreen() {
+  if (fscreen.fullscreenElement !== null) {
+    console.log('Entered fullscreen mode');
+  } else {
+    console.log('Exited fullscreen mode');
+  }
+}
+
 function showCaveats() {
+  if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
+    const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
+
+    fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
+
+    enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
+
+    exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
+
+    fullscreenButtonsElement.style.display = 'block';
+  }
+
   anime({
     targets: introScreen,
     opacity: 0,
