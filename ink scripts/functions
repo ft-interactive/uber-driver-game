@@ -58,7 +58,7 @@ Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides 
 { quest_completion==true:
  You finished the quest and netted a ${quest_bonus} bonus.
 - else:
-You still need {quest_rides} rides before {day_5_start:Sunday}{!day_5_start:Friday} to get the bonus.
+You still need {quest_rides} rides before {day_5_start:Sunday | Friday} to get the bonus.
 }
 
 ~ day_ride_count=0
@@ -67,7 +67,7 @@ You still need {quest_rides} rides before {day_5_start:Sunday}{!day_5_start:Frid
 
 === function UberXL ===
 {car=="Minivan": 
-    "You also got a few UberXL rides that earned you an extra $24"
+    You also got a few UberXL rides that earned you an extra $24
     ~ alter(day_fares_earned,24)
     ~ alter(XL_total,24)
 }

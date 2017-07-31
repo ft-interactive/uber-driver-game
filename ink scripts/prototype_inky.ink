@@ -3,7 +3,6 @@ INCLUDE check_quest
 INCLUDE ratings
 INCLUDE results
 
-
 //Set-up variables 
 VAR car="none"
 VAR home="none"
@@ -120,11 +119,11 @@ The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, wh
     ~insurance=60    
 }
 
-* ["Toyota Prius (${prius_cost}/ week)"] "You pick the Toyota Prius. It costs ${prius_cost} per week, and can get up to 50 miles per gallon"
+* [Toyota Prius (${prius_cost}/ week)] You pick the Toyota Prius. It costs ${prius_cost} per week, and can get up to 50 miles per gallon
 ~ car="Prius"
 ~ alter(car_cost, prius_cost)
 
-* ["Dodge minivan (${minivan_cost} / week)"] "You picked the Dodge minivan. It costs ${minivan_cost} per week, but UberXL rides earn higher fares"
+* [Dodge minivan (${minivan_cost} / week)] You picked the Dodge minivan. It costs ${minivan_cost} per week, but UberXL rides earn higher fares
 ~ car="Minivan"
 ~ alter(car_cost, minivan_cost)
 - You also need insurance, which costs ${insurance} a week because of your {credit_rating} credit.
@@ -271,14 +270,14 @@ You like driving in a familiar town. You grab a quick lunch at your favourite bu
 
 =stay_or_go_2
 # type: choice
-"It's 5pm, and you've only earned ${day_fares_earned}."
-* [Call it a day] "You head home, in time for dinner."-> day_1_end
-* [Keep going] "Things should pick up during rush hour and dinner time." ->sac_evening
-* [Go to San Francisco] "By this point, it doesn't really make sense to make the two-hour trip to San Francisco. You decide to stay in Sacramento, regretting that you didn't go earlier."->sac_evening
+It's 5pm, and you've only earned ${day_fares_earned}.
+* [Call it a day] You head home, in time for dinner.-> day_1_end
+* [Keep going] Things should pick up during rush hour and dinner time. ->sac_evening
+* [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to San Francisco. You decide to stay in Sacramento, regretting that you didn't go earlier.->sac_evening
 
 =sac_evening
 # type: next
-"You start getting more ride requests, and drive until the evening crowd thins out."
+You start getting more ride requests, and drive until the evening crowd thins out.
 ~time_passes(3,1,1)
 
 You call it a day after the evening crowd thins out.
@@ -302,7 +301,7 @@ You spend a productive morning working, with little downtime in between rides.
 
 ~time_passes(4,0,1)
 
-* [That's great!]"You stop for lunch, buying a cheap burrito that wasn't very good."->sf_afternoon
+* [That's great!]You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
 
 =sf_afternoon
 {home=="sac":It's pretty stressful driving in big city like San Francisco, but you think you've made the right decision.}
@@ -326,15 +325,18 @@ You call it a day.
 - else: 
 # type: choice
 You've now been driving for {day_hours_driven} hours, and are starting to get tired.
-* {home=="sac"}["Head home to Sacramento"]"You get home by 10pm, and get a good night's rest." 
+* {home=="sac"}[Head home to Sacramento]You get home by 10pm, and get a good night's rest.
 
 ->day_1_end
-* ["Keep driving"]"The evening is the busiest period, but soon you're too tired to continue
+* [Keep driving]The evening is the busiest period, but soon you're too tired to continue
 ~time_passes(2,1,1)
 ->sac_night
-* {gym_member}["Freshen up at the gym"]You feel much better after a quick shower at the gym. You do good business during the busy evening period. 
+* {gym_member}[Freshen up at the gym]You feel much better after a quick shower at the gym. You do good business during the busy evening period. 
 ~time_passes(3,1,1)
 ->sac_night
+
+* [Go home]You decide to call it a day.
+->day_1_end
 }
 =sac_night
 # type: next
@@ -353,7 +355,7 @@ It's the end of the first day.
 *[Start day 2]->day_2_start
 
 === day_2_start ===
-"It's Tuesday. {home=="sac":You wake up a bit earlier and drive out to San Francisco.}"
+It's Tuesday. {home=="sac":You wake up a bit earlier and drive out to San Francisco.}
 
 {home=="sac":
 ~alter(day_hours_driven,2)
@@ -380,38 +382,38 @@ You stop to fill up your tank. Do you get a receipt?
 # type: choice
 ~temp dirty=false
 
-"You get a trip request from a burger joint, and when you arrive the passengers have two juicy In N Out burgers that they are about to eat in the car."
+You get a trip request from a burger joint, and when you arrive the passengers have two juicy In N Out burgers that they are about to eat in the car.
 
-* ["The food can’t come in the car"]"'Aww, come on," they say. 'We'll be careful.'"
+* ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
     ** "No means no[."]," you say, as you cancel their ride.
     But soon, you find that your driver rating has fallen.
     
     ~ alter(rating,-0.05) 
     ->low_rating->day_2_evening
     
-    ** "'Oh alright[."],' you say. They get in the car. <>
+    ** "Oh, alright[."]," you say. They get in the car. <>
     
-* ["Nice! I love burgers too."]"They get in the car and you start driving. 
+* ["Nice! I love burgers too."]They get in the car and you start driving. 
 
 - From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
-    ** ["Say something"] "After your admonishment, they wipe the seat, but there's still a stain. They also look unhappy at being called out."
+    ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
     ~ dirty=true 
     ~ alter(rating,-0.05)
-    ** ["Keep quiet"] "They blithely continue eating. You can't stop thinking about the stain."
+    ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
     ~ dirty=true
     -- "They finish their burgers. The rest of the trip passes without incident."
     ->dirty_car 
     
 ===dirty_car===
 # type: choice
-"What do you do about your dirty backseat?"
-* ["Stop to clean it"] "You pull over and clean the back seat. As you start cleaning, a ride request comes in."
-    ** ["Take the request"]"You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat."
+What do you do about your dirty backseat?
+* [Stop to clean it] You pull over and clean the back seat. As you start cleaning, a ride request comes in.
+    ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
     ~ alter(rating,-0.1) 
     ~ alter(ride_count_total,1)
     ~ alter(fares_earned_total,8)
-    ** ["Decline the ride"] "You finish cleaning up"
-* ["Ignore it"] "You put it out of your mind. Your next passenger is not too impressed with the dirty backseat."
+    ** [Decline the ride] You finish cleaning up.
+* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
     ~ alter(rating,-0.1) 
 - {rating > 4.8 :
     -> day_2_evening
@@ -430,14 +432,14 @@ You've been driving for {day_hours_driven} hours. Do you want to push on for the
 
 ->day_2_end
 
-* [Nah]You deserve a break. You meet up with some friends for dinner instead. 
+* [No]You deserve a break. You meet up with some friends for dinner instead. 
 
 ->day_2_end
 === day_2_end ===
 # type: next
 ~day_end()
 
-* ["Start Day 3"]
+* [Start Day 3]
 
 -> day_3_start
 
@@ -455,18 +457,22 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 * [Repair it immediately]
 ->repair
 
-* [Ignore it] It's nothing to be concerned about.
-~ windshield_cracked=true
-You continue driving.
-~time_passes(4,0,1)
-{unlimited_data==false:
-->data_plan
-- else:
-->nice_passenger
-}
+* [Ignore it] 
+->ignore
+
 =repair
+# type: next
 You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30. 
-You continue driving.
+* [Continue driving]->day_3_morning
+
+=ignore
+# type: next
+It's nothing to be concerned about.
+~ windshield_cracked=true
+* [Continue driving]->day_3_morning
+
+===day_3_morning===
+
 ~time_passes(4,0,1)
 {unlimited_data==false:
 ->data_plan
@@ -480,7 +486,7 @@ You continue driving.
 You pick up a friendly passenger and have a pleasant chat during the ride. After you drop her off, you get a notification.
 
 * [Check your phone]You got a five-star review! 
-
+# type: next
 "Friendly and professional. Would ride again" 
 ~ alter(rating,0.03)
 
@@ -522,7 +528,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 ->quest_finish->
 * [Call it a day]
 ~day_end()
-
+# type: next
 ** ["Start day 4"] -> day_4_start
 
 
@@ -682,6 +688,7 @@ You are completely exhausted.
 
 ===day_4_sf===
 # type: choice
+~ temp remaining=quest_rides-3
 By now, you've become used to the rhythm of the day and how this works.
 
 { 
@@ -717,7 +724,6 @@ You go where the rides take you. It's a pretty normal day.
 It should be pretty easy to finish the quest. 
 {
 - quest_rides>10:
-    ~ temp remaining=quest_rides-3
     You drive for 6 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating} 
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -837,6 +843,7 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
     }
 
     {home=="sf":
+
     You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating} 
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -1020,9 +1027,17 @@ You're not used to staying up so late and are very tired on the drive home. You 
 * [Keep driving] You're really tired by this point but decide to keep going.
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
 
-You drive home and collapse into bed.
+# type: choice
+
+**[Contact Uber] You call Uber to contest your deactivation. You spend an hour going back and forth with them on the phone, but all you get is a promise that they'll look into it.
 # type: next
-**[zzz]
+    ***[Go home]
+    You drive home and collapse into bed.
+    ~day_end()
+->day_6_deactivated
+
+**[Go home]
+You drive home and collapse into bed.
     ~day_end()
 ->day_6_deactivated
 
@@ -1034,7 +1049,9 @@ You drive home and collapse into bed.
 
 ===day_6_deactivated===
 # type: next
-It's Saturday. You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off. 
+It's Saturday. You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off.
+
+* [Spend time with your son]
 
 You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
 
@@ -1058,6 +1075,7 @@ It's Saturday. Do you take the day off? It is the weekend, after all.
 # type: next
 **[You feel refreshed]
 ->day_7_start
+
 * [Go to work] You're not earning when you're not working.
 ->day_6_work
 
@@ -1100,9 +1118,11 @@ It sure is busy this Saturday evening.
 -> day_6_end
 
 === day_6_end ===
+# type: next
 ~ day_end()
 
-->track_mileage
+* [Start day 7]
+->day_7_start
 
 === track_mileage===
 # type: choice
@@ -1110,13 +1130,15 @@ It's been a long week. You idly wonder just how far you've driven.
 
 * [Good thing you've been keeping track] {home=="sf": You check your notes: 1567.43 miles. That's quite a lot.}{home=="sac":You check your notes: 2469.35 miles. That's quite a lot.}
 ~miles_tracked=true
-->day_7_start
+->->
 * [(shrug emoji)]It doesn't really matter.
 ~miles_tracked=false
-->day_7_start
+->->
 
 ===day_7_start===
 # type: next
+->track_mileage->
+
 It's Sunday! You still need {quest_rides} more rides to get the weekend bonus.
 *[Let's do this!]
 
@@ -1193,7 +1215,7 @@ Congrats! You completed the quest and got an extra ${quest_bonus}.
 - else: For some reason, you didn't get the reward.
 
     ** [Huh?] You re-read the instruction text in the app, and realise, too late, that you didn't the get reward because your rating has dropped too low. 
-        ***["That feels like a little bit of a con"]You feel cheated but there's not much more to be done. You're shattered after driving for {day_hours_driven} hours, and can only go home to sleep it off.
+        ***[That feels like a little bit of a con]You feel cheated but there's not much more to be done. You're shattered after driving for {day_hours_driven} hours, and can only go home to sleep it off.
         ->day_7_end
 }
 
@@ -1272,7 +1294,7 @@ You made ${revenue_total} in total, exceeding your $1000 target.
 ~ temp gas=0
 ~ temp days=0
 ~ temp tax=revenue_total/10
-~ temp income=revenue_total-cost_total
+~ temp income=revenue_total
 
 {saturday_off:
 ~ days=6
@@ -1306,7 +1328,7 @@ You also have to file your taxes. {miles_tracked==true: Fortunately, since you t
 Unfortunately, since you weren't diligent about tracking your miles {!kept_receipt:, or keeping your gas receipts}, your tax bill comes to ${tax}. 
 ~alter(cost_total,tax)
 }
-
+~alter(income, -cost_total)
 After taking into account your costs, you earned ${income} this week.
 
 {
