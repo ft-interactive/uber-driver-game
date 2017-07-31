@@ -94,7 +94,7 @@ function continueStory() {
 
     anime({
       targets: knotContainer,
-      bottom: '18px',
+      bottom: '62px',
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
