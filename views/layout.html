@@ -27,8 +27,8 @@
           <div class="article-head o-grid-container">
             <div class="o-grid-row">
               <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-                <a href="https://www.ft.com/">
-                  <img src="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square?source=ig&tint=%23fff&quality=high" alt="FT" class="header-logo">
+                <a href="https://www.ft.com/" class="header-logo">
+                  <img src="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square?source=ig&tint=%23fff&quality=high" alt="FT">
                 </a>
 
                 {% if flags.shareButtons %}
@@ -39,12 +39,8 @@
           </div>
 
           <div class="article-body o-typography-body-wrapper" itemprop="articleBody">
-            <div class="o-grid-container">
-              <div class="o-grid-row">
-                <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-                  {% block article_body %}{% endblock %}
-                </div>
-              </div>
+            <div class="screen-container">
+              {% block article_body %}{% endblock %}
             </div>
           </div>
 

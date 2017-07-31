@@ -3,6 +3,7 @@ import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
+const headerLogo = document.querySelector('.header-logo');
 const shareButtons = document.querySelector('.article__share');
 let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
@@ -94,7 +95,7 @@ function continueStory() {
 
     anime({
       targets: knotContainer,
-      bottom: '62px',
+      bottom: '0px',
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -122,7 +123,7 @@ function continueStory() {
         targets: knotContainer,
         bottom: `-${articleBodyHeight}px`,
         duration: defaultOutDuration,
-        delay: defaultOutDuration,
+        delay: defaultOutDuration / 2,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all remaining child elements
@@ -142,30 +143,42 @@ function continueStory() {
 }
 
 function startStory() {
-  tint.style.opacity = 0;
-  tint.style.backdropFilter = 'none';
-
-  anime({
-    targets: [shareButtons, caveatsScreen, footer],
-    opacity: 0,
-    duration: defaultOutDuration,
+  const showMeters = anime.timeline({
     easing: 'linear',
-    begin: () => { knotContainer.style.bottom = `-${articleBodyHeight}px`; },
-    complete: () => {
-      shareButtons.style.display = 'none';
-      caveatsScreen.style.display = 'none';
-      footer.style.display = 'none';
-
-      anime({
-        targets: storyScreen,
-        opacity: 1,
-        duration: defaultInDuration,
-        easing: 'linear',
-        begin: () => { storyScreen.style.display = 'block'; },
-        complete: continueStory,
-      });
-    },
   });
+
+  showMeters
+    .add({
+      targets: [shareButtons, caveatsScreen, footer],
+      opacity: 0,
+      duration: defaultOutDuration,
+      easing: 'linear',
+      begin: () => {
+        knotContainer.style.bottom = `-${articleBodyHeight}px`;
+        tint.style.opacity = 0;
+        tint.style.backdropFilter = 'none';
+      },
+      complete: () => {
+        shareButtons.style.display = 'none';
+        shareButtons.style.left = '0px';
+        caveatsScreen.style.display = 'none';
+        footer.style.display = 'none';
+      },
+    })
+    .add({
+      targets: headerLogo,
+      right: '0px',
+      duration: defaultInDuration,
+      easing: 'linear',
+    })
+    .add({
+      targets: storyScreen,
+      opacity: 1,
+      duration: defaultInDuration,
+      easing: 'linear',
+      begin: () => { storyScreen.style.display = 'block'; },
+      complete: continueStory,
+    });
 }
 
 caveatsButton.addEventListener('click', showCaveats);

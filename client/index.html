@@ -4,32 +4,54 @@
 {% block article_body %}
 
 {% markdown %}
-<div class="screen-container">
-  <div id="intro" class="screen screen--intro">
-    <h1>Do you have what it takes</h1>
-    <p class="subtitle">To make it as an Uber driver?</p>
-    <button type="button" id="caveats-button">Let's Go</button>
-  </div>
-
-  <div id="caveats" class="screen screen--caveats">
-    <p>This game was designed for and tested in the current (July 2017) versions of <a href="https://www.apple.com/safari/" target="_blank">Safari</a> and <a href="https://www.google.com/chrome/index.html" target="_blank">Chrome</a> on mobile devices and desktop, and <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Firefox</a> on desktop only. Other browsers or versions may not be fully supported.</p>
-    <div>
-      <button type="button" id="start-button">Cool</button>
+<div id="intro" class="screen screen--intro">
+  <div class="o-grid-container">
+    <div class="o-grid-row">
+      <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+        <h1>Do you have what it takes</h1>
+        <p class="subtitle">To make it as an Uber driver?</p>
+        <button type="button" id="caveats-button">Let's go</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <div id="story" class="screen screen--story">
-    <div class="meters">
-      Dollah: $<span id="total">0</span>
-    </div>
-    <div class="knot-container">
-      <div class="knot"></div>
+<div id="caveats" class="screen screen--caveats">
+  <div class="o-grid-container">
+    <div class="o-grid-row">
+      <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+        <p>This game was designed for and tested in the current (July 2017) versions of <a href="https://www.apple.com/safari/" target="_blank">Safari</a> and <a href="https://www.google.com/chrome/index.html" target="_blank">Chrome</a> on mobile devices and desktop, and <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Firefox</a> on desktop only. Other browsers or versions may not be fully supported.</p>
+        <div>
+          <button type="button" id="start-button">Cool</button>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <div id="landscape" class="screen screen--landscape">
-    Please return your device to portrait orientation.
+<div id="story" class="screen screen--story">
+  <div class="meters">
+    <div class="o-grid-container">
+      <div class="o-grid-row">
+        <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+          Dollah: $<span id="total">0</span>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="knot-container">
+    <div class="o-grid-container">
+      <div class="o-grid-row">
+        <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+          <div class="knot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="landscape" class="screen screen--landscape">
+Please return your device to portrait orientation.
 </div>
 {% endmarkdown %}
 
