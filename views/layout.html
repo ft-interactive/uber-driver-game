@@ -24,15 +24,17 @@
     <main role="main">
       <article class="article" itemscope itemtype="http://schema.org/Article">
         <div class="game-container">
+          <div class="tint"></div>
+
           <div class="article-head o-grid-container">
             <div class="o-grid-row">
               <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-                <a href="https://www.ft.com/" class="header-logo">
+                <a href="https://www.ft.com/" class="logo">
                   <img src="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square?source=ig&tint=%23fff&quality=high" alt="FT">
                 </a>
 
                 {% if flags.shareButtons %}
-                  {% include "includes/share.html" %}
+                {% include "includes/share.html" %}
                 {% endif %}
               </header>
             </div>
@@ -55,8 +57,6 @@
             </div>
           </footer>
         </div>
-
-        <div class="tint"></div>
       </article>
     </main>
 

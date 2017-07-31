@@ -3,7 +3,9 @@ import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
-const headerLogo = document.querySelector('.header-logo');
+let headerWidth;
+let gutters;
+const logo = document.querySelector('.logo');
 const shareButtons = document.querySelector('.article__share');
 let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
@@ -27,6 +29,12 @@ function handleResize() {
   metersElementHeight = document.querySelector('.meters').offsetHeight;
   knotContainerMaxHeight = articleBodyHeight - metersElementHeight;
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
+  gutters = window.innerWidth < 740 ? 10 : 20;
+  headerWidth = document.querySelector('header').offsetWidth - 40;
+
+  if (!logo.style.right) {
+    logo.style.left = `${gutters}px`;
+  }
 
   console.log(`Window resized ${d.toLocaleTimeString()}`);
 }
@@ -95,7 +103,7 @@ function continueStory() {
 
     anime({
       targets: knotContainer,
-      bottom: '0px',
+      bottom: 0,
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -143,9 +151,8 @@ function continueStory() {
 }
 
 function startStory() {
-  const showMeters = anime.timeline({
-    easing: 'linear',
-  });
+  const showMeters = anime.timeline();
+  // const
 
   showMeters
     .add({
@@ -160,16 +167,21 @@ function startStory() {
       },
       complete: () => {
         shareButtons.style.display = 'none';
-        shareButtons.style.left = '0px';
+        shareButtons.style.right = '';
+        shareButtons.style.left = 0;
         caveatsScreen.style.display = 'none';
         footer.style.display = 'none';
       },
     })
     .add({
-      targets: headerLogo,
-      right: '0px',
+      targets: logo,
+      left: `${headerWidth}px`,
       duration: defaultInDuration,
-      easing: 'linear',
+      easing: 'easeOutQuad',
+      complete: () => {
+        logo.style.right = 0;
+        logo.style.left = '';
+      },
     })
     .add({
       targets: storyScreen,
