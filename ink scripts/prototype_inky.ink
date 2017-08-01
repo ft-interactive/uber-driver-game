@@ -73,6 +73,7 @@ Welcome!
 You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $1000. Can you do it?
+# button
 * [Yep!]
 ->choose_difficulty
 
@@ -118,6 +119,8 @@ The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, wh
     ~minivan_cost=240
     ~insurance=60    
 }
+
+
 
 * [Toyota Prius (${prius_cost}/ week)] You pick the Toyota Prius. It costs ${prius_cost} per week, and can get up to 50 miles per gallon
 ~ car="Prius"
@@ -218,12 +221,12 @@ MESSAGE FROM UBER: "Drive {quest_rides} trips, make ${quest_bonus} extra. Now, u
 }
 === day_1_sacramento ===
 # link
-Fares in Sacramento are about a third less than in a big city like San Francisco. Do you drive 2 hours to San Francisco to work there instead?"
+Fares in Sacramento are about a third less than in a big city like San Francisco. Do you drive 2 hours to San Francisco to work there instead?
 
-* ["Try your luck in SF"] "You decide to try your luck in San Francisco"
+* [Try your luck in SF] You decide to try your luck in San Francisco
 ~current_city="sf"
 ->go_to_sf
-* ["Stay in Sacramento"]
+* [Stay in Sacramento]
 
 You stay in Sacramento. You'll earn less but at least you're close to home.
 ->sac_morning
@@ -529,7 +532,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 * [Call it a day]
 ~day_end()
 # button
-** ["Start day 4"] -> day_4_start
+** [Start day 4] -> day_4_start
 
 
 ===day_4_start===
@@ -580,11 +583,11 @@ If you can't finish the quest, then it's even more important to earn more fares.
 # link
 As you head out, you remember that you promised your son to be home by 8pm to help him with his homework.
 {home=="sac":
-* ["Drive in Sacramento today"] You decide to stay.
+* [Drive in Sacramento today] You decide to stay.
 ~ current_city = "sac"
 -> day_4_sacramento
 
-* ["Go to San Francisco"]"You decide to go to San Francisco, since you'll get more rides there."
+* [Go to San Francisco]"You decide to go to San Francisco, since you'll get more rides there."
 ~ current_city = "sf"
     {quest_rides>2:
     ->napa
@@ -1341,7 +1344,11 @@ You didn't meet your target of earning $1000 this week, and did worse than the a
 - else:
 Not only did you not meet your target of earning $1000 this week, you actually lost money as an Uber driver.
 }
+*[THE END]
+->endscreen
 
+===endscreen===
+You've reached the end
 ->END
 
 
