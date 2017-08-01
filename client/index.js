@@ -76,11 +76,12 @@ function continueStory() {
 
     // Create paragraph element
     const paragraphElement = document.createElement('p');
+
     paragraphElement.innerHTML = paragraphText;
 
     // Create choices container element
     choicesContainerElement = document.createElement('div');
-    choicesContainerElement.setAttribute('data-o-grid-colspan', '8 center');
+    choicesContainerElement.setAttribute('data-o-grid-colspan', '9 center S8 M7 L6 XL5');
     choicesContainerElement.classList.add('choices-container');
 
     knotElement.appendChild(paragraphElement);
@@ -89,9 +90,9 @@ function continueStory() {
 
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
-    console.log(story.currentTags);
-
     let choiceElement;
+
+    console.log(story.currentTags);
 
     if (story.currentTags.indexOf('button') > -1) {
       // Create paragraph with button element
@@ -113,8 +114,6 @@ function continueStory() {
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
-
-    // const choiceAnchorEl = choiceElement.querySelector('a');
 
     // Click on choice
     function handleClick(event) {
@@ -158,7 +157,6 @@ function continueStory() {
 
 function startStory() {
   const showMeters = anime.timeline();
-  // const
 
   showMeters
     .add({
@@ -180,22 +178,41 @@ function startStory() {
       },
     })
     .add({
-      targets: logo,
-      left: `${headerWidth}px`,
+      targets: [logo, storyScreen],
+      left: (el) => {
+        let left = '';
+
+        if (el.getAttribute('data-anime-left') === 'true') {
+          left = `${headerWidth}px`;
+        }
+
+        return left;
+      },
+      opacity: (el) => {
+        let opacity = '';
+
+        if (el.getAttribute('data-anime-opacity') === 'true') {
+          opacity = 1;
+        }
+
+        return opacity;
+      },
       duration: defaultInDuration,
-      easing: 'easeOutQuad',
+      easing: (el) => {
+        if (el.getAttribute('data-anime-left') === 'true') {
+          return 'easeOutQuad';
+        }
+
+        return 'linear';
+      },
+      begin: () => {
+        storyScreen.style.display = 'block';
+        continueStory();
+      },
       complete: () => {
         logo.style.right = 0;
         logo.style.left = '';
       },
-    })
-    .add({
-      targets: storyScreen,
-      opacity: 1,
-      duration: defaultInDuration,
-      easing: 'linear',
-      begin: () => { storyScreen.style.display = 'block'; },
-      complete: continueStory,
     });
 }
 
