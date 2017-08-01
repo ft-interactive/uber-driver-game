@@ -71,11 +71,16 @@ function continueStory() {
 
   // Generate story text - loop through available content
   while (story.canContinue) {
+    const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
-
     // Create paragraph element
     const paragraphElement = document.createElement('p');
+
+    // Remove existing choices container element
+    if (existingChoicesContainer) {
+      existingChoicesContainer.parentNode.removeChild(existingChoicesContainer);
+    }
 
     paragraphElement.innerHTML = paragraphText;
 
@@ -139,10 +144,14 @@ function continueStory() {
         delay: defaultOutDuration / 2,
         easing: 'easeOutQuad',
         complete: () => {
-          // Remove all remaining child elements
-          while (knotElement.firstChild) {
-            knotElement.removeChild(knotElement.firstChild);
-          }
+          // Remove all existing paragraphs
+          const existingPars = knotElement.querySelectorAll('p');
+
+          existingPars.forEach((existingPar) => {
+            const p = existingPar;
+
+            p.parentNode.removeChild(p);
+          });
           // Tell the story where to go next
           story.ChooseChoiceIndex(choice.index);
           // Aaand loop
