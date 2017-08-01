@@ -57,15 +57,6 @@ html {
             }
           }
         }
-
-        .meters {
-          // display: flex;
-          width: 100%;
-
-          // .fares {
-          //
-          // }
-        }
       }
 
       .article-body.o-typography-body-wrapper {
@@ -142,12 +133,62 @@ html {
               opacity: 0;
               height: 100%;
 
+              .meters-container {
+                padding-left: 0;
+
+                .meter {
+                  position: relative;
+                  display: inline-block;
+                  min-width: 70px;
+                  margin-right: 10px;
+                  margin-bottom: 20px;
+                  border-radius: 14px;
+                  padding: 6px 10px 6px 6px;
+                  background-color: #00757F;
+                  text-align: right;
+                  font-weight: 600;
+
+                  &:before {
+                    width: 23px;
+                    padding: 10px;
+                    border-radius: 50%;
+                    background-color: #0F8E99;
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 600;
+                    position: absolute;
+                    top: -6px;
+                    left: 0;
+                  }
+
+                  &--total {
+                    &:before {
+                      content: '$';
+                    }
+                  }
+
+                  &--time {
+                    width: 80px;
+
+                    &:before {
+                      content: 'T';
+                    }
+                  }
+
+                  &--rating {
+                    &:before {
+                      content: 'R';
+                    }
+                  }
+                }
+              }
+
               .knot-container {
                 position: absolute;
                 right: 0px;
                 left: 0px;
                 padding: 1em 0 68px 0;
-                background-color: rgba(0, 117, 128, 0.67);
+                background-color: rgba(0, 117, 127, 0.67);
                 -webkit-backdrop-filter: blur(8px);
                 backdrop-filter: blur(8px);
                 -webkit-box-shadow: 0 6px 6px 0px rgba(51, 51, 51, 0.6);
@@ -220,12 +261,8 @@ html {
 
     .tint {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      // width: 100%;
-      // height: 100%;
+      width: 100%;
+      height: inherit;
       overflow: hidden;
       background-image: linear-gradient(180deg, rgba(153, 15, 61, 0.9) 0%, rgba(15, 84, 153, 0.9) 100%);
       -webkit-backdrop-filter: blur(8px);
@@ -235,10 +272,6 @@ html {
     }
   }
 }
-
-// html, body {
-//   background-color: #333;
-// }
 
 @media only screen and (min-aspect-ratio: 1/1) and (max-width: 740px) {
   .screen {
