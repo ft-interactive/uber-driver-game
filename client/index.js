@@ -6,6 +6,7 @@ const story = new Story(json);
 let headerWidth;
 let gutters;
 const logo = document.querySelector('.logo');
+const logoHeight = logo.offsetHeight;
 const shareButtons = document.querySelector('.article__share');
 let articleBodyHeight;
 const footer = document.querySelector('.o-typography-footer');
@@ -14,7 +15,6 @@ const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
-let metersElementHeight;
 const knotContainer = document.querySelector('.knot-container');
 let knotContainerMaxHeight;
 const knotElement = document.querySelector('.knot');
@@ -26,8 +26,7 @@ function handleResize() {
   const d = new Date();
 
   articleBodyHeight = document.querySelector('.article-body').offsetHeight;
-  metersElementHeight = document.querySelector('.meters').offsetHeight;
-  knotContainerMaxHeight = articleBodyHeight - metersElementHeight;
+  knotContainerMaxHeight = articleBodyHeight - logoHeight - 16;
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
   gutters = window.innerWidth < 740 ? 10 : 20;
   headerWidth = document.querySelector('header').offsetWidth - 40;
@@ -64,42 +63,49 @@ function showCaveats() {
 }
 
 function continueStory() {
+  let choicesContainerElement;
   const totalDisplay = document.getElementById('total');
   const total = story.variablesState.$('fares_earned_total');
 
   totalDisplay.innerHTML = total;
-
 
   // Generate story text - loop through available content
   while (story.canContinue) {
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
 
-    // console.log(story.currentTags);
-
     // Create paragraph element
     const paragraphElement = document.createElement('p');
-
     paragraphElement.innerHTML = paragraphText;
 
-    knotElement.appendChild(paragraphElement);
+    // Create choices container element
+    choicesContainerElement = document.createElement('div');
+    choicesContainerElement.setAttribute('data-o-grid-colspan', '8 center');
+    choicesContainerElement.classList.add('choices-container');
 
-    // if (story.currentTags.indexOf('type: choice') > -1) {
-    //   knotElement.style.color = 'red';
-    // } else {
-    //   knotElement.style.color = '#fff';
-    // }
+    knotElement.appendChild(paragraphElement);
+    knotElement.appendChild(choicesContainerElement);
   }
 
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
-    // Create paragraph with anchor element
-    const choiceElement = document.createElement('p');
+    console.log(story.currentTags);
 
-    choiceElement.classList.add('choice');
-    choiceElement.innerHTML = `<a href='#'>${choice.text}</a>`;
+    let choiceElement;
 
-    knotElement.appendChild(choiceElement);
+    if (story.currentTags.indexOf('type: next') > -1) {
+      // Create paragraph with button element
+      choiceElement = document.createElement('button');
+      choiceElement.classList.add('choice');
+      choiceElement.innerHTML = choice.text;
+    } else {
+      // Create paragraph with anchor element(s)
+      choiceElement = document.createElement('p');
+      choiceElement.classList.add('choice');
+      choiceElement.innerHTML = `<a href='#'>${choice.text}</a>`;
+    }
+
+    choicesContainerElement.appendChild(choiceElement);
 
     anime({
       targets: knotContainer,
@@ -108,7 +114,7 @@ function continueStory() {
       easing: 'easeOutQuad',
     });
 
-    const choiceAnchorEl = choiceElement.querySelector('a');
+    // const choiceAnchorEl = choiceElement.querySelector('a');
 
     // Click on choice
     function handleClick(event) {
@@ -116,7 +122,7 @@ function continueStory() {
       event.preventDefault();
 
       // Remove unclicked choices
-      const prevChoices = Array.from(storyScreen.querySelectorAll('p.choice'));
+      const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
       const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
 
       prevChoices.forEach((prevChoice, i) => {
@@ -146,7 +152,7 @@ function continueStory() {
       });
     }
 
-    choiceAnchorEl.onclick = handleClick;
+    choiceElement.onclick = handleClick;
   });
 }
 
