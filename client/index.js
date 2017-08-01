@@ -93,7 +93,7 @@ function continueStory() {
 
     let choiceElement;
 
-    if (story.currentTags.indexOf('type: next') > -1) {
+    if (story.currentTags.indexOf('button') > -1) {
       // Create paragraph with button element
       choiceElement = document.createElement('button');
       choiceElement.classList.add('choice');

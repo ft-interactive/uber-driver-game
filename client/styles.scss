@@ -92,6 +92,7 @@ html {
             button {
               @include oButtons();
               @include oButtonsTheme(inverse);
+              min-width: 44px;
             }
 
             p {
@@ -168,13 +169,13 @@ html {
                         color: inherit;
                         border-bottom: none;
 
-                        &:active, &:hover {
-                          outline-width: 0;
-                        }
-
                         &:focus {
                           color: #505050;
                           border-bottom-color: transparent;
+                        }
+
+                        &:active, &:hover {
+                          outline-width: 0;
                         }
                       }
                     }
