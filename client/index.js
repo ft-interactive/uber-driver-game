@@ -68,22 +68,25 @@ function continueStory() {
   let choicesContainerElement;
   const earnings = story.variablesState.$('fares_earned_total');
   const earningsDisplay = document.getElementById('earnings');
-  const rating = parseFloat(story.variablesState.$('rating').toFixed(2));
+  const rating = story.variablesState.$('rating').toFixed(2);
   const ratingDisplay = document.getElementById('rating');
   const time = 0;
   const timeDisplay = document.getElementById('time');
-
-  // Coerce rating variable to 2 decimal places
-  story.variablesState.$('rating', rating);
-  console.log(story.variablesState.$('rating'));
 
   earningsDisplay.innerHTML = earnings;
   timeDisplay.innerHTML = time;
   ratingDisplay.innerHTML = rating;
 
+  // console.log(rating.toFixed(2));
+
   // Generate story text - loop through available content
   while (story.canContinue) {
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
+
+    // Coerce rating variable to 2 decimal places
+    // rating = parseFloat(story.variablesState.$('rating').toFixed(2));
+    // story.variablesState.$('rating', rating);
+
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
     // Create paragraph element
