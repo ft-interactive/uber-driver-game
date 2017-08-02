@@ -19,8 +19,8 @@ const knotContainer = document.querySelector('.knot-container');
 let knotContainerMaxHeight;
 const knotElement = document.querySelector('.knot');
 const tint = document.querySelector('.tint');
-const defaultInDuration = 600;
-const defaultOutDuration = 600;
+const defaultInDuration = 300;
+const defaultOutDuration = 500;
 
 function handleResize() {
   const d = new Date();
@@ -64,25 +64,45 @@ function showCaveats() {
 
 caveatsButton.addEventListener('click', showCaveats);
 
+const earningsObj = { value: 0 };
+
 function continueStory() {
-  let choicesContainerElement;
-  const earnings = story.variablesState.$('fares_earned_total');
+  // prevEarnings = prevEarnings || 0;
+  const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDisplay = document.getElementById('earnings');
+  console.log(earningsObj, 'continueStory obj created');
+  let choicesContainerElement;
   const rating = story.variablesState.$('rating').toFixed(2);
   const ratingDisplay = document.getElementById('rating');
   const time = 0;
   const timeDisplay = document.getElementById('time');
 
-  earningsDisplay.innerHTML = earnings;
+  anime({
+    targets: earningsObj,
+    value: earnings,
+    round: 1,
+    duration: () => {
+      const milliseconds = (earnings - earningsObj.value) * 20;
+
+      return milliseconds;
+    },
+    easing: 'linear',
+    update: () => {
+      earningsDisplay.innerHTML = earningsObj.value;
+    },
+    complete: () => {
+      earningsObj.value = earnings;
+    },
+  });
+
   timeDisplay.innerHTML = time;
   ratingDisplay.innerHTML = rating;
 
-  // console.log(rating.toFixed(2));
-
   // Generate story text - loop through available content
   while (story.canContinue) {
-    const existingChoicesContainer = knotElement.querySelector('.choices-container');
+    console.log(earnings, 'story.canContinue start');
 
+    const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Coerce rating variable to 2 decimal places
     // rating = parseFloat(story.variablesState.$('rating').toFixed(2));
     // story.variablesState.$('rating', rating);
@@ -110,6 +130,7 @@ function continueStory() {
 
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
+    console.log(earnings, 'story.currentChoices.forEach');
     let choiceElement;
 
     // console.log(story.currentTags);
@@ -137,6 +158,7 @@ function continueStory() {
 
     // Click on choice
     function handleClick(event) {
+      console.log(earnings, 'handClick start');
       // Don't follow <a> link
       event.preventDefault();
 
@@ -158,6 +180,9 @@ function continueStory() {
         duration: defaultOutDuration,
         delay: defaultOutDuration / 2,
         easing: 'easeOutQuad',
+        begin: () => {
+          console.log(earnings, 'handleClick animation begin');
+        },
         complete: () => {
           // Remove all existing paragraphs
           const existingPars = knotElement.querySelectorAll('p');
@@ -173,6 +198,8 @@ function continueStory() {
 
           // Aaand loop
           continueStory();
+
+          console.log(earnings, 'handleClick animation end');
         },
       });
     }
