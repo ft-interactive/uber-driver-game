@@ -156,11 +156,10 @@ html {
                 .meter {
                   position: relative;
                   display: inline-block;
-                  min-width: 70px;
                   margin-right: 10px;
                   margin-bottom: 20px;
                   border-radius: 14px;
-                  padding: 6px 10px 6px 6px;
+                  padding: 6px 10px;
                   background-color: #00757F;
                   text-align: right;
                   font-weight: 600;
@@ -200,13 +199,15 @@ html {
                   }
 
                   &--total {
+                    width: 77px;
+
                     &:before {
                       content: "attach_money";
                     }
                   }
 
                   &--time {
-                    width: 80px;
+                    width: 92px;
 
                     &:before {
                       content: 'access_time';
@@ -214,6 +215,8 @@ html {
                   }
 
                   &--rating {
+                    width: 65px;
+
                     &:before {
                       content: 'star_rate';
                     }
