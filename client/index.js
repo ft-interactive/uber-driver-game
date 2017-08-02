@@ -62,27 +62,39 @@ function showCaveats() {
   });
 }
 
+caveatsButton.addEventListener('click', showCaveats);
+
 function continueStory() {
   let choicesContainerElement;
-  const totalDisplay = document.getElementById('total');
-  const total = story.variablesState.$('fares_earned_total');
+  const earnings = story.variablesState.$('fares_earned_total');
+  const earningsDisplay = document.getElementById('earnings');
+  const rating = parseFloat(story.variablesState.$('rating').toFixed(2));
+  const ratingDisplay = document.getElementById('rating');
+  const time = story.variablesState.$('rating');
+  const timeDisplay = document.getElementById('time');
 
-  totalDisplay.innerHTML = total;
+  // Coerce rating variable to 2 decimal places
+  story.variablesState.$('rating', rating);
+  console.log(story.variablesState.$('rating'));
+
+  earningsDisplay.innerHTML = earnings;
+  ratingDisplay.innerHTML = rating;
 
   // Generate story text - loop through available content
   while (story.canContinue) {
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
+
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
     // Create paragraph element
     const paragraphElement = document.createElement('p');
 
+    paragraphElement.innerHTML = paragraphText;
+
     // Remove existing choices container element
     if (existingChoicesContainer) {
       existingChoicesContainer.parentNode.removeChild(existingChoicesContainer);
     }
-
-    paragraphElement.innerHTML = paragraphText;
 
     // Create choices container element
     choicesContainerElement = document.createElement('div');
@@ -97,7 +109,7 @@ function continueStory() {
   story.currentChoices.forEach((choice) => {
     let choiceElement;
 
-    console.log(story.currentTags);
+    // console.log(story.currentTags);
 
     if (story.currentTags.indexOf('button') > -1) {
       // Create paragraph with button element
@@ -152,8 +164,10 @@ function continueStory() {
 
             p.parentNode.removeChild(p);
           });
+
           // Tell the story where to go next
           story.ChooseChoiceIndex(choice.index);
+
           // Aaand loop
           continueStory();
         },
@@ -224,7 +238,5 @@ function startStory() {
       },
     });
 }
-
-caveatsButton.addEventListener('click', showCaveats);
 
 startButton.addEventListener('click', startStory);
