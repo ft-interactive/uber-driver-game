@@ -70,7 +70,7 @@ function continueStory() {
   const earningsDisplay = document.getElementById('earnings');
   const rating = parseFloat(story.variablesState.$('rating').toFixed(2));
   const ratingDisplay = document.getElementById('rating');
-  const time = story.variablesState.$('rating');
+  const time = 0;
   const timeDisplay = document.getElementById('time');
 
   // Coerce rating variable to 2 decimal places
@@ -78,12 +78,12 @@ function continueStory() {
   console.log(story.variablesState.$('rating'));
 
   earningsDisplay.innerHTML = earnings;
+  timeDisplay.innerHTML = time;
   ratingDisplay.innerHTML = rating;
 
   // Generate story text - loop through available content
   while (story.canContinue) {
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
-
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
     // Create paragraph element
