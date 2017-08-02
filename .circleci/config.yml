@@ -40,6 +40,10 @@ jobs:
       - run:
           name: Build
           command: npm run build
+      - run:
+          name: Check bundle sizes
+          # this is configured in package.json
+          command: ./node_modules/.bin/bundlesize
       - store_artifacts:
           name: Store artifacts (dist)
           path: dist/
