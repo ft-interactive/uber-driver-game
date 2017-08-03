@@ -62,27 +62,47 @@ VAR time_passing=false
 ->welcome
 === welcome ===
 # button
-Welcome!
-
-* [Start] ->intro
-
-===intro===
-# button
-You're a full-time Uber driver trying to make ends meet.
+Welcome! You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $1000. Can you do it?
-* [Yep!]
-->choose_difficulty
+
+* [Yep!] ->choose_difficulty
+
+=== choose_difficulty===
+# link
+Choose your difficulty level:
+
+In Easy mode, you live in San Francisco and have good bank credit. 
+
+In Hard mode, you live in Sacramento and have bad bank credit.
+
+* [Easy Mode]
+~ home="sf"
+~ credit_rating="good"
+You've chosen Easy Mode.
+
+* [Hard Mode]
+~ home="sac"
+~ credit_rating="bad"
+You've chosen Hard Mode.
+
+- ~current_city=home
+->get_started
+=get_started
+Remember, you have 7 days to make $1000.
+
+* [Let's go]
+
+->day_1_start
+
 
 === day_1_start ===
 # day_1_start
 # button
 You start bright and early on a Monday morning.
-->weekday_quest_message
-/*
 
 Pretty soon, you get your first ride request, from someone called Chris.
-* [Go to pickup] ->day_1_locate_passenger
+* [Go pick him up] ->day_1_locate_passenger
 
 ===day_1_locate_passenger===
 You arrive, but don't see anyone waiting for a ride. What do you do?
@@ -91,10 +111,11 @@ You arrive, but don't see anyone waiting for a ride. What do you do?
 * [Wait] You wait in your car. ->chris_arrives
 
 =call_chris
-He picks up. "I'll be right there! I'm just coming out now."
-*["Hurry up, will you?"]
-*["No worries, take your time!"]
-- He hangs up. You wait. ->chris_arrives
+He answers the phone. "I'll be right there! Just coming out now," he says.
+* "Hurry up, will you?"[]
+*"No worries[!"], take your time!"
+- He hangs up. You wait. 
+->chris_arrives
 
 =chris_arrives
 A few minutes later, a flustered man with a big backpack comes out of a nearby apartment and walk towards your car.
@@ -103,7 +124,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 ->in_car
 
 =in_car
-"Yeah, sorry about being late," he replies, as he gets in the car.
+"That's me. Sorry about being late," he replies, as he gets in the car.
 
 * [Drive in silence] You start driving. Chris checks his phone.
 * [Strike up a conversation]"Going camping?"
@@ -112,41 +133,21 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 
 =driving
 Twenty minutes later, you arrive at his destination.
-* [Drop him off] Congratulations! You've just earned your first fare.
+* [Drop him off] 
+"Thanks! Sorry again for making you wait," he says as he gets out.
+
+Congratulations! You've just earned your first fare, for $16.
 ~ alter(fares_earned_total, 16)
-You made $16 on this ride.
 
-->choose_difficulty
-*/
-
-=== choose_difficulty===
-# link
-First, pick your character. Do you live in San Francisco or in Sacramento, where rent is cheaper?
-* [San Francisco (easy)]You live in San Francisco (easy)
-~ home="sf"
-* [Sacramento (hard)]You live in Sacramento (hard)
-~ home="sac"
-
-- ~current_city=home
-->credit
-
-===credit===
-# link
-How is your credit rating?
-* I have excellent credit (easy)
-~ credit_rating="good"
-* It's pretty terrible (hard)
-~ credit_rating="bad"
-- -> car_choice
+** [That was easy]
+->car_choice
 
 === car_choice ===
 # link
 ~ temp prius_cost=0
 ~ temp minivan_cost=0
 ~ temp insurance=0
-Now it's time to get a car. You'll have to lease one{credit_rating == "good":. Your good credit rating gets you a better deal.}{ credit_rating=="bad":, which will cost more due to your poor credit.}
 
-The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, which earn a higher fare.
 { credit_rating == "good":
     ~prius_cost=115
     ~minivan_cost=180
@@ -157,30 +158,41 @@ The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, wh
     ~insurance=60    
 }
 
+ You're going to be spending a lot of time in your car over the next seven days. What type did you lease?
+ 
+ The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, which earn a higher fare.
+ 
+* [Toyota Prius] 
+You're driving a Prius, which cost ${prius_cost} per week and can get up to 50 miles per gallon.
 
-
-* [Toyota Prius (${prius_cost}/ week)] You pick the Toyota Prius. It costs ${prius_cost} per week, and can get up to 50 miles per gallon
+{credit_rating == "good":Fortunately, your good credit rating had made this cheaper.}{ credit_rating=="bad":Unfortunately, this was more expensive due to your poor credit.}
 ~ car="Prius"
 ~ alter(car_cost, prius_cost)
 
-* [Dodge minivan (${minivan_cost} / week)] You picked the Dodge minivan. It costs ${minivan_cost} per week, but UberXL rides earn higher fares
+* [Dodge minivan]
+You're driving a Dodge minivan. It costs ${minivan_cost} per week, but UberXL rides earn higher fares.
+
+{credit_rating == "good":Fortunately, your good credit rating had made this cheaper.}{ credit_rating=="bad":Unfortunately, this was more expensive due to your poor credit.}
 ~ car="Minivan"
 ~ alter(car_cost, minivan_cost)
-- You also need insurance, which costs ${insurance} a week because of your {credit_rating} credit.
+- You also bought insurance for ${insurance} a week.
 ~ alter(car_cost, insurance)
+->goto_accessories
+=goto_accessories
 
-- ->buy_accessories
+* [Look around your car]
+->buy_accessories
  
 ===buy_accessories===
 # list
-{!Let's get you set up to drive with a few accessories.} 
-What {|else }do you want to buy?
+{!You thought about the accessories you bought to prepare for life as a professional driver.} 
+What {|else }did you buy?
 
 * [Upgrade to an unlimited data plan ($20/week)]Unlimited data plan: Since you have to be constantly connected to the Uber app, this will save you from paying overage charges. 
     ~unlimited_data=true
     ~alter(accessories_cost,10)
     ->buy_accessories
-* Phone mount & charging cords[ ($25)]: Every driver has one to hold their phone, so they can use it with one hand while keeping their eyes on the road. And you don't want to run out of batteries on your phone.
+* Phone mount & charging cords[ ($25)]: A phone mount lets you use your phone with one hand while keeping your eyes on the road. And you don't want to run out of batteries.
     ~phone_mount=true
     ~alter(accessories_cost,20)
     ->buy_accessories
@@ -198,11 +210,11 @@ What {|else }do you want to buy?
     ~cleaning_supplies=true
     ~alter(accessories_cost,40)
     ->buy_accessories
-* Business license[ ($91)]: You are technically running a business as an independent contracter to Uber 
+* Business license[ ($91)]: You are, after all, technically running a business as an independent contracter. 
     ~biz_licence=true
     ~alter(accessories_cost,91)
     ->buy_accessories
-* Gym membership[ ($10/week)]: You could go work out, but the main perk is having a place to shower and freshen up.
+* Gym membership[ ($10/week)]: You could go work out at the gym, but the main perk is having a place to shower and freshen up.
     ~gym_member=true
     ~alter(accessories_cost,10)
     ->buy_accessories
@@ -211,9 +223,9 @@ What {|else }do you want to buy?
     ~alter(accessories_cost,0)
     ->buy_accessories
     */
-* [{I don't need any of this|I'm done shopping}] 
+* [{I didn't buy any of this|I'm done shopping}] 
 { 
-- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It costs ${accessories_cost}.
+- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It cost ${accessories_cost}.
 
  - !unlimited_data && !phone_mount && !cleaning_supplies && !biz_licence && !gym_member:You didn't buy anything.
  
@@ -227,10 +239,10 @@ What {|else }do you want to buy?
  {gym_member:Gym membership}
 // {tip_sign:Tip sign}
 
-It cost you ${accessories_cost}. You're ready to start driving!
+It cost ${accessories_cost}.
 
 } 
--> day_1_start
+-> sf_or_sacramento
 
 
 ===weekday_quest_message===
@@ -239,11 +251,12 @@ It cost you ${accessories_cost}. You're ready to start driving!
 ~quest_rides=75
 ~quest_bonus=180
 ~weekday_quest_bonus=quest_bonus
-MESSAGE FROM UBER: "Drive {quest_rides} trips, make ${quest_bonus} extra. Now, until Friday May 26, 4 am"
+MESSAGE FROM UBER 
+"Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 
-* [Great!]Getting that bonus would really help
+* [Accept quest]Getting that bonus would really help
 
-->sf_or_sacramento
+->->
 
 === sf_or_sacramento ===
 {
@@ -253,38 +266,35 @@ MESSAGE FROM UBER: "Drive {quest_rides} trips, make ${quest_bonus} extra. Now, u
 }
 === day_1_sacramento ===
 # link
-Fares in Sacramento are about a third less than in a big city like San Francisco. Do you drive 2 hours to San Francisco to work there instead?
+You're in Sacramento, where the fares are about a third less than in a big city like San Francisco. 
+
+Do you drive 2 hours to San Francisco to work there instead?
 
 * [Try your luck in SF] You decide to try your luck in San Francisco
 ~current_city="sf"
 ->go_to_sf
 * [Stay in Sacramento]
-
-You stay in Sacramento. You'll earn less but at least you're close to home.
-->sac_morning
+->weekday_quest_message-> sac_morning
 
 = go_to_sf
 # button
 # moment: firstfare
-You turn your app on as you drive, and you score a ride as you approach San Francisco that takes you all the way into the city.
+You keep your app on as you drive, and you score a ride as you approach San Francisco that takes you all the way into the city.
 
 * [Can't believe I just made $56!]
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 56)
 ~ alter(day_hours_driven, 2)
-->day_1_sf.sf_afternoon
+->weekday_quest_message->day_1_sf.sf_afternoon
 
 = sac_morning
 # button
 # moment: firstfare
-Pretty soon, you earn your first fare: a $6 ride that took just 15 minutes to complete. 
-* ["This is pretty easy!"] 
-~ alter(day_fares_earned, 1)
-~ alter(day_fares_earned, 6)
 ~time_passes(3,0,1)
 {phone_mount==false:
 ->no_phone_mount->stay_or_go_2
 }
+->stay_or_go
 = stay_or_go
 # link
 At this rate, you're unlikely to meet your financial target.
@@ -295,7 +305,7 @@ At this rate, you're unlikely to meet your financial target.
 
 =sac_lunch
 # button
-You like driving in a familiar town. You grab a quick lunch at your favourite burrito place."
+You like driving in a familiar town. You grab a quick lunch at your favourite burrito place.
 * [That was a nice burrito] ->sac_afternoon
 
 =sac_afternoon
@@ -324,12 +334,12 @@ You call it a day after the evening crowd thins out.
 // sf_or_sacramento diverts to here
 # button
 # moment: firstfare
-You start driving, and pretty soon get your first passenger. The short trip to the Mission took you 15 minutes, and you earned $10
+You are in San Francisco, one of Uber's bigger markets. You soon get your second passenger. The short trip to the Mission took you 15 minutes, and you earned $10.
 
-* [Nice!]You feel great about earning your first fare. This is easy money! 
+* [Nice!] 
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 10)
--> sf_morning
+->weekday_quest_message-> sf_morning
 = sf_morning
 # button
 You spend a productive morning working, with little downtime in between rides.
@@ -1351,7 +1361,7 @@ You made ${revenue_total} in total, exceeding your $1000 target.
 }
 To get a true picture of what you earned as an Uber driver, you also have to take into account your costs.
 
-Renting your {car} cost ${car_cost}.
+Renting your {car} and buying insurance cost ${car_cost}.
 ~alter(cost_total,car_cost)
 
 You spent ${gas} on gas. {car=="Prius":You saved a lot on gas costs by choosing the Prius over the minivan.} 
