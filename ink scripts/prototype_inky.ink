@@ -28,7 +28,7 @@ VAR hours_driven=0
 VAR day_ride_count=0
 VAR day_fares_earned=0
 VAR day_hours_driven=0
-VAR rating=4.9
+VAR rating=490
 VAR ride_count_total=0
 VAR fares_earned_total=0
 VAR hours_driven_total=0
@@ -59,28 +59,68 @@ VAR cost_total=0
 // Functional variables
 VAR time_passing=false
 
-->intro
-=== intro ===
-# intro
+->welcome
+=== welcome ===
 # button
 Welcome!
 
-* [Start] ->intro_1
+* [Start] ->intro
 
-= intro_1
-# intro_1
+===intro===
 # button
 You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $1000. Can you do it?
-# button
 * [Yep!]
 ->choose_difficulty
 
+=== day_1_start ===
+# day_1_start
+# button
+You start bright and early on a Monday morning.
+->weekday_quest_message
+/*
+
+Pretty soon, you get your first ride request, from someone called Chris.
+* [Go to pickup] ->day_1_locate_passenger
+
+===day_1_locate_passenger===
+You arrive, but don't see anyone waiting for a ride. What do you do?
+
+* [Call Chris]->call_chris
+* [Wait] You wait in your car. ->chris_arrives
+
+=call_chris
+He picks up. "I'll be right there! I'm just coming out now."
+*["Hurry up, will you?"]
+*["No worries, take your time!"]
+- He hangs up. You wait. ->chris_arrives
+
+=chris_arrives
+A few minutes later, a flustered man with a big backpack comes out of a nearby apartment and walk towards your car.
+
+* "Are you Chris[?"]," you ask.
+->in_car
+
+=in_car
+"Yeah, sorry about being late," he replies, as he gets in the car.
+
+* [Drive in silence] You start driving. Chris checks his phone.
+* [Strike up a conversation]"Going camping?"
+"Yeah," Chris replies, brightening up. "Meeting up with a friend, and then we're driving to this amazing place a few hours away. Lemme tell ya..."
+- ->driving
+
+=driving
+Twenty minutes later, you arrive at his destination.
+* [Drop him off] Congratulations! You've just earned your first fare.
+~ alter(fares_earned_total, 16)
+You made $16 on this ride.
+
+->choose_difficulty
+*/
 
 === choose_difficulty===
 # link
-->delay->
 First, pick your character. Do you live in San Francisco or in Sacramento, where rent is cheaper?
 * [San Francisco (easy)]You live in San Francisco (easy)
 ~ home="sf"
@@ -98,9 +138,6 @@ How is your credit rating?
 * It's pretty terrible (hard)
 ~ credit_rating="bad"
 - -> car_choice
-
-===delay===
-->->
 
 === car_choice ===
 # link
@@ -195,13 +232,8 @@ It cost you ${accessories_cost}. You're ready to start driving!
 } 
 -> day_1_start
 
-=== day_1_start ===
-# day_1_start
-# button
-You start bright and early on a Monday morning.
-* [Next] ->weekday_quest_message
 
-=weekday_quest_message
+===weekday_quest_message===
 #weekday_quest_message
 # button
 ~quest_rides=75
@@ -391,7 +423,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ** "No means no[."]," you say, as you cancel their ride.
     But soon, you find that your driver rating has fallen.
     
-    ~ alter(rating,-0.05) 
+    ~ alter(rating,-5) 
     ->low_rating->day_2_evening
     
     ** "Oh, alright[."]," you say. They get in the car. <>
@@ -401,7 +433,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
 - From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
     ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
     ~ dirty=true 
-    ~ alter(rating,-0.05)
+    ~ alter(rating,-5)
     ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
     ~ dirty=true
     -- "They finish their burgers. The rest of the trip passes without incident."
@@ -412,13 +444,13 @@ You get a trip request from a burger joint, and when you arrive the passengers h
 What do you do about your dirty backseat?
 * [Stop to clean it] You pull over and clean the back seat. As you start cleaning, a ride request comes in.
     ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
-    ~ alter(rating,-0.1) 
+    ~ alter(rating,-10) 
     ~ alter(ride_count_total,1)
     ~ alter(fares_earned_total,8)
     ** [Decline the ride] You finish cleaning up.
 * [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
-    ~ alter(rating,-0.1) 
-- {rating > 4.8 :
+    ~ alter(rating,-10) 
+- {rating > 480 :
     -> day_2_evening
   - else :
     ->low_rating->day_2_evening
@@ -491,9 +523,9 @@ You pick up a friendly passenger and have a pleasant chat during the ride. After
 * [Check your phone]You got a five-star review! 
 # button
 "Friendly and professional. Would ride again" 
-~ alter(rating,0.03)
+~ alter(rating,3)
 
-** [Nice!] Your rating has gone up to {rating}
+** [Nice!] Your rating has gone up to {rating/100}
 ~time_passes(2,0,1)
 ->quest_finish->
 ->day_3_quest_near_finish->
@@ -641,7 +673,7 @@ You're unlikely to finish the quest by this point, so you just go where the ride
 - else:
 It might be a stretch to do {quest_rides} rides, especially in Sacramento, but you give it a shot.
 ~ temp remaining=quest_rides-3
-You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating} 
+You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
 ~ alter(day_ride_count, remaining)
 ~ alter(day_fares_earned, remaining*6)
 ~ alter(day_hours_driven, 9)
@@ -727,7 +759,7 @@ You go where the rides take you. It's a pretty normal day.
 It should be pretty easy to finish the quest. 
 {
 - quest_rides>10:
-    You drive for 6 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating} 
+    You drive for 6 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
     ~ alter(day_hours_driven, 9)
@@ -847,7 +879,7 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
 
     {home=="sf":
 
-    You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating} 
+    You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
     ~ alter(day_hours_driven, 9)
@@ -865,7 +897,7 @@ It's the end of day 4.
 {home=="sac":
 ~alter(hours_driven_total,2)
 }
-Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating}.
+Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
 
 { quest_completion==true:
  You finished the quest and netted a ${quest_bonus} bonus.
@@ -974,7 +1006,7 @@ You call it a night, and drive back home. ->day_5_end
 You arrive at a pick-up and see a passenger vomiting on the side of the road.
 
 * [Cancel the ride and drive away] You decide it's not worth it. 
-    ~alter (rating,-0.1)
+    ~alter (rating,-10)
     ** [Keep driving]
     ->day_5_late_night
     ** [Call it a night] You decide to call it a night.
@@ -1162,7 +1194,7 @@ You drop her off quickly. Luckily, there weren't any cops around.
 ->day_7_afternoon
 
 * [Refuse] You stop nearby and explain why you cannot drop her off at the entrance. She slams the door as she gets out.
-~alter(rating, -0.2)
+~alter(rating, -20)
 ->day_7_afternoon
 
 ===day_7_afternoon===
@@ -1211,7 +1243,7 @@ You only have {quest_rides} left to do. You could try to finish it by cancelling
 ~ alter(day_fares_earned, quest_rides*5)
 ~ alter(day_hours_driven, 4)
 
-{ rating > 4.8: 
+{ rating > 480: 
 Congrats! You completed the quest and got an extra ${quest_bonus}.
 ~quest_completion=true
 ->day_7_end
@@ -1264,7 +1296,7 @@ You get a message from your phone provider: You've reached your data limit this 
 ===results_revenue===
 # button
 ~ revenue_total=fares_earned_total
-This week, you drove for {hours_driven_total} hours, completed {ride_count_total} rides, and had a driver rating of {rating}
+This week, you drove for {hours_driven_total} hours, completed {ride_count_total} rides, and had a driver rating of {rating/100}
 
 You earned ${fares_earned_total} in fares and tips. {car=="Minivan": Of this, ${XL_total} were extra fares from UberXL rides.} 
 {
@@ -1359,3 +1391,5 @@ You've reached the end
 * "Sorry[!"], you say. But you stew over the remark. Especially when you see they've given you a bad rating"
 
 */
+
+
