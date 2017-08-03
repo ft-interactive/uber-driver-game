@@ -19,6 +19,8 @@ const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
+const timePassingScreen = document.querySelector('.time-passing');
+const timePassingDisplay = document.getElementById('countdown');
 let choicesContainerElement;
 
 // Dimensions
@@ -82,6 +84,37 @@ function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const rating = story.variablesState.$('rating');
   // const time = 0;
+  const timePassing = story.variablesState.$('time_passing');
+  const timePassingObj = { value: 3 };
+
+  if (timePassing > 0) {
+    console.log('Time is passing...');
+
+    // timePassingScreen.style.display = 'flex';
+
+    // setTimeout(() => { timePassingScreen.style.display = 'none'; }, 3000);
+
+    anime({
+      targets: timePassingObj,
+      value: 0,
+      round: 1,
+      duration: 4000,
+      easing: 'linear',
+      begin: () => {
+        timePassingScreen.style.display = 'flex';
+      },
+      update: () => {
+        timePassingDisplay.innerHTML = timePassingObj.value;
+      },
+      complete: () => {
+        timePassingScreen.style.display = 'none';
+      },
+    });
+
+    story.variablesState.$('time_passing', 0);
+  } else {
+    console.log('>>>');
+  }
 
   // Animate meter readouts
   if (earnings !== earningsObj.value) {

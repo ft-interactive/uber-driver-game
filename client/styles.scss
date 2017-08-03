@@ -171,9 +171,9 @@ html {
                   font-feature-settings: 'tnum';
 
                   span {
-                    -webkit-transition: text-shadow 0.3s linear;
-                    -moz-transition: text-shadow 0.3s linear;
-                    transition: text-shadow 0.3s linear;
+                    -webkit-transition: text-shadow 0.1s linear;
+                    -moz-transition: text-shadow 0.1s linear;
+                    transition: text-shadow 0.1s linear;
                   }
 
                   &:before {
@@ -279,6 +279,18 @@ html {
                     }
                   }
                 }
+              }
+
+              .time-passing {
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                z-index: 1;
+                background-color: #333;
               }
             }
 
