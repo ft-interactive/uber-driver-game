@@ -90,10 +90,6 @@ function continueStory() {
   if (timePassing > 0) {
     console.log('Time is passing...');
 
-    // timePassingScreen.style.display = 'flex';
-
-    // setTimeout(() => { timePassingScreen.style.display = 'none'; }, 3000);
-
     anime({
       targets: timePassingObj,
       value: 0,
