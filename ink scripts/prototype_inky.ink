@@ -8,6 +8,7 @@ VAR car="none"
 VAR home="none"
 VAR credit_rating="none"
 VAR car_cost=0
+VAR time=1502096400
 
 //accessories variables
 VAR unlimited_data=false
@@ -156,10 +157,11 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 # day_1_locate_passenger.driving
 Twenty minutes later, you arrive at his destination.
 * [Drop him off] 
+~ alter(fares_earned_total, 16)
 "Thanks! Sorry again for making you wait," he says as he gets out.
 
 Congratulations! You've just earned your first fare, for $16.
-~ alter(fares_earned_total, 16)
+
 
 ** [That was easy]
 ->car_choice
