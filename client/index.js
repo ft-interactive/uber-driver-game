@@ -181,22 +181,22 @@ function continueStory() {
     console.log('Time is passing...');
 
     timePassingScreen.style.display = 'flex';
+    timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
+    timePassingScreen.style.backdropFilter = 'blur(8px)';
 
     showTimePassingScreen
       .add({
         targets: timePassingScreen,
         opacity: 1,
-        duration: 300,
+        duration: defaultInDuration,
         easing: 'linear',
-        begin: () => {
-          timePassingScreen.style.backdropFilter = 'blur(8px)';
-        },
       })
       .add({
         targets: timePassingObj,
         value: 1,
         round: 1,
         duration: 3000,
+        offset: `-=${defaultInDuration}`,
         easing: 'linear',
         update: () => {
           timePassingDisplay.innerHTML = timePassingObj.value;
@@ -208,10 +208,11 @@ function continueStory() {
       .add({
         targets: timePassingScreen,
         opacity: 0,
-        duration: 300,
+        duration: defaultOutDuration,
         easing: 'linear',
         begin: () => {
-          timePassingScreen.style.backdropFilter = 'none';
+          timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
+          timePassingScreen.style.backdropFilter = 'blur(0px)';
         },
         complete: () => {
           timePassingScreen.style.display = 'none';
@@ -263,7 +264,9 @@ function continueStory() {
     choicesContainerElement.appendChild(choiceElement);
 
     // Click on choice
-    function handleClick() {
+    function handleClick(event) {
+      event.preventDefault();
+
       if (choiceElement.classList.contains('link-like')) {
         choiceElement.style.color = '#333';
       }
@@ -310,11 +313,14 @@ function continueStory() {
 }
 
 function startStory() {
-  const showMeters = anime.timeline();
+  const showStoryScreen = anime.timeline();
 
-  showMeters
+  tint.style.webkitBackdropFilter = 'blur(0px)';
+  tint.style.backdropFilter = 'blur(0px)';
+
+  showStoryScreen
     .add({
-      targets: [shareButtons, caveatsScreen, footer],
+      targets: [shareButtons, caveatsScreen, footer, tint],
       opacity: 0,
       duration: defaultOutDuration,
       easing: 'linear',
@@ -323,8 +329,6 @@ function startStory() {
         timeDisplay.innerHTML = timeObj.value;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.bottom = `-${articleBodyHeight}px`;
-        tint.style.opacity = 0;
-        tint.style.backdropFilter = 'none';
       },
       complete: () => {
         shareButtons.style.display = 'none';
@@ -332,6 +336,7 @@ function startStory() {
         shareButtons.style.left = 0;
         caveatsScreen.style.display = 'none';
         footer.style.display = 'none';
+        tint.style.display = 'none';
       },
     })
     .add({
@@ -339,7 +344,7 @@ function startStory() {
       left: `${headerWidth}px`,
       duration: defaultInDuration,
       easing: 'easeOutQuad',
-      begin: () => {
+      complete: () => {
         storyScreen.style.display = 'block';
       },
     })
