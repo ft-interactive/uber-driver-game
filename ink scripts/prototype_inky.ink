@@ -75,7 +75,29 @@ Welcome! You're a full-time Uber driver trying to make ends meet.
 # button 
 You have one week to try to make $1000. Can you do it?
 
-* [Yep!] ->choose_difficulty
+* [Yep!] ->test_1
+
+===test_1===
+~ alter(fares_earned_total, 10)
+1: {fares_earned_total}
+->test_2
+
+===test_2===
+~alter(fares_earned_total,20)
+2: {fares_earned_total}
+-> test_3
+
+===test_3===
+3: {fares_earned_total}
+~alter(fares_earned_total,50)
+*[choose a thing]
+->test_4
+
+===test_4===
+4: {fares_earned_total}
+
+* [end test]
+->choose_difficulty
 
 === choose_difficulty===
 # link 
