@@ -3,7 +3,6 @@ import anime from 'animejs';
 import json from './uber.json';
 
 const story = new Story(json);
-
 // Elements
 const logo = document.querySelector('.logo');
 const shareButtons = document.querySelector('.article__share');
@@ -25,14 +24,12 @@ const timePassingDisplay = document.getElementById('countdown');
 // const timePassingTime = document.getElementById('tp-time');
 // const timePassingRating = document.getElementById('tp-rating');
 let choicesContainerElement;
-
 // Dimensions
 let gutterWidth;
 let headerWidth;
 const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
-
 // Needed for animations
 const defaultInDuration = 500;
 const defaultOutDuration = 300;
@@ -254,26 +251,22 @@ function continueStory() {
 
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
-    let choiceElement;
+    // Create button element
+    const choiceElement = document.createElement('button');
+    choiceElement.classList.add('choice');
+    choiceElement.innerHTML = choice.text;
 
-    if (story.currentTags.indexOf('button') > -1) {
-      // Create paragraph with button element
-      choiceElement = document.createElement('button');
-      choiceElement.classList.add('choice');
-      choiceElement.innerHTML = choice.text;
-    } else {
-      // Create paragraph with anchor element(s)
-      choiceElement = document.createElement('p');
-      choiceElement.classList.add('choice');
-      choiceElement.innerHTML = `<a href='#'>${choice.text}</a>`;
+    if (story.currentTags.indexOf('button') === -1) {
+      choiceElement.classList.add('link-like');
     }
 
     choicesContainerElement.appendChild(choiceElement);
 
     // Click on choice
-    function handleClick(event) {
-      // Don't follow <a> link
-      event.preventDefault();
+    function handleClick() {
+      if (choiceElement.classList.contains('link-like')) {
+        choiceElement.style.color = '#333';
+      }
 
       // Remove unclicked choices
       const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
@@ -291,7 +284,7 @@ function continueStory() {
         targets: knotContainer,
         bottom: `-${articleBodyHeight}px`,
         duration: defaultOutDuration,
-        delay: defaultOutDuration / 2,
+        delay: defaultOutDuration,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all existing paragraphs
