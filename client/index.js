@@ -180,23 +180,23 @@ function continueStory() {
 
     console.log('Time is passing...');
 
-    timePassingScreen.style.display = 'flex';
-    timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
-    timePassingScreen.style.backdropFilter = 'blur(8px)';
-
     showTimePassingScreen
       .add({
         targets: timePassingScreen,
         opacity: 1,
-        duration: defaultInDuration,
+        duration: 300,
         easing: 'linear',
+        begin: () => {
+          timePassingScreen.style.display = 'flex';
+          timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
+          timePassingScreen.style.backdropFilter = 'blur(8px)';
+        },
       })
       .add({
         targets: timePassingObj,
         value: 1,
         round: 1,
         duration: 3000,
-        offset: `-=${defaultInDuration}`,
         easing: 'linear',
         update: () => {
           timePassingDisplay.innerHTML = timePassingObj.value;
