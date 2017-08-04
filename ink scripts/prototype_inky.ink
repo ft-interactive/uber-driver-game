@@ -78,18 +78,18 @@ You have one week to try to make $1000. Can you do it?
 * [Yep!] ->test_1
 
 ===test_1===
-~ alter(fares_earned_total, 10)
+~ fares_earned_total+=10
 1: {fares_earned_total}
 ->test_2
 
 ===test_2===
-~alter(fares_earned_total,20)
+~ fares_earned_total+=20
 2: {fares_earned_total}
 -> test_3
 
 ===test_3===
 3: {fares_earned_total}
-~alter(fares_earned_total,50)
+~ fares_earned_total+=50
 *[choose a thing]
 ->test_4
 

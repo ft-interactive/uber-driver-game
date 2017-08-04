@@ -1,5 +1,5 @@
 === function alter(ref x, k) ===
-    ~ x = x + k
+    ~ x += k
 
 === function time_passes(hours, peak, mult)  ===
 ~ temp rides=0
