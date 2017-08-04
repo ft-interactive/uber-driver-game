@@ -21,18 +21,21 @@ const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
 const timePassingScreen = document.querySelector('.time-passing');
 const timePassingDisplay = document.getElementById('countdown');
+// const timePassingEarnings = document.getElementById('tp-earnings');
+// const timePassingTime = document.getElementById('tp-time');
+// const timePassingRating = document.getElementById('tp-rating');
 let choicesContainerElement;
 
 // Dimensions
-let headerWidth;
 let gutterWidth;
+let headerWidth;
 const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 
 // Needed for animations
-const defaultInDuration = 300;
-const defaultOutDuration = 500;
+const defaultInDuration = 500;
+const defaultOutDuration = 300;
 const earningsObj = { value: 0 };
 const timeObj = { value: 0 };
 const ratingObj = { value: 490 };
@@ -40,16 +43,16 @@ const ratingObj = { value: 490 };
 function handleResize() {
   const d = new Date();
 
-  headerWidth = document.querySelector('header').offsetWidth - 40;
   gutterWidth = window.innerWidth < 740 ? 10 : 20;
+  headerWidth = document.querySelector('header').offsetWidth - 40;
   articleBodyHeight = document.querySelector('.article-body').offsetHeight;
   knotContainerMaxHeight = articleBodyHeight - logoHeight - 16;
-
-  knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   if (!logo.style.right) {
     logo.style.left = `${gutterWidth}px`;
   }
+
+  knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`);
 }
@@ -83,110 +86,146 @@ caveatsButton.addEventListener('click', showCaveats);
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const rating = story.variablesState.$('rating');
-  // const time = 0;
+  // const time = story.variablesState.$('time');
   const timePassing = story.variablesState.$('time_passing');
   const timePassingObj = { value: 3 };
 
+  console.log(earnings);
+
+  function showPanel() {
+    anime({
+      targets: knotContainer,
+      bottom: 0,
+      duration: defaultInDuration,
+      easing: 'easeOutQuad',
+    });
+
+    // Animate meter readouts
+    if (earnings !== earningsObj.value) {
+      console.log('Earnings changed, animating meter readout');
+
+      anime({
+        targets: earningsObj,
+        value: earnings,
+        round: 1,
+        duration: () => {
+          const milliseconds = (earnings - earningsObj.value) * 20;
+
+          return milliseconds;
+        },
+        easing: 'linear',
+        begin: () => {
+          earningsDisplay.style.textShadow = '0 0 6px white';
+        },
+        update: () => {
+          earningsDisplay.innerHTML = earningsObj.value;
+        },
+        complete: () => {
+          earningsDisplay.style.textShadow = 'none';
+          earningsObj.value = earnings;
+        },
+      });
+    }
+
+    // if (time !== timeObj.value) {
+    //   console.log('Time changed, animating meter readout');
+    //
+    //   anime({
+    //     targets: timeObj,
+    //     value: time,
+    //     round: 1,
+    //     duration: () => {
+    //       const milliseconds = (time - timeObj.value) * 20;
+    //
+    //       return milliseconds;
+    //     },
+    //     easing: 'linear',
+    //     update: () => {
+    //       timeDisplay.innerHTML = timeObj.value;
+    //     },
+    //     complete: () => {
+    //       timeObj.value = time;
+    //     },
+    //   });
+    // }
+
+    if (rating !== ratingObj.value) {
+      console.log('Rating changed, animating meter readout');
+
+      anime({
+        targets: ratingObj,
+        value: rating,
+        round: 1,
+        duration: () => {
+          const milliseconds = Math.abs(rating - ratingObj.value) * 20;
+
+          return milliseconds;
+        },
+        easing: 'linear',
+        begin: () => {
+          ratingDisplay.style.textShadow = '0 0 6px white';
+        },
+        update: () => {
+          const r = (ratingObj.value / 100).toFixed(2);
+
+          ratingDisplay.innerHTML = r;
+        },
+        complete: () => {
+          ratingDisplay.style.textShadow = 'none';
+          ratingObj.value = rating;
+        },
+      });
+    }
+  }
+
   if (timePassing > 0) {
+    const showTimePassingScreen = anime.timeline();
+
     console.log('Time is passing...');
 
-    anime({
-      targets: timePassingObj,
-      value: 0,
-      round: 1,
-      duration: 4000,
-      easing: 'linear',
-      begin: () => {
-        timePassingScreen.style.display = 'flex';
-      },
-      update: () => {
-        timePassingDisplay.innerHTML = timePassingObj.value;
-      },
-      complete: () => {
-        timePassingScreen.style.display = 'none';
-      },
-    });
+    timePassingScreen.style.display = 'flex';
 
-    story.variablesState.$('time_passing', 0);
+    showTimePassingScreen
+      .add({
+        targets: timePassingScreen,
+        opacity: 1,
+        duration: 300,
+        easing: 'linear',
+        begin: () => {
+          timePassingScreen.style.backdropFilter = 'blur(8px)';
+        },
+      })
+      .add({
+        targets: timePassingObj,
+        value: 1,
+        round: 1,
+        duration: 3000,
+        easing: 'linear',
+        update: () => {
+          timePassingDisplay.innerHTML = timePassingObj.value;
+        },
+        complete: () => {
+          story.variablesState.$('time_passing', 0);
+        },
+      })
+      .add({
+        targets: timePassingScreen,
+        opacity: 0,
+        duration: 300,
+        easing: 'linear',
+        begin: () => {
+          timePassingScreen.style.backdropFilter = 'none';
+        },
+        complete: () => {
+          timePassingScreen.style.display = 'none';
+
+          showPanel();
+        },
+      });
   } else {
     console.log('>>>');
-  }
 
-  // Animate meter readouts
-  if (earnings !== earningsObj.value) {
-    console.log('Earnings changed, animating meter readout...');
-
-    anime({
-      targets: earningsObj,
-      value: earnings,
-      round: 1,
-      duration: () => {
-        const milliseconds = (earnings - earningsObj.value) * 20;
-
-        return milliseconds;
-      },
-      easing: 'linear',
-      begin: () => {
-        earningsDisplay.style.textShadow = '0 0 6px white';
-      },
-      update: () => {
-        earningsDisplay.innerHTML = earningsObj.value;
-      },
-      complete: () => {
-        earningsDisplay.style.textShadow = 'none';
-        earningsObj.value = earnings;
-      },
-    });
-  }
-
-  // if (time !== timeObj.value) {
-  //   console.log('Time changed, animating meter readout...');
-  //
-  //   anime({
-  //     targets: timeObj,
-  //     value: time,
-  //     round: 1,
-  //     duration: () => {
-  //       const milliseconds = (time - timeObj.value) * 20;
-  //
-  //       return milliseconds;
-  //     },
-  //     easing: 'linear',
-  //     update: () => {
-  //       timeDisplay.innerHTML = timeObj.value;
-  //     },
-  //     complete: () => {
-  //       timeObj.value = time;
-  //     },
-  //   });
-  // }
-
-  if (rating !== ratingObj.value) {
-    console.log('Rating changed, animating meter readout...');
-
-    anime({
-      targets: ratingObj,
-      value: rating,
-      round: 1,
-      duration: () => {
-        const milliseconds = Math.abs(rating - ratingObj.value) * 20;
-
-        return milliseconds;
-      },
-      easing: 'linear',
-      begin: () => {
-        ratingDisplay.style.textShadow = '0 0 6px white';
-      },
-      update: () => {
-        const r = (ratingObj.value / 100).toFixed(2);
-
-        ratingDisplay.innerHTML = r;
-      },
-      complete: () => {
-        ratingDisplay.style.textShadow = 'none';
-        ratingObj.value = rating;
-      },
-    });
+    showPanel();
   }
 
   // Generate story text - loop through available content
@@ -230,13 +269,6 @@ function continueStory() {
     }
 
     choicesContainerElement.appendChild(choiceElement);
-
-    anime({
-      targets: knotContainer,
-      bottom: 0,
-      duration: defaultInDuration,
-      easing: 'easeOutQuad',
-    });
 
     // Click on choice
     function handleClick(event) {
@@ -310,35 +342,21 @@ function startStory() {
       },
     })
     .add({
-      targets: [logo, storyScreen],
-      left: (el) => {
-        let left = '';
-
-        if (el.getAttribute('data-anime-left') === 'true') {
-          left = `${headerWidth}px`;
-        }
-
-        return left;
-      },
-      opacity: (el) => {
-        let opacity = '';
-
-        if (el.getAttribute('data-anime-opacity') === 'true') {
-          opacity = 1;
-        }
-
-        return opacity;
-      },
+      targets: logo,
+      left: `${headerWidth}px`,
       duration: defaultInDuration,
-      easing: (el) => {
-        if (el.getAttribute('data-anime-left') === 'true') {
-          return 'easeOutQuad';
-        }
-
-        return 'linear';
-      },
+      easing: 'easeOutQuad',
       begin: () => {
         storyScreen.style.display = 'block';
+      },
+    })
+    .add({
+      targets: storyScreen,
+      opacity: 1,
+      duration: defaultInDuration,
+      easing: 'linear',
+      offset: `-=${defaultOutDuration}`,
+      begin: () => {
         continueStory();
       },
       complete: () => {

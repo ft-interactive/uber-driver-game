@@ -241,10 +241,6 @@ html {
                 background-color: rgba(0, 117, 127, 0.67);
                 -webkit-backdrop-filter: blur(8px);
                 backdrop-filter: blur(8px);
-                -webkit-box-shadow: 0 6px 6px 0px rgba(51, 51, 51, 0.6);
-                -moz-box-shadow: 0 6px 6px 0px rgba(51, 51, 51, 0.6);
-                -o-box-shadow: 0 6px 6px 0px rgba(51, 51, 51, 0.6);
-                box-shadow: 0 6px 6px 0px rgba(51, 51, 51, 0.6);
                 overflow: scroll;
 
                 .knot {
@@ -290,7 +286,12 @@ html {
                 width: 100vw;
                 height: 100vh;
                 z-index: 1;
-                background-color: #333;
+                background-color: rgba(0, 117, 127, 0.67);
+                -webkit-backdrop-filter: none;
+                backdrop-filter: none;
+                opacity: 0;
+                -webkit-transition: all 0.3s linear;
+                transition: all 0.3s linear;
               }
             }
 
@@ -331,8 +332,8 @@ html {
       background-image: linear-gradient(180deg, rgba(153, 15, 61, 0.9) 0%, rgba(15, 84, 153, 0.9) 100%);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
-      -webkit-transition: all 600ms linear;
-      transition: all 600ms linear;
+      -webkit-transition: all 0.3s linear;
+      transition: all 0.3s linear;
     }
   }
 }
