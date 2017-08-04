@@ -67,10 +67,11 @@ link = choice
 
 ->welcome
 === welcome ===
-# button 
+
 # welcome
 Welcome! You're a full-time Uber driver trying to make ends meet.
 
+# button 
 You have one week to try to make $1000. Can you do it?
 
 * [Yep!] ->choose_difficulty
@@ -96,6 +97,7 @@ You've chosen Hard Mode.
 
 - ~current_city=home
 ->get_started
+
 =get_started
 # button
 # get_started
