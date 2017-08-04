@@ -75,28 +75,7 @@ Welcome! You're a full-time Uber driver trying to make ends meet.
 # button 
 You have one week to try to make $1000. Can you do it?
 
-* [Yep!] ->test_1
-
-===test_1===
-~ fares_earned_total+=10
-1: {fares_earned_total}
-->test_2
-
-===test_2===
-~ fares_earned_total+=20
-2: {fares_earned_total}
--> test_3
-
-===test_3===
-3: {fares_earned_total}
-~ fares_earned_total+=50
-*[choose a thing]
-->test_4
-
-===test_4===
-4: {fares_earned_total}
-
-* [end test]
+* [Yep!] 
 ->choose_difficulty
 
 === choose_difficulty===
@@ -178,12 +157,12 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 # button
 # day_1_locate_passenger.driving
 Twenty minutes later, you arrive at his destination.
-* [Drop him off] 
 ~ alter(fares_earned_total, 16)
+* [Drop him off] 
+
 "Thanks! Sorry again for making you wait," he says as he gets out.
 
 Congratulations! You've just earned your first fare, for $16.
-
 
 ** [That was easy]
 ->car_choice
