@@ -1,3 +1,8 @@
+=== function add_time(hours, mins)===
+
+ ~ timestamp = timestamp + (hours * 3600) + (mins * 60)
+ ~ return timestamp
+
 === function alter(ref x, k) ===
     ~ x += k
 
@@ -35,12 +40,10 @@
 ~ alter(ride_count_total, rides)
 ~ alter(fares_earned_total, fares)
 ~ alter(hours_driven_total, hours)
+~ add_time(hours, 0)
 
 You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares. 
-/*{tip_sign:
-~check_tip_sign()
-}
-*/
+
 {
 - quest_rides < 0 :
 ~ quest_rides=0
@@ -66,22 +69,11 @@ You still need {quest_rides} rides before {day_5_start:Sunday | Friday} to get t
 ~ day_hours_driven=0
 
 === function UberXL ===
+~ temp XL_bonus= RANDOM(12,40)
 {car=="Minivan": 
-    You also got a few UberXL rides that earned you an extra $24
-    ~ alter(day_fares_earned,24)
-    ~ alter(XL_total,24)
-}
-
-=== function check_tip_sign ===
-~ temp x = RANDOM(1,10)
-~ temp tip = RANDOM(3,10)
-{ 
-- x <= 2:
-    Prompted by your tip sign, a passenger gives you a ${tip} tip!
-    ~alter(tip_total,tip)
-- x > 9:
-  Unfortunately, it seems your tip sign has annoyed your passenger...
-  ~alter(rating,-2)
-  
+    You also got a few UberXL rides that earned you an extra ${XL_bonus}
+    ~ alter(day_fares_earned,XL_bonus)
+    ~ alter(fares_earned_total, XL_bonus)
+    ~ alter(XL_total,XL_bonus)
 }
 

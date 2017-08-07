@@ -8,7 +8,8 @@ VAR car="none"
 VAR home="none"
 VAR credit_rating="none"
 VAR car_cost=0
-VAR time=1502096400
+VAR timestamp=1502096400
+// start time: Monday, August 7, 2017 9:00:00 AM
 
 //accessories variables
 VAR unlimited_data=false
@@ -113,6 +114,7 @@ Remember, you have 7 days to make $1000.
 === day_1_start ===
 # button
 # day_1_start
+~ add_time(0,10)
 You start bright and early on a Monday morning.
 
 Pretty soon, you get your first ride request, from someone called Chris.
@@ -122,7 +124,7 @@ Pretty soon, you get your first ride request, from someone called Chris.
 # link
 # day_1_locate_passenger
 You arrive, but don't see anyone waiting for a ride. What do you do?
-
+~add_time(0, 5)
 * [Call Chris]->call_chris
 * [Wait] You wait in your car. ->chris_arrives
 
@@ -140,6 +142,8 @@ He answers the phone. "I'll be right there! Just coming out now," he says.
 # day_1_locate_passenger.chris_arrives
 A few minutes later, a flustered man with a big backpack comes out of a nearby apartment and walk towards your car.
 
+~ add_time(0,3)
+
 * "Are you Chris[?"]," you ask.
 ->in_car
 
@@ -156,6 +160,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 =driving
 # button
 # day_1_locate_passenger.driving
+~ add_time(0, 20)
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
 * [Drop him off] 
@@ -270,6 +275,7 @@ What {|else }did you buy?
 It cost ${accessories_cost}.
 
 } 
+** [Get back to driving]
 -> sf_or_sacramento
 
 
@@ -282,7 +288,7 @@ It cost ${accessories_cost}.
 MESSAGE FROM UBER 
 "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 
-* [Accept quest]Getting that bonus would really help
+* [Accept quest]Getting that bonus would really help.
 
 ->->
 
@@ -296,7 +302,7 @@ MESSAGE FROM UBER
 === day_1_sacramento ===
 # link
 # day_1_sacramento
-You're in Sacramento, where the fares are about a third less than in a big city like San Francisco. 
+You get back to driving. You're in Sacramento, where the fares are about a third less than in a big city like San Francisco. 
 
 Do you drive 2 hours to San Francisco to work there instead?
 
@@ -309,6 +315,7 @@ Do you drive 2 hours to San Francisco to work there instead?
 = go_to_sf
 # button
 # day_1_sacramento.go_to_sf
+~ add_time(2,0)
 You keep your app on as you drive, and you score a ride as you approach San Francisco that takes you all the way into the city.
 
 * [Can't believe I just made $56!]
@@ -369,11 +376,12 @@ You call it a day after the evening crowd thins out.
 // sf_or_sacramento diverts to here
 # button
 # day_1_sf
-You are in San Francisco, one of Uber's bigger markets. You soon get your second passenger. The short trip to the Mission took you 15 minutes, and you earned $10.
+You are in San Francisco, one of Uber's bigger markets. Soon, you get your second passenger. The short trip to the Mission earned you $10.
 
 * [Nice!] 
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 10)
+~ add_time(0, 20)
 ->weekday_quest_message-> sf_morning
 
 = sf_morning
@@ -430,6 +438,8 @@ You've now been driving for {day_hours_driven} hours, and are starting to get ti
 {gym_member: 
 You drive 2 hours back home to Sacramento. It's pretty late by the time you get back.
 
+~add_time(2,13)
+
 - else: You're dead tired by the time you head back. Fortunately you manage to stay awake and arrive home without getting into an accident.
 }
 
@@ -439,22 +449,30 @@ You drive 2 hours back home to Sacramento. It's pretty late by the time you get 
 # button
 # day_1_end
 It's the end of the first day.
+~ timestamp=1502150400
 ~day_end()
 *[Start day 2]->day_2_start
 
 === day_2_start ===
 # day_2_start
-It's Tuesday. {home=="sac":You wake up a bit earlier and drive out to San Francisco.}
+It's Tuesday. 
+~timestamp=1502182800 
 
 {home=="sac":
+~timestamp=1502179200
+You wake up a bit earlier today.
+* [Drive to San Francisco]
+
 ~alter(day_hours_driven,2)
+~add_time(2,8)
 }
-->gas_receipt
+- ->gas_receipt
 
 ===gas_receipt===
 # link
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt? 
+~add_time(0,14)
 *[Yes]You keep it in a folder for your expenses.
 ~kept_receipt=true
 *[Nah]You don’t have time to keep track of stuff like that.
@@ -473,7 +491,6 @@ You stop to fill up your tank. Do you get a receipt?
 # link
 # burgers
 ~temp dirty=false
-
 You get a trip request from a burger joint, and when you arrive the passengers have two juicy In N Out burgers that they are about to eat in the car.
 
 * ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
@@ -486,6 +503,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
 * ["Nice! I love burgers too."]They get in the car and you start driving. 
 
 - From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
+~add_time(0,4)
     # link
     ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
     ~ dirty=true 
@@ -493,20 +511,23 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
     ~ dirty=true
     -- "They finish their burgers. The rest of the trip passes without incident."
+    ~add_time(0,22)
     ->dirty_car 
     
 ===dirty_car===
 # link
 # dirty_car
 What do you do about your dirty backseat?
-* [Stop to clean it] You pull over and clean the back seat. Before you start cleaning, a ride request comes in.
+* [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
     # link
     ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
     ~ alter(rating,-10) 
     ~ alter(ride_count_total,1)
     ~ alter(fares_earned_total,8)
+    ~add_time(0, 18)
     ** [Decline the ride] You finish cleaning up.
 * [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
+    ~ add_time(0, 24)
     ~ alter(rating,-10) 
 - {rating > 480 :
     -> day_2_evening
@@ -518,7 +539,7 @@ What do you do about your dirty backseat?
 # link
 # day_2_evening
 ~time_passes(4,0,1)
-You've been driving for {day_hours_driven} hours. Do you want to push on for the evening peak period?
+You've been driving for a while now. Do you want to push on for the evening peak period?
 
 * [Yes]
 
@@ -532,6 +553,7 @@ You've been driving for {day_hours_driven} hours. Do you want to push on for the
 === day_2_end ===
 # button
 # day_2_end
+~timestamp=1502236800
 ~day_end()
 
 * [Start Day 3]
@@ -540,7 +562,9 @@ You've been driving for {day_hours_driven} hours. Do you want to push on for the
 
 === day_3_start ===
 # day_3_start
+~timestamp=1502269200
 {home=="sac":
+~timestamp=1502265600
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
 }
@@ -549,6 +573,7 @@ You head over to San Francisco. <>
 ===pebble_start===
 # link
 # pebble_start
+~add_time(0,19)
 As you drive along the highway, a pebble hits your windshield and leaves a chip.
 
 * [Repair it immediately]
@@ -560,7 +585,8 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 =repair
 # button
 # pebble_start.repair
-You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30. 
+You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30.
+~add_time(1,0)
 * [Continue driving]->day_3_morning
 
 =ignore
@@ -582,6 +608,7 @@ It's nothing to be concerned about.
 ===nice_passenger===
 # button
 # nice_passenger
+~add_time(0,18)
 You pick up a friendly passenger and have a pleasant chat during the ride before you drop her off.
 
 * [Check your phone]She gave you an 'Excellent Service' badge! 
@@ -607,6 +634,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
         ~ alter(day_ride_count, quest_rides)
         ~ alter(day_fares_earned, quest_rides*6)
         ~ alter(day_hours_driven, 2)
+        ~ add_time(2,6)
         ~ quest_rides=0
         ->quest_finish->day_3_end
         ***[Go to the airport]You take her to the airport. You didn't want to get in the queue for a ride back, so you drive back to town by yourself. You decide to call it a day and finish the quest tomorrow instead. 
@@ -614,12 +642,14 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
         ~ alter(day_fares_earned, 30)
         ~ alter(day_hours_driven, 1)
         ~ alter(quest_rides, -1)
+        ~add_time(1,13)
         ->day_3_end
     **[Just go to the airport]ou take her to the airport. You didn't want to get in the queue for a ride back, so you drive back to town by yourself. You decide to call it a day and finish the quest tomorrow instead.
         ~ alter(day_ride_count, 1)
         ~ alter(day_fares_earned, 30)
         ~ alter(day_hours_driven, 1)
         ~ alter(quest_rides, -1)
+        ~add_time(1,13)
         ->day_3_end
 * [Call it a day]You still have the whole day tomorrow to finish it. You decide to go home for today.
 ->day_3_end
@@ -630,6 +660,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 # day_3_end
 ->quest_finish->
 * [Call it a day]
+~ timestamp=1502323200
 ~day_end()
 # button
 ** [Start day 4] -> day_4_start
@@ -637,6 +668,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 
 ===day_4_start===
 # day_4_start
+~timestamp=1502352000
 { 
 - quest_completion==true:
 ->day_4_quest_completed
@@ -693,7 +725,9 @@ As you head out, you remember that you promised your son to be home by 8pm to he
 ~ current_city = "sac"
 -> day_4_sacramento
 
-* [Go to San Francisco]"You decide to go to San Francisco, since you'll get more rides there."
+* [Go to San Francisco]You decide to go to San Francisco, since you'll get more rides there.
+~alter(day_hours_driven,2)
+~add_time(2,3)
 ~ current_city = "sf"
     {quest_rides>2:
     ->napa
@@ -728,10 +762,13 @@ You finished the quest! You get the ${quest_bonus} bonus.
 {
 - quest_rides>10: 
 ~alter(day_hours_driven,9)
+~add_time(9,12)
 - quest_rides<10 && quest_rides>3:
 ~alter(day_hours_driven,4)
+~add_time(4,21)
 - quest_rides<3:
 ~alter(day_hours_driven,2)
+~add_time(2,9)
 }
 ~ quest_rides=0
 ~quest_completion=true
@@ -753,6 +790,7 @@ You drive for 9 hours. During this time, you completed {remaining} rides, and ea
 ~ alter(day_ride_count, remaining)
 ~ alter(day_fares_earned, remaining*6)
 ~ alter(day_hours_driven, 9)
+~ add_time(9,12)
 ~ quest_rides=3
 # button
 * [MESSAGE FROM UBER] Just three more trips until you complete your quest!
@@ -769,6 +807,7 @@ But it's already 7pm and you promised to be home by 8.
 ~ alter(day_ride_count, 3)
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
+~ add_time(2,3)
 ~quest_completion=true
 ~quest_rides=0
 ->day_4_end
@@ -782,6 +821,7 @@ It's 10:30pm and you're tired after a long day, but the quest doesn't expire unt
 You are completely exhausted.
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
+~ add_time(2,8)
 ~quest_completion=true
 ~quest_rides=0
 ->day_4_end
@@ -796,6 +836,7 @@ You are completely exhausted.
 ~ alter(fares_earned,265)
 ~ alter(ride_count,1)
 ~ alter(quest_rides, -1)
+~ add_time(1,49)
 # button
     **["Drive into San Francisco"]
 ->day_4_sf
@@ -843,7 +884,8 @@ It should be pretty easy to finish the quest.
     You drive for 6 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
-    ~ alter(day_hours_driven, 9)
+    ~ alter(day_hours_driven, 6)
+    ~ timestamp=1502388120
     ~ quest_rides=3
     # button
     * [MESSAGE FROM UBER] Just three more trips until you complete your quest!
@@ -858,10 +900,13 @@ It should be pretty easy to finish the quest.
     {
     - quest_rides>10: 
     ~alter(day_hours_driven,8)
+    ~ add_time(8,14)
     - quest_rides<10 && quest_rides>3:
     ~alter(day_hours_driven,4)
+    ~add_time(3,57)
     - quest_rides<3:
     ~alter(day_hours_driven,1)
+    ~add_time(0,54)
     }
     ~ quest_rides=0
     ~quest_completion=true
@@ -882,10 +927,13 @@ You finished the quest! You get the ${quest_bonus} bonus.
 {
 - quest_rides>10: 
 ~alter(day_hours_driven,8)
+    ~ add_time(8,14)
 - quest_rides<10 && quest_rides>3:
 ~alter(day_hours_driven,4)
+    ~add_time(3,57)
 - quest_rides<3:
 ~alter(day_hours_driven,1)
+    ~add_time(0,54)
 }
 ~ quest_rides=0
 ~quest_completion=true
@@ -901,10 +949,11 @@ You go where the rides take you. It's a pretty normal day.
     {home=="sac":
     ~time_passes(5,0,1)
     ~UberXL()
-    
+    ~timestamp=1502386200
     It's 5:30pm. Do you turn off the app and start heading back home to Sacramento? 
     # link
     * [Yes]You get back in time, as promised, and spend a pleasant evening with your son.
+    ~add_time(3,48)
     ~helped_homework=true
     ->day_4_end
     * [No]You keep driving.
@@ -915,6 +964,7 @@ You go where the rides take you. It's a pretty normal day.
 
     {home=="sf":
     ~time_passes(7,0,1)
+    ~timestamp=1502391600
     ~UberXL()
     You call it a day just after 7pm, and make it back home in time to spend the evening with your son, as you promised.
     ~helped_homework=true
@@ -931,11 +981,13 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
         - quest_rides<4:
         # button
         * [MESSAGE FROM UBER:] Just {quest_rides} more trips until you complete your quest!
+        ~timestamp=1502388120
         But it's already 6pm and you promised to be home in Sacramento by 8.
         
         ->quest_nudge
         
         - quest_rides>=4 && quest_rides<15:
+        ~timestamp=1502388120
         It's 6pm and you promised to be home in Sacramento by 8.
         # link
         * [Go home] You go home and help your son with his homework before tucking him into bed. He's happy you kept your promise.
@@ -947,17 +999,27 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
         ~ alter(day_ride_count, quest_rides)
         ~ alter(day_fares_earned, quest_rides*7)
         ~ alter(day_hours_driven, 3)
+        ~ add_time(2,52)
         ~ quest_rides=0
         ~ quest_completion=true
-        
+        # button
+        ** [Go home]
+        ~add_time(2,5)
+        ~ alter(day_hours_driven, 2)
         It takes you another two hours to get home. By the time you get back. Your son is already asleep, his homework unfinished.
+        # button
+        *** [Watch him sleep] You watch him for a while, then head to bed.
         ->day_4_end
         
         - else:
+        ~timestamp=1502388120
         It's 6pm and you promised to be home in Sacramento by 8. It doesn't look like you'll finish the quest after all.
         # button
         * [Go home] You go home and help your son with his homework before tucking him into bed. He's happy you kept your promise.
         ~helped_homework=true
+        ~add_time(3,37)
+         # button
+        ** [Go to sleep]
         ->day_4_end
         }
     
@@ -969,10 +1031,12 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
     ~ alter(day_hours_driven, 9)
+    ~ add_time(8,57)
     ~ quest_rides=3
     # button    
     * [MESSAGE FROM UBER] Just three more trips until you complete your quest!
     But it's already 7pm and you promised to be home by 8.
+    ~timestamp=1502391600
     ->quest_nudge
     }
 }
@@ -980,6 +1044,7 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
 ===day_4_end===
 # button
 # day_4_end
+~timestamp=1502409600
 It's the end of day 4.
 {home=="sac":
 ~alter(hours_driven_total,2)
@@ -1005,6 +1070,7 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 ===day_5_start===
 # button
 # day_5_start
+~timestamp=1502442000
 ~current_city="sf"
 It's Friday. You get a new quest for the weekend.
 {quest_completion==true:
@@ -1031,31 +1097,41 @@ Friday and Saturday nights are some of the busiest times for rides, but the peak
 
 * [Start at your normal time] ->day_5_daytime
 
-* [Start driving in the evening] You take a rest and try to nap a bit during the day. {home=="sac":You leave for San Franciso after dinner at home.} -> day_5_evening
+* [Start driving in the evening] You take a rest and try to nap a bit during the day. {home=="sac":You leave for San Franciso after dinner at home.} 
+~timestamp=1502474400
+-> day_5_evening
 
 ===day_5_daytime===
 # link
 # day_5_daytime
 You decide that it's not worth it to disrupt your normal schedule.
 
+{home=="sac": 
 You head into San Francisco at your usual hour.
-
-~time_passes(6,0,1)
+~alter(day_hours_driven,2)
+~add_time(2,3)
+~time_passes(7,0,1)
+- else:
+~time_passes(9,0,1)
+}
 
 * [Call it a day] You're getting tired and decide to go home
+{home=="sac": 
+~alter(day_hours_driven,2)
+~add_time(2,3)
+}
 -> day_5_end
 
 * [Keep driving] You decide to try to catch the evening crowd.
 -> day_5_evening
 
 ===day_5_evening===
-# button
 # day_5_evening
 ~time_passes(2,1,1)
 
-It's 8pm, and you just dropped off a passenger in the Financial District in the northeast of San Francisco. 
-
-* MESSAGE FROM UBER[]: Surge pricing in the Sunset district. Earn 3x fares!
+You've just dropped off a passenger in the Financial District in the northeast of San Francisco, when you notice there's surge pricing. 
+# button
+* Check the app[]: You see there's 3x surge pricing in the Sunset district.
 ->surge
 =surge
 # link
@@ -1065,23 +1141,30 @@ The 3x fare is attractive, but it might be gone by the time you get to the Sunse
 * [Chase the surge]Tripling your earning is just too tempting. You start driving over to the surge zone, but the roads are busy and the traffic lights are not on your side tonight. 
 
 You are three blocks away when the surge ends. You are annoyed at having wasted half an hour.
-
+    ~add_time(0,32)
+    # button
+    **[Darn]
 ~time_passes(2,1,1)
 
-* [Don't chase the surge]You ignore the message. You are doing good enough business without it.
-
+* [Don't chase the surge]You ignore the message. It'll probably be gone by the time you get there.
+    # button
+    **[Keep driving]
+    
 ~time_passes(3,1,1)
 - ->home_or_not
 
 =home_or_not
 # link
 # day_5_evening.home_or_not
+~timestamp = 1502496480
 When you can finally take time for a break, it's already past midnight.
 
 * [Go home] 
 { 
 - day_5_daytime && home=="sac": 
-You're very tired on the drive home. On the way back you've had to pull over and take a nap before you could continue. You don't get back until nearly 3am. ->day_5_end
+You're very tired on the drive home. On the way back you've had to pull over and take a nap before you could continue. You don't get back until nearly 3am. 
+~ add_time(2,47)
+->day_5_end
 - day_5_daytime && home=="sf":
 You're too tired. You call it a night, and drive back home. ->day_5_end
 - else:
@@ -1089,6 +1172,7 @@ You call it a night, and drive back home. ->day_5_end
 }
 
 * {day_5_daytime && home=="sac"} [Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
+    ~add_time(0,22)
     **[zzz] It's not very comfortable, but you eventually fall asleep.
     ~day_end()
 -> day_6_slept_in_car
@@ -1098,10 +1182,10 @@ You call it a night, and drive back home. ->day_5_end
 ===vomit===
 # link
 # vomit
+~add_time(0,8)
 You arrive at a pick-up and see a passenger vomiting on the side of the road.
 
 * [Cancel the ride and drive away] You decide it's not worth it. 
-    ~alter (rating,-10)
     # link
     ** [Keep driving]
     ->day_5_late_night
@@ -1113,12 +1197,13 @@ You arrive at a pick-up and see a passenger vomiting on the side of the road.
     ** [Clean up the mess and notify Uber] 
 { cleaning_supplies==true: 
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
-
+~add_time(0,18)
     Uber gives you $30 in cleaning fees.
 //TODO: figure out how to record this money
     ->day_5_late_night
 - else: You don't have any cleaning supplies, and spend some time trying to find a gas station with a convenince store. You eventually clean it all up.
     Uber gives you $30 in cleaning fees.
+~add_time(0,58)
 //TODO: figure out how to record this money
     ->day_5_late_night
 }
@@ -1131,9 +1216,11 @@ Luckily, you have cleaning supplies in your trunk. You pull over and spend some 
 }
 {home=="sac":
 * [Go home] You're very tired on the drive home and had to pull over for a nap before you could continue. You don't get back until nearly 3am. 
+~ add_time(1,47)
 -> day_5_end
 
 * [Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
+~add_time(0,18)
     ~day_end()
     **[zzz]It's not very comfortable, but you eventually fall asleep.
 -> day_6_slept_in_car
@@ -1151,14 +1238,17 @@ The late hours are certainly lucrative.
 * [Go home] 
 { home=="sf": ->day_5_end} 
 You're not used to staying up so late and are very tired on the drive home. You don't get back until nearly 4am. 
+~ timestamp=1502510160
 -> day_5_end
 
 * {home=="sac"}[Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
+
     **[zzz] It's not very comfortable, but you eventually fall asleep.
     ~day_end()
     -> day_6_slept_in_car
 
 * [Keep driving] You're really tired by this point but decide to keep going.
+
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
 
 # link
@@ -1177,16 +1267,21 @@ You drive home and collapse into bed.
 
 ===day_5_end===
 # day_5_end
+~timestamp=1502514000
+//friday 5am
 ~day_end()
 ->day_6_start
 
 ===day_6_deactivated===
 # button
 # day_6_deactivated
+~timestamp=1502528400
+//saturday 9am
 It's Saturday. You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off.
 
 * [Spend time with your son]
-
+~ timestamp=1502559480
+//sat 5:38pm
 You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
 
 {helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
@@ -1197,6 +1292,7 @@ You spend a relaxing afternoon in the park with your son. It sure feels good to 
 
 === day_6_slept_in_car ===
 # day_6_slept_in_car
+~timestamp=1502528400
 You wake up, briefly forgetting that you're in your car in San Francisco.
 
 ->day_6_start
@@ -1207,7 +1303,7 @@ You wake up, briefly forgetting that you're in your car in San Francisco.
 It's Saturday. Do you take the day off? It is the weekend, after all.
 
 * [Take day off] You decide to take the day off. You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
-
+~add_time(10,32)
 {helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
 # button
 **[You feel refreshed]
@@ -1235,6 +1331,7 @@ As you finish a ride, the passenger opens the door to get out and hits a lamp po
 *[Report the incident to Uber] Uber promises to investigate, but in the meantime your account is suspended. There's nothing else you can do today. -> day_6_end
 *[Don't report it] You decide to get it repaired yourself. It takes the mechanics two hours to fix it, and they charge you $100. 
 //TODO money
+~add_time(2,21)
 ->day_6_afternoon
 
 === day_6_afternoon ===
@@ -1245,6 +1342,7 @@ As you finish a ride, the passenger opens the door to get out and hits a lamp po
 You make your way to the baseball stadium before the game ends. Sure enough, lots of people are requesting rides there. You get lucky with a relatively long ride to Outer Richmond, and earn $30
     ~ alter(day_ride_count, 1)
     ~ alter(day_fares_earned, 30)
+    ~add_time(0,48)
 # button
 ** [Great!]
 ->day_6_evening
@@ -1260,6 +1358,8 @@ It sure is busy this Saturday evening.
 -> day_6_end
 
 === day_6_end ===
+~timestamp=1502582400
+//sunday midnight
 # button
 # day_6_end
 ~ day_end()
@@ -1270,9 +1370,11 @@ It sure is busy this Saturday evening.
 === track_mileage ===
 # link
 # track_mileage
+~timestamp=1502614800
+//sun 9am
 It's been a long week. You idly wonder just how far you've driven.
 
-* [Good thing you've been keeping track] {home=="sf": You check your notes: 1567.43 miles. That's quite a lot.}{home=="sac":You check your notes: 2469.35 miles. That's quite a lot.}
+* [Good thing you've been keeping track] {home=="sf": You check your notes: 869 miles. That's quite a lot.}{home=="sac":You check your notes: 1567 miles. That's quite a lot.}
 ~miles_tracked=true
 ->->
 * [(shrug emoji)]It doesn't really matter.
@@ -1293,13 +1395,14 @@ It's Sunday! You still need {quest_rides} more rides to get the weekend bonus.
 # link
 # no_drop_zone
 A passenger insists you drop her off at the entrance to the Caltrain station, which is a no-stop zone.
-
+~add_time(0,19)
 * [Agree to do so]
 ~ temp ticket = RANDOM(1,3)
 {ticket>1: 
 You drop her off quickly. Luckily, there weren't any cops around.
 - else: As you drop her off, you see a police car pull up behind you. You get a traffic ticket (-$260)
 ~ticketed=true
+//TODO money
 }
 
 ->day_7_afternoon
@@ -1329,6 +1432,7 @@ You drop her off quickly. Luckily, there weren't any cops around.
 # pebble_crack
 You are driving when you hear a splintering sound. The chip in your windshield is turning into a crack that is spreading across the whole windshield. You have no choice but to get it repaired
 * [The mechanic charges you $250]You pay the money, regretting that you didn't get it fixed earlier.
+~add_time(1,58)
 ->->
 
 ===day_7_evening===
@@ -1359,6 +1463,7 @@ You only have {quest_rides} left to do. You could try to finish it by cancelling
 ~ alter(day_ride_count, quest_rides)
 ~ alter(day_fares_earned, quest_rides*5)
 ~ alter(day_hours_driven, 4)
+~add_time(3,43)
 
 { rating > 480: 
 Congrats! You completed the quest and got an extra ${quest_bonus}.
@@ -1397,7 +1502,8 @@ It's the end of the week. Were you savvy enough to survive as a full-time Uber d
 # no_phone_mount
 Without a phone mount, you're left fiddling with your phone on your lap. Soon, a passenger notices and complains to Uber about your dangerous driving.
 
-You are deactivated for 4 hours. You use that time to go buy a phone mount for $20.
+* [Uh oh] You are deactivated for 4 hours. You use that time to go buy a phone mount for $20.
+~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,20)
 ->->
