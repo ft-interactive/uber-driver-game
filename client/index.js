@@ -133,14 +133,11 @@ function continueStory() {
         targets: timeObj,
         value: time,
         round: 1,
-        duration: () => {
-          // const milliseconds = (time - timeObj.value) / 1000;
-
-          // return milliseconds;
-
-          return 1000;
-        },
+        duration: 500,
         easing: 'linear',
+        begin: () => {
+          timeDisplay.style.textShadow = '0 0 6px white';
+        },
         update: () => {
           const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us');
 
@@ -153,6 +150,7 @@ function continueStory() {
           console.log(timeString.length);
         },
         complete: () => {
+          timeDisplay.style.textShadow = 'none';
           timeObj.value = time;
         },
       });
