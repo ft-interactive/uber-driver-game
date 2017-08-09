@@ -218,6 +218,10 @@ html {
                   &--time {
                     width: 92px;
 
+                    span {
+                      text-transform: lowercase;
+                    }
+
                     &:before {
                       content: 'access_time';
                     }

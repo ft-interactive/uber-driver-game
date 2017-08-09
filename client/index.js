@@ -34,7 +34,7 @@ let knotContainerMaxHeight;
 const defaultInDuration = 500;
 const defaultOutDuration = 300;
 const earningsObj = { value: 0 };
-const timeObj = { value: 0 };
+const timeObj = { value: 1502096400000 };
 const ratingObj = { value: 490 };
 
 function handleResize() {
@@ -83,11 +83,13 @@ caveatsButton.addEventListener('click', showCaveats);
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const rating = story.variablesState.$('rating');
-  // const time = story.variablesState.$('time');
+  const time = story.variablesState.$('timestamp') * 1000;
+  // const timeString = new Date(time).toLocaleTimeString('en-us');
   const timePassing = story.variablesState.$('time_passing');
   const timePassingObj = { value: 3 };
 
-  console.log(earnings);
+  // console.log(time.toLocaleTimeString('en-us'));
+  console.log(time);
 
   function showPanel() {
     anime({
@@ -124,27 +126,37 @@ function continueStory() {
       });
     }
 
-    // if (time !== timeObj.value) {
-    //   console.log('Time changed, animating meter readout');
-    //
-    //   anime({
-    //     targets: timeObj,
-    //     value: time,
-    //     round: 1,
-    //     duration: () => {
-    //       const milliseconds = (time - timeObj.value) * 20;
-    //
-    //       return milliseconds;
-    //     },
-    //     easing: 'linear',
-    //     update: () => {
-    //       timeDisplay.innerHTML = timeObj.value;
-    //     },
-    //     complete: () => {
-    //       timeObj.value = time;
-    //     },
-    //   });
-    // }
+    if (time !== timeObj.value) {
+      console.log('Time changed, animating meter readout');
+
+      anime({
+        targets: timeObj,
+        value: time,
+        round: 1,
+        duration: () => {
+          // const milliseconds = (time - timeObj.value) / 1000;
+
+          // return milliseconds;
+
+          return 1000;
+        },
+        easing: 'linear',
+        update: () => {
+          const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us');
+
+          if (timeString.length < 11) {
+            timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+          } else {
+            timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+          }
+
+          console.log(timeString.length);
+        },
+        complete: () => {
+          timeObj.value = time;
+        },
+      });
+    }
 
     if (rating !== ratingObj.value) {
       console.log('Rating changed, animating meter readout');
@@ -314,6 +326,7 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
+  const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us');
 
   tint.style.webkitBackdropFilter = 'blur(0px)';
   tint.style.backdropFilter = 'blur(0px)';
@@ -326,7 +339,7 @@ function startStory() {
       easing: 'linear',
       begin: () => {
         earningsDisplay.innerHTML = earningsObj.value;
-        timeDisplay.innerHTML = timeObj.value;
+        timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.bottom = `-${articleBodyHeight}px`;
       },
