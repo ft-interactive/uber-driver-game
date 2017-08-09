@@ -84,12 +84,8 @@ function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const rating = story.variablesState.$('rating');
   const time = story.variablesState.$('timestamp') * 1000;
-  // const timeString = new Date(time).toLocaleTimeString('en-us');
   const timePassing = story.variablesState.$('time_passing');
   const timePassingObj = { value: 3 };
-
-  // console.log(time.toLocaleTimeString('en-us'));
-  console.log(time);
 
   function showPanel() {
     anime({
@@ -146,8 +142,6 @@ function continueStory() {
           } else {
             timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
           }
-
-          console.log(timeString.length);
         },
         complete: () => {
           timeDisplay.style.textShadow = 'none';
