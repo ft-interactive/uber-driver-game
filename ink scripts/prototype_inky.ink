@@ -187,14 +187,14 @@ Congratulations! You've just earned your first fare, for $16.
 
 You're going to be spending a lot of time in your car. What model did you lease?
  
-* [Toyota Prius] 
-The Prius is fuel efficient and can get up to 50 miles per gallon. {credit_rating == "good":Your good credit rating means it only costs ${prius_cost} per week.}{credit_rating=="bad":Unfortunately, your poor credit means it costs ${prius_cost} per week.}
++ [Toyota Prius] 
+The Prius is fuel efficient, getting up to 50 miles per gallon. {credit_rating == "good":Your good credit rating means it only costs ${prius_cost} per week.}{credit_rating=="bad":Unfortunately, your poor credit means it costs ${prius_cost} per week.}
 ~ car="Prius"
 ~ alter(car_cost, prius_cost)
 ->confirm
 
-* [Dodge minivan]
-The Dodge minivan qualifies for UberXL rides, which earn higher fares. {credit_rating == "good":Your good credit rating means it only costs${minivan_cost} per week.}{ credit_rating=="bad":Unfortunately,your poor credit means it costs ${minivan_cost} per week.}
++ [Dodge minivan]
+The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_rating == "good":Your good credit rating means it only costs ${minivan_cost} per week.}{ credit_rating=="bad":Unfortunately,your poor credit means it costs ${minivan_cost} per week.}
 ~ car="Minivan"
 ~ alter(car_cost, minivan_cost)
 ->confirm
@@ -283,7 +283,7 @@ MESSAGE FROM UBER - "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} 
 # sf_or_sacramento
 {
 - home=="sf":
-You're in San Francisco, one of Uber's biggest markets.
+You're in San Francisco, where Uber was first launched.
 ->weekday_quest_message->day_1_sf
 
 - home=="sac":->day_1_sacramento
@@ -366,11 +366,9 @@ You call it a day after the evening crowd thins out.
 # button
 # day_1_sf
 
+~time_passes(4,0,1)
+* [Start driving] 
 
-* [Nice!] 
-~ alter(day_ride_count, 1)
-~ alter(day_fares_earned, 10)
-~ add_time(0, 20)
 ->sf_morning
 
 = sf_morning
@@ -378,7 +376,6 @@ You call it a day after the evening crowd thins out.
 # day_1_sf.sf_morning
 You spend a productive morning working, with little downtime in between rides.
 
-~time_passes(4,0,1)
 # button
 * [That's great!]You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
 
