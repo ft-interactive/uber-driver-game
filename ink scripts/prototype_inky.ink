@@ -376,7 +376,7 @@ You call it a day after the evening crowd thins out.
 inserting an extra knot and choice to see if this affects transition screen
 
 *[choice]
-
+->test2
 
 =test2
 see if knot/stitch affect transitions
