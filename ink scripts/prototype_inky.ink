@@ -377,8 +377,8 @@ You call it a day after the evening crowd thins out.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯] 
-* [🍕]
+* [🌯] You spot a Señor Sisig food truck and decide to go for burritos
+* [🍕] You grab a quick slice of pepperoni.
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
@@ -396,9 +396,13 @@ That was a productive morning! You decide to stop for lunch.
 {no_phone_mount: 
 
 You get back online just in time for the busy evening period.
+~time_passes(3,1,1)
 *[Phew!]
-~time_passes(2,1,1)
-You call it a day.
+
+Time to catch up!
+
+
+
 # button
     **[Not a bad day, overall]
     ->day_1_end
@@ -1497,11 +1501,12 @@ It's the end of the week. Were you savvy enough to survive as a full-time Uber d
 
 ===no_phone_mount===
 # no_phone_mount
-Without a phone mount, you're left fiddling with your phone on your lap. A passenger notices and complains to Uber about your dangerous driving.
+With no phone mount, you're left fiddling with your phone on your lap. A passenger notices and complains to Uber about your dangerous driving.
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25.
+
 ->->
 
 ===data_plan===
