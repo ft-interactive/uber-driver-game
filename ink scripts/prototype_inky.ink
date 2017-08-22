@@ -8,8 +8,8 @@ VAR car="none"
 VAR home="none"
 VAR credit_rating="none"
 VAR car_cost=0
-VAR timestamp=1502096400
-// start time: Monday, August 7, 2017 9:00:00 AM
+VAR timestamp=1502092800
+// start time: Monday, August 7, 2017 8:00:00 AM GMT
 
 //accessories variables
 VAR unlimited_data=false
@@ -370,29 +370,16 @@ You call it a day after the evening crowd thins out.
 ~time_passes(4,0,1)
 * [Start driving] 
 
-->test1
-
-=test1
-inserting an extra knot and choice to see if this affects transition screen
-
-*[choice]
-->test2
-
-=test2
-see if knot/stitch affect transitions
-~time_passes(4,0,1)
-
-*[choice]
-
 ->day_1_sf_morning
 
 ===day_1_sf_morning===
-# button
+# link
 # day_1_sf_morning
-That was a productive morning! You stop for lunch when you spot a Señor Sisig food truck.
-~time_passes(4,0,1)
+That was a productive morning! You decide to stop for lunch.
+~add_time(0,30)
 * [🌯] 
-You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->day_1_sf_afternoon
+* [🍕]
+- ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
 # day_1_sf_afternoon
@@ -1510,12 +1497,11 @@ It's the end of the week. Were you savvy enough to survive as a full-time Uber d
 
 ===no_phone_mount===
 # no_phone_mount
-Without a phone mount, you're left fiddling with your phone on your lap. Soon, a passenger notices and complains to Uber about your dangerous driving.
-
-* [Uh oh] You are deactivated for 4 hours. You use that time to go buy a phone mount for $20.
+Without a phone mount, you're left fiddling with your phone on your lap. A passenger notices and complains to Uber about your dangerous driving.
 ~add_time(4,0)
 ~phone_mount=true 
-~alter(accessories_cost,20)
+~alter(accessories_cost,25)
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25.
 ->->
 
 ===data_plan===
