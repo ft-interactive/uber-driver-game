@@ -185,36 +185,41 @@ Congratulations! You've just earned your first fare, for $16.
     ~insurance=60    
 }
 
- You're going to be spending a lot of time in your car. What model did you lease?
- 
- The Prius is more fuel efficient, but the minivan qualifies for UberXL rides, which earn a higher fare.
+You're going to be spending a lot of time in your car. What model did you lease?
  
 * [Toyota Prius] 
-You're driving a Prius, which cost ${prius_cost} per week and can get up to 50 miles per gallon.
-
-{credit_rating == "good":Fortunately, your good credit rating had made this cheaper.}{ credit_rating=="bad":Unfortunately, this was more expensive due to your poor credit.}
+The Prius is fuel efficient and can get up to 50 miles per gallon. {credit_rating == "good":Your good credit rating means it only costs ${prius_cost} per week.}{credit_rating=="bad":Unfortunately, your poor credit means it costs ${prius_cost} per week.}
 ~ car="Prius"
 ~ alter(car_cost, prius_cost)
+->confirm
 
 * [Dodge minivan]
-You're driving a Dodge minivan. It costs ${minivan_cost} per week, but UberXL rides earn higher fares.
-
-{credit_rating == "good":Fortunately, your good credit rating had made this cheaper.}{ credit_rating=="bad":Unfortunately, this was more expensive due to your poor credit.}
+The Dodge minivan qualifies for UberXL rides, which earn higher fares. {credit_rating == "good":Your good credit rating means it only costs${minivan_cost} per week.}{ credit_rating=="bad":Unfortunately,your poor credit means it costs ${minivan_cost} per week.}
 ~ car="Minivan"
 ~ alter(car_cost, minivan_cost)
-- You also bought insurance for ${insurance} a week.
-~ alter(car_cost, insurance)
-->goto_accessories
-=goto_accessories
+->confirm
+
+=confirm
+# car_choice.confirm
+# link
+Rent this car?
+
+* [Yes]->chose_car
+* [Go back]->car_choice
+
+=chose_car
+# car_choice.chose_car
 # button
-# car_choice.goto_accessories
+You leased the {car}. You also bought insurance for ${insurance} a week.
+~ alter(car_cost, insurance)
+
 * [Look around your car]
 ->buy_accessories
  
 ===buy_accessories===
 # list
 # buy_accessories
-{!You thought about the accessories you bought to prepare for life as a professional driver.} 
+{!To prepare for life as a professional driver, you also bought...} 
 What {|else }did you buy?
 
 * [Upgrade to an unlimited data plan ($20/week)]Unlimited data plan: Since you have to be constantly connected to the Uber app, this will save you from paying overage charges. 
