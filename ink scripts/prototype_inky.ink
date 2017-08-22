@@ -372,8 +372,15 @@ You call it a day after the evening crowd thins out.
 
 ->test1
 
-===test1===
+=test1
 inserting an extra knot and choice to see if this affects transition screen
+
+*[choice]
+
+
+=test2
+see if knot/stitch affect transitions
+~time_passes(4,0,1)
 
 *[choice]
 
