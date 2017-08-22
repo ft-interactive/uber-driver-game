@@ -228,7 +228,7 @@ You leased the {car}. You also bought insurance for ${insurance} a week.
     ->buy_accessories
 * Phone mount & charging cords[ ($25)]: A phone mount lets you use your phone with one hand while keeping your eyes on the road. And you don't want to run out of batteries.
     ~phone_mount=true
-    ~alter(accessories_cost,20)
+    ~alter(accessories_cost,25)
     ->buy_accessories
 * Cleaning supplies[ ($40)]: In case someone makes a mess in your car 
     ~cleaning_supplies=true
@@ -304,40 +304,46 @@ You live in Sacramento, where fares are a third less than in a bigger city like 
 # button
 # day_1_sacramento.go_to_sf
 ~ add_time(2,0)
-You keep your app on as you drive, and you score a ride as you approach San Francisco that takes you all the way into the city.
+You keep your app on, and score a ride as you approach SF that takes you all the way into the city.
 
 * [Can't believe I just made $56!]
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 56)
 ~ alter(day_hours_driven, 2)
+~ alter(ride_count_total, 1)
+~ alter(fares_earned_total, 56)
+~ alter(hours_driven_total, 2)
 ->weekday_quest_message->day_1_sf_afternoon
 
 = sac_morning
-# button
 # day_1_sacramento.sac_morning
 ~time_passes(3,0,1)
-You start driving. It's nice to be in a familiar town.
+You start driving.
+# button
 *[🚗]
 ->stay_or_go
 
 = stay_or_go
 # link
 # day_1_sacramento.stay_or_go
-At this rate, you're unlikely to meet your financial target.
-* [Keep driving in Sacramento] ->sac_lunch
-* [Go to San Francisco instead] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
+You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000 by the end of the week.
+* [Stay in Sacramento] ->sac_lunch
+* [Go to San Francisco] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
 ~current_city="sf"
 ->day_1_sf_afternoon
 
 =sac_lunch
 # button
 # day_1_sacramento.sac_lunch
-You like driving in a familiar town. You grab a quick lunch at your favourite burrito place.
-* [That was a nice burrito] ->sac_afternoon
+You like driving in a familiar town, especially since it means you can get lunch at your favourite burrito place.
+{phone_mount==true: 
+~time_passes(4,0,1)
+}
+* [🌯] ->sac_afternoon
 
 =sac_afternoon
 
-~time_passes(4,0,1)
+
 
 {phone_mount==false:
 ->no_phone_mount->stay_or_go_2
