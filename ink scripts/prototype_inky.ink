@@ -370,6 +370,13 @@ You call it a day after the evening crowd thins out.
 ~time_passes(4,0,1)
 * [Start driving] 
 
+->test1
+
+===test1===
+inserting an extra knot and choice to see if this affects transition screen
+
+*[choice]
+
 ->day_1_sf_morning
 
 ===day_1_sf_morning===
