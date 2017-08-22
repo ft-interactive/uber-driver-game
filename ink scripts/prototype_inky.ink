@@ -219,8 +219,7 @@ You leased the {car}. You also bought insurance for ${insurance} a week.
 ===buy_accessories===
 # list
 # buy_accessories
-{!To prepare for life as a professional driver, you also bought...} 
-What {|else }did you buy?
+{!To prepare for life as a professional driver, you also bought...|What else did you buy?}
 
 * [Upgrade to an unlimited data plan ($20/week)]Unlimited data plan: Since you have to be constantly connected to the Uber app, this will save you from paying overage charges. 
     ~unlimited_data=true
@@ -230,16 +229,6 @@ What {|else }did you buy?
     ~phone_mount=true
     ~alter(accessories_cost,20)
     ->buy_accessories
-/*
-* Charging cords[ ($5)]: One for you and one for your passengers 
-    ~charging_cords=true
-    ~alter(accessories_cost,5)
-    ->buy_accessories
- * Seat covers[ ($200)]: This will make it much easier to keep your seats clean 
-    ~seat_covers=true
-    ~alter(accessories_cost,200)
-    ->buy_accessories 
-    */
 * Cleaning supplies[ ($40)]: In case someone makes a mess in your car 
     ~cleaning_supplies=true
     ~alter(accessories_cost,40)
@@ -266,8 +255,6 @@ What {|else }did you buy?
  - else: You bought: 
  {unlimited_data:Unlimited data plan}
  {phone_mount:Phone mount}
-// {charging_cords:Charging cords}
-// {seat_covers:Seat covers}
  {cleaning_supplies:Cleaning supplies}
  {biz_licence:Business licence}
  {gym_member:Gym membership}
@@ -286,8 +273,7 @@ It cost ${accessories_cost}.
 ~quest_rides=75
 ~quest_bonus=180
 ~weekday_quest_bonus=quest_bonus
-MESSAGE FROM UBER 
-"Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
+MESSAGE FROM UBER - "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 # button
 * [Accept quest]Getting that bonus would really help.
 
@@ -296,7 +282,9 @@ MESSAGE FROM UBER
 === sf_or_sacramento ===
 # sf_or_sacramento
 {
-- home=="sf":->day_1_sf
+- home=="sf":
+You're in San Francisco, one of Uber's biggest markets.
+->weekday_quest_message->day_1_sf
 
 - home=="sac":->day_1_sacramento
 }
@@ -374,16 +362,16 @@ You call it a day after the evening crowd thins out.
 ->day_1_end
 
 === day_1_sf ===
-// sf_or_sacramento diverts to here
+
 # button
 # day_1_sf
-You are in San Francisco, one of Uber's bigger markets. Soon, you get your second passenger. The short trip to the Mission earned you $10.
+
 
 * [Nice!] 
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 10)
 ~ add_time(0, 20)
-->weekday_quest_message-> sf_morning
+->sf_morning
 
 = sf_morning
 # button
@@ -422,6 +410,7 @@ You've now been driving for {day_hours_driven} hours, and are starting to get ti
 * {home=="sac"}[Head home to Sacramento]You get home by 10pm, and get a good night's rest.
 
 ->day_1_end
+
 * [Keep driving]The evening is the busiest period, but soon you're too tired to continue
 ~time_passes(2,1,1)
 ->sac_night
@@ -432,6 +421,7 @@ You've now been driving for {day_hours_driven} hours, and are starting to get ti
 * [Go home]You decide to call it a day.
 ->day_1_end
 }
+
 =sac_night
 # button
 # day_1_sf.sac_night
