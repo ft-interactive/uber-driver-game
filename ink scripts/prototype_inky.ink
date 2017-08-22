@@ -284,7 +284,7 @@ MESSAGE FROM UBER - "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} 
 # sf_or_sacramento
 {
 - home=="sf":
-You're in San Francisco, where Uber was first launched.
+You're in San Francisco, Uber's hometown.
 ->weekday_quest_message->day_1_sf
 
 - home=="sac":->day_1_sacramento
@@ -312,7 +312,7 @@ You keep your app on as you drive, and you score a ride as you approach San Fran
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 56)
 ~ alter(day_hours_driven, 2)
-->weekday_quest_message->day_1_sf.sf_afternoon
+->weekday_quest_message->day_1_sf_afternoon
 
 = sac_morning
 # button
@@ -330,7 +330,7 @@ At this rate, you're unlikely to meet your financial target.
 * [Keep driving in Sacramento] ->sac_lunch
 * [Go to San Francisco instead] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
 ~current_city="sf"
-->day_1_sf.sf_afternoon
+->day_1_sf_afternoon
 
 =sac_lunch
 # button
@@ -370,18 +370,18 @@ You call it a day after the evening crowd thins out.
 ~time_passes(4,0,1)
 * [Start driving] 
 
-->sf_morning
+->day_1_sf_morning
 
-= sf_morning
+===day_1_sf_morning===
 # button
-# day_1_sf.sf_morning
+# day_1_sf_morning
 That was a productive morning! You stop for lunch when you spot a Señor Sisig food truck.
 ~time_passes(4,0,1)
 * [🌯] 
-You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
+You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->day_1_sf_afternoon
 
-=sf_afternoon
-# day_1_sf.sf_afternoon
+===day_1_sf_afternoon===
+# day_1_sf_afternoon
 {home=="sac":It's pretty stressful driving in big city like San Francisco, but you think you've made the right decision.}
 {phone_mount==false:
 ->no_phone_mount->sf_evening

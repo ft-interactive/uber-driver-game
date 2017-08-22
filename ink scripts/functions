@@ -42,9 +42,7 @@
 ~ alter(hours_driven_total, hours)
 ~ add_time(hours, 0)
 
-NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares. 
-
-{
+NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares. {
 - quest_rides < 0 :
 ~ quest_rides=0
 
