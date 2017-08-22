@@ -98,14 +98,15 @@ In Hard mode, you live in Sacramento and have bad bank credit.
 ->get_started
 
 =get_started
-# button
+# link
 # get_started
 Remember, you have 7 days to make $1000.
 
 * [Let's go]
-
 ->day_1_start
 
+* [Skip Chris]
+->car_choice
 
 === day_1_start ===
 
@@ -204,8 +205,8 @@ The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_
 # link
 Rent this car?
 
-* [Yes]->chose_car
-* [Go back]->car_choice
++ [Yes]->chose_car
++ [Go back]->car_choice
 
 =chose_car
 # car_choice.chose_car
@@ -374,10 +375,10 @@ You call it a day after the evening crowd thins out.
 = sf_morning
 # button
 # day_1_sf.sf_morning
-You spend a productive morning working, with little downtime in between rides.
-
-# button
-* [That's great!]You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
+That was a productive morning! You stop for lunch when you spot a Señor Sisig food truck.
+~time_passes(4,0,1)
+* [🌯] 
+You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
 
 =sf_afternoon
 # day_1_sf.sf_afternoon
@@ -385,7 +386,7 @@ You spend a productive morning working, with little downtime in between rides.
 {phone_mount==false:
 ->no_phone_mount->sf_evening
 }
-~time_passes(4,0,1)
+
 ->sf_evening
 
 =sf_evening
