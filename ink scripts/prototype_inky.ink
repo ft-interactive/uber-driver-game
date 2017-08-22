@@ -84,19 +84,15 @@ You have one week to try to make $1000. Can you do it?
 # choose_difficulty
 Choose your difficulty level:
 
-In Easy mode, you live in San Francisco and have good bank credit. 
-
-In Hard mode, you live in Sacramento and have bad bank credit.
-
 * [Easy Mode]
 ~ home="sf"
 ~ credit_rating="good"
-You've chosen Easy Mode.
+In Easy mode, you live in San Francisco and have good bank credit. 
 
 * [Hard Mode]
 ~ home="sac"
 ~ credit_rating="bad"
-You've chosen Hard Mode.
+In Hard mode, you live in Sacramento and have bad bank credit.
 
 - ~current_city=home
 ->get_started
@@ -112,12 +108,13 @@ Remember, you have 7 days to make $1000.
 
 
 === day_1_start ===
-# button
+
 # day_1_start
 ~ add_time(0,10)
 You start bright and early on a Monday morning.
 
 Pretty soon, you get your first ride request, from someone called Chris.
+# button
 * [Go pick him up] ->day_1_locate_passenger
 
 ===day_1_locate_passenger===
@@ -132,6 +129,7 @@ You arrive, but don't see anyone waiting for a ride. What do you do?
 # link
 # day_1_locate_passenger.call_chris
 He answers the phone. "I'll be right there! Just coming out now," he says.
+~ add_time(0,3)
 * "Hurry up, will you?"[]
 *"No worries[!"], take your time!"
 - He hangs up. You wait. 
@@ -142,8 +140,6 @@ He answers the phone. "I'll be right there! Just coming out now," he says.
 # day_1_locate_passenger.chris_arrives
 A few minutes later, a flustered man with a big backpack comes out of a nearby apartment and walk towards your car.
 
-~ add_time(0,3)
-
 * "Are you Chris[?"]," you ask.
 ->in_car
 
@@ -151,7 +147,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 # link
 # day_1_locate_passenger.in_car
 "That's me. Sorry about being late," he replies, as he gets in the car.
-
+~ add_time(0, 20)
 * [Drive in silence] You start driving. Chris checks his phone.
 * [Strike up a conversation]"Going camping?"
 "Yeah," Chris replies, brightening up. "Meeting up with a friend, and then we're driving to this amazing place a few hours away. Lemme tell ya..."
@@ -160,7 +156,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 =driving
 # button
 # day_1_locate_passenger.driving
-~ add_time(0, 20)
+
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
 * [Drop him off] 
@@ -168,7 +164,7 @@ Twenty minutes later, you arrive at his destination.
 "Thanks! Sorry again for making you wait," he says as he gets out.
 
 Congratulations! You've just earned your first fare, for $16.
-
+# button
 ** [That was easy]
 ->car_choice
 
@@ -280,14 +276,14 @@ It cost ${accessories_cost}.
 
 
 ===weekday_quest_message===
-# button
+
 # weekday_quest_message
 ~quest_rides=75
 ~quest_bonus=180
 ~weekday_quest_bonus=quest_bonus
 MESSAGE FROM UBER 
 "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
-
+# button
 * [Accept quest]Getting that bonus would really help.
 
 ->->
@@ -390,7 +386,7 @@ You are in San Francisco, one of Uber's bigger markets. Soon, you get your secon
 You spend a productive morning working, with little downtime in between rides.
 
 ~time_passes(4,0,1)
-
+# button
 * [That's great!]You stop for lunch when you spot a Señor Sisig food truck. Their burritos are amazing as always.->sf_afternoon
 
 =sf_afternoon
@@ -580,20 +576,14 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 ->repair
 
 * [Ignore it] 
-->ignore
+~ windshield_cracked=true
+->day_3_morning
 
 =repair
 # button
 # pebble_start.repair
 You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30.
 ~add_time(1,0)
-* [Continue driving]->day_3_morning
-
-=ignore
-# button
-# pebble_start.ignore
-It's nothing to be concerned about.
-~ windshield_cracked=true
 * [Continue driving]->day_3_morning
 
 ===day_3_morning===
@@ -606,18 +596,25 @@ It's nothing to be concerned about.
 }
 
 ===nice_passenger===
-# button
+# link
 # nice_passenger
 ~add_time(0,18)
-You pick up a friendly passenger and have a pleasant chat during the ride before you drop her off.
+You pick up a friendly passenger and have a pleasant chat during the ride.
 
-* [Check your phone]She gave you an 'Excellent Service' badge! 
+* [Give her 4 stars]
+
+* [Give her 5 stars]
+- Soon, you get a notification. She gave you an 'Excellent Service' badge! 
 
 "Friendly and professional. Would ride again" 
 ~ alter(rating,3)
-# button
-** [Nice!] Your rating has gone up to {rating/100}
-~time_passes(2,0,1)
+# link
+** [Keep driving] Nice! Your rating has gone up to {rating/100}.
+** [Reward yourself] You stop for a brief break at Burger King.
+~add_time(0,13)
+// TODO: MONEY
+
+- ~time_passes(2,0,1)
 ->quest_finish->
 ->day_3_quest_near_finish->
 ->day_3_end
@@ -651,7 +648,8 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
         ~ alter(quest_rides, -1)
         ~add_time(1,13)
         ->day_3_end
-* [Call it a day]You still have the whole day tomorrow to finish it. You decide to go home for today.
+* [Call it a day]
+* [Vacuum your car before you call it a day]
 ->day_3_end
 }
 ->->
@@ -660,6 +658,8 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 # day_3_end
 ->quest_finish->
 * [Call it a day]
+
+
 ~ timestamp=1502323200
 ~day_end()
 # button
@@ -831,14 +831,17 @@ You are completely exhausted.
 ===napa===
 # button
 # napa
-"Soon after you arrive, you pick up some tourists who want to go to Napa and drive across the Golden Gate Bridge"
-* ["This is going to take a while..."]The long trip turns out to be a mixed blessing. You're not much closer to finishing your quest, but it nets you $165 in fares, and $100 in tips!
+Soon after you arrive, you pick up some tourists who want to go to Napa and drive across the Golden Gate Bridge. This is going to take a while...
+* [Put your favourite dance mix on Spotify]
+* [Keep the car quiet and professional]
+
+- The long trip turns out to be a mixed blessing. You're not much closer to finishing your quest, but it nets you $165 in fares, and $100 in tips!
 ~ alter(fares_earned,265)
 ~ alter(ride_count,1)
 ~ alter(quest_rides, -1)
 ~ add_time(1,49)
 # button
-    **["Drive into San Francisco"]
+    **[Drive into San Francisco]
 ->day_4_sf
 
 ===day_4_sf===
@@ -1083,9 +1086,9 @@ It's Friday. You get a new quest for the weekend.
 * MESSAGE FROM UBER[]: "New Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Monday May 29, 4 am"
 
 {quest_completion == false:
-    "You are determined to finish this quest after missing out on the last one"
+    You are determined to finish this quest after missing out on the last one.
     - else:
-    "You are determined to finish this quest as well. Bonus payments can really boost your earnings."
+    You are determined to finish this quest as well. Bonus payments can really boost your earnings.
 }
 ~quest_completion=false
 ->day_5_late_start
@@ -1512,7 +1515,8 @@ Without a phone mount, you're left fiddling with your phone on your lap. Soon, a
 # link
 # data_plan
 You get a message from your phone provider: You've reached your data limit this month. 
-*[Upgrade to an unlimited data plan ($20/week)]You decide to upgrade after all.
+*[Upgrade to an unlimited data plan ($20/week)]
+
 ~unlimited_data=true
 ~alter(accessories_cost,20)
 *[Let it go to overage charges($30/week)]For some reason, you decide to pay the overage charges instead.
