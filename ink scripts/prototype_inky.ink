@@ -284,7 +284,7 @@ MESSAGE FROM UBER - "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} 
 # sf_or_sacramento
 {
 - home=="sf":
-You're in San Francisco, Uber's hometown.
+You live in San Francisco, Uber's hometown.
 ->weekday_quest_message->day_1_sf
 
 - home=="sac":->day_1_sacramento
@@ -292,11 +292,9 @@ You're in San Francisco, Uber's hometown.
 === day_1_sacramento ===
 # link
 # day_1_sacramento
-You get back to driving. You're in Sacramento, where the fares are about a third less than in a big city like San Francisco. 
+You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to San Francisco to work there instead?
 
-Do you drive 2 hours to San Francisco to work there instead?
-
-* [Try your luck in SF] You decide to try your luck in San Francisco
+* [Try your luck in SF]
 ~current_city="sf"
 ->go_to_sf
 * [Stay in Sacramento]
@@ -318,9 +316,8 @@ You keep your app on as you drive, and you score a ride as you approach San Fran
 # button
 # day_1_sacramento.sac_morning
 ~time_passes(3,0,1)
-{phone_mount==false:
-->no_phone_mount->stay_or_go_2
-}
+You start driving. It's nice to be in a familiar town.
+*[🚗]
 ->stay_or_go
 
 = stay_or_go
@@ -341,6 +338,11 @@ You like driving in a familiar town. You grab a quick lunch at your favourite bu
 =sac_afternoon
 
 ~time_passes(4,0,1)
+
+{phone_mount==false:
+->no_phone_mount->stay_or_go_2
+}
+
 ->stay_or_go_2
 
 =stay_or_go_2
@@ -377,46 +379,50 @@ You call it a day after the evening crowd thins out.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯] You spot a Señor Sisig food truck and decide to go for burritos
-* [🍕] You grab a quick slice of pepperoni.
+* [🌯] You spot a Señor Sisig food truck and decide on burritos
+* [🍕] You grab a quick slice of pepperoni
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
 # day_1_sf_afternoon
 {home=="sac":It's pretty stressful driving in big city like San Francisco, but you think you've made the right decision.}
 {phone_mount==false:
-->no_phone_mount->sf_evening
+->no_phone_mount->day_1_sf_evening
 }
 
-->sf_evening
+~time_passes(4,0,1)
+*[Back to driving]
 
-=sf_evening
+->day_1_sf_evening
+
+===day_1_sf_evening===
 # button
-# day_1_sf.sf_evening
+# day_1_sf_evening
 {no_phone_mount: 
 
 You get back online just in time for the busy evening period.
 ~time_passes(3,1,1)
-*[Phew!]
+*[🚗]
 
-Time to catch up!
+You've now been driving for {day_hours_driven} hours, and are starting to get tired. Call it a day?
 
-
-
-# button
+# link
     **[Not a bad day, overall]
     ->day_1_end
 
 - else: 
 # link
-You've now been driving for {day_hours_driven} hours, and are starting to get tired.
-* {home=="sac"}[Head home to Sacramento]You get home by 10pm, and get a good night's rest.
 
+
+You've now been driving for {day_hours_driven} hours, and are starting to get tired.
+
+* {home=="sac"}[Head home to Sacramento]You get home by 10pm, and get a good night's rest.
 ->day_1_end
 
 * [Keep driving]The evening is the busiest period, but soon you're too tired to continue
 ~time_passes(2,1,1)
 ->sac_night
+
 * {gym_member}[Freshen up at the gym]You feel much better after a quick shower at the gym. You do good business during the busy evening period. 
 ~time_passes(3,1,1)
 ->sac_night
