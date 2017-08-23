@@ -69,7 +69,6 @@ link = choice
 
 ->welcome
 === welcome ===
-
 # welcome
 Welcome! You're a full-time Uber driver trying to make ends meet.
 
@@ -267,7 +266,6 @@ It cost ${accessories_cost}.
 ** [Get back to driving]
 -> sf_or_sacramento
 
-
 ===weekday_quest_message===
 
 # weekday_quest_message
@@ -292,11 +290,12 @@ You live in San Francisco, Uber's hometown.
 === day_1_sacramento ===
 # link
 # day_1_sacramento
-You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to San Francisco to work there instead?
+You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to work in SF instead?
 
 * [Try your luck in SF]
 ~current_city="sf"
 ->go_to_sf
+
 * [Stay in Sacramento]
 ->weekday_quest_message-> sac_morning
 
@@ -304,16 +303,42 @@ You live in Sacramento, where fares are a third less than in a bigger city like 
 # button
 # day_1_sacramento.go_to_sf
 ~ add_time(2,0)
-You keep your app on, and score a ride as you approach SF that takes you all the way into the city.
-
-* [Can't believe I just made $56!]
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 56)
 ~ alter(day_hours_driven, 2)
 ~ alter(ride_count_total, 1)
 ~ alter(fares_earned_total, 56)
 ~ alter(hours_driven_total, 2)
-->weekday_quest_message->day_1_sf_afternoon
+You keep the app on, and score a ride as you approach SF that takes you all the way into the city.
+
+* [Can't believe I just made $56!]You check your phone as you arrive in SF.
+
+->weekday_quest_message->day_1_sac_afternoon_in_sf
+
+=day_1_sac_afternoon_in_sf
+SF is a lot busier than Sacramento. It's pretty stressful driving here.
+
+{phone_mount==false: 
+~time_passes(3,0,1)
+- else:
+~time_passes(5,0,1)
+}
+*[🚗]
+{phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf}
+
+->day_1_sac_evening_in_sf
+
+=day_1_sac_evening_in_sf
+{no_phone_mount:
+You get back online just in time for the busy evening period.
+- else:Coming to SF was definitely the right decision.
+}
+
+
+->day_1_end
+
+
+
 
 = sac_morning
 # day_1_sacramento.sac_morning
@@ -327,7 +352,8 @@ You start driving.
 # link
 # day_1_sacramento.stay_or_go
 You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000 by the end of the week.
-* [Stay in Sacramento] ->sac_lunch
+* [Stay in Sacramento] 
+->sac_lunch
 * [Go to San Francisco] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
 ~current_city="sf"
 ->day_1_sf_afternoon
@@ -343,8 +369,6 @@ You like driving in a familiar town, especially since it means you can get lunch
 
 =sac_afternoon
 
-
-
 {phone_mount==false:
 ->no_phone_mount->stay_or_go_2
 }
@@ -354,7 +378,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 =stay_or_go_2
 # link
 # day_1_sacramento.stay_or_go_2
-It's 5pm, and you've only earned ${day_fares_earned}.
+It's 4pm, and you've only earned ${day_fares_earned}.
 * [Call it a day] You head home, in time for dinner.-> day_1_end
 * [Keep going] Things should pick up during rush hour and dinner time. ->sac_evening
 * [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to San Francisco. You decide to stay in Sacramento, regretting that you didn't go earlier.->sac_evening
@@ -391,7 +415,7 @@ That was a productive morning! You decide to stop for lunch.
 
 ===day_1_sf_afternoon===
 # day_1_sf_afternoon
-{home=="sac":It's pretty stressful driving in big city like San Francisco, but you think you've made the right decision.}
+
 {phone_mount==false:
 ->no_phone_mount->day_1_sf_evening
 }
@@ -404,15 +428,16 @@ That was a productive morning! You decide to stop for lunch.
 ===day_1_sf_evening===
 # button
 # day_1_sf_evening
-{no_phone_mount: 
-
-You get back online just in time for the busy evening period.
+{no_phone_mount: You get back online just in time for the busy evening period.}
 ~time_passes(3,1,1)
 *[🚗]
+->day_1_sf_keep_going  
+ 
+===day_1_sf_keep_going===
 
-You've now been driving for {day_hours_driven} hours, and are starting to get tired. Call it a day?
-
+You've been driving for {day_hours_driven} hours, and are starting to get tired.
 # link
+    **[Keep driving]
     **[Not a bad day, overall]
     ->day_1_end
 
@@ -435,7 +460,7 @@ You've now been driving for {day_hours_driven} hours, and are starting to get ti
 
 * [Go home]You decide to call it a day.
 ->day_1_end
-}
+
 
 =sac_night
 # button
@@ -1518,7 +1543,6 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~phone_mount=true 
 ~alter(accessories_cost,25)
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25.
-
 ->->
 
 ===data_plan===
