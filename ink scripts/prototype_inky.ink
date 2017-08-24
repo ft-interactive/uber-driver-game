@@ -492,19 +492,17 @@ That was a productive morning! You decide to stop for lunch.
 # day_1_sf_afternoon
 
 {phone_mount==false:
-->no_phone_mount->day_1_sf_evening
+->no_phone_mount->day_1_sf_evening_mount
 - else:
 
 ~time_passes(5,0,1)
 # button
 *[Back to driving]
 
-->day_1_sf_evening
+->day_1_sf_keep_going
 }
-===day_1_sf_evening===
 
-# day_1_sf_evening
-{no_phone_mount: 
+===day_1_sf_evening_mount===
 You get back online just in time for the busy evening period.
 ~time_passes(2,1,1)
 # button
@@ -512,14 +510,12 @@ You get back online just in time for the busy evening period.
 
 ->day_1_sf_keep_going 
 
-- else:
-->day_1_sf_keep_going 
-}
  
 ===day_1_sf_keep_going===
-
-It's starting to get late.
 # link
+It's starting to get late.
+
+
 * [Go home]->go_home
 * [Keep driving]->keep_driving
 * {gym_member} [Freshen up at the gym]->gym
