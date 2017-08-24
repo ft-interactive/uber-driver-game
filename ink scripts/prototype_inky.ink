@@ -105,6 +105,7 @@ Remember, you have 7 days to make $1000.
 ->day_1_start
 
 * [Skip Chris]
+~add_time(0,38)
 ->car_choice
 
 === day_1_start ===
@@ -339,7 +340,11 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ->day_1_sac_evening_in_sf
 
 ===day_1_sac_evening_in_sf===
-Coming to SF was definitely the right decision. But after driving for so long, you're starting to get hungry.
+{sac_morning:
+After driving for so long, you're starting to get hungry.
+
+-else: Coming to SF was definitely the right decision. But after driving for so long, you're starting to get hungry.
+}
 
 ~add_time(0,30)
 * [🌯] You spot a Señor Sisig food truck and decide on burritos
@@ -401,7 +406,8 @@ You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000
 ->sac_lunch
 * [Go to San Francisco] There's still time to salvage today, you think.
 ~current_city="sf"
-->day_1_sf_afternoon
+
+->day_1_sacramento.go_to_sf
 
 =sac_lunch
 # button
@@ -1590,7 +1596,7 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~current_city="sf"
 }
 #button
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25. {sac_morning: You also use the time to drive to SF}
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25{sac_morning: and make your way to SF}.
 ->->
 
 ===data_plan===
