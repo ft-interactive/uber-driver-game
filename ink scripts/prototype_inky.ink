@@ -502,17 +502,47 @@ That was a productive morning! You decide to stop for lunch.
 ->day_1_sf_evening
 
 ===day_1_sf_evening===
-# button
+
 # day_1_sf_evening
 {no_phone_mount: 
 You get back online just in time for the busy evening period.
-~time_passes(3,1,1)
+~time_passes(2,1,1)
+# button
 *[🚗]
 ->day_1_sf_keep_going 
-}
+
+- else:
 
 It's starting to get late.
+# link
+* [Go home]->go_home
+* [Keep driving]->keep_driving
+* {gym_member} [Freshen up at the gym]->gym
+}
+=go_home
+You decide to go home.
+# button
+*[🚗]
+->day_1_end
 
+=keep_driving
+You keep driving.
+~time_passes(2,1,1)
+# button
+*[🚗]
+->go_home
+
+=gym
+You take a shower at the gym. Feeling refresed, you keep driving.
+~time_passes(3,1,1)
+# button
+*[🚗]
+->go_home
+ 
+===day_1_sf_keep_going===
+
+It's starting to get late.
+# link
 * [Go home]->go_home
 * [Keep driving]->keep_driving
 * {gym_member} [Freshen up at the gym]->gym
@@ -536,47 +566,6 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # button
 *[🚗]
 ->go_home
- 
-===day_1_sf_keep_going===
-
-You've been driving for {day_hours_driven} hours, and are starting to get tired.
-# link
-    **[Keep driving]
-    **[Not a bad day, overall]
-    ->day_1_end
-
-# link
-
-You've now been driving for {day_hours_driven} hours, and are starting to get tired.
-
-* {home=="sac"}[Head home to Sacramento]You get home by 10pm, and get a good night's rest.
-->day_1_end
-
-* [Keep driving]The evening is the busiest period, but soon you're too tired to continue
-~time_passes(2,1,1)
-->sac_night
-
-* {gym_member}[Freshen up at the gym]You feel much better after a quick shower at the gym. You do good business during the busy evening period. 
-~time_passes(3,1,1)
-->sac_night
-
-* [Go home]You decide to call it a day.
-->day_1_end
-
-
-=sac_night
-# button
-# day_1_sf.sac_night
-{home=="sf":->day_1_end}
-{gym_member: 
-You drive 2 hours back home to Sacramento. It's pretty late by the time you get back.
-
-~add_time(2,13)
-
-- else: You're dead tired by the time you head back. Fortunately you manage to stay awake and arrive home without getting into an accident.
-}
-
-* [End day 1]->day_1_end
 
 === day_1_end ===
 # button
