@@ -294,7 +294,6 @@ You live in San Francisco, Uber's hometown.
 You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to work in SF instead?
 
 * [Try your luck in SF]
-~current_city="sf"
 ->go_to_sf
 
 * [Stay in Sacramento]
@@ -310,16 +309,25 @@ You live in Sacramento, where fares are a third less than in a bigger city like 
 ~ alter(ride_count_total, 1)
 ~ alter(fares_earned_total, 56)
 ~ alter(hours_driven_total, 2)
+~ current_city="sf"
 You keep the app on, and score a ride as you approach SF that takes you all the way into the city.
 
-* [Can't believe I just made $56!]You check your phone as you arrive in SF.
-
+* [Can't believe I just made $56!]
+{sac_morning.stay_or_go:
+->day_1_sac_afternoon_in_sf
+- else: You check your phone as you arrive in SF.
 ->weekday_quest_message->day_1_sac_afternoon_in_sf
+}
 
 ===day_1_sac_afternoon_in_sf===
 SF is a lot busier than Sacramento. It's pretty stressful driving here.
 
-{phone_mount==false: 
+{
+- phone_mount==false: 
+~time_passes(3,0,1)
+- sac_morning && no_phone_mount:
+~time_passes(2,0,1)
+- sac_morning.stay_or_go:
 ~time_passes(3,0,1)
 - else:
 ~time_passes(7,0,1)
@@ -380,8 +388,10 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 You start driving.
 # button
 *[🚗]
+{phone_mount==false:
+->no_phone_mount->day_1_sac_afternoon_in_sf
+}
 ->stay_or_go
-
 = stay_or_go
 # link
 # day_1_sacramento.stay_or_go
@@ -389,7 +399,7 @@ You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000
 
 * [Stay in Sacramento] 
 ->sac_lunch
-* [Go to San Francisco] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
+* [Go to San Francisco] There's still time to salvage today, you think.
 ~current_city="sf"
 ->day_1_sf_afternoon
 
@@ -478,7 +488,6 @@ You've been driving for {day_hours_driven} hours, and are starting to get tired.
 
 - else: 
 # link
-
 
 You've now been driving for {day_hours_driven} hours, and are starting to get tired.
 
@@ -1577,8 +1586,11 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
+{sac_morning:
+~current_city="sf"
+}
 #button
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25.
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25. {sac_morning: You also use the time to drive to SF}
 ->->
 
 ===data_plan===
