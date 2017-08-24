@@ -347,7 +347,7 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯] You spot a Señor Sisig food truck and decide on burritos
+* [🌯] You go for burritos
 * [🍕] You grab a quick slice of pepperoni
 
 - ->day_1_sac_night_in_sf
@@ -367,7 +367,7 @@ It's getting late and you have a two hour drive to get back home.
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
-You decide to go home
+You decide to go home.
 ~add_time(2,4)
 # button
 *[🚗]
@@ -431,19 +431,43 @@ You like driving in a familiar town, especially since it means you can get lunch
 # day_1_sacramento.stay_or_go_2
 It's 4pm, and you've only earned ${day_fares_earned}.
 * [Call it a day] You head home, in time for dinner.-> day_1_end
-* [Keep going] Things should pick up during rush hour and dinner time. ->sac_evening
-* [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to San Francisco. You decide to stay in Sacramento, regretting that you didn't go earlier.->sac_evening
+* [Keep going] Things should pick up during rush hour and dinner time. ->sac_late_afternoon
+* [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to SF. You decide to stay in Sacramento, regretting that you didn't go earlier.->sac_late_afternoon
+
+=sac_late_afternoon
+# day_1_sacramento.sac_late_afternoon
+
+~time_passes(3,0,1)
+# button
+*[🚗]->sac_evening
 
 =sac_evening
+It's starting to get late.
+
+* [Go home]->go_home
+* [Keep driving]->keep_driving
+* {gym_member} [Freshen up at the gym]->gym
+
+=go_home
+You decide to go home.
 # button
-# day_1_sacramento.sac_evening
-You start getting more ride requests, and drive until the evening crowd thins out.
-~time_passes(3,1,1)
-
-You call it a day after the evening crowd thins out.
-
-*[End day 1]
+*[🚗]
 ->day_1_end
+
+=keep_driving
+You keep driving.
+~time_passes(2,1,1)
+# button
+*[🚗]
+->go_home
+
+=gym
+You take a shower at the gym. Feeling refresed, you keep driving.
+~time_passes(3,1,1)
+# button
+*[🚗]
+->go_home
+
 
 === day_1_sf ===
 
@@ -471,7 +495,8 @@ That was a productive morning! You decide to stop for lunch.
 ->no_phone_mount->day_1_sf_evening
 }
 
-~time_passes(4,0,1)
+~time_passes(5,0,1)
+# button
 *[Back to driving]
 
 ->day_1_sf_evening
@@ -479,10 +504,38 @@ That was a productive morning! You decide to stop for lunch.
 ===day_1_sf_evening===
 # button
 # day_1_sf_evening
-{no_phone_mount: You get back online just in time for the busy evening period.}
+{no_phone_mount: 
+You get back online just in time for the busy evening period.
 ~time_passes(3,1,1)
 *[🚗]
-->day_1_sf_keep_going  
+->day_1_sf_keep_going 
+}
+
+It's starting to get late.
+
+* [Go home]->go_home
+* [Keep driving]->keep_driving
+* {gym_member} [Freshen up at the gym]->gym
+
+=go_home
+You decide to go home.
+# button
+*[🚗]
+->day_1_end
+
+=keep_driving
+You keep driving.
+~time_passes(2,1,1)
+# button
+*[🚗]
+->go_home
+
+=gym
+You take a shower at the gym. Feeling refresed, you keep driving.
+~time_passes(3,1,1)
+# button
+*[🚗]
+->go_home
  
 ===day_1_sf_keep_going===
 
@@ -492,7 +545,6 @@ You've been driving for {day_hours_driven} hours, and are starting to get tired.
     **[Not a bad day, overall]
     ->day_1_end
 
-- else: 
 # link
 
 You've now been driving for {day_hours_driven} hours, and are starting to get tired.
