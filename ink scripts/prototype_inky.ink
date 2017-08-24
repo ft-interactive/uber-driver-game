@@ -450,6 +450,7 @@ It's starting to get late.
 
 =go_home
 You decide to go home.
+~add_time(0,23)
 # button
 *[🚗]
 ->day_1_end
@@ -513,15 +514,15 @@ You get back online just in time for the busy evening period.
  
 ===day_1_sf_keep_going===
 # link
-It's starting to get late.
-
-
+It's starting to get late
+# link
 * [Go home]->go_home
 * [Keep driving]->keep_driving
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
 You decide to go home.
+~add_time(0,23)
 # button
 *[🚗]
 ->day_1_end
