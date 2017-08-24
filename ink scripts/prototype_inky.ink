@@ -263,6 +263,7 @@ You leased the {car}. You also bought insurance for ${insurance} a week.
 It cost ${accessories_cost}.
 
 } 
+# button
 ** [Get back to driving]
 -> sf_or_sacramento
 
@@ -321,7 +322,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 {phone_mount==false: 
 ~time_passes(3,0,1)
 - else:
-~time_passes(5,0,1)
+~time_passes(7,0,1)
 }
 #button
 *[🚗]
@@ -330,12 +331,13 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ->day_1_sac_evening_in_sf
 
 ===day_1_sac_evening_in_sf===
-{no_phone_mount:
-You get back online just in time for the busy evening period.
-- else:Coming to SF was definitely the right decision.
-}
+Coming to SF was definitely the right decision. But after driving for so long, you're starting to get hungry.
 
-->day_1_end
+~add_time(0,30)
+* [🌯] You spot a Señor Sisig food truck and decide on burritos
+* [🍕] You grab a quick slice of pepperoni
+
+- ->day_1_sac_night_in_sf
 
 ===day_1_sac_evening_in_sf_mount===
 You get back online just in time for the busy evening period. 
@@ -354,19 +356,21 @@ It's getting late and you have a two hour drive to get back home.
 =go_home
 You decide to go home
 ~add_time(2,4)
-#button
+# button
 *[🚗]
 ->day_1_end
 
 =keep_driving
 You keep driving.
 ~time_passes(2,1,1)
+# button
 *[🚗]
 ->go_home
 
 =gym
-~time_passes(3,1,1)
 You take a shower at the gym. Feeling refresed, you keep driving.
+~time_passes(3,1,1)
+# button
 *[🚗]
 ->go_home
 
