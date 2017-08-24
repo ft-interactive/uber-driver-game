@@ -315,7 +315,7 @@ You keep the app on, and score a ride as you approach SF that takes you all the 
 
 ->weekday_quest_message->day_1_sac_afternoon_in_sf
 
-=day_1_sac_afternoon_in_sf
+===day_1_sac_afternoon_in_sf===
 SF is a lot busier than Sacramento. It's pretty stressful driving here.
 
 {phone_mount==false: 
@@ -323,24 +323,54 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 - else:
 ~time_passes(5,0,1)
 }
+#button
 *[🚗]
-{phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf}
+{phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
 
-=day_1_sac_evening_in_sf
+===day_1_sac_evening_in_sf===
 {no_phone_mount:
 You get back online just in time for the busy evening period.
 - else:Coming to SF was definitely the right decision.
 }
 
-
 ->day_1_end
 
+===day_1_sac_evening_in_sf_mount===
+You get back online just in time for the busy evening period. 
+~time_passes(2,1,1)
+# button
+*[🚗]
+->day_1_sac_night_in_sf
 
+===day_1_sac_night_in_sf===
+It's getting late and you have a two hour drive to get back home.
 
+* [Go home]->go_home
+* [Keep driving]->keep_driving
+* {gym_member} [Freshen up at the gym]->gym
 
-= sac_morning
+=go_home
+You decide to go home
+~add_time(2,4)
+#button
+*[🚗]
+->day_1_end
+
+=keep_driving
+You keep driving.
+~time_passes(2,1,1)
+*[🚗]
+->go_home
+
+=gym
+~time_passes(3,1,1)
+You take a shower at the gym. Feeling refresed, you keep driving.
+*[🚗]
+->go_home
+
+===sac_morning===
 # day_1_sacramento.sac_morning
 ~time_passes(3,0,1)
 You start driving.
@@ -352,6 +382,7 @@ You start driving.
 # link
 # day_1_sacramento.stay_or_go
 You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000 by the end of the week.
+
 * [Stay in Sacramento] 
 ->sac_lunch
 * [Go to San Francisco] There's still time to salvage today. You cross the Oakland Bay bridge and arrive in San Francisco just after lunch. 
@@ -1542,6 +1573,7 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
+#button
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25.
 ->->
 
