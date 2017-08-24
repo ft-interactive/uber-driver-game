@@ -493,14 +493,14 @@ That was a productive morning! You decide to stop for lunch.
 
 {phone_mount==false:
 ->no_phone_mount->day_1_sf_evening
-}
+- else:
 
 ~time_passes(5,0,1)
 # button
 *[Back to driving]
 
 ->day_1_sf_evening
-
+}
 ===day_1_sf_evening===
 
 # day_1_sf_evening
@@ -509,35 +509,12 @@ You get back online just in time for the busy evening period.
 ~time_passes(2,1,1)
 # button
 *[🚗]
+
 ->day_1_sf_keep_going 
 
 - else:
-
-It's starting to get late.
-# link
-* [Go home]->go_home
-* [Keep driving]->keep_driving
-* {gym_member} [Freshen up at the gym]->gym
+->day_1_sf_keep_going 
 }
-=go_home
-You decide to go home.
-# button
-*[🚗]
-->day_1_end
-
-=keep_driving
-You keep driving.
-~time_passes(2,1,1)
-# button
-*[🚗]
-->go_home
-
-=gym
-You take a shower at the gym. Feeling refresed, you keep driving.
-~time_passes(3,1,1)
-# button
-*[🚗]
-->go_home
  
 ===day_1_sf_keep_going===
 
