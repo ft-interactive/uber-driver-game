@@ -700,7 +700,7 @@ Working is more important. You say you can't make it.
 
 === day_3_start ===
 # day_3_start
-~timestamp=1502265600
+
 It's Wednesday. You're feeling more confident behind the wheel. 
 {home=="sac":
 You head over to San Francisco. <> 
@@ -763,18 +763,22 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 #nice_passenger.reward
 # link
 * [Keep driving] Nice! Your rating has gone up to {rating/100}.
-->day_3_pm
+-> day_3_pm
 * [Reward yourself] You stop for a brief break at Burger King before continuing.
-~add_time(0,13)
 // TODO: MONEY
 -> day_3_pm
 
 
 ===day_3_pm===
-#day_3_afternoon
+#day_3_pm
+{home=="sf":
 ~time_passes(5,0,1)
+-else:
+~time_passes(3,0,1)
+}
 #button
 *[🚗]
+
 ->quest_finish->
 ->day_3_quest_near_finish->
 ->day_3_end
