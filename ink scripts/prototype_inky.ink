@@ -943,47 +943,45 @@ As you head out, you remember that you promised your son to be home by 8pm to he
 {
 - quest_completion==true:
 You take it easy today.
+
 ~time_passes(9,0,1)
-* [Time to go home]You call it a day, making it home in time to spend the evening with your son as you promised.
-~helped_homework=true
-    ->day_4_end
+*[🚗] You make it home in time to spend the evening with your son as you promised.
+    ~helped_homework=true
+    # button
+    **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        ->day_4_end
     
-- quest_completion==false && quest_rides < 15:
+- quest_completion==false && quest_rides < 16:
 It shouldn't be too hard to complete {quest_rides} rides, even in Sacramento.
 
-It takes you {quest_rides>10:most of the day}{quest_rides<10 && quest_rides>3: a few hours}{quest_rides<3: less than two hours} to get enough rides.
-
-You finished the quest! You get the ${quest_bonus} bonus.
-~ alter(day_ride_count, quest_rides)
-~ alter(day_fares_earned, quest_rides*6)
-{
-- quest_rides>10: 
-~alter(day_hours_driven,9)
-~add_time(9,12)
-- quest_rides<10 && quest_rides>3:
-~alter(day_hours_driven,4)
-~add_time(4,21)
-- quest_rides<3:
-~alter(day_hours_driven,2)
-~add_time(2,9)
-}
-~ quest_rides=0
-~quest_completion=true
+~time_passes(9,0,1)
+*[🚗] 
+->quest_finish->
+You make it home in time to spend the evening with your son as you promised.
+    ~helped_homework=true
+    # button
+    **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        ->day_4_end
 ->day_4_end
 
-- quest_completion==false && quest_rides > 35:
-You're unlikely to finish the quest by this point, so you just go where the rides take you. 
+- quest_completion==false && quest_rides > 25:
+With {quest_rides} more rides to go, you're unlikely to finish the quest, so you just take it easy today. 
 
 ~time_passes(9,0,1)
 # button
-* [Time to go home]You call it a day just after 7pm, and make it back home in time to spend the evening with your son, as you promised.
-~helped_homework=true
-    ->day_4_end
+*[🚗] 
+
+You make it home in time to spend the evening with your son as you promised.
+    ~helped_homework=true
+    # button
+    **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        ->day_4_end
 
 - else:
 It might be a stretch to do {quest_rides} rides, especially in Sacramento, but you give it a shot.
 ~ temp remaining=quest_rides-3
-You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+~ time_passing = true
 ~ alter(day_ride_count, remaining)
 ~ alter(day_fares_earned, remaining*6)
 ~ alter(day_hours_driven, 9)
@@ -992,8 +990,9 @@ You drive for 9 hours. During this time, you completed {remaining} rides, and ea
 ~ alter(hours_driven_total, 9)
 ~ add_time(9,12)
 ~ quest_rides=3
+
 # button
-* [MESSAGE FROM UBER] Just three more trips until you complete your quest!
+*[🚗] MESSAGE FROM UBER: Just three more trips until you complete your quest!
 But it's already 7pm and you promised to be home by 8.
 ->quest_nudge
 
