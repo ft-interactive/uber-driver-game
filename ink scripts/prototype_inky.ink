@@ -781,7 +781,11 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 ===day_3_quest_near_finish===
 # link
 # day_3_quest_near_finish
-{quest_rides<5 && quest_rides > 0:
+{
+- quest_rides==0:
+->day_3_end
+
+- quest_rides<5 && quest_rides > 0:
 MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bonus!
 * [Keep driving]As you pull up for the next pick up, you find, annoyingly, that it's for a long trip to the airport.
 ->pickup
@@ -820,21 +824,27 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 =in_hurry
 # day_3_quest_near_finish.in_hurry
 # link
-*[Cancel on her]She shouts at you as you pull away. Fortunately, the rest of the rides were short ones. 
+*[Cancel on her]She shouts at you as you pull away. Fortunately, you quickly get a few short rides. 
     ~ add_time(2,6)
-    # button
-    **[🚗]
-    You finish after two hours.
+    ~ alter(ride_count_total, quest_rides)
+    ~ alter(fares_earned_total, quest_rides*6)
+    ~ alter(hours_driven_total, 2)
     ~ alter(day_ride_count, quest_rides)
     ~ alter(day_fares_earned, quest_rides*6)
     ~ alter(day_hours_driven, 2)
     ~ quest_rides=0
+    # button
+    **[🚗]
+
     ->quest_finish->day_3_end
 
 *[Go to the airport]You take her to the airport.
 
 You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
 ~add_time(1,13)
+~ alter(ride_count_total, 1)
+~ alter(fares_earned_total, 30)
+~ alter(hours_driven_total, 1)
 ~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 30)
 ~ alter(day_hours_driven, 1)
@@ -1266,9 +1276,6 @@ Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides 
 You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 }
 
-~ alter(ride_count_total, day_ride_count)
-~ alter(fares_earned_total, day_fares_earned)
-~ alter(hours_driven_total, day_hours_driven)
 ~ day_ride_count=0
 ~ day_fares_earned=0
 ~ day_hours_driven=0
