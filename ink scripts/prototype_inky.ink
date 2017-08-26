@@ -543,12 +543,11 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 ->go_home
 
 ===day_1_end===
-# button
 # day_1_end
 It's the end of the first day.
 ~ timestamp=1502179200
 ~day_end()
-
+# button
 *[Start day 2]
 ->day_2_begin
 
@@ -618,7 +617,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
 # link
 # dirty_car
 What do you do about your dirty backseat?
-    ~add_time(0, 18)
+
 * [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
     ~add_time(0,13)
     # link
@@ -631,11 +630,7 @@ What do you do about your dirty backseat?
     ** [Decline the ride] You finish cleaning up.
 * [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
     ~ alter(rating,-10) 
-- {rating > 480 :
-    -> day_2_afternoon
-  - else :
-    ->low_rating->day_2_afternoon
-    }
+- ->day_2_afternoon
 
 ===day_2_afternoon===
 # button
@@ -643,7 +638,12 @@ What do you do about your dirty backseat?
 You continue duriving.
 
 ~time_passes(4,0,1)
-*[🚗]->day_2_evening
+*[🚗]
+{rating > 480 :
+    -> day_2_evening
+  - else :
+    ->low_rating->day_2_evening
+    }
 
 ===day_2_evening===
 # day_2_evening
@@ -653,10 +653,12 @@ You get a message from your friend. A group of them are meeting up for dinner an
 * [Yes]
 {home=="sf":
 You deserve a break. You turn off the Uber app and go to dinner with your friends.
-~add_time(2,26)
+
 ->dinner
 - else:
+
 You want to, but it'll take too long to get back to Sacramento. You eat dinner by yourself instead before calling it a day.
+~add_time(2,26)
 ->dinner
 }
 
@@ -677,14 +679,13 @@ Working is more important. You say you can't make it.
 *[🚗]
 ->day_2_end
 === day_2_end ===
-# button
 # day_2_end
 ~timestamp=1502265600
 {home=="sac":
 ~timestamp=1502262000
 }
 ~day_end()
-
+# button
 * [Start Day 3]
 
 -> day_3_start
@@ -695,6 +696,7 @@ Working is more important. You say you can't make it.
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
+~add_time(2,11)
 }
 ->pebble_start
 
@@ -741,19 +743,25 @@ They take an hour to fix your windscreen, and charge you $30.
 You pick up a friendly passenger and have a pleasant chat during the ride.
 
 * [Give her 4 stars]
-
 * [Give her 5 stars]
 - Soon, you get a notification. She gave you an 'Excellent Service' badge! 
 
 "Friendly and professional. Would ride again" 
 ~ alter(rating,3)
+
 # link
 ** [Keep driving] Nice! Your rating has gone up to {rating/100}.
-** [Reward yourself] You stop for a brief break at Burger King.
+** [Reward yourself] You stop for a brief break at Burger King before continuing.
 ~add_time(0,13)
 // TODO: MONEY
+- ->day_3_afternoon
 
-- ~time_passes(2,0,1)
+
+===day_3_afternoon===
+#day_3_afternoon
+~time_passes(2,0,1)
+
+*[🚗]
 ->quest_finish->
 ->day_3_quest_near_finish->
 ->day_3_end
@@ -1661,7 +1669,7 @@ You get a message from your phone provider: You've reached your data limit this 
 
 ~unlimited_data=true
 ~alter(accessories_cost,20)
-*[Let it go to overage charges($30/week)]For some reason, you decide to pay the overage charges instead.
+*[Let it go to overage charges($30/week)]
 ~alter(accessories_cost,30)
 - ->nice_passenger
 
