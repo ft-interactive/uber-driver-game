@@ -578,12 +578,13 @@ You stop to fill up your tank. Do you get a receipt?
 - ->day_2_midpoint
 
 ===day_2_midpoint===
-# button
+
 # day_2_midpoint
 You turn on your Uber app and start driving.
 ~time_passes(3,0,1)
 ~ UberXL()
-* [ok] 
+# button
+*[🚗]
 ->burgers
 
 ===burgers===
@@ -620,6 +621,7 @@ What do you do about your dirty backseat?
 
 * [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
     ~add_time(0,13)
+
     # link
     ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
     ~ alter(rating,-10) 
@@ -627,17 +629,19 @@ What do you do about your dirty backseat?
     ~ alter(fares_earned_total,8)
     ~ alter(day_ride_count,1)
     ~ alter(day_fares_earned,8)
+
     ** [Decline the ride] You finish cleaning up.
+
 * [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
     ~ alter(rating,-10) 
+
 - ->day_2_afternoon
 
 ===day_2_afternoon===
 # button
 # day_2_afternoon
-You continue duriving.
 
-~time_passes(4,0,1)
+~time_passes(5,0,1)
 *[🚗]
 {rating > 480 :
     -> day_2_evening
@@ -653,7 +657,7 @@ You get a message from your friend. A group of them are meeting up for dinner an
 * [Yes]
 {home=="sf":
 You deserve a break. You turn off the Uber app and go to dinner with your friends.
-
+~add_time(1,57)
 ->dinner
 - else:
 
@@ -667,6 +671,7 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 =dinner
 #day_2_evening.dinner
 #link
+
 *[🍲]
 ->day_2_end
 
@@ -693,6 +698,7 @@ Working is more important. You say you can't make it.
 === day_3_start ===
 # day_3_start
 ~timestamp=1502265600
+It's Wednesday. You feel you're getting more confident behind the wheel. 
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
@@ -709,7 +715,7 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 * [Repair it immediately]
 ->repair
 
-* [Ignore it] 
+* [Ignore it] It's just a small chip. You don't want to spend the time and money repairing it on a car you leased.
 ~ windshield_cracked=true
 ->day_3_morning
 
@@ -760,7 +766,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 ===day_3_afternoon===
 #day_3_afternoon
 ~time_passes(2,0,1)
-
+#button
 *[🚗]
 ->quest_finish->
 ->day_3_quest_near_finish->
@@ -773,44 +779,58 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 * [Keep driving]As you pull up for the next pick-up, you find, annoyingly, that it's for a long trip to the airport.
     # link
     **[Ask the passenger if you could decline]The passenger says she's in a hurry.
-    # link
-        ***[Cancel on her]She shouts as you as you pull away. Fortunately, the rest of the rides were short ones. You finish after two hours.
-        ~ alter(day_ride_count, quest_rides)
-        ~ alter(day_fares_earned, quest_rides*6)
-        ~ alter(day_hours_driven, 2)
-        ~ add_time(2,6)
-        ~ quest_rides=0
-        ->quest_finish->day_3_end
-        ***[Go to the airport]You take her to the airport. You didn't want to get in the queue for a ride back, so you drive back to town by yourself. You decide to call it a day and finish the quest tomorrow instead. 
+    ->in_hurry
+
+    **[Just go to the airport]You drop her off at the airport. 
+    
+    You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
+    ~add_time(1,13)
+        ***[🚗]
+        You decide to call it a day and finish the quest tomorrow instead.
         ~ alter(day_ride_count, 1)
         ~ alter(day_fares_earned, 30)
         ~ alter(day_hours_driven, 1)
         ~ alter(quest_rides, -1)
-        ~add_time(1,13)
         ->day_3_end
-    **[Just go to the airport]ou take her to the airport. You didn't want to get in the queue for a ride back, so you drive back to town by yourself. You decide to call it a day and finish the quest tomorrow instead.
-        ~ alter(day_ride_count, 1)
-        ~ alter(day_fares_earned, 30)
-        ~ alter(day_hours_driven, 1)
-        ~ alter(quest_rides, -1)
-        ~add_time(1,13)
-        ->day_3_end
-* [Call it a day]
+* [Call it a day] 
+->day_3_end
 * [Vacuum your car before you call it a day]
 ->day_3_end
 }
+=in_hurry
+# day_3_quest_near_finish.in_hurry
+# link
+*[Cancel on her]She shouts at you as you pull away. Fortunately, the rest of the rides were short ones. 
+    ~ add_time(2,6)
+    **[🚗]
+    You finish after two hours.
+    ~ alter(day_ride_count, quest_rides)
+    ~ alter(day_fares_earned, quest_rides*6)
+    ~ alter(day_hours_driven, 2)
+    ~ quest_rides=0
+    ->quest_finish->day_3_end
+
+*[Go to the airport]You take her to the airport.
+
+You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
+~add_time(1,13)
+~ alter(day_ride_count, 1)
+~ alter(day_fares_earned, 30)
+~ alter(day_hours_driven, 1)
+~ alter(quest_rides, -1)
+    **[🚗]
+    You decide to call it a day and finish the quest tomorrow instead.
+    ->day_3_end
+
 ->->
 ===day_3_end===
 # button
 # day_3_end
 ->quest_finish->
-* [Call it a day]
-
-
-~ timestamp=1502323200
 ~day_end()
+~ timestamp=1502352000
 # button
-** [Start day 4] -> day_4_start
+* [Start day 4] -> day_4_start
 
 
 ===day_4_start===
