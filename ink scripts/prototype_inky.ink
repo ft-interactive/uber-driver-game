@@ -998,12 +998,11 @@ NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} 
 ~ alter(ride_count_total, remaining)
 ~ alter(fares_earned_total, remaining*6)
 ~ alter(hours_driven_total, 9)
-~ add_time(9,12)
+~ add_time(9,38)
 ~ quest_rides=3
 
 # button
-*[🚗] MESSAGE FROM UBER: Just three more trips until you complete your quest!
-But it's already 7pm and you promised to be home by 8.
+*[🚗] 
 ->quest_nudge
 
 }
@@ -1011,6 +1010,9 @@ But it's already 7pm and you promised to be home by 8.
 ===quest_nudge===
 # link
 # quest_nudge
+MESSAGE FROM UBER: Just three more trips until you complete your quest!
+But it's already nearly 7pm and you promised to be home by 8.
+
 * [Keep driving] It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 {home=="sac":You drive as quickly as you can to get back to Sacramento, but y}{home=="sf":Y}our son is already asleep by the time you get back. He didn't finish his homework.
 ~ alter(day_ride_count, 3)
@@ -1024,22 +1026,45 @@ But it's already 7pm and you promised to be home by 8.
 ~quest_rides=0
 ->day_4_end
 
-* [Go home]You go home and help your son with his homework before tucking him into bed. He's happy you kept your promise.
-~helped_homework=true
+* [Go home]->went_home
 
+=went_home
+# quest_nudge.went_home
+You go home and help your son with his homework. He's happy you kept your promise.
+~helped_homework=true
+~timestamp=1502400600
+# button
+* [Tuck him into bed]
+->son_asleep
+
+=son_asleep
+# quest_nudge.son_asleep
 It's 10:30pm and you're tired after a long day, but the quest doesn't expire until 4am.
 # link
-** [Go back out]You get back in your car and turn the app back on. It takes you two hours to finish the last three rides, but you finish the quest. You get ${quest_bonus}!
-You are completely exhausted.
+* [Go back out]
+-> go_back_out
+
+* [Go to sleep] You're too exhausted.
+->day_4_end
+
+=go_back_out
+# quest_nudge.go_back_out
+You get back in your car and turn the app back on.
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
+~ alter(day_ride_count, quest_rides)
 ~ alter(fares_earned_total, 19)
 ~ alter(hours_driven_total, 2)
+~ alter(ride_count_total, quest_rides)
 ~ add_time(2,8)
+# button
+*[🚗] 
+It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 ~quest_completion=true
 ~quest_rides=0
-->day_4_end
-** [Go to sleep] You're too exhausted.
+You are completely exhausted.
+# button
+** [💤]
 ->day_4_end
 
 ===napa===

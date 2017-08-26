@@ -1,11 +1,11 @@
 === low_rating ===
 # type: choice
 // arrives here when rating drops below 4.8
-"Your rating has dipped to {rating/100}. If it falls below 4.7, you might be suspended."
-* ["Try extra hard to be nice and to drive carefully"]"Your emotional labour pays off, but leaves you feeling more tired at the end of the day."
+Your rating has dipped to {rating/100}. If it falls below 4.7, you might be suspended.
+* [Try extra hard to be nice and to drive carefully]"Your emotional labour pays off, but leaves you feeling more tired at the end of the day."
     ~alter (rating, 5)
-* ["Stock amenities like water bottles, phone charger and mints"]"You spend $30 buying those things. You're not really sure if they'll have a big impact."
+* [Stock amenities like water bottles, phone charger and mints]You spend $30 buying those things. You're not really sure if they'll have a big impact.
     ~alter (rating, 3)
     ~alter (money, -30)
-* ["I'll worry about it when that's actually about to happen"]"It's not like you earn more money with a higher rating anyways."
+* [I'll worry about it when that's actually about to happen]It's not like you earn more money with a higher rating anyways."
 - ->->
