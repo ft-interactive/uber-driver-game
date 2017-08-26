@@ -778,37 +778,43 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 }
 #button
 *[🚗]
-
 ->quest_finish->
-->day_3_quest_near_finish->
-->day_3_end
+->day_3_quest_near_finish
 ===day_3_quest_near_finish===
 # link
 # day_3_quest_near_finish
 {quest_rides<5 && quest_rides > 0:
 MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bonus!
-* [Keep driving]As you pull up for the next pick-up, you find, annoyingly, that it's for a long trip to the airport.
-    # link
-    **[Ask the passenger if you could decline]The passenger says she's in a hurry.
-    ->in_hurry
-
-    **[Just go to the airport]You drop her off at the airport. 
-    
-    You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
-    ~add_time(1,13)
-    # button
-        ***[🚗]
-        You decide to call it a day and finish the quest tomorrow instead.
-        ~ alter(day_ride_count, 1)
-        ~ alter(day_fares_earned, 30)
-        ~ alter(day_hours_driven, 1)
-        ~ alter(quest_rides, -1)
-        ->day_3_end
+* [Keep driving]As you pull up for the next pick up, you find, annoyingly, that it's for a long trip to the airport.
+->pickup
 * [Call it a day] 
 ->day_3_end
-* [Vacuum your car before you call it a day]
+
+- else:
+* [Call it a day]
+->day_3_end
+* [Vacuum your car before calling it a day]
 ->day_3_end
 }
+
+=pickup
+# link
+*[Ask the passenger if you could decline]The passenger says she's in a hurry.
+    ->in_hurry
+
+*[Just go to the airport]You drop her off at the airport. 
+    
+You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
+~add_time(1,13)
+# button
+    ***[🚗]
+    You decide to call it a day and finish the quest tomorrow instead.
+    ~ alter(day_ride_count, 1)
+    ~ alter(day_fares_earned, 30)
+    ~ alter(day_hours_driven, 1)
+    ~ alter(quest_rides, -1)
+    ->day_3_end
+
 =in_hurry
 # day_3_quest_near_finish.in_hurry
 # link
