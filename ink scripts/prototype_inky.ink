@@ -1013,8 +1013,15 @@ NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} 
 MESSAGE FROM UBER: Just three more trips until you complete your quest!
 But it's already nearly 7pm and you promised to be home by 8.
 
-* [Keep driving] It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
-{home=="sac":You drive as quickly as you can to get back to Sacramento, but y}{home=="sf":Y}our son is already asleep by the time you get back. He didn't finish his homework.
+* [Keep driving]->keep_driving
+
+* [Go home]->went_home
+
+
+=keep_driving
+# quest_nudge.keep_driving
+You call home to say you won't be back. Your son is disappointed.
+~ time_passing=true
 ~ alter(day_ride_count, 3)
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
@@ -1022,11 +1029,20 @@ But it's already nearly 7pm and you promised to be home by 8.
 ~ alter(fares_earned_total, 19)
 ~ alter(hours_driven_total, 2)
 ~ add_time(2,3)
-~quest_completion=true
-~quest_rides=0
-->day_4_end
+# button
+*[🚗] 
+It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 
-* [Go home]->went_home
+    # button
+    ** [Rush home]
+    {
+    - home=="sac" && current_city=="sf":You drive as quickly as you can to get back to Sacramento, but your son is already asleep by the time you get back. He didn't finish his homework.
+    - home=="sf": Your son is already asleep by the time you get back. He didn't finish his homework.
+    - home=="sac" && current_city=="sac": Your son is already asleep by the time you get back. He didn't finish his homework.
+    }
+    ~quest_completion=true
+    ~quest_rides=0
+    ->day_4_end
 
 =went_home
 # quest_nudge.went_home
