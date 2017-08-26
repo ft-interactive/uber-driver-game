@@ -546,27 +546,26 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # button
 # day_1_end
 It's the end of the first day.
-~ timestamp=1502182800 
+~ timestamp=1502182800
 ~day_end()
 
 *[Start day 2]
-
 ->day_2_begin
 
 === day_2_begin ===
 # day_2_start
-It's Tuesday. You start driving.
-
+It's Tuesday. You wake up, tired from having spent a whole day in the car yesterday.
+#button
 {home=="sac":
-~timestamp=1502179200
-You wake up a bit earlier today.
-* [Drive to San Francisco]
-
 ~alter(day_hours_driven,2)
 ~add_time(2,8)
-}
-
+* [Drive to San Francisco]
 ->gas_receipt
+
+- else:
+* [Start driving]
+->gas_receipt
+}
 
 ===gas_receipt===
 # link
