@@ -550,17 +550,10 @@ It's the end of the first day.
 ~day_end()
 
 *[Start day 2]
-->test_scene
 
-===test_scene===
+->day_2_begin
 
-something wrong with day2start?
-* [go to day_2-start]
-->day_2_start
-
-
-
-=== day_2_start ===
+=== day_2_begin ===
 # day_2_start
 It's Tuesday. 
 ~timestamp=1502182800 
