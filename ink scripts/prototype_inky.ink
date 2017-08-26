@@ -525,6 +525,7 @@ You decide to go home.
 ~add_time(0,23)
 # button
 *[🚗]
+
 ->day_1_end
 
 =keep_driving
@@ -541,13 +542,23 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 *[🚗]
 ->go_home
 
-=== day_1_end ===
+===day_1_end===
 # button
 # day_1_end
 It's the end of the first day.
 ~ timestamp=1502150400
 ~day_end()
-*[Start day 2]->day_2_start
+
+*[Start day 2]
+->test_scene
+
+===test_scene===
+
+something wrong with day2start?
+* [go to day_2-start]
+->day_2_start
+
+
 
 === day_2_start ===
 # day_2_start
@@ -562,7 +573,9 @@ You wake up a bit earlier today.
 ~alter(day_hours_driven,2)
 ~add_time(2,8)
 }
-- ->gas_receipt
+
+
+->gas_receipt
 
 ===gas_receipt===
 # link
