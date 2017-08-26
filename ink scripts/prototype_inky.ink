@@ -909,6 +909,7 @@ Today is the last day to complete enough rides for the bonus.
 # link
 # day_4_start.day_4_quest_impossible
 There's no way you'll complete enough rides to finish the quest. Do you want to take the day off and start afresh when you get a new quest on Friday?
+
 * [Take day off]
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest.
 ~helped_homework=true
@@ -1006,12 +1007,11 @@ NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} 
 ->quest_nudge
 
 }
-
 ===quest_nudge===
 # link
 # quest_nudge
-MESSAGE FROM UBER: Just three more trips until you complete your quest!
-But it's already nearly 7pm and you promised to be home by 8.
+MESSAGE FROM UBER: Just {quest_rides} more trips until you complete your quest!
+But you promised to be home by 8.
 
 * [Keep driving]->keep_driving
 
@@ -1022,17 +1022,19 @@ But it's already nearly 7pm and you promised to be home by 8.
 # quest_nudge.keep_driving
 You call home to say you won't be back. Your son is disappointed.
 ~ time_passing=true
-~ alter(day_ride_count, 3)
+~ alter(day_ride_count, quest_rides)
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
-~ alter(ride_count_total, 3)
+~ alter(ride_count_total, quest_rides)
 ~ alter(fares_earned_total, 19)
 ~ alter(hours_driven_total, 2)
 ~ add_time(2,3)
 # button
 *[🚗] 
 It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
-
+~ alter(fares_earned_total, quest_bonus)
+~quest_completion=true
+~quest_rides=0
     # button
     ** [Rush home]
     {
@@ -1040,8 +1042,6 @@ It takes you two hours to finish the last {quest_rides} rides, but you finish th
     - home=="sf": Your son is already asleep by the time you get back. He didn't finish his homework.
     - home=="sac" && current_city=="sac": Your son is already asleep by the time you get back. He didn't finish his homework.
     }
-    ~quest_completion=true
-    ~quest_rides=0
     ->day_4_end
 
 =went_home
@@ -1072,6 +1072,7 @@ You get back in your car and turn the app back on.
 ~ alter(fares_earned_total, 19)
 ~ alter(hours_driven_total, 2)
 ~ alter(ride_count_total, quest_rides)
+~ alter(fares_earned_total, quest_bonus)
 ~ add_time(2,8)
 # button
 *[🚗] 
@@ -1086,21 +1087,126 @@ You are completely exhausted.
 ===napa===
 # link
 # napa
-Soon after you arrive, you pick up some tourists who want to go to Napa and drive across the Golden Gate Bridge. This is going to take a while...
+Soon after you arrive, you pick up some tourists who want to drive across the Golden Gate Bridge and go to Napa. This is going to take a while...
 ~ alter(fares_earned_total,265)
 ~ alter(ride_count_total,1)
 ~ alter(day_fares_earned,265)
+~ alter(hours_driven_total,2)
 ~ alter(day_ride_count,1)
 ~ alter(quest_rides, -1)
+~ alter(day_hours_driven,2)
 ~ add_time(1,49)
 * [Put your favourite dance mix on Spotify]
 * [Keep the car quiet and professional]
 
 - The long trip turns out to be a mixed blessing. You're not much closer to finishing your quest, but it nets you $165 in fares, and $100 in tips!
 
+~ current_city="sf"
 # button
-    **[Drive into SF]
+    **[Drive to SF]
 ->day_4_sf
+
+===day_4_sf_from_sac===
+# day_4_sf_from_sac
+~ temp remaining=quest_rides-3
+By now, you've become used to the rhythm of the day and how this works.
+
+{
+- quest_completion==true:
+    Without the pressure to finish the quest, you spend a pretty relaxing day driving.
+    ~time_passes(5,0,1)
+    ~UberXL()
+    # button
+    *[🚗] It's nearly 6. You head back to Sacramento to keep your promise to your son.
+    
+    ~ add_time(1,56)
+    ~ alter(day_hours_driven,2)
+    ~ alter(hours_driven_total,2)
+    # button
+    ** [Go home]
+    ~helped_homework=true
+    You spend a pleasant evening helping your son with his homework.
+    -> day_4_end
+
+- else:
+    ~time_passes(5,0,1)
+    ~UberXL()
+    *[🚗]->time_to_go_home
+}
+
+=time_to_go_home
+# day_4_sf_from_sac.time_to_go_home
+
+{ 
+- quest_completion==true:
+->quest_finish->
+    It's nearly 6. You head back to Sacramento to keep your promise to your son.
+    ~ add_time(1,56)
+    ~ alter(day_hours_driven,2)
+    ~ alter(hours_driven_total,2)
+    # button
+    ** [Go home]
+        ~helped_homework=true
+        You spend a pleasant evening helping your son with his homework.
+        -> day_4_end
+
+- quest_completion==false && quest_rides < 7: 
+    MESSAGE FROM UBER: Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!
+    But you promised to be home by 8.
+    * [Keep driving] ->keep_driving
+    * [Go home] ->go_home
+
+- quest_completion==false && quest_rides > 7: 
+    It doesn't look like you'll be able to finish the quest. 
+    ~ add_time(1,56)
+    ~ alter(day_hours_driven,2)
+    ~ alter(hours_driven_total,2)
+    * [Go home]        
+        ~helped_homework=true
+        You spend a pleasant evening helping your son with his homework.
+        ->day_4_end
+}
+
+=keep_driving
+# day_4_sf_from_sac.keep_driving
+You call home to say you won't make it back. Your son is disappointed.
+{
+- quest_rides== 5 || 6:
+~time_passes(3,1,1)
+- quest_rides== 3 || 4:
+~time_passes(2,1,1)
+- else:
+~time_passes(1,1,1)
+}
+# button
+*[🚗]->home_after_finishing_quest
+
+=home_after_finishing_quest
+# day_4_sf_from_sac.home_after_finishing_quest
+You finished the quest! You get the ${quest_bonus} bonus.
+~ quest_completion = true
+~ alter(fares_earned_total, quest_bonus)
+~ alter(day_hours_driven, 2)
+~ alter(hours_driven_total, 2)
+~ add_time(2,3)
+# link
+*[Feel good about finishing the quest]
+*[Feel bad about breaking your promise]
+You drive as quickly as you can to get back to Sacramento, but your son is already asleep by the time you get back. He didn't finish his homework.
+
+# button
+** [💤]
+->day_4_end
+
+=go_home
+~ add_time(1,56)
+~ alter(day_hours_driven,2)
+~ alter(hours_driven_total,2)
+You get back in time to keep your promise.
+~helped_homework=true
+    # button
+*[Help with homework] You help your son with his maths homework, and tuck him into bed when you're done.
+->day_4_end
 
 ===day_4_sf===
 # link
@@ -1110,7 +1216,7 @@ By now, you've become used to the rhythm of the day and how this works.
 
 { 
 - quest_completion==true:
-You go where the rides take you. It's a pretty normal day.
+Without the pressure to finish the quest, you spend a pretty relaxing day driving.
 
     {home=="sac":
     ~time_passes(5,0,1)
