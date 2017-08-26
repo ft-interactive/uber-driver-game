@@ -640,8 +640,11 @@ What do you do about your dirty backseat?
 ===day_2_afternoon===
 # button
 # day_2_afternoon
-
+{home=="sf":
 ~time_passes(5,0,1)
+- else:
+~time_passes(3,0,1)
+}
 *[🚗]
 {rating > 480 :
     -> day_2_evening
@@ -698,11 +701,11 @@ Working is more important. You say you can't make it.
 === day_3_start ===
 # day_3_start
 ~timestamp=1502265600
-It's Wednesday. You feel you're getting more confident behind the wheel. 
+It's Wednesday. You're feeling more confident behind the wheel. 
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
-~add_time(2,11)
+~add_time(1,48)
 }
 ->pebble_start
 
@@ -754,16 +757,20 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 
 "Friendly and professional. Would ride again" 
 ~ alter(rating,3)
+->reward
 
+=reward
+#nice_passenger.reward
 # link
-** [Keep driving] Nice! Your rating has gone up to {rating/100}.
-** [Reward yourself] You stop for a brief break at Burger King before continuing.
+* [Keep driving] Nice! Your rating has gone up to {rating/100}.
+->day_3_pm
+* [Reward yourself] You stop for a brief break at Burger King before continuing.
 ~add_time(0,13)
 // TODO: MONEY
-- ->day_3_afternoon
+-> day_3_pm
 
 
-===day_3_afternoon===
+===day_3_pm===
 #day_3_afternoon
 ~time_passes(5,0,1)
 #button
