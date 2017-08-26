@@ -546,7 +546,7 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # button
 # day_1_end
 It's the end of the first day.
-~ timestamp=1502182800
+~ timestamp=1502179200
 ~day_end()
 
 *[Start day 2]
@@ -563,7 +563,7 @@ It's Tuesday. You wake up, tired from having spent a whole day in the car yester
 ->gas_receipt
 
 - else:
-* [Start driving]
+* [Get in your car]
 ->gas_receipt
 }
 
@@ -581,6 +581,7 @@ You stop to fill up your tank. Do you get a receipt?
 ===day_2_midpoint===
 # button
 # day_2_midpoint
+You turn on your Uber app and start driving.
 ~time_passes(3,0,1)
 ~ UberXL()
 * [ok] 
@@ -678,9 +679,9 @@ Working is more important. You say you can't make it.
 === day_2_end ===
 # button
 # day_2_end
-~timestamp=1502269200
-{home=="sac":
 ~timestamp=1502265600
+{home=="sac":
+~timestamp=1502262000
 }
 ~day_end()
 
@@ -690,9 +691,8 @@ Working is more important. You say you can't make it.
 
 === day_3_start ===
 # day_3_start
-~timestamp=1502269200
-{home=="sac":
 ~timestamp=1502265600
+{home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
 }
@@ -714,13 +714,20 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 =repair
 # button
 # pebble_start.repair
-You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30.
+You find a nearby auto shop. 
 ~add_time(1,0)
-* [Continue driving]->day_3_morning
+* [🔧]
+They take an hour to fix your windscreen, and charge you $30.
+//TODO: MONEY
+->day_3_morning
 
 ===day_3_morning===
 # day_3_morning
+#button
 ~time_passes(4,0,1)
+
+* [Continue driving]
+
 {unlimited_data==false:
 ->data_plan
 - else:
