@@ -611,7 +611,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ~ alter(rating,-5)
     ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
     ~ dirty=true
-    -- "They finish their burgers. The rest of the trip passes without incident."
+    -- They finish their burgers. The rest of the trip passes without incident.
     ->dirty_car 
     
 ===dirty_car===
@@ -771,11 +771,9 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 
 ===day_3_pm===
 #day_3_pm
-{home=="sf":
+
 ~time_passes(5,0,1)
--else:
-~time_passes(3,0,1)
-}
+
 #button
 *[🚗]
 ->quest_finish->
@@ -791,9 +789,13 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 ->day_3_end
 
 - else:
+It's getting late.
+{home=="sac":
+~add_time(1,52)
+}
 * [Call it a day]
 ->day_3_end
-* [Vacuum your car before calling it a day]
+* [Vacuum your car before calling it a day] You make sure the car is clean for tomorrow.
 ->day_3_end
 }
 
@@ -854,7 +856,6 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 
 ===day_4_start===
 # day_4_start
-~timestamp=1502352000
 { 
 - quest_completion==true:
 ->day_4_quest_completed
@@ -873,10 +874,13 @@ Since you've already finished the quest and the next one won't start until Frida
 * [Take day off]
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest. 
 ~helped_homework=true
+~add_time(14,32)
+    # button
+    ** [An enjoyable day]
 ->day_5_start
 * [Keep working]
-You need every penny you can earn.
 
+You need every penny you can earn.
 ->day_4_morning
 
 =day_4_quest_easy
@@ -898,7 +902,10 @@ There's no way you'll complete enough rides to finish the quest. Do you want to 
 * [Take day off]
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest.
 ~helped_homework=true
-->day_5_start
+~add_time(14,32)
+    # button
+    ** [An enjoyable day]
+    ->day_5_start
 * [Keep working]
 If you can't finish the quest, then it's even more important to earn more fares.->day_4_morning
 
@@ -907,20 +914,22 @@ If you can't finish the quest, then it's even more important to earn more fares.
 # day_4_morning
 As you head out, you remember that you promised your son to be home by 8pm to help him with his homework.
 {home=="sac":
-* [Drive in Sacramento today] You decide to stay.
+* [Drive in Sacramento today]
 ~ current_city = "sac"
 -> day_4_sacramento
 
-* [Go to San Francisco]You decide to go to San Francisco, since you'll get more rides there.
+* [Go to San Francisco]You set off for SF, hoping to get more rides there.
 ~alter(day_hours_driven,2)
 ~add_time(2,3)
 ~ current_city = "sf"
+    **[🚗]
     {quest_rides>2:
     ->napa
     - else:
     ->day_4_sf
     }
 }
+
 {home=="sf":
 # button
 * [I'll be back in time!]
@@ -935,9 +944,10 @@ As you head out, you remember that you promised your son to be home by 8pm to he
 - quest_completion==true:
 You take it easy today.
 ~time_passes(9,0,1)
-* [Time to go home]You call it a day just after 7pm, and make it back home in time to spend the evening with your son, as you promised.
+* [Time to go home]You call it a day, making it home in time to spend the evening with your son as you promised.
 ~helped_homework=true
     ->day_4_end
+    
 - quest_completion==false && quest_rides < 15:
 It shouldn't be too hard to complete {quest_rides} rides, even in Sacramento.
 
@@ -977,6 +987,9 @@ You drive for 9 hours. During this time, you completed {remaining} rides, and ea
 ~ alter(day_ride_count, remaining)
 ~ alter(day_fares_earned, remaining*6)
 ~ alter(day_hours_driven, 9)
+~ alter(ride_count_total, remaining)
+~ alter(fares_earned_total, remaining*6)
+~ alter(hours_driven_total, 9)
 ~ add_time(9,12)
 ~ quest_rides=3
 # button
@@ -994,6 +1007,9 @@ But it's already 7pm and you promised to be home by 8.
 ~ alter(day_ride_count, 3)
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
+~ alter(ride_count_total, 3)
+~ alter(fares_earned_total, 19)
+~ alter(hours_driven_total, 2)
 ~ add_time(2,3)
 ~quest_completion=true
 ~quest_rides=0
@@ -1008,6 +1024,8 @@ It's 10:30pm and you're tired after a long day, but the quest doesn't expire unt
 You are completely exhausted.
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
+~ alter(fares_earned_total, 19)
+~ alter(hours_driven_total, 2)
 ~ add_time(2,8)
 ~quest_completion=true
 ~quest_rides=0
@@ -1016,19 +1034,22 @@ You are completely exhausted.
 ->day_4_end
 
 ===napa===
-# button
+# link
 # napa
 Soon after you arrive, you pick up some tourists who want to go to Napa and drive across the Golden Gate Bridge. This is going to take a while...
+~ alter(fares_earned_total,265)
+~ alter(ride_count_total,1)
+~ alter(day_fares_earned,265)
+~ alter(day_ride_count,1)
+~ alter(quest_rides, -1)
+~ add_time(1,49)
 * [Put your favourite dance mix on Spotify]
 * [Keep the car quiet and professional]
 
 - The long trip turns out to be a mixed blessing. You're not much closer to finishing your quest, but it nets you $165 in fares, and $100 in tips!
-~ alter(fares_earned,265)
-~ alter(ride_count,1)
-~ alter(quest_rides, -1)
-~ add_time(1,49)
+
 # button
-    **[Drive into San Francisco]
+    **[Drive into SF]
 ->day_4_sf
 
 ===day_4_sf===
