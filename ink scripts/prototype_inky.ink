@@ -715,7 +715,7 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 * [Repair it immediately]
 ->repair
 
-* [Ignore it] It's just a small chip. You don't want to spend the time and money repairing it on a car you leased.
+* [Ignore it] It's just a small chip. You don't want to spend the time and money repairing a car you leased.
 ~ windshield_cracked=true
 ->day_3_morning
 
@@ -765,7 +765,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 
 ===day_3_afternoon===
 #day_3_afternoon
-~time_passes(2,0,1)
+~time_passes(5,0,1)
 #button
 *[🚗]
 ->quest_finish->
@@ -785,6 +785,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
     
     You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
     ~add_time(1,13)
+    # button
         ***[🚗]
         You decide to call it a day and finish the quest tomorrow instead.
         ~ alter(day_ride_count, 1)
@@ -802,6 +803,7 @@ MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bo
 # link
 *[Cancel on her]She shouts at you as you pull away. Fortunately, the rest of the rides were short ones. 
     ~ add_time(2,6)
+    # button
     **[🚗]
     You finish after two hours.
     ~ alter(day_ride_count, quest_rides)
@@ -818,6 +820,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 ~ alter(day_fares_earned, 30)
 ~ alter(day_hours_driven, 1)
 ~ alter(quest_rides, -1)
+    # button
     **[🚗]
     You decide to call it a day and finish the quest tomorrow instead.
     ->day_3_end
@@ -826,7 +829,6 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 ===day_3_end===
 # button
 # day_3_end
-->quest_finish->
 ~day_end()
 ~ timestamp=1502352000
 # button
@@ -903,6 +905,7 @@ As you head out, you remember that you promised your son to be home by 8pm to he
     }
 }
 {home=="sf":
+# button
 * [I'll be back in time!]
 ~ current_city = "sf"
 ->day_4_sf
@@ -1037,10 +1040,10 @@ You go where the rides take you. It's a pretty normal day.
     }
 
     {home=="sf":
-    ~time_passes(8,0,1)
+    ~time_passes(9,0,1)
     ~UberXL()
-    *[Time to go home]
-    You call it a day just after 7pm, and make it back home in time to spend the evening with your son, as you promised.
+    *[🚗]
+    You call it a day, and make it back home in time to spend the evening with your son, as you promised.
     ~helped_homework=true
     ->day_4_end
     }
@@ -1212,9 +1215,8 @@ It might be a stretch to do {quest_rides} rides but you give it a shot.
 }
 
 ===day_4_end===
-# button
 # day_4_end
-~timestamp=1502409600
+~timestamp=1502442000
 It's the end of day 4.
 {home=="sac":
 ~alter(hours_driven_total,2)
@@ -1233,14 +1235,13 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 ~ day_ride_count=0
 ~ day_fares_earned=0
 ~ day_hours_driven=0
-
+# button
 *[Start day 5]->day_5_start
 
 
 ===day_5_start===
 # button
 # day_5_start
-~timestamp=1502442000
 ~current_city="sf"
 It's Friday. You get a new quest for the weekend.
 {quest_completion==true:
