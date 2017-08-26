@@ -374,7 +374,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
-You keep driving.
+You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
 *[🚗]
@@ -456,7 +456,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
-You keep driving.
+You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
 *[🚗]
@@ -529,7 +529,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
-You keep driving.
+You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
 *[🚗]
@@ -546,7 +546,7 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # button
 # day_1_end
 It's the end of the first day.
-~ timestamp=1502150400
+~ timestamp=1502182800 
 ~day_end()
 
 *[Start day 2]
@@ -555,8 +555,7 @@ It's the end of the first day.
 
 === day_2_begin ===
 # day_2_start
-It's Tuesday. 
-~timestamp=1502182800 
+It's Tuesday. You start driving.
 
 {home=="sac":
 ~timestamp=1502179200
@@ -566,7 +565,6 @@ You wake up a bit earlier today.
 ~alter(day_hours_driven,2)
 ~add_time(2,8)
 }
-
 
 ->gas_receipt
 
@@ -593,19 +591,20 @@ You stop to fill up your tank. Do you get a receipt?
 # link
 # burgers
 ~temp dirty=false
-You get a trip request from a burger joint, and when you arrive the passengers have two juicy In N Out burgers that they are about to eat in the car.
-
+You get a trip request from a burger joint, and when you arrive the passengers have two juicy In-N-Out burgers that they are about to eat in the car.
+~add_time(0,4)
 * ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
     # link
     ** "No means no[."]," you say, as you cancel their ride.
-    ->day_2_evening
+    ->day_2_afternoon
     
     ** "Oh, alright[."]," you say. They get in the car. <>
     
 * ["Nice! I love burgers too."]They get in the car and you start driving. 
 
 - From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
-~add_time(0,4)
+
+    ~add_time(0,22)
     # link
     ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
     ~ dirty=true 
@@ -613,49 +612,77 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
     ~ dirty=true
     -- "They finish their burgers. The rest of the trip passes without incident."
-    ~add_time(0,22)
     ->dirty_car 
     
 ===dirty_car===
 # link
 # dirty_car
 What do you do about your dirty backseat?
+    ~add_time(0, 18)
 * [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
+    ~add_time(0,13)
     # link
     ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
     ~ alter(rating,-10) 
     ~ alter(ride_count_total,1)
     ~ alter(fares_earned_total,8)
-    ~add_time(0, 18)
+    ~ alter(day_ride_count,1)
+    ~ alter(day_fares_earned,8)
     ** [Decline the ride] You finish cleaning up.
 * [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
-    ~ add_time(0, 24)
     ~ alter(rating,-10) 
 - {rating > 480 :
-    -> day_2_evening
+    -> day_2_afternoon
   - else :
-    ->low_rating->day_2_evening
+    ->low_rating->day_2_afternoon
     }
 
-===day_2_evening===
-# link
-# day_2_evening
+===day_2_afternoon===
+# button
+# day_2_afternoon
+You continue duriving.
+
 ~time_passes(4,0,1)
-You've been driving for a while now. Do you want to push on for the evening peak period?
+*[🚗]->day_2_evening
+
+===day_2_evening===
+# day_2_evening
+# link
+You get a message from your friend. A group of them are meeting up for dinner and asks if you want to join.
 
 * [Yes]
+{home=="sf":
+You deserve a break. You turn off the Uber app and go to dinner with your friends.
+~add_time(2,26)
+->dinner
+- else:
+You want to, but it'll take too long to get back to Sacramento. You eat dinner by yourself instead before calling it a day.
+->dinner
+}
 
-~time_passes(3,1,1)
-
+* [No]
+->keep_working
+=dinner
+#day_2_evening.dinner
+#link
+*[🍲]
 ->day_2_end
 
-* [No]You deserve a break. You meet up with some friends for dinner instead. 
+=keep_working
+#day_2_evening.keep_working
 
+Working is more important. You say you can't make it.
+~time_passes(3,1,1)
+#button
+*[🚗]
 ->day_2_end
 === day_2_end ===
 # button
 # day_2_end
-~timestamp=1502236800
+~timestamp=1502269200
+{home=="sac":
+~timestamp=1502265600
+}
 ~day_end()
 
 * [Start Day 3]
