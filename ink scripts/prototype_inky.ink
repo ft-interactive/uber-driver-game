@@ -1291,6 +1291,7 @@ You take it easy today.
 It's the end of day 4.
 {home=="sac":
 ~alter(hours_driven_total,2)
+~alter(day_hours_driven,2)
 }
 Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
 
@@ -1483,7 +1484,7 @@ You're too tired. You call it a night, and drive back home.
 ->day_5_end
 - else:
 You can barely keep your eyes open on the way back to Sacramento
-~ add_time(2,47)
+~ add_time(2,7)
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
@@ -1720,44 +1721,77 @@ The San Francisco Giants are playing at AT&T park today. Earn a boosted 1.5x far
 # door_dent
 As you finish a ride, the passenger opens the door to get out and hits a lamp post, denting your car door. He is apologetic, but in a rush, and tells you to resolve it with Uber.
 
-*[Report the incident to Uber] You document everything and report the incident to Uber. Uber promises to investigate, but in the meantime your account is suspended.
+*[Report the incident to Uber] You document everything and report the incident to Uber. Uber begins the claim process, but in the meantime your account is suspended.
+    ~timestamp=1502571600
+    # button
+    **[🔧]
+    ->reported
 
-    **[🔧]You spend the rest of the day getting your car fixed and arranging for a different rental car so you can get back on the road.
--> day_6_end
 *[Don't report it] You decide to get it repaired yourself.
 ~add_time(2,21)
 ~alter(fares_earned_total,-100)
     # button
     **[🔧] It takes the mechanics two hours to fix it, and they charge you $100.
-        ~ time_passes(5,0,1)
+        ~ time_passes(3,0,1)
         ***[Keep driving]
         ->day_6_afternoon
+        
+=reported
+# door_dent.reported
+# button
+You spend the rest of the day getting your car fixed and arranging for a different rental car so you can get back on the road.
+*[End day 6]
+-> day_6_end
 
 === day_6_afternoon ===
-# button
+# link
 # day_6_afternoon
+//5:30pm
+You hear on the radio that the baseball game has just ended.
 
-* [Head over to the baseball stadium]
-You make your way to the baseball stadium before the game ends. Sure enough, lots of people are requesting rides there. You get lucky with a relatively long ride to Outer Richmond, and earn $30
+* [Head over to the stadium]
+
+You make your way to the baseball stadium before the game ends.
+Sure enough, lots of people are requesting rides there. 
     ~ alter(day_ride_count, 1)
+    ~ alter(ride_count_total, 1)
+    ~ alter(quest_rides, -1)
     ~ alter(day_fares_earned, 30)
+    ~ alter(fares_earned_total, 30)
     ~add_time(0,48)
 # button
-** [Great!]
+** [Great!] You get lucky with a relatively long ride to Outer Richmond, and earn a boosted $30.
 ->day_6_evening
 
+* [Don't head over] You decide to ignore it.
+
+->day_6_evening
 
 === day_6_evening ===
 # button
 # day_6_evening
 It sure is busy this Saturday evening.
 ~time_passes(3,1,1)
+*[Time to make some money]
+->day_6_go_home
 
-*[It's been a pretty good day] You call it a day
+===day_6_go_home===
+#day_6_go_home
+
+{day_6_slept_in_car:
+You can't wait to go home after two days out driving.
+~ add_time(2,7)
+~ alter(day_hours_driven, 2)
+~ alter(hours_driven_total, 2)
+# button
+* [End day 6] 
+->day_6_end
+- else:
 -> day_6_end
+}
 
 === day_6_end ===
-~timestamp=1502582400
+~timestamp=1502614800
 //sunday midnight
 # button
 # day_6_end
@@ -1776,13 +1810,16 @@ It's been a long week. You idly wonder just how far you've driven.
 * [Good thing you've been keeping track] {home=="sf": You check your notes: 869 miles. That's quite a lot.}{home=="sac":You check your notes: 1567 miles. That's quite a lot.}
 ~miles_tracked=true
 ->->
-* [(shrug emoji)]It doesn't really matter.
+* [¯\_(ツ)_/¯]It doesn't really matter.
 ~miles_tracked=false
 ->->
 
 ===day_7_start===
 # button
 # day_7_start
+
+{door_dent.reported: You manage to get a different {car}, and Uber has reactivated your account.}
+
 ->track_mileage->
 
 It's Sunday! You still need {quest_rides} more rides to get the weekend bonus.
