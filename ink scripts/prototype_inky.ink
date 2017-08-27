@@ -1403,7 +1403,7 @@ You decide to try to catch the evening crowd.
 You take a break to shower and freshen up at the gym before continuing.
 ~time_passes(3,1,1)
 # button
-*[🚗]
+*[🚗]->day_5_evening
 
 ===day_5_evening_start===
 # day_5_evening_start
