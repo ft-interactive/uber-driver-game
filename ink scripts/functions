@@ -57,7 +57,7 @@ Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides 
 { quest_completion==true:
 
 - else:
-You still need {quest_rides} rides before {day_5_start:Sunday | Friday} to get the bonus.
+You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:Sunday | Friday} to get the bonus.
 }
 
 ~ day_ride_count=0

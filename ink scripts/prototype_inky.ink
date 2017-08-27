@@ -895,7 +895,7 @@ You need every penny you can earn.
 
 =day_4_quest_easy
 # day_4_start.day_4_quest_easy
-It should be pretty easy to complete the last few rides for the quest bonus.
+It should be pretty easy to complete the last {quest_rides>1:few} ride{quest_rides>1:s} for the quest bonus.
 
 ->day_4_morning
 
@@ -963,7 +963,7 @@ You take it easy today.
         ->day_4_end
     
 - quest_completion==false && quest_rides < 16:
-It shouldn't be too hard to complete {quest_rides} rides, even in Sacramento.
+It shouldn't be too hard to complete {quest_rides} ride{quest_rides>1:s}, even in Sacramento.
 
 ~time_passes(9,0,1)
 *[🚗] 
@@ -1204,7 +1204,7 @@ You drive as quickly as you can to get back to Sacramento, but your son is alrea
 ~ alter(hours_driven_total,2)
 You get back in time to keep your promise.
 ~helped_homework=true
-    # button
+# button
 *[Help with homework] You help your son with his maths homework, and tuck him into bed when you're done.
 ->day_4_end
 
