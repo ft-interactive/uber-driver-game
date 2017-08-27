@@ -3,9 +3,5 @@
 You finished the quest! You get the ${quest_bonus} bonus.
 ~ quest_completion = true
 ~ alter(fares_earned_total, quest_bonus)
-# button
-*[Well done!]
-->->
 }
 ->->
-

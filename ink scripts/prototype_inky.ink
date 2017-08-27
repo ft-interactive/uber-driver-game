@@ -884,7 +884,11 @@ Since you've already finished the quest and the next one won't start until Frida
 * [Take day off]
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest. 
 ~helped_homework=true
-//TODO: change this time to friday morning time
+{home=="sf":
+~timestamp=1502438400 //Friday 9am
+-else:
+~timestamp=1502434800 // Friday 8am
+}
 ~add_time(14,32)
     # button
     ** [An enjoyable day]
@@ -914,7 +918,11 @@ There's no way you'll complete enough rides to finish the quest. Do you want to 
 * [Take day off]
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest.
 ~helped_homework=true
-//TODO: change this time to friday morning time
+{home=="sf":
+~timestamp=1502438400 //Friday 9am
+-else:
+~timestamp=1502434800 // Friday 8am
+}
 ~add_time(14,32)
     # button
     ** [An enjoyable day]
@@ -1277,7 +1285,9 @@ You take it easy today.
 
 ===day_4_end===
 # day_4_end
-~timestamp=1502442000
+
+~timestamp=1502438400 //9am
+
 It's the end of day 4.
 {home=="sac":
 ~alter(hours_driven_total,2)
@@ -1296,12 +1306,12 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 # button
 *[Start day 5]->day_5_start
 
-
 ===day_5_start===
 # button
 # day_5_start
 ~current_city="sf"
-It's Friday. You get a new quest for the weekend.
+
+It's Friday. You look forward to the lucrative weekend period.
 {quest_completion==true:
 ~weekday_quest_completion=true
 }
@@ -1309,7 +1319,9 @@ It's Friday. You get a new quest for the weekend.
 ~quest_bonus=150
 ~weekend_quest_bonus=quest_bonus
 
-* MESSAGE FROM UBER[]: "New Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Monday May 29, 4 am"
+* NEW UBER QUEST[]: " Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Monday May 29, 4 am"
+# button
+** [Accept quest]
 
 {quest_completion == false:
     You are determined to finish this quest after missing out on the last one.
@@ -1324,145 +1336,234 @@ It's Friday. You get a new quest for the weekend.
 # day_5_late_start
 Friday and Saturday nights are some of the busiest times for rides, but the peak period doesn't start until 10pm.
 
-* [Start at your normal time] ->day_5_daytime
+* [Start driving now] ->day_5_daytime
 
-* [Start driving in the evening] You take a rest and try to nap a bit during the day. {home=="sac":You leave for San Franciso after dinner at home.} 
-~timestamp=1502474400
--> day_5_evening
+* [Start in the evening] You take a rest and try to nap a bit during the day. {home=="sac":You leave for San Franciso after dinner at home.} 
+~timestamp=1502474400 //7pm
+    # button
+    ** [💤]
+-> day_5_evening_start
 
 ===day_5_daytime===
-# link
 # day_5_daytime
 You decide that it's not worth it to disrupt your normal schedule.
 
 {home=="sac": 
 You head into San Francisco at your usual hour.
 ~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ~add_time(2,3)
 ~time_passes(7,0,1)
 - else:
 ~time_passes(9,0,1)
 }
+# button
+*[🚗]
+->day_5_afternoon
 
-* [Call it a day] You're getting tired and decide to go home
+===day_5_afternoon===
+# day_5_afternoon
+# link
+You would normally finish up around now.{home=="sac": Especially since you you have a two hour drive to get back home.}
+
+* [Go home]->go_home
+* [Keep driving] ->keep_driving
+* {gym_member} [Freshen up at the gym]->gym
+
+=go_home
+# day_5_afternoon.go_home
 {home=="sac": 
 ~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ~add_time(2,3)
-}
--> day_5_end
+    On the drive back, you wonder if you made the right decision.
+    # link
+    * It's important to keep to a routine[], you tell yourself.
+    You arrive home.
+    ->day_5_end
+    * Probably should've stuck it out[], but it's too late now.
+    You arrive home.
+    ->day_5_end
 
-* [Keep driving] You decide to try to catch the evening crowd.
+- else:
+    You stick with your routine and call it a day.
+    -> day_5_end
+}
+
+=keep_driving
+# day_5_afternoon.keep_driving
+You decide to try to catch the evening crowd.
+~time_passes(3,1,1)
+# button
+*[🚗] 
 -> day_5_evening
+
+=gym
+# day_5_afternoon.gym
+You take a break to shower and freshen up at the gym before continuing.
+~time_passes(3,1,1)
+# button
+*[🚗]
+
+===day_5_evening_start===
+# day_5_evening_start
+//7pm
+You're refreshed and ready to start driving.
+~ time_passes(2,1,1)
+# button
+*[🚗]->day_5_evening
+
 
 ===day_5_evening===
 # day_5_evening
-~time_passes(2,1,1)
-
-You've just dropped off a passenger in the Financial District in the northeast of San Francisco, when you notice there's surge pricing. 
+//9pm
+As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing. 
 # button
-* Check the app[]: You see there's 3x surge pricing in the Sunset district.
+* Check the app[]: You see 3x surge pricing in the Sunset district on the west wide of town.
 ->surge
-=surge
+
+===surge===
 # link
-# day_5_evening.surge
+# surge
 The 3x fare is attractive, but it might be gone by the time you get to the Sunset district, which is 30 minutes away. 
 
-* [Chase the surge]Tripling your earning is just too tempting. You start driving over to the surge zone, but the roads are busy and the traffic lights are not on your side tonight. 
+* [Chase the surge]->chase_surge 
 
-You are three blocks away when the surge ends. You are annoyed at having wasted half an hour.
+* [Don't chase the surge] ->no_surge
+
+=chase_surge
+# surge.chase_surge
+Tripling your earning is just too tempting. You start driving over to the surge zone.
     ~add_time(0,32)
+# button
+* [Try to get there as fast as possible] The roads are busy and the traffic lights are not on your side tonight. You are three blocks away when the surge ends. 
+~time_passes(3,1,1)
     # button
     **[Darn]
-~time_passes(2,1,1)
+->home_or_not
 
-* [Don't chase the surge]You ignore the message. It'll probably be gone by the time you get there.
+=no_surge
+# surge.no_surge
+You ignore the message. It'll probably be gone by the time you get there.
     # button
-    **[Keep driving]
-    
 ~time_passes(3,1,1)
-- ->home_or_not
+*[Keep driving]
+->home_or_not
 
-=home_or_not
+===home_or_not===
 # link
-# day_5_evening.home_or_not
-~timestamp = 1502496480
-When you can finally take time for a break, it's already past midnight.
+# home_or_not
+//midnight
+{
+- day_5_daytime && gym_member==false && home=="sac":
+    You finally have time for a break. You're dead tired after driving for more than 12 hours straight.
+        
+    * [Go home]->forced_home
+    * [Sleep in your car]->sleep_in_car
 
-* [Go home] 
-{ 
-- day_5_daytime && home=="sac": 
-You're very tired on the drive home. On the way back you've had to pull over and take a nap before you could continue. You don't get back until nearly 3am. 
-~ add_time(2,47)
-->day_5_end
-- day_5_daytime && home=="sf":
-You're too tired. You call it a night, and drive back home. ->day_5_end
+- day_5_daytime && gym_member==false && home=="sf":
+    # button
+    * [Go home]->forced_home
+- day_5_daytime && gym_member==true:
+    You finally have time for a break. You're dead tired after driving for more than 12 hours straight.
+    * [Keep driving]->vomit
+    * [Go home]->forced_home
+    * {home=="sac"}[Sleep in your car]->sleep_in_car
 - else:
-You call it a night, and drive back home. ->day_5_end
+    You finally have time for a break. Night time driving is more tiring than you expected.
+    * [Keep driving]->vomit
+    * [Go home]->forced_home
+    * {home=="sac"}[Sleep in your car]->sleep_in_car
 }
 
-* {day_5_daytime && home=="sac"} [Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
-    ~add_time(0,22)
-    **[zzz] It's not very comfortable, but you eventually fall asleep.
-    ~day_end()
--> day_6_slept_in_car
+===forced_home===
+#forced_home
+{home=="sf":
+You're too tired. You call it a night, and drive back home.
+->day_5_end
+- else:
+You can barely keep your eyes open on the way back to Sacramento
+~ add_time(2,47)
+~ alter(day_hours_driven, 2)
+~ alter(hours_driven_total, 2)
+# button
+* [Take a short nap] You pull over and take a short nap. Eventually you make it home.
+->day_5_end
+}
 
-* [Keep driving] ->vomit
+===sleep_in_car===
+#sleep_in_car
+# button
+You're too tired to drive two hours to go back home. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
+~timestamp=1502524800
+*[zzz] It's not very comfortable, but you eventually fall asleep.
+~day_end()
+    # button
+    ** [Start day 6]
+    -> day_6_slept_in_car
 
 ===vomit===
 # link
 # vomit
-~add_time(0,8)
-You arrive at a pick-up and see a passenger vomiting on the side of the road.
+You arrive at a pick up and see a passenger vomiting on the side of the road.
 
-* [Cancel the ride and drive away] You decide it's not worth it. 
+* [Cancel and drive away] You decide it's not worth it. 
     # link
     ** [Keep driving]
     ->day_5_late_night
-    ** [Call it a night] You decide to call it a night.
-    ->go_home
+    ** [Call it a night]
+    ->forced_home
+    ** {home=="sac"}[Sleep in your car]
+    ->sleep_in_car
 
-* [Let the passenger in]You drive to the destination. As he is getting out, the passenger vomits out the window. Ugh!
-    # button
-    ** [Clean up the mess and notify Uber] 
+* [Let the passenger in]->vomit_ride
+
+=vomit_ride
+#vomit.vomit_ride
+
+You let him get in and take him to his destination. 
+~add_time(0,18)
+# button
+* [🚗] As he is getting out, the passenger vomits out the window. Ugh!
+-> cleanup
+
+=cleanup
+#vomit.cleanup
+# link
+{cleaning_supplies==true:
+~add_time(0,18)
+- else:
+~add_time(0,58)
+~alter(day_hours_driven,1)
+~alter(hours_driven_total,1)
+}
+*[😷]
+
 { cleaning_supplies==true: 
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
-~add_time(0,18)
-    Uber gives you $30 in cleaning fees.
-//TODO: figure out how to record this money
-    ->day_5_late_night
-- else: You don't have any cleaning supplies, and spend some time trying to find a gas station with a convenince store. You eventually clean it all up.
-    Uber gives you $30 in cleaning fees.
-~add_time(0,58)
-//TODO: figure out how to record this money
-    ->day_5_late_night
-}
-    
-=go_home
-# link
-# vomit.go_home
-{home=="sf":
-->day_5_end
-}
-{home=="sac":
-* [Go home] You're very tired on the drive home and had to pull over for a nap before you could continue. You don't get back until nearly 3am. 
-~ add_time(1,47)
--> day_5_end
 
-* [Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
-~add_time(0,18)
-    ~day_end()
-    **[zzz]It's not very comfortable, but you eventually fall asleep.
--> day_6_slept_in_car
+- else: You don't have any cleaning supplies, and spend some time looking for a gas station with a convenince store. You eventually clean it all up.
 }
+    # link
+    ** [Notify Uber]
+    Uber gives you $30 in cleaning fees.
+    ~alter(fares_earned_total,30)
+        # button
+        *** [💵]->day_5_late_night
+    ** [Don't notify Uber]->day_5_late_night
 
 ===day_5_late_night===
 # link
 # day_5_late_night
+
+
+
+
 The late hours are certainly lucrative.
 
 ~time_passes(2,1,1.3) 
 
-{day_5_daytime : You are so tired that you can do nothing more than park your car by the side of the road and sleep -> day_6_slept_in_car }
+{day_5_daytime: You are so tired that you can do nothing more than park your car by the side of the road and sleep -> day_6_slept_in_car }
 
 * [Go home] 
 { home=="sf": ->day_5_end} 
