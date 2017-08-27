@@ -1586,8 +1586,8 @@ It's getting really late.
 
 * [Keep driving] Are you sure you want to keep driving? You can barely keep your eyes open.
     # link
-    ** [🚗]->insist
-    ** [💤]->bed
+    ** [Keep driving]->insist
+    ** [Go home]->bed
 
 =bed
 # day_5_late_late.bed
@@ -1613,13 +1613,16 @@ In your next ride, the passenger complains that you seem sleepy behind the wheel
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
-    ~timestamp=1502524800
+    ~timestamp=1502528400
+    //saturday 9am
         # button
         *** [💤]->day_6_deactivated
     }
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~timestamp=1502528400
+    //saturday 9am
         # button
         *** [💤]->day_6_deactivated
     }
@@ -1628,48 +1631,64 @@ In your next ride, the passenger complains that you seem sleepy behind the wheel
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
-    ~timestamp=1502524800
+    ~timestamp=1502528400
+    //saturday 9am
         # button
         *** [💤]->day_6_deactivated
     }
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~timestamp=1502528400
+    //saturday 9am
         # button
         *** [💤]->day_6_deactivated
     }
 
 ===day_5_end===
 # day_5_end
-~timestamp=1502521200
-//sat 8am
+~timestamp=1502524800
+//sat 9am
 ~day_end()
 * [Start day 6]
 ->day_6_start
 
 ===day_6_deactivated===
-# button
+# link
 # day_6_deactivated
-~timestamp=1502528400
 //saturday 9am
 It's Saturday. 
+{home=="sac": You wake up, briefly forgetting that you're in your car in San Francisco.}
 
-You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off.
+You {home=="sf":wake up and }check your Uber app to find that you're still deactivated. You decide to make the most of your enforced day off.
+->day_6_off
 
+===day_6_off===
+# day_6_off
+# link
+~timestamp=1502573400
+//sat 10:30pm
 * [Spend time with your son]
-~ timestamp=1502559480
-//sat 5:38pm
 You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
 
 {helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
+
+* [Hang out with your friends]
+You spend a relaxing day with your friends. It sure feels good to not have to sit in a car all day. 
+
+* [Do laundry and other chores]
+You finally have some much-needed time to clean up around the house, and spend time with your son.
+
+{helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
+
 # button
-**[You feel refreshed]
+- You feel refreshed.
+** [Start day 7]
 ->day_7_start
 
 
 === day_6_slept_in_car ===
 # day_6_slept_in_car
-~timestamp=1502528400
 You wake up, briefly forgetting that you're in your car in San Francisco.
 
 ->day_6_start
@@ -1679,24 +1698,20 @@ You wake up, briefly forgetting that you're in your car in San Francisco.
 # day_6_start
 It's Saturday. Do you take the day off? It is the weekend, after all.
 
-* [Take day off] You decide to take the day off. You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
-~add_time(10,32)
-{helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
-# button
-**[You feel refreshed]
-->day_7_start
-
+* [Take day off] You decide to take the day off.
+->day_6_off
 * [Go to work] You're not earning when you're not working.
 ->day_6_work
 
 === day_6_work ===
 # button
 # day_6_work
+//9am
 MESSAGE FROM UBER: 
 The San Francisco Giants are playing at AT&T park today. Earn a boosted 1.5x fare for trips from there, from 5pm-6:30pm today 
-
-*[Got it]
 ~ time_passes(3,0,1)
+*[Got it]
+
 
 ->door_dent
 
@@ -1705,16 +1720,23 @@ The San Francisco Giants are playing at AT&T park today. Earn a boosted 1.5x far
 # door_dent
 As you finish a ride, the passenger opens the door to get out and hits a lamp post, denting your car door. He is apologetic, but in a rush, and tells you to resolve it with Uber.
 
-*[Report the incident to Uber] Uber promises to investigate, but in the meantime your account is suspended. There's nothing else you can do today. -> day_6_end
-*[Don't report it] You decide to get it repaired yourself. It takes the mechanics two hours to fix it, and they charge you $100. 
-//TODO money
+*[Report the incident to Uber] You document everything and report the incident to Uber. Uber promises to investigate, but in the meantime your account is suspended.
+
+    **[🔧]You spend the rest of the day getting your car fixed and arranging for a different rental car so you can get back on the road.
+-> day_6_end
+*[Don't report it] You decide to get it repaired yourself.
 ~add_time(2,21)
-->day_6_afternoon
+~alter(fares_earned_total,-100)
+    # button
+    **[🔧] It takes the mechanics two hours to fix it, and they charge you $100.
+        ~ time_passes(5,0,1)
+        ***[Keep driving]
+        ->day_6_afternoon
 
 === day_6_afternoon ===
 # button
 # day_6_afternoon
-~ time_passes(3,0,1)
+
 * [Head over to the baseball stadium]
 You make your way to the baseball stadium before the game ends. Sure enough, lots of people are requesting rides there. You get lucky with a relatively long ride to Outer Richmond, and earn $30
     ~ alter(day_ride_count, 1)
