@@ -1555,51 +1555,96 @@ Luckily, you have cleaning supplies in your trunk. You pull over and spend some 
 ===day_5_late_night===
 # link
 # day_5_late_night
+{day_5_daytime:
+You are so tired you can't drive anymore.
 
+    {home=="sf":
+    ->day_5_end
+    - else: ->sleep_in_car
+    }
 
-
-
-The late hours are certainly lucrative.
-
+- else:
 ~time_passes(2,1,1.3) 
+The late hours are certainly lucrative.
+* [🚗]->day_5_late_late
+}
 
-{day_5_daytime: You are so tired that you can do nothing more than park your car by the side of the road and sleep -> day_6_slept_in_car }
+===day_5_late_late===
+# day_5_late_late
+# link
+It's getting really late.
 
 * [Go home] 
-{ home=="sf": ->day_5_end} 
-You're not used to staying up so late and are very tired on the drive home. You don't get back until nearly 4am. 
-~ timestamp=1502510160
--> day_5_end
+{home=="sf": 
+->day_5_end
+- else: You start driving home but you're too tired.
+    # button
+    **[Sleep in your car]->sleep_in_car
+} 
 
-* {home=="sac"}[Sleep in your car] You're too tired to drive another two hours to go back home. You find a quiet spot to park your car in and spend an uncomfortable night sleeping in your car.
+* {home=="sac"}[Sleep in your car]->sleep_in_car
 
-    **[zzz] It's not very comfortable, but you eventually fall asleep.
-    ~day_end()
-    -> day_6_slept_in_car
+* [Keep driving] Are you sure you want to keep driving? You can barely keep your eyes open.
+    # link
+    ** [🚗]->insist
+    ** [💤]->bed
 
-* [Keep driving] You're really tired by this point but decide to keep going.
+=bed
+# day_5_late_late.bed
+{home=="sf": 
+You go home for some much needed sleep.
+->day_5_end
+- else: You start driving home but you're too tired.
+# button
+*[Sleep in your car]->sleep_in_car
+}
+
+=insist
+#day_5_late_late.insist
+You're really tired but decide to keep going.
 
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
 
 # link
-**[Contact Uber] You call Uber to contest your deactivation. You spend an hour going back and forth with them on the phone, but all you get is a promise that they'll look into it.
+*[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour going back and forth with them on the phone, but all you get is a promise that they'll look into it.
+    ~add_time(0,44)
 # button
-    ***[Go home]
+    **[Go home]
+    {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
-->day_6_deactivated
-
-**[Go home]
-You drive home and collapse into bed.
+    ~timestamp=1502524800
+        # button
+        *** [💤]->day_6_deactivated
+    }
+    {home=="sac":
+    You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
-->day_6_deactivated
-
+        # button
+        *** [💤]->day_6_deactivated
+    }
+*[Don't contact Uber] You're too tired to try to sort this out over the phone right now.
+    **[Go home]
+    {home=="sf":
+    You drive home and collapse into bed.
+    ~day_end()
+    ~timestamp=1502524800
+        # button
+        *** [💤]->day_6_deactivated
+    }
+    {home=="sac":
+    You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
+    ~day_end()
+        # button
+        *** [💤]->day_6_deactivated
+    }
 
 ===day_5_end===
 # day_5_end
-~timestamp=1502514000
-//friday 5am
+~timestamp=1502521200
+//sat 8am
 ~day_end()
+* [Start day 6]
 ->day_6_start
 
 ===day_6_deactivated===
@@ -1607,7 +1652,9 @@ You drive home and collapse into bed.
 # day_6_deactivated
 ~timestamp=1502528400
 //saturday 9am
-It's Saturday. You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off.
+It's Saturday. 
+
+You wake up and check your Uber app to find that you're still deactivated.You decide to make the most of your enforced day off.
 
 * [Spend time with your son]
 ~ timestamp=1502559480
