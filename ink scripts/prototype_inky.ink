@@ -1571,6 +1571,7 @@ You are so tired you can't drive anymore.
 - else:
 ~time_passes(2,1,1.3) 
 The late hours are certainly lucrative.
+# button
 * [🚗]->day_5_late_late
 }
 
@@ -1824,7 +1825,6 @@ It's Sunday! You still need {quest_rides} more rides to get the weekend bonus.
 # link
 # no_drop_zone
 A passenger insists you drop her off at the entrance to the Caltrain station, which is a no-stop zone.
-~add_time(0,19)
 * [Agree to do so]
 ~ temp ticket = RANDOM(1,3)
 {ticket>1: 
@@ -1853,12 +1853,12 @@ You get a traffic ticket (-$260)
 ~ time_passes(3,0,1)
     # button
     **[That's a real setback]
+    ->quest_finish->
     ->track_mileage
 === track_mileage ===
 # track_mileage
 
 It's been a long week. You idly wonder just how far you've driven.
-~time_passes(3,0,1)
 
 # link
 * [Good thing you've been keeping track] {home=="sf": You check your notes: 869 miles. That's quite a lot.}{home=="sac":You check your notes: 1567 miles. That's quite a lot.}
@@ -1872,14 +1872,16 @@ It's been a long week. You idly wonder just how far you've driven.
 ===day_7_afternoon===
 # link
 # day_7_afternoon
-
+~time_passes(3,0,1)
+* [🚗]
 ->quest_finish->
 {windshield_cracked==true:
 ->pebble_crack->
 }
 
 {quest_completion==true:
-*[Call it a day]
+Having finished the quest, you decide to call it a day.
+*[Finish driving] 
 ->day_7_end
 - else:
 *[Keep driving]
@@ -1889,7 +1891,7 @@ It's been a long week. You idly wonder just how far you've driven.
 ===pebble_crack===
 # button
 # pebble_crack
-You are driving when you hear a splintering sound. The chip in your windshield is turning into a crack that is spreading across the whole windshield. You have no choice but to get it repaired
+You are driving when you hear a splintering sound. The chip in your windshield has cracked across the whole windshield. You have no choice but to get it repaired
 ~alter(fares_earned_total,-250)
 ~add_time(1,58)
 * [The mechanic charges you $250]You pay the money, regretting that you didn't get it fixed earlier.
@@ -1899,47 +1901,14 @@ You are driving when you hear a splintering sound. The chip in your windshield i
 ===day_7_evening===
 # link
 # day_7_evening
-~time_passes(3,1,1)
-->quest_finish->
-
 {
--quest_completion==true:
+-quest_rides < 7 && quest_completion==false:
+MESSAGE FROM UBER: Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!
 # button
-*[Call it a day]
-->day_7_end
--quest_rides < 5 && quest_completion==false:
-MESSAGE FROM UBER: Just {quest_rides} more trips until you complete your quest!
-# button
-*[Finish the quest]It doesn't take you long to finish the last {quest_rides} rides. 
+~time_passes(3,0,1)
+*[Finish the quest]
 Congrats! You completed the quest and got an extra ${quest_bonus}.
 ~quest_completion=true
-->day_7_end
-
-- quest_rides>=5 && quest_rides<10:
-You only have {quest_rides} left to do. You could try to finish it by cancelling when you get a long ride. Your rating will suffer though.
-
-# link
-*[Hustle to finish it]It takes you a few hours, but your strategy works, and you complete the last ride needed just before midnight.
-
-~ alter(day_ride_count, quest_rides)
-~ alter(day_fares_earned, quest_rides*5)
-~ alter(day_hours_driven, 4)
-~add_time(3,43)
-
-{ rating > 480: 
-Congrats! You completed the quest and got an extra ${quest_bonus}.
-~quest_completion=true
-->day_7_end
-- else: For some reason, you didn't get the reward.
-    #button
-    ** [Huh?] You re-read the instruction text in the app, and realise, too late, that you didn't the get reward because your rating has dropped too low. 
-        #button
-        ***[That feels like a little bit of a con] You feel cheated but there's not much more to be done. You're shattered after driving for {day_hours_driven} hours, and can only go home to sleep it off.
-        ->day_7_end
-}
-
-*[Just call it a day]It's not worth it. you decide to go home instead.
-
 ->day_7_end
 
 - quest_rides>=10:
@@ -1948,13 +1917,20 @@ You still need too many more rides to complete the quest. There's not much you c
 }
 
 ===day_7_end===
-# button
+
 # day_7_end
 ~day_end()
 {quest_completion==true:
 ~weekend_quest_completion=true
 }
+# button
+*[Finish the week]
+->end_sequence
+
+===end_sequence===
+# end_sequence
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
+# button
 *[See how you did]
 ->results_revenue
 
@@ -2004,7 +1980,7 @@ You finished the weekend quest, earning ${weekend_quest_bonus}.
 You finished the weekday quest, earning ${weekday_quest_bonus}.
 ~alter(revenue_total, weekday_quest_bonus)
 - else:
-You didn't finish either quests.
+You didn't finish either quest.
 }
 
 {revenue_total>=1000: 
