@@ -54,9 +54,7 @@ NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you comple
 }
 Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
 
-{ quest_completion==true:
-
-- else:
+{quest_rides>0:
 You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:Sunday | Friday} to get the bonus.
 }
 
