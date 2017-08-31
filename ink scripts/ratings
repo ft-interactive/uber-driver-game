@@ -1,5 +1,6 @@
 === low_rating ===
-# type: choice
+# low_rating
+# link
 // arrives here when rating drops below 4.8
 Your rating has dipped to {rating/100}. If it falls below 4.7, you might be suspended.
 * [Try extra hard to be nice and to drive carefully]"Your emotional labour pays off, but leaves you feeling more tired at the end of the day."

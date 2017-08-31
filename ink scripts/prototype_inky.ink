@@ -97,16 +97,12 @@ In Hard mode, you live in Sacramento and have bad bank credit.
 ->get_started
 
 =get_started
-# link
 # get_started
 Remember, you have 7 days to make $1000.
 
+# button
 * [Let's go]
 ->day_1_start
-
-* [Skip Chris]
-~add_time(0,38)
-->car_choice
 
 === day_1_start ===
 
@@ -321,6 +317,7 @@ You keep the app on, and score a ride as you approach SF that takes you all the 
 }
 
 ===day_1_sac_afternoon_in_sf===
+# day_1_sac_afternoon_in_sf
 SF is a lot busier than Sacramento. It's pretty stressful driving here.
 
 {
@@ -333,13 +330,16 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 - else:
 ~time_passes(7,0,1)
 }
-#button
+# button
 *[🚗]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
 
 ===day_1_sac_evening_in_sf===
+# day_1_sac_evening_in_sf
+# link
+
 {sac_morning:
 After driving for so long, you're starting to get hungry.
 
@@ -353,6 +353,7 @@ After driving for so long, you're starting to get hungry.
 - ->day_1_sac_night_in_sf
 
 ===day_1_sac_evening_in_sf_mount===
+# day_1_sac_evening_in_sf_mount
 You get back online just in time for the busy evening period. 
 ~time_passes(2,1,1)
 # button
@@ -360,6 +361,8 @@ You get back online just in time for the busy evening period.
 ->day_1_sac_night_in_sf
 
 ===day_1_sac_night_in_sf===
+# day_1_sac_night_in_sf
+# link
 It's getting late and you have a two hour drive to get back home.
 
 * [Go home]->go_home
@@ -367,6 +370,7 @@ It's getting late and you have a two hour drive to get back home.
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
+# day_1_sac_night_in_sf.go_home
 You decide to go home.
 ~add_time(2,4)
 # button
@@ -374,6 +378,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
+# day_1_sac_night_in_sf.keep_driving
 You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
@@ -381,7 +386,8 @@ You call home to say you won't be back for dinner, and keep driving.
 ->go_home
 
 =gym
-You take a shower at the gym. Feeling refresed, you keep driving.
+# day_1_sac_night_in_sf.gym
+You take a shower at the gym. Feeling refreshed, you keep driving.
 ~time_passes(3,1,1)
 # button
 *[🚗]
@@ -419,7 +425,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 * [🌯] ->sac_afternoon
 
 =sac_afternoon
-
+# day_1_sacramento.afternoon
 {phone_mount==false:
 ->no_phone_mount->stay_or_go_2
 }
@@ -442,6 +448,8 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 *[🚗]->sac_evening
 
 =sac_evening
+# day_1_sacramento.sac_evening
+# link
 It's starting to get late.
 
 * [Go home]->go_home
@@ -449,6 +457,7 @@ It's starting to get late.
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
+# day_1_sacramento.go_home
 You decide to go home.
 ~add_time(0,23)
 # button
@@ -456,6 +465,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
+# day_1_sacramento.keep_driving
 You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
@@ -463,6 +473,7 @@ You call home to say you won't be back for dinner, and keep driving.
 ->go_home
 
 =gym
+# day_1_sacramento.gym
 You take a shower at the gym. Feeling refresed, you keep driving.
 ~time_passes(3,1,1)
 # button
@@ -471,7 +482,6 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 
 
 === day_1_sf ===
-
 # button
 # day_1_sf
 
@@ -504,6 +514,7 @@ That was a productive morning! You decide to stop for lunch.
 }
 
 ===day_1_sf_evening_mount===
+# day_1_sf_evening_mount
 You get back online just in time for the busy evening period.
 ~time_passes(2,1,1)
 # button
@@ -513,7 +524,7 @@ You get back online just in time for the busy evening period.
 
  
 ===day_1_sf_keep_going===
-# link
+#day_1_sf_keep_going
 It's starting to get late
 # link
 * [Go home]->go_home
@@ -521,6 +532,7 @@ It's starting to get late
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
+#day_1_sf_keep_going.go_home
 You decide to go home.
 ~add_time(0,23)
 # button
@@ -529,6 +541,7 @@ You decide to go home.
 ->day_1_end
 
 =keep_driving
+#day_1_sf_keep_going.keep_driving
 You call home to say you won't be back for dinner, and keep driving.
 ~time_passes(2,1,1)
 # button
@@ -536,6 +549,7 @@ You call home to say you won't be back for dinner, and keep driving.
 ->go_home
 
 =gym
+#day_1_sf_keep_going.gym
 You take a shower at the gym. Feeling refresed, you keep driving.
 ~time_passes(3,1,1)
 # button
@@ -554,7 +568,7 @@ It's the end of the first day.
 === day_2_begin ===
 # day_2_start
 It's Tuesday. You wake up, tired from having spent a whole day in the car yesterday.
-#button
+# button
 {home=="sac":
 ~alter(day_hours_driven,2)
 ~add_time(2,8)
@@ -578,7 +592,6 @@ You stop to fill up your tank. Do you get a receipt?
 - ->day_2_midpoint
 
 ===day_2_midpoint===
-
 # day_2_midpoint
 You turn on your Uber app and start driving.
 ~time_passes(3,0,1)
@@ -734,7 +747,7 @@ They take an hour to fix your windscreen, and charge you $30.
 
 ===day_3_morning===
 # day_3_morning
-#button
+# button
 ~time_passes(4,0,1)
 
 * [Continue driving]
@@ -760,7 +773,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 ->reward
 
 =reward
-#nice_passenger.reward
+# nice_passenger.reward
 # link
 * [Keep driving] Nice! Your rating has gone up to {rating/100}.
 -> day_3_pm
@@ -778,6 +791,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 *[🚗]
 ->quest_finish->
 ->day_3_quest_near_finish
+
 ===day_3_quest_near_finish===
 # link
 # day_3_quest_near_finish
@@ -804,16 +818,17 @@ It's getting late.
 }
 
 =pickup
+# day_3_quest_near_finish.pickup
 # link
 *[Ask the passenger if you could decline]The passenger says she's in a hurry.
     ->in_hurry
 
-*[Just go to the airport]You drop her off at the airport. 
+*[Just go to the airport]You drop her off at the airport.
     
 You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
 ~add_time(1,13)
 # button
-    ***[🚗]
+    **[🚗]
     You decide to call it a day and finish the quest tomorrow instead.
     ~ alter(day_ride_count, 1)
     ~ alter(day_fares_earned, 30)
@@ -882,6 +897,14 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 # day_4_start.day_4_quest_completed
 Since you've already finished the quest and the next one won't start until Friday, do you want to take the day off?
 * [Take day off]
+->day_off
+
+* [Keep working]
+You need every penny you can earn.
+->day_4_morning
+
+=day_off
+# day_4_start_day_off
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest. 
 ~helped_homework=true
 {home=="sf":
@@ -892,10 +915,6 @@ You spend the day with your family. Your son is glad you made time for him, and 
     # button
     ** [An enjoyable day]
 ->day_5_start
-* [Keep working]
-
-You need every penny you can earn.
-->day_4_morning
 
 =day_4_quest_easy
 # day_4_start.day_4_quest_easy
@@ -915,17 +934,8 @@ Today is the last day to complete enough rides for the bonus.
 There's no way you'll complete enough rides to finish the quest. Do you want to take the day off and start afresh when you get a new quest on Friday?
 
 * [Take day off]
-You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest.
-~helped_homework=true
-{home=="sf":
-~timestamp=1502438400 //Friday 9am
--else:
-~timestamp=1502434800 // Friday 8am
-}
-~add_time(14,32)
-    # button
-    ** [An enjoyable day]
-    ->day_5_start
+->day_off
+
 * [Keep working]
 If you can't finish the quest, then it's even more important to earn more fares.->day_4_morning
 
@@ -1217,6 +1227,7 @@ You drive as quickly as you can to get back to Sacramento, but your son is alrea
 ->day_4_end
 
 =go_home
+# day_4_sf_from_sac.go_home
 ~ add_time(1,56)
 ~ alter(day_hours_driven,2)
 ~ alter(hours_driven_total,2)
@@ -1481,7 +1492,7 @@ You ignore the message. It'll probably be gone by the time you get there.
 }
 
 ===forced_home===
-#forced_home
+# forced_home
 {home=="sf":
 You're too tired. You call it a night, and drive back home.
 ->day_5_end
@@ -1496,7 +1507,7 @@ You can barely keep your eyes open on the way back to Sacramento
 }
 
 ===sleep_in_car===
-#sleep_in_car
+# sleep_in_car
 # button
 You're too tired to drive two hours to go back home. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
 ~timestamp=1502524800
@@ -1532,7 +1543,7 @@ You let her get in and drive to her destination.
 -> cleanup
 
 =cleanup
-#vomit.cleanup
+# vomit.cleanup
 
 {cleaning_supplies==true:
 ~add_time(0,18)
@@ -1547,7 +1558,7 @@ You let her get in and drive to her destination.
 { cleaning_supplies==true: 
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
 
-- else: You don't have any cleaning supplies, and spend some time looking for a gas station with a convenince store. You eventually clean it all up.
+- else: You don't have any cleaning supplies, and spend some time looking for a gas station with a convenience store. You eventually clean it all up.
 }
     # link
     ** [Notify Uber]
@@ -1606,7 +1617,7 @@ You go home for some much needed sleep.
 }
 
 =insist
-#day_5_late_late.insist
+# day_5_late_late.insist
 You're really tired but decide to keep going.
 
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
@@ -1784,7 +1795,7 @@ It sure is busy this Saturday evening.
 ->day_6_go_home
 
 ===day_6_go_home===
-#day_6_go_home
+# day_6_go_home
 
 {day_6_slept_in_car:
 You can't wait to go home after two days out driving.
@@ -1995,7 +2006,7 @@ You made ${revenue_total} in total, exceeding your $1000 target.
 
 ===results_costs===
 # button
-#results_costs
+# results_costs
 ~ temp gas=0
 ~ temp days=0
 ~ temp tax=revenue_total/10
