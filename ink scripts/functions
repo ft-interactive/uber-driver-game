@@ -9,6 +9,7 @@
 === function time_passes(hours, peak, mult)  ===
 ~ temp rides=0
 ~ temp fares=0
+~ temp randomised_minutes=RANDOM(0,20)-10
 ~ temp avg_hourly_fare=15.38
 // avg_fare_per_ride=6.83
 
@@ -40,7 +41,7 @@
 ~ alter(ride_count_total, rides)
 ~ alter(fares_earned_total, fares)
 ~ alter(hours_driven_total, hours)
-~ add_time(hours, 0)
+~ add_time(hours, randomised_minutes)
 
 {quest_rides<0: 
 ~quest_rides=0
@@ -49,9 +50,7 @@
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}
 
 === function day_end ===
-{home=="sac":
-~alter(hours_driven_total,2)
-}
+
 Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
 
 {quest_rides>0:

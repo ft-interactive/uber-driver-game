@@ -7,20 +7,15 @@ INCLUDE results
 VAR car="none"
 VAR home="none"
 VAR credit_rating="none"
-VAR car_cost=0
 VAR timestamp=1502092800
 // start time: Monday, August 7, 2017 8:00:00 AM GMT
 
 //accessories variables
 VAR unlimited_data=false
 VAR phone_mount=false
-//VAR charging_cords=false
-//VAR seat_covers=false
 VAR cleaning_supplies=false
 VAR biz_licence=false
 VAR gym_member=false
-//VAR tip_sign=false
-VAR accessories_cost=0
 
 //Vital stats variables
 VAR current_city="none"
@@ -51,8 +46,18 @@ VAR weekday_quest_bonus=0
 VAR weekend_quest_completion=false
 VAR weekend_quest_bonus=0
 
+
+// Variables for the final screens
 VAR revenue_total=0
 VAR cost_total=0
+
+//Cost tracking
+VAR accessories_cost=0
+VAR repair_cost=0
+VAR gas_cost=0
+VAR tax_cost=0
+VAR car_cost=0
+VAR ticket_cost=0
 
 // Social choice variables
 VAR took_day_off=false
@@ -206,7 +211,7 @@ The Prius is fuel efficient, getting up to 50 miles per gallon. {credit_rating =
 
 + [Dodge minivan]
 The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_rating == "good":Your good credit rating means it only costs ${minivan_cost} per week.}{ credit_rating=="bad":Unfortunately,your poor credit means it costs ${minivan_cost} per week.}
-~ car="Minivan"
+~ car="minivan"
 ~ alter(car_cost, minivan_cost)
 ->confirm
 
@@ -234,9 +239,9 @@ Rent this car? You will also buy insurance for ${insurance} a week.
     ~phone_mount=true
     ~alter(accessories_cost,25)
     ->buy_accessories
-* [Cleaning supplies ($40): ]In case someone makes a mess in your car 
+* [Cleaning supplies ($20): ]In case someone makes a mess in your car 
     ~cleaning_supplies=true
-    ~alter(accessories_cost,40)
+    ~alter(accessories_cost,20)
     ->buy_accessories
 * [Business license ($91): ]You are, after all, technically running a business as an independent contracter. 
     ~biz_licence=true
@@ -383,6 +388,8 @@ It's getting late and you have a two hour drive to get back home.
 # day_1_sac_night_in_sf.go_home
 You decide to go home.
 ~add_time(2,4)
+~ alter(day_hours_driven, 2)
+~ alter(hours_driven_total, 2)
 # button
 *[🚗]
 ->day_1_end
@@ -416,7 +423,7 @@ You start driving.
 = stay_or_go
 # link
 # day_1_sacramento.stay_or_go
-You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000 by the end of the week.
+You only earned ${day_fares_earned}. At this rate, you're unlikely to make $850 by the end of the week.
 
 * [Stay in Sacramento] 
 ->sac_lunch
@@ -581,6 +588,7 @@ It's Tuesday. You wake up, tired from having spent a whole day in the car yester
 # button
 {home=="sac":
 ~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ~add_time(2,8)
 * [Drive to San Francisco]
 ->gas_receipt
@@ -715,7 +723,10 @@ Working is more important. You say you can't make it.
 ~timestamp=1502265600
 {home=="sac":
 ~timestamp=1502262000
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 }
+
 ~day_end()
 # button
 * [Start Day 3]
@@ -729,6 +740,7 @@ It's Wednesday. You're feeling more confident behind the wheel.
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ~add_time(1,48)
 }
 ->pebble_start
@@ -752,8 +764,8 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 You find a nearby auto shop. 
 ~add_time(1,0)
 * [🔧]
-They take an hour to fix your windscreen, and charge you $30.
-//TODO: MONEY
+They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
+~alter(repair_cost,30)
 ->day_3_morning
 
 ===day_3_morning===
@@ -774,13 +786,14 @@ They take an hour to fix your windscreen, and charge you $30.
 # nice_passenger
 ~add_time(0,18)
 You pick up a friendly passenger and have a pleasant chat during the ride.
-
+~ alter(fares_earned_total,10)
+~ alter(rating,10)
 * [Give her 4 stars]
 * [Give her 5 stars]
-- Soon, you get a notification. She gave you an 'Excellent Service' badge! 
+- Soon, you get a notification. She gave you an 'Excellent Service' badge, and a $10 tip! 
 
 "Friendly and professional. Would ride again" 
-~ alter(rating,3)
+
 ->reward
 
 =reward
@@ -789,7 +802,6 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 * [Keep driving] Nice! Your rating has gone up to {rating/100}.
 -> day_3_pm
 * [Reward yourself] You stop for a brief break at Burger King before continuing.
-// TODO: MONEY
 -> day_3_pm
 
 
@@ -811,7 +823,8 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 ->day_3_end
 
 - quest_rides<5 && quest_rides > 0:
-MESSAGE FROM UBER: Just {quest_rides} more rides until you get ${quest_bonus} bonus!
+MESSAGE FROM UBER
+Just {quest_rides} more rides until you get ${quest_bonus} bonus!
 * [Keep driving]As you pull up for the next pick up, you find, annoyingly, that it's for a long trip to the airport.
 ->pickup
 * [Call it a day] 
@@ -884,6 +897,10 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 ===day_3_end===
 # button
 # day_3_end
+{home=="sac":
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
+}
 ~day_end()
 ~ timestamp=1502352000
 # button
@@ -962,6 +979,7 @@ As you head out, you remember that you promised your son to be home by {home=="s
 
 * [Go to San Francisco]You set off for SF, hoping to get more rides there.
 ~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ~add_time(2,3)
 ~ current_city = "sf"
     # button
@@ -1527,7 +1545,7 @@ You can barely keep your eyes open on the way back to Sacramento
 You're too tired to drive two hours to go back home. You find a quiet spot to park.
 ~ overnight = true
 ~timestamp=1502524800
-*[zzz] It's not very comfortable, but you eventually fall asleep.
+*[💤] It's not very comfortable, but you eventually fall asleep.
 ~day_end()
     # button
     ** [Start day 6]
@@ -1567,6 +1585,7 @@ You let her get in and drive to her destination.
 ~add_time(0,58)
 ~alter(day_hours_driven,1)
 ~alter(hours_driven_total,1)
+~alter(fares_earned_total,-30)
 }
 # button
 *[😷]
@@ -1574,7 +1593,8 @@ You let her get in and drive to her destination.
 { cleaning_supplies==true: 
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
 
-- else: You don't have any cleaning supplies, and spend some time looking for a gas station with a convenience store. You eventually clean it all up.
+- else: You don't have any cleaning supplies, and spend some time looking for a gas station with a convenience store to buy some. You eventually clean it all up.
+
 }
     # link
     ** [Notify Uber]
@@ -1639,7 +1659,7 @@ You're really tired but decide to keep going.
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
 
 # link
-*[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour going back and forth with them on the phone, but all you get is a promise that they'll look into it.
+*[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour on the phone, but all you get is a promise that they'll look into it.
     ~add_time(0,44)
 # button
     **[Go home]
@@ -1764,9 +1784,9 @@ As you finish a ride, the passenger opens the door to get out and hits a lamp po
 
 *[Don't report it] You decide to get it repaired yourself.
 ~add_time(2,21)
-~alter(fares_earned_total,-100)
+~alter(repair_cost,100)
     # button
-    **[🔧] It takes the mechanics two hours to fix it, and they charge you $100.
+    **[🔧] It takes the mechanics two hours to fix it, and they charge you $100. You put it on your credit card.
         ~ time_passes(3,0,1)
         # button
         ***[Keep driving]
@@ -1874,11 +1894,11 @@ You drop her off quickly. Luckily, there weren't any cops around.
 # no_drop_zone.caught
 As you drop her off, you see a police car pull up behind you. 
 ~ticketed=true
-~ alter(fares_earned_total,-260)
+~ alter(ticket_cost,260)
 
 # button
 *[🚓]
-You get a traffic ticket (-$260)
+You get a traffic ticket (-$260). You'll have to go pay that later.
 ~ time_passes(3,0,1)
     # button
     **[That's a real setback]
@@ -1924,9 +1944,9 @@ Having finished the quest, you decide to call it a day.
 # button
 # pebble_crack
 You are driving when you hear a splintering sound. The chip in your windshield has cracked across the whole windshield. You have no choice but to get it repaired
-~alter(fares_earned_total,-250)
+~alter(repair_cost,-250)
 ~add_time(1,58)
-* [The mechanic charges you $250]You pay the money, regretting that you didn't get it fixed earlier.
+* [The mechanic charges you $250]You put it on your card, regretting that you didn't get it fixed earlier.
 
 ->->
 
@@ -1935,17 +1955,17 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 # day_7_evening
 {
 -quest_rides < 7 && quest_completion==false:
-MESSAGE FROM UBER: Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!
-# button
-~time_passes(3,0,1)
-*[Finish the quest]
-Congrats! You completed the quest and got an extra ${quest_bonus}.
-~quest_completion=true
-->day_7_end
+    MESSAGE FROM UBER: Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!
+    # button
+    ~time_passes(3,0,1)
+    *[Finish the quest]
+    Congrats! You completed the quest and got an extra ${quest_bonus}.
+    ~quest_completion=true
+    ->day_7_end
 
 - quest_rides>=10:
-You still need too many more rides to complete the quest. There's not much you can do about it, so you head home.
-->day_7_end
+    You still need too many more rides to complete the quest. There's not much you can do about it, so you head home.
+    ->day_7_end
 }
 
 ===day_7_end===
@@ -1999,7 +2019,7 @@ You get a message from your phone provider: You've reached your data limit this 
 ~ revenue_total=fares_earned_total
 This week, you drove for {hours_driven_total} hours, completed {ride_count_total} rides, and had a driver rating of {rating/100}
 
-You earned ${fares_earned_total} in fares and tips. {car=="Minivan": Of this, ${XL_total} were extra fares from UberXL rides.} 
+You earned ${fares_earned_total} in fares and tips. {car=="minivan": Of this, ${XL_total} were extra fares from UberXL rides.} 
 {
 - weekend_quest_completion && weekday_quest_completion:
 You finished both quests, earning ${weekend_quest_bonus+weekday_quest_bonus}.
@@ -2028,9 +2048,9 @@ You made ${revenue_total} in total, exceeding your $1000 target.
 ===results_costs===
 # button
 # results_costs
-~ temp gas=0
+
 ~ temp days=0
-~ temp tax=revenue_total/10
+~ tax_cost=revenue_total/10
 ~ temp income=revenue_total
 
 {saturday_off:
@@ -2039,31 +2059,31 @@ You made ${revenue_total} in total, exceeding your $1000 target.
 ~ days=7
 }
 {
-- car=="Minivan" && home=="sf":
-~gas=days*25
+- car=="minivan" && home=="sf":
+~gas_cost=days*25
 
-- car=="Minivan" && home=="sac":
-~gas=days*30
+- car=="minivan" && home=="sac":
+~gas_cost=days*30
 
 - car=="Prius" && home=="sf":
-~gas=days*15
+~gas_cost=days*15
 
 - car=="Prius" && home=="sac":
-~gas=days*20
+~gas_cost=days*20
 }
 To get a true picture of what you earned as an Uber driver, you also have to take into account your costs.
 
 Renting your {car} and buying insurance cost ${car_cost}.
 ~alter(cost_total,car_cost)
 
-You spent ${gas} on gas. {car=="Prius":You saved a lot on gas costs by choosing the Prius over the minivan.} 
-~alter(cost_total,gas)
+You spent ${gas_cost} on gas. {car=="Prius":You saved a lot on gas costs by choosing the Prius over the minivan.} 
+~alter(cost_total,gas_cost)
 You spent ${accessories_cost} buying other gear and services.
 ~alter(cost_total,accessories_cost)
 You also have to file your taxes. {miles_tracked==true: Fortunately, since you tracked your mileage {kept_receipt==true:and kept your gas receipts}, you were able to deduct enough expenses so you don't have to pay any tax.}
 {miles_tracked==false: 
-Unfortunately, since you weren't diligent about tracking your miles {kept_receipt==false:, or keeping your gas receipts}, your tax bill comes to ${tax}. 
-~alter(cost_total,tax)
+Unfortunately, since you weren't diligent about tracking your miles {kept_receipt==false:, or keeping your gas receipts}, your tax bill comes to ${tax_cost}. 
+~alter(cost_total,tax_cost)
 }
 ~alter(income, -cost_total)
 After taking into account your costs, you earned ${income} this week.
