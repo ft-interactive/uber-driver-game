@@ -89,11 +89,11 @@ link = choice
 # welcome
 Welcome! You're a full-time Uber driver trying to make ends meet.
 
-# button 
+
 You have one week to try to make $850 - the average weekly income in the United States.
 
 Can you do it?
-
+# button 
 * [Yep!] 
 ->choose_difficulty
 
@@ -110,7 +110,7 @@ In Easy mode, you live in San Francisco and have good bank credit. You have two 
 * [Hard Mode]
 ~ home="sac"
 ~ credit_rating="bad"
-In Hard mode, you live in Sacramento and have bad bank credit. You have two kids, credit card bills, and a mortgage payment coming due.
+In Hard mode, you live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
 
 - ~current_city=home
 ->get_started
@@ -231,7 +231,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
 # buy_accessories
 {!To prepare for life as a professional driver, you also bought...|What else did you buy?}
 
-* [Upgrade to an unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
+* [Unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
     ~alter(accessories_cost,10)
     ->buy_accessories
@@ -258,7 +258,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
     */
 * [{I didn't buy any of this|I'm done shopping}] 
 { 
-- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It cost ${accessories_cost}. You put it on your credit card so you don't have to pay right away. 
+- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It cost ${accessories_cost}. You used your credit card so you don't have to pay right away. 
 
  - !unlimited_data && !phone_mount && !cleaning_supplies && !biz_licence && !gym_member:You didn't buy anything.
  
@@ -698,11 +698,14 @@ You deserve a break. You turn off the Uber app and go to dinner with your friend
 
 You want to, but it'll take too long to get back to Sacramento. You eat dinner by yourself instead before calling it a day.
 ~add_time(2,26)
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 ->dinner
 }
 
 * [No]
 ->keep_working
+
 =dinner
 #day_2_evening.dinner
 #link
@@ -715,16 +718,21 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 
 Working is more important. You say you can't make it.
 ~time_passes(3,1,1)
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
+~add_time(2,1)
 #button
 *[🚗]
 ->day_2_end
 === day_2_end ===
 # day_2_end
 ~timestamp=1502265600
+{home=="sf":
+You call it a day.
+}
+
 {home=="sac":
-~timestamp=1502262000
-~alter(day_hours_driven,2)
-~alter(hours_driven_total,2)
+~timestamp=1502262000 //Weds 8am
 }
 
 ~day_end()
@@ -1997,7 +2005,7 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~current_city="sf"
 }
 #button
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25{sac_morning: and make your way to SF}.
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to SF}.
 ->->
 
 ===data_plan===
