@@ -45,6 +45,7 @@ VAR weekday_quest_completion=false
 VAR weekday_quest_bonus=0
 VAR weekend_quest_completion=false
 VAR weekend_quest_bonus=0
+VAR finished_quest_on_weds=false
 
 
 // Variables for the final screens
@@ -686,7 +687,7 @@ What do you do about your dirty backseat?
 ===day_2_evening===
 # day_2_evening
 # link
-You get a message from your friend. A group of them are meeting up for dinner {home=="sac":in Sacramento }and asks if you want to join.
+You get a message from your friend. A group of them are meeting up for her birthday dinner {home=="sac":in Sacramento }and asks if you want to join.
 
 * [Yes]
 {home=="sf":
@@ -707,9 +708,8 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 ->keep_working
 
 =dinner
-#day_2_evening.dinner
-#link
-
+# day_2_evening.dinner
+# button
 *[🍲]
 ->day_2_end
 
@@ -733,6 +733,7 @@ You call it a day.
 
 {home=="sac":
 ~timestamp=1502262000 //Weds 8am
+The two-hour drive back to Sacramento is long and boring.
 }
 
 ~day_end()
@@ -796,6 +797,9 @@ They take an hour to fix your windscreen, and charge you $30. You put it on your
 You pick up a friendly passenger and have a pleasant chat during the ride.
 ~ alter(fares_earned_total,10)
 ~ alter(rating,10)
+{rating>500:
+~rating=500
+}
 * [Give her 4 stars]
 * [Give her 5 stars]
 - Soon, you get a notification. She gave you an 'Excellent Service' badge, and a $10 tip! 
@@ -807,7 +811,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 =reward
 # nice_passenger.reward
 # link
-* [Keep driving] Nice! Your rating has gone up to {rating/100}.
+* [Keep driving] Nice!
 -> day_3_pm
 * [Reward yourself] You stop for a brief break at Burger King before continuing.
 -> day_3_pm
@@ -909,11 +913,14 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 }
+{quest_completion==true:
+~finished_quest_on_weds=true
+}
+
 ~day_end()
 ~ timestamp=1502352000
 # button
 * [Start day 4] -> day_4_start
-
 
 ===day_4_start===
 # day_4_start
@@ -1354,8 +1361,11 @@ It's the end of day 4.
 }
 Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
 
-{ quest_completion==true:
+{ 
+- quest_completion==true && finished_quest_on_weds==false:
  You finished the quest and netted a ${quest_bonus} bonus.
+- quest_completion==true && finished_quest_on_weds==true:
+
 - else:
 You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 }
@@ -1379,7 +1389,8 @@ It's Friday. You look forward to the lucrative weekend period.
 ~quest_bonus=150
 ~weekend_quest_bonus=quest_bonus
 
-* NEW UBER QUEST[]: " Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Monday May 29, 4 am"
+* NEW UBER QUEST[] 
+"Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Monday May 29, 4 am"
 # button
 ** [Accept quest]
 
@@ -1424,7 +1435,7 @@ You head into San Francisco at your usual hour.
 ===day_5_afternoon===
 # day_5_afternoon
 # link
-You would normally finish up around now.{home=="sac": Especially since you you have a two hour drive to get back home.}
+You would normally finish up around now. {home=="sac":Especially since you you have a two hour drive to get back home.}
 
 * [Go home]->go_home
 * [Keep driving] ->keep_driving
@@ -1468,7 +1479,13 @@ You take a break to shower and freshen up at the gym before continuing.
 ===day_5_evening_start===
 # day_5_evening_start
 //7pm
-You're refreshed after resting during the day. {home=="sac":You leave for San Franciso after dinner at home.} 
+You're refreshed after resting during the day. {home=="sac":You leave for San Franciso after dinner at home.}
+
+{home=="sac":
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
+~add_time(2,3)
+}
 ~ time_passes(2,1,1)
 # button
 *[🚗]->day_5_evening
@@ -1745,8 +1762,9 @@ You finally have some much-needed time to clean up around the house, and spend t
 
 {helped_homework==false: Your son was still mad at you for letting him down on Thursday, but brightened up significantly by the end of the day.}
 
-# button
+
 - You feel refreshed.
+# button
 ** [Start day 7]
 ->day_7_start
 
@@ -1887,6 +1905,7 @@ A passenger insists you drop her off at the entrance to the Caltrain station, wh
 {ticket>1: 
 You drop her off quickly. Luckily, there weren't any cops around.
     ~time_passes(3,0,1)
+    # button
     ** [Phew!]->track_mileage
 - else: ->caught
 }

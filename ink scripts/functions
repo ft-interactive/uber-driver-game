@@ -51,7 +51,9 @@
 {quest_rides<0: 
 ~quest_rides=0
 }
-
+{quest_rides<1:
+~quest_completion=true
+}
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}
 
 === function day_end ===
@@ -68,7 +70,7 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:Sunday | 
 
 === function UberXL ===
 ~ temp XL_bonus= RANDOM(12,40)
-{car=="Minivan": 
+{car=="minivan": 
     You also got a few UberXL rides that earned you an extra ${XL_bonus}
     ~ alter(day_fares_earned,XL_bonus)
     ~ alter(fares_earned_total, XL_bonus)
