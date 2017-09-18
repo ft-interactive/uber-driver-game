@@ -24,13 +24,11 @@ VAR accessories_cost=0
 
 //Vital stats variables
 VAR current_city="none"
-VAR ride_count=0
-VAR fares_earned=0
-VAR hours_driven=0
+
 VAR day_ride_count=0
 VAR day_fares_earned=0
 VAR day_hours_driven=0
-VAR rating=490
+VAR rating=500
 VAR ride_count_total=0
 VAR fares_earned_total=0
 VAR hours_driven_total=0
@@ -53,12 +51,26 @@ VAR weekday_quest_bonus=0
 VAR weekend_quest_completion=false
 VAR weekend_quest_bonus=0
 
-VAR helped_homework=false
-
 VAR revenue_total=0
 VAR cost_total=0
 
+// Social choice variables
+VAR took_day_off=false
+VAR helped_homework=false
+VAR friends_dinner=false
+VAR overnight=false
+
+/* 
+You and XX% didn’t take a single day off
+You and XX% kept your promise to help your son with his homework
+You and XX% missed meeting your friends for dinner
+You and XX% slept overnight in your car
+You and XX% were good citizens and bought a business licence (VAR biz_licence from accessories)
+Your body is aching after you spend XX hours this week in your car
+*/
+
 // Functional variables
+
 VAR time_passing=false
 
 /* NOTE: for tags,
@@ -73,7 +85,9 @@ link = choice
 Welcome! You're a full-time Uber driver trying to make ends meet.
 
 # button 
-You have one week to try to make $1000. Can you do it?
+You have one week to try to make $850 - the average weekly income in the United States.
+
+Can you do it?
 
 * [Yep!] 
 ->choose_difficulty
@@ -86,19 +100,19 @@ Choose your difficulty level:
 * [Easy Mode]
 ~ home="sf"
 ~ credit_rating="good"
-In Easy mode, you live in San Francisco and have good bank credit. 
+In Easy mode, you live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
 
 * [Hard Mode]
 ~ home="sac"
 ~ credit_rating="bad"
-In Hard mode, you live in Sacramento and have bad bank credit.
+In Hard mode, you live in Sacramento and have bad bank credit. You have two kids, credit card bills, and a mortgage payment coming due.
 
 - ~current_city=home
 ->get_started
 
 =get_started
 # get_started
-Remember, you have 7 days to make $1000.
+Remember, you have 7 days to make $850.
 
 # button
 * [Let's go]
@@ -127,7 +141,7 @@ You arrive, but don't see anyone waiting for a ride. What do you do?
 # day_1_locate_passenger.call_chris
 He answers the phone. "I'll be right there! Just coming out now," he says.
 ~ add_time(0,3)
-* "Hurry up, will you?"[]
+* ["Hurry up, will you?"]
 *"No worries[!"], take your time!"
 - He hangs up. You wait. 
 ->chris_arrives
@@ -199,26 +213,20 @@ The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_
 =confirm
 # car_choice.confirm
 # link
-Rent this car?
+Rent this car? You will also buy insurance for ${insurance} a week.
 
-+ [Yes]->chose_car
-+ [Go back]->car_choice
-
-=chose_car
-# car_choice.chose_car
-# button
-You leased the {car}. You also bought insurance for ${insurance} a week.
++ [Yes]
 ~ alter(car_cost, insurance)
-
-* [Look around your car]
 ->buy_accessories
- 
++ [Go back]
+->car_choice
+
 ===buy_accessories===
 # list
 # buy_accessories
 {!To prepare for life as a professional driver, you also bought...|What else did you buy?}
 
-* [Upgrade to an unlimited data plan ($20/week)]Since you have to be constantly connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
+* [Upgrade to an unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
     ~alter(accessories_cost,10)
     ->buy_accessories
@@ -245,7 +253,7 @@ You leased the {car}. You also bought insurance for ${insurance} a week.
     */
 * [{I didn't buy any of this|I'm done shopping}] 
 { 
-- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It cost ${accessories_cost}.
+- unlimited_data && phone_mount && cleaning_supplies && biz_licence && gym_member:You bought everything. It cost ${accessories_cost}. You put it on your credit card so you don't have to pay right away. 
 
  - !unlimited_data && !phone_mount && !cleaning_supplies && !biz_licence && !gym_member:You didn't buy anything.
  
@@ -257,7 +265,7 @@ You leased the {car}. You also bought insurance for ${insurance} a week.
  {gym_member:Gym membership}
 // {tip_sign:Tip sign}
 
-It cost ${accessories_cost}.
+It cost ${accessories_cost}. You put it on your credit card so you don't have to pay right away.
 
 } 
 # button
@@ -270,7 +278,8 @@ It cost ${accessories_cost}.
 ~quest_rides=75
 ~quest_bonus=180
 ~weekday_quest_bonus=quest_bonus
-MESSAGE FROM UBER - "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
+MESSAGE FROM UBER 
+"Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 # button
 * [Accept quest]Getting that bonus would really help.
 
@@ -285,6 +294,7 @@ You live in San Francisco, Uber's hometown.
 
 - home=="sac":->day_1_sacramento
 }
+
 === day_1_sacramento ===
 # link
 # day_1_sacramento
@@ -668,11 +678,12 @@ What do you do about your dirty backseat?
 ===day_2_evening===
 # day_2_evening
 # link
-You get a message from your friend. A group of them are meeting up for dinner and asks if you want to join.
+You get a message from your friend. A group of them are meeting up for dinner {home=="sac":in Sacramento }and asks if you want to join.
 
 * [Yes]
 {home=="sf":
 You deserve a break. You turn off the Uber app and go to dinner with your friends.
+~ friends_dinner=true
 ~add_time(1,57)
 ->dinner
 - else:
@@ -897,6 +908,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 # day_4_start.day_4_quest_completed
 Since you've already finished the quest and the next one won't start until Friday, do you want to take the day off?
 * [Take day off]
+~ took_day_off=true
 ->day_off
 
 * [Keep working]
@@ -1112,7 +1124,14 @@ You are completely exhausted.
 ===napa===
 # link
 # napa
-Soon after you arrive, you pick up some tourists who want to drive across the Golden Gate Bridge and go to Napa. This is going to take a while...
+Soon after you arrive, you get a long ride alert on your Uber app. Someone is requesting a trip that will take more than 45 minutes to complete.
+* [Accept the ride]->napa_ride
+* [Reject the ride]->day_4_sf_from_sac
+
+=napa_ride
+# napa.napa_ride
+# link
+You pick up some tourists who want to drive across the Golden Gate Bridge and go to Napa.
 ~ alter(fares_earned_total,265)
 ~ alter(ride_count_total,1)
 ~ alter(day_fares_earned,265)
@@ -1432,15 +1451,11 @@ You're refreshed after resting during the day. {home=="sac":You leave for San Fr
 ===day_5_evening===
 # day_5_evening
 //9pm
-As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing. 
-# button
-* [Check the app]You see 3x surge pricing in the Sunset district on the west wide of town.
-->surge
+As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing in the Sunset district. 
 
-===surge===
+The 3x fare is attractive, but Sunset is 30 minutes away. 
+
 # link
-# surge
-The 3x fare is attractive, but it might be gone by the time you get to the Sunset district, which is 30 minutes away. 
 
 * [Chase the surge]->chase_surge 
 
@@ -1459,7 +1474,7 @@ Tripling your earning is just too tempting. You start driving over to the surge 
 
 =no_surge
 # surge.no_surge
-You ignore the message. It'll probably be gone by the time you get there.
+'It'll probably be gone by the time you get there,' you think to yourself.
     # button
 ~time_passes(3,1,1)
 *[Keep driving]
@@ -1509,7 +1524,8 @@ You can barely keep your eyes open on the way back to Sacramento
 ===sleep_in_car===
 # sleep_in_car
 # button
-You're too tired to drive two hours to go back home. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
+You're too tired to drive two hours to go back home. You find a quiet spot to park.
+~ overnight = true
 ~timestamp=1502524800
 *[zzz] It's not very comfortable, but you eventually fall asleep.
 ~day_end()
@@ -1679,6 +1695,7 @@ It's Saturday.
 {home=="sac": You wake up, briefly forgetting that you're in your car in San Francisco.}
 
 You {home=="sf":wake up and }check your Uber app to find that you're still deactivated. You decide to make the most of your enforced day off.
+
 ->day_6_off
 
 ===day_6_off===
@@ -1686,6 +1703,7 @@ You {home=="sf":wake up and }check your Uber app to find that you're still deact
 # link
 ~timestamp=1502573400
 //sat 10:30pm
+~took_day_off=true
 * [Spend time with your son]
 You spend a relaxing afternoon in the park with your son. It sure feels good to not have to sit in a car all day. 
 
@@ -1718,7 +1736,7 @@ It's Saturday. Do you take the day off? It is the weekend, after all.
 
 * [Take day off] You decide to take the day off.
 ->day_6_off
-* [Go to work] You're not earning when you're not working.
+* [Go to work]
 ->day_6_work
 
 === day_6_work ===
@@ -1881,9 +1899,10 @@ It's been a long week. You idly wonder just how far you've driven.
 - ->day_7_afternoon
 
 ===day_7_afternoon===
-# link
+
 # day_7_afternoon
 ~time_passes(3,0,1)
+# button
 * [🚗]
 ->quest_finish->
 {windshield_cracked==true:
@@ -1892,9 +1911,11 @@ It's been a long week. You idly wonder just how far you've driven.
 
 {quest_completion==true:
 Having finished the quest, you decide to call it a day.
+# button
 *[Finish driving] 
 ->day_7_end
 - else:
+# button
 *[Keep driving]
 ->day_7_evening
 }
@@ -2041,7 +2062,7 @@ You spent ${accessories_cost} buying other gear and services.
 ~alter(cost_total,accessories_cost)
 You also have to file your taxes. {miles_tracked==true: Fortunately, since you tracked your mileage {kept_receipt==true:and kept your gas receipts}, you were able to deduct enough expenses so you don't have to pay any tax.}
 {miles_tracked==false: 
-Unfortunately, since you weren't diligent about tracking your miles {!kept_receipt:, or keeping your gas receipts}, your tax bill comes to ${tax}. 
+Unfortunately, since you weren't diligent about tracking your miles {kept_receipt==false:, or keeping your gas receipts}, your tax bill comes to ${tax}. 
 ~alter(cost_total,tax)
 }
 ~alter(income, -cost_total)
