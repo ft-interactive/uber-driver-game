@@ -3,18 +3,6 @@
 @import 'o-buttons/main';
 @import 'components/core/main';
 
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
-  src: local('vendor/Material Icons'),
-       local('vendor/MaterialIcons-Regular'),
-       url(vendor/MaterialIcons-Regular.woff2) format('woff2'),
-       url(vendor/MaterialIcons-Regular.woff) format('woff'),
-       url(vendor/MaterialIcons-Regular.ttf) format('truetype');
-}
-
 html {
   background-color: #333;
 
