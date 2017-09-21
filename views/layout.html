@@ -23,38 +23,39 @@
 
     <main role="main">
       <article class="article" itemscope itemtype="http://schema.org/Article">
-        <div class="article-head o-grid-container">
-          <div class="o-grid-row">
-            <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-              {% block article_head %}
-              {% include "includes/article-head.html" %}
-              {% endblock %}
-            </header>
-          </div>
-        </div>
-        <div class="article-body o-typography-wrapper" itemprop="articleBody">
+        <div class="game-container">
+          <div class="tint"></div>
 
-          <div class="o-grid-container">
+          <div class="article-head o-grid-container">
             <div class="o-grid-row">
-              <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-                <div>
-                  {% block article_body %}{% endblock %}
-                </div>
-              </div>
+              <header data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
+                <a href="https://www.ft.com/" class="logo" data-anime-left="true">
+                  <img src="https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1%3Abrand-ft-logo-square?source=ig&tint=%23fff&quality=high" alt="FT">
+                </a>
+
+                {% if flags.shareButtons %}
+                {% include "includes/share.html" %}
+                {% endif %}
+              </header>
             </div>
           </div>
 
-          <footer class="o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <div class="article-body o-typography-body-wrapper" itemprop="articleBody">
+            <div class="screen-container">
+              {% block article_body %}{% endblock %}
+            </div>
+          </div>
+
+          <footer class="o-typography-body-wrapper o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
             <div class="o-grid-container">
               <div class="o-grid-row">
                 <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
                   <small><a href="http://www.ft.com/servicestools/help/copyright" data-trackable="link-copyright">Copyright</a>
-                   <span itemprop="name">The Financial Times</span> Limited {{ now() | strftime('%Y') }}. All rights reserved. You may share using our article tools. Please don't cut articles from FT.com and redistribute by email or post to the web.</small>
+                   <span itemprop="name">The Financial Times</span> Limited {{ now() | strftime('%Y') }}. All rights reserved.</small>
                 </div>
               </div>
             </div>
           </footer>
-
         </div>
       </article>
     </main>
