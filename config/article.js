@@ -11,7 +11,7 @@ export default () => ({ // eslint-disable-line
   //       new Date('2016-05-17T17:11:22Z')
   publishedDate: new Date(),
 
-  headline: 'Politics and the English Language',
+  headline: 'The Uber Game',
 
   // summary === standfirst (Summary is what the content API calls it)
   summary: 'Political language is designed to make lies sound truthful' +
