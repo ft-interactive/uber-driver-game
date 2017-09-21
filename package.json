@@ -71,7 +71,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -p --env=production",
     "check-accessibility": "pa11y --hide-elements '.o-comments' --threshold 100 $(ft-graphics-deploy --get-commit-url)",
     "check-accessibility:preview": "pa11y --hide-elements '.o-comments' --threshold 100 $(ft-graphics-deploy --preview --get-commit-url)",
     "clean": "rm -rf dist",

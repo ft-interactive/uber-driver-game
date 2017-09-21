@@ -29,7 +29,7 @@ module.exports = async (env = 'development') => ({
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules(?!\/inkjs)|bower_components)/,
         use: {
           loader: 'babel-loader',
           options: {
