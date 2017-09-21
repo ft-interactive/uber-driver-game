@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "o-colors": "^4.1.1",
-    "o-grid": "^4.2.1"
+    "o-grid": "^4.2.1",
+    "o-buttons": "^5.3.0"
   }
 }

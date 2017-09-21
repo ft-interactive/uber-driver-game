@@ -1,21 +1,23 @@
-export default () => ({ // eslint-disable-line
+export default () => ({
+  // eslint-disable-line
 
   // link file UUID
-  id: '',
+  id: '0746ce02-4f8b-11e7-bfb8-997009366969',
 
   // canonical URL of the published page
   //  get filled in by the ./configure script
-  url: '',
+  url: 'https://ig.ft.com/uber-driver-game',
 
   // To set an exact publish date do this:
   //       new Date('2016-05-17T17:11:22Z')
   publishedDate: new Date(),
 
-  headline: 'Politics and the English Language',
+  headline: 'The Uber Game',
 
   // summary === standfirst (Summary is what the content API calls it)
-  summary: 'Political language is designed to make lies sound truthful' +
-           'and murder respectable, and to give an appearance of solidity to pure wind',
+  summary:
+    'Political language is designed to make lies sound truthful' +
+    'and murder respectable, and to give an appearance of solidity to pure wind',
 
   topic: {
     name: 'Starter Kit',
@@ -41,10 +43,7 @@ export default () => ({ // eslint-disable-line
 
   // Byline can by a plain string, markdown, or array of authors
   // if array of authors, url is optional
-  byline: [
-    { name: 'Author One', url: '/foo/bar' },
-    { name: 'Author Two' },
-  ],
+  byline: [{ name: 'Author One', url: '/foo/bar' }, { name: 'Author Two' }],
 
   // Appears in the HTML <title>
   title: '',
@@ -101,7 +100,6 @@ export default () => ({ // eslint-disable-line
   },
 
   tracking: {
-
     /*
 
     Microsite Name
@@ -113,7 +111,6 @@ export default () => ({ // eslint-disable-line
     Also used for pages that do not have a UUID for whatever reason
     */
     // micrositeName: '',
-
     /*
     Product name
 
