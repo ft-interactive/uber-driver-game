@@ -102,13 +102,15 @@ Can you do it?
 # link 
 # choose_difficulty
 Choose your difficulty level:
+Easier: Live in SF and have good credit rating
+Harder: Live in Sacramento with bad credit rating
 
-* [Easy Mode]
+* [Easier]
 ~ home="sf"
 ~ credit_rating="good"
 In Easy mode, you live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
 
-* [Hard Mode]
+* [Difficult]
 ~ home="sac"
 ~ credit_rating="bad"
 In Hard mode, you live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
@@ -347,7 +349,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗]
+*[🚗 (Keep driving)]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -363,8 +365,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯] You go for burritos
-* [🍕] You grab a quick slice of pepperoni
+* [🌯 (Burritos)] You go for burritos
+* [🍕 (Pizza)] You grab a quick slice of pepperoni
 
 - ->day_1_sac_night_in_sf
 
@@ -513,8 +515,8 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯] You spot a Señor Sisig food truck and decide on burritos
-* [🍕] You grab a quick slice of pepperoni
+* [🌯 (Burritos)] You spot a Señor Sisig food truck and decide on burritos
+* [🍕 (Pizza)] You grab a quick slice of pepperoni
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
