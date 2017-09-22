@@ -3,6 +3,12 @@
 @import 'o-buttons/main';
 @import 'components/core/main';
 
+.o-typography-wrapper p {
+  font-size: 18px;
+  line-height: 1.4;
+  margin: .3em 0 .8em;
+}
+
 html {
   background-color: #333;
 
@@ -115,6 +121,11 @@ html {
             &--intro {
               text-align: center;
 
+              h1 {
+                color: inherit;
+                margin: 0 0 8px;
+              }
+
               .subtitle {
                 font-family: MetricWeb, sans-serif;
                 line-height: 21px;
@@ -122,6 +133,7 @@ html {
                 font-weight: bold;
                 letter-spacing: 2px;
                 text-transform: uppercase;
+                margin: .3em 0 .8em;
               }
             }
 
@@ -317,6 +329,9 @@ html {
         order: 3;
         z-index: 1;
         margin-bottom: 18px;
+        font-size: 14px;
+        line-height: 16px;
+        color: inherit;
 
         a {
           color: #1aecff;
