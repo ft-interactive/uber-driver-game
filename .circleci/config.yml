@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: circleci/node:latest
+      - image: node:8
     steps:
       - checkout
       - run:
@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Install dependencies
           # NB. this also does bower install as postinstall step
-          command: npm install
+          command: npm install --unsafe-perm
       - run:
           name: Rebuild problematic node modules
           command: npm rebuild
@@ -35,15 +35,8 @@ jobs:
           paths:
             - bower_components/
       - run:
-          name: ESLint
-          command: npm run lint
-      - run:
           name: Build
           command: npm run build
-      - run:
-          name: Check bundle sizes
-          # this is configured in package.json
-          command: ./node_modules/.bin/bundlesize
       - store_artifacts:
           name: Store artifacts (dist)
           path: dist/
