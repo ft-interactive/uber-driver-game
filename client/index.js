@@ -248,7 +248,7 @@ function continueStory() {
 
     // Create choices container element
     choicesContainerElement = document.createElement('div');
-    choicesContainerElement.setAttribute('data-o-grid-colspan', '9 center S8 M7 L6 XL5');
+    choicesContainerElement.setAttribute('data-o-grid-colspan', '12 S11 Scenter M7 L6 XL5');
     choicesContainerElement.classList.add('choices-container');
 
     knotElement.appendChild(paragraphElement);
@@ -260,10 +260,11 @@ function continueStory() {
     // Create button element
     const choiceElement = document.createElement('button');
     choiceElement.classList.add('choice');
-    choiceElement.innerHTML = choice.text;
+    choiceElement.innerHTML = `<span>${choice.text}</span>`;
 
     if (story.currentTags.indexOf('button') === -1) {
       choiceElement.classList.add('link-like');
+      // choiceElement.innerHTML = `<i class="icon-arrow-right"></i>${choice.text}`;
     }
 
     choicesContainerElement.appendChild(choiceElement);

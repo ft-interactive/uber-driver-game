@@ -143,7 +143,9 @@ html {
               text-align: center;
 
               p {
-                text-align: left;
+                font-size: 20px;
+                line-height: 22px;
+                text-align: center;
               }
             }
 
@@ -163,7 +165,7 @@ html {
                   margin-bottom: 20px;
                   border-radius: 14px;
                   padding: 6px 10px;
-                  background-color: #00757F;
+                  background-color: #262B33;
                   text-align: right;
                   font-weight: 600;
                   -webkit-font-feature-settings: 'tnum';
@@ -180,7 +182,7 @@ html {
                     width: 23px;
                     padding: 10px 11px 10px 10px;
                     border-radius: 50%;
-                    background-color: #0F8E99;
+                    background-color: #000000;
                     text-align: center;
                     position: absolute;
                     top: -6px;
@@ -242,7 +244,7 @@ html {
                 right: 0px;
                 left: 0px;
                 padding: 1em 0 68px 0;
-                background-color: rgba(0, 117, 127, 0.67);
+                background-color: rgba(38, 43, 51, 0.9);
                 -webkit-backdrop-filter: blur(8px);
                 backdrop-filter: blur(8px);
                 overflow: scroll;
@@ -250,6 +252,12 @@ html {
                 .knot {
                   border-top: solid 1px #fff;
                   padding-top: 1em;
+
+                  p {
+                    font-size: 24px;
+                    font-weight: 300;
+                    line-height: 30px;
+                  }
 
                   .choices-container {
                     padding-left: 0;
@@ -279,10 +287,17 @@ html {
 
                       &.link-like {
                         width: 100%;
-                        margin-bottom: 0.8em;
                         border: none;
-                        border-left: 2px solid #dc6345;
                         text-align: left;
+                        font-size: 24px;
+                        font-weight: 600;
+                        color: #ff1a66;
+
+                        span {
+                          display: inline-block;
+                          margin-left: 40px;
+                          vertical-align: middle;
+                        }
 
                         &:focus {
                           color: #505050;
@@ -292,6 +307,16 @@ html {
                         &:active, &:hover {
                           color: inherit;
                           background-color: transparent;
+                        }
+
+                        &:before {
+                          content: '';
+                          position: absolute;
+                          width: 24px;
+                          height: 24px;
+                          background-color: #ffffff;
+                          background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/fticon-v1%3Aarrow-right?source=ig&width=24&height=24&tint=%23ff1a66&quality=high);
+                          border-radius: 50%;
                         }
                       }
                     }
@@ -308,7 +333,7 @@ html {
                 width: 100vw;
                 height: 100vh;
                 z-index: 1;
-                background-color: rgba(0, 117, 127, 0.67);
+                background-color: rgba(38, 43, 51, 0.9);
                 -webkit-backdrop-filter: blur(0px);
                 backdrop-filter: blur(0px);
                 opacity: 0;
@@ -364,6 +389,7 @@ html {
   }
 }
 
+// "Please rotate device" screen
 @media only screen and (min-aspect-ratio: 1/1) and (max-width: 740px) {
   .screen {
     &--intro, &--caveats, &--story {
