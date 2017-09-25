@@ -190,6 +190,7 @@ Twenty minutes later, you arrive at his destination.
 Congratulations! You've just earned your first fare, for $16.
 ~ moments=true
 # button
+# first_fare
 ** [That was easy]
 ->car_choice
 
@@ -1695,6 +1696,7 @@ You're really tired but decide to keep going.
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
 ~ moments=true
 # button
+# deactivation
 *[Oh no!]
 ->what_to_do
 
@@ -2043,7 +2045,8 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 {sac_morning:
 ~current_city="sf"
 }
-#button
+# button
+# deactivation
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to SF}.
 ->->
 
