@@ -24,7 +24,7 @@ html {
       overflow: hidden;
       background-position: center center;
       background-repeat: no-repeat;
-      background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fft-ig-content-prod%2Fimages%2Fv1%2Foverview-art.png%3Fcachebust?source=ig&fit=scale-down&quality=high);
+      background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493658866-h0aa7.png?source=ig&width=4096&format=png&quality=high);
       background-size: cover;
       background-attachment: fixed;
       color: #fff;
@@ -143,8 +143,6 @@ html {
               text-align: center;
 
               p {
-                font-size: 20px;
-                line-height: 22px;
                 text-align: center;
               }
             }
@@ -164,8 +162,10 @@ html {
                   margin-right: 10px;
                   margin-bottom: 20px;
                   border-radius: 14px;
-                  padding: 6px 10px;
-                  background-color: #262B33;
+                  padding: 6px 15px 6px 59px;
+                  background-color: rgba(38, 43, 51, 0.9);
+                  -webkit-backdrop-filter: blur(8px);
+                  backdrop-filter: blur(8px);
                   text-align: right;
                   font-weight: 600;
                   -webkit-font-feature-settings: 'tnum';
@@ -210,16 +210,12 @@ html {
                   }
 
                   &--total {
-                    width: 77px;
-
                     &:before {
                       content: "attach_money";
                     }
                   }
 
                   &--time {
-                    width: 102px;
-
                     span {
                       text-transform: lowercase;
                     }
@@ -230,8 +226,6 @@ html {
                   }
 
                   &--rating {
-                    width: 73px;
-
                     &:before {
                       content: 'star_rate';
                     }
@@ -243,7 +237,7 @@ html {
                 position: absolute;
                 right: 0px;
                 left: 0px;
-                padding: 1em 0 68px 0;
+                padding: 1em 0 85px 0;
                 background-color: rgba(38, 43, 51, 0.9);
                 -webkit-backdrop-filter: blur(8px);
                 backdrop-filter: blur(8px);
@@ -253,33 +247,8 @@ html {
                   border-top: solid 1px #fff;
                   padding-top: 1em;
 
-                  p {
-                    font-size: 24px;
-                    font-weight: 300;
-                    line-height: 30px;
-                  }
-
                   .choices-container {
                     padding-left: 0;
-
-                    // p {
-                    //   border-left: 2px solid #dc6345;
-                    //   padding-left: 0.3em;
-                    //
-                    //   a {
-                    //     color: inherit;
-                    //     border-bottom: none;
-                    //
-                    //     &:focus {
-                    //       color: #505050;
-                    //       border-bottom-color: transparent;
-                    //     }
-                    //
-                    //     &:active, &:hover {
-                    //       outline-width: 0;
-                    //     }
-                    //   }
-                    // }
 
                     button {
                       display: block;
@@ -287,16 +256,18 @@ html {
 
                       &.link-like {
                         width: 100%;
+                        min-height: 34px;
+                        padding: 5px 20px;
                         border: none;
                         text-align: left;
-                        font-size: 24px;
+                        font-size: 18px;
                         font-weight: 600;
-                        line-height: 24px;
+                        line-height: 18px;
                         color: #ff1a66;
 
                         span {
                           display: inline-block;
-                          margin-left: 40px;
+                          margin-left: 34px;
                         }
 
                         &:focus {
@@ -314,6 +285,7 @@ html {
                           position: absolute;
                           width: 24px;
                           height: 24px;
+                          margin-top: -3px;
                           background-color: #ffffff;
                           background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/fticon-v1%3Aarrow-right?source=ig&width=24&height=24&tint=%23ff1a66&quality=high);
                           border-radius: 50%;
@@ -353,7 +325,7 @@ html {
       footer.o-typography-footer {
         order: 3;
         z-index: 1;
-        margin-bottom: 18px;
+        margin: 18px 0 0;
         font-size: 14px;
         line-height: 16px;
         color: inherit;
@@ -379,7 +351,7 @@ html {
       width: 100%;
       height: inherit;
       overflow: hidden;
-      background-image: linear-gradient(180deg, rgba(153, 15, 61, 0.9) 0%, rgba(15, 84, 153, 0.9) 100%);
+      background-color: rgba(38, 43, 51, 0.8);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       opacity: 1;
