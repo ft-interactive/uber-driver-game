@@ -87,9 +87,10 @@ function continueStory() {
   const rating = story.variablesState.$('rating');
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
+  const moment = story.variablesState.$('moments');
   const timePassingObj = { value: 3 };
 
-  console.log(timeObj.value, new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true }), 'continueStory');
+  console.log(timePassing, moment);
 
   function showPanel() {
     anime({
@@ -228,6 +229,12 @@ function continueStory() {
           showPanel();
         },
       });
+  } else if (moment > 0) {
+    console.log(`A moment just happened. It was ${story.currentTags}`);
+
+    story.variablesState.$('moments', 0);
+
+    showPanel();
   } else {
     console.log('>>>');
 
@@ -241,6 +248,8 @@ function continueStory() {
     const paragraphText = story.Continue();
     // Create paragraph element
     const paragraphElement = document.createElement('p');
+
+    console.log(story.currentTags);
 
     paragraphElement.innerHTML = paragraphText;
 
@@ -264,11 +273,12 @@ function continueStory() {
     const choiceElement = document.createElement('button');
     let choiceString = twemoji.parse(choice.text, {
       callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
-      size: 16,
+      size: 18,
     });
     choiceElement.classList.add('choice');
     choiceElement.innerHTML = `<span>${choiceString}</span>`;
 
+    // Make it look different if there's more than one choice available
     if (story.currentTags.indexOf('button') === -1) {
       choiceString = twemoji.parse(choice.text, {
         callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
@@ -276,7 +286,6 @@ function continueStory() {
       });
       choiceElement.classList.add('link-like');
       choiceElement.innerHTML = `<span>${choiceString}</span>`;
-      // choiceElement.innerHTML = `<i class="icon-arrow-right"></i>${choice.text}`;
     }
 
     choicesContainerElement.appendChild(choiceElement);
@@ -333,8 +342,6 @@ function continueStory() {
 function startStory() {
   const showStoryScreen = anime.timeline();
   const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
-
-  console.log(timeObj.value, timeString, 'startStory');
 
   tint.style.webkitBackdropFilter = 'blur(0px)';
   tint.style.backdropFilter = 'blur(0px)';
