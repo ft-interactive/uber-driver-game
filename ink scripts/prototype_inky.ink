@@ -356,7 +356,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗 (Keep driving)]
+*[🚗&nbsp;&nbsp;(Keep driving)]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -372,8 +372,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯 (Burritos)] You go for burritos
-* [🍕 (Pizza)] You grab a quick slice of pepperoni
+* [🌯&nbsp;&nbsp;(Burritos)] You go for burritos
+* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni
 
 - ->day_1_sac_night_in_sf
 
@@ -449,7 +449,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯 (Burritos)] ->sac_afternoon
+* [🌯] ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -522,8 +522,8 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯 (Burritos)] You spot a Señor Sisig food truck and decide on burritos
-* [🍕 (Pizza)] You grab a quick slice of pepperoni
+* [🌯&nbsp;&nbsp;(Burritos)] You spot a Señor Sisig food truck and decide on burritos
+* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===

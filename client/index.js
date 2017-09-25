@@ -1,5 +1,6 @@
-import { Story } from 'inkjs';
 import anime from 'animejs';
+import { Story } from 'inkjs';
+import twemoji from 'twemoji';
 import json from './uber.json';
 import './styles.scss';
 
@@ -261,11 +262,20 @@ function continueStory() {
   story.currentChoices.forEach((choice) => {
     // Create button element
     const choiceElement = document.createElement('button');
+    let choiceString = twemoji.parse(choice.text, {
+      callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
+      size: 16,
+    });
     choiceElement.classList.add('choice');
-    choiceElement.innerHTML = `<span>${choice.text}</span>`;
+    choiceElement.innerHTML = `<span>${choiceString}</span>`;
 
     if (story.currentTags.indexOf('button') === -1) {
+      choiceString = twemoji.parse(choice.text, {
+        callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
+        size: 18,
+      });
       choiceElement.classList.add('link-like');
+      choiceElement.innerHTML = `<span>${choiceString}</span>`;
       // choiceElement.innerHTML = `<i class="icon-arrow-right"></i>${choice.text}`;
     }
 
