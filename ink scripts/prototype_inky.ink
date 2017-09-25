@@ -240,7 +240,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
 ===buy_accessories===
 # list
 # buy_accessories
-{!To prepare for life as a professional driver, you also bought...|What else did you buy?}
+{!To prepare for life as a professional driver, you also bought...|What else did you buy?|You also bought...|Do you need anything else?}
 
 * [Unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
@@ -1067,7 +1067,8 @@ You take it easy today.
 - else:
     It might be a stretch to do {quest_rides} rides, especially in Sacramento, but you give it a shot.
     ~ temp remaining=quest_rides-3
-    NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+/*    NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+*/
     ~ time_passing = true
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -1345,7 +1346,9 @@ You take it easy today.
 - else:
     It might be a stretch to do {quest_rides} rides, but you give it a shot.
     ~ temp remaining=quest_rides-3
+/*    
     NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+*/
     ~ time_passing = true
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -1371,7 +1374,7 @@ It's the end of day 4.
 ~alter(hours_driven_total,2)
 ~alter(day_hours_driven,2)
 }
-Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
+Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. /*Your driver rating is {rating/100}.*/
 
 { 
 - quest_completion==true && finished_quest_on_weds==false:
