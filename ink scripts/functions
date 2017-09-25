@@ -42,7 +42,9 @@
 ~ alter(ride_count_total, rides)
 ~ alter(fares_earned_total, fares)
 ~ alter(hours_driven_total, hours)
+
 ~ add_time(hours, randomised_minutes)
+
 ~ alter(rating, rating_change)
 {rating>500:
 ~rating=500

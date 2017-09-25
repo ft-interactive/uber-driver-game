@@ -78,11 +78,11 @@ Your body is aching after you spend XX hours this week in your car
 // Functional variables
 
 VAR time_passing=false
+VAR moments=false
 
 /* NOTE: for tags,
 button = no choice
 link = choice
-
 */
 
 ->welcome
@@ -101,14 +101,16 @@ Can you do it?
 === choose_difficulty===
 # link 
 # choose_difficulty
-Choose your difficulty level:
+Choose your difficulty level.
+Easier: Live in SF with good credit
+Difficult: Live in Sacramento with bad credit
 
-* [Easy Mode]
+* [Easier]
 ~ home="sf"
 ~ credit_rating="good"
 In Easy mode, you live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
 
-* [Hard Mode]
+* [Difficult]
 ~ home="sac"
 ~ credit_rating="bad"
 In Hard mode, you live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
@@ -177,10 +179,13 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
 * [Drop him off] 
-
+->drop_off
+=drop_off
+# day_1_locate_passenger.drop_off
 "Thanks! Sorry again for making you wait," he says as he gets out.
 
 Congratulations! You've just earned your first fare, for $16.
+~ moments=true
 # button
 ** [That was easy]
 ->car_choice
@@ -347,7 +352,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗]
+*[🚗 (Keep driving)]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -363,8 +368,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯] You go for burritos
-* [🍕] You grab a quick slice of pepperoni
+* [🌯 (Burritos)] You go for burritos
+* [🍕 (Pizza)] You grab a quick slice of pepperoni
 
 - ->day_1_sac_night_in_sf
 
@@ -387,7 +392,7 @@ It's getting late and you have a two hour drive to get back home.
 
 =go_home
 # day_1_sac_night_in_sf.go_home
-You decide to go home.
+You start driving back to Sacramento
 ~add_time(2,4)
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
@@ -440,7 +445,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯] ->sac_afternoon
+* [🌯 (Burritos)] ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -513,8 +518,8 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯] You spot a Señor Sisig food truck and decide on burritos
-* [🍕] You grab a quick slice of pepperoni
+* [🌯 (Burritos)] You spot a Señor Sisig food truck and decide on burritos
+* [🍕 (Pizza)] You grab a quick slice of pepperoni
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
@@ -1682,7 +1687,14 @@ You go home for some much needed sleep.
 You're really tired but decide to keep going.
 
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
+~ moments=true
+# button
+*[Oh no!]
+->what_to_do
 
+=what_to_do
+# day_5_late_late.what_to_do
+What do you do?
 # link
 *[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour on the phone, but all you get is a promise that they'll look into it.
     ~add_time(0,44)
@@ -2020,6 +2032,7 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
+~moments=true
 {sac_morning:
 ~current_city="sf"
 }
