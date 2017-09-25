@@ -1,6 +1,6 @@
+<!doctype html>
 {% set test_comments_uuid = "3a499586-b2e0-11e4-a058-00144feab7de" if not flags.prod and flags.comments else "" %}
 {% import "./macros.html" as macros %}
-<!doctype html>
 <html lang="en-GB" class="core"
     data-buildtime="{{ now() | isotime }}"
     data-content-id="{{ id if id else test_comments_uuid }}">
@@ -8,6 +8,8 @@
     {% block prependhead %}{% endblock -%}
     {% include "includes/html-head.html" %}
     {% block appendhead %}{% endblock -%}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
   </head>
   <body>
 
@@ -15,7 +17,7 @@
       {% include "includes/analytics.html" %}
     {% endif %}
 
-    <!-- {% if ads %}{{ macros.topAd() }}{% endif %} -->
+    {% if flags.ads %}{{ macros.topAd() }}{% endif %}
 
     {% if flags.header %}
       {% include "includes/header.html" %}
@@ -40,13 +42,13 @@
             </div>
           </div>
 
-          <div class="article-body o-typography-body-wrapper" itemprop="articleBody">
+          <div class="article-body o-typography-wrapper" itemprop="articleBody">
             <div class="screen-container">
               {% block article_body %}{% endblock %}
             </div>
           </div>
 
-          <footer class="o-typography-body-wrapper o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <footer class="o-typography-wrapper o-typography-footer" itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
             <div class="o-grid-container">
               <div class="o-grid-row">
                 <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
@@ -71,7 +73,5 @@
     {% if flags.footer %}
       {% include "includes/footer.html" %}
     {% endif %}
-
-    <script src="index.js"></script>
   </body>
 </html>

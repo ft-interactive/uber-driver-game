@@ -78,11 +78,11 @@ Your body is aching after you spend XX hours this week in your car
 // Functional variables
 
 VAR time_passing=false
+VAR moments=false
 
 /* NOTE: for tags,
 button = no choice
 link = choice
-
 */
 
 ->welcome
@@ -101,9 +101,15 @@ Can you do it?
 === choose_difficulty===
 # link 
 # choose_difficulty
+<<<<<<< HEAD
 Choose your difficulty level:
 Easier: Live in SF and have good credit rating
 Harder: Live in Sacramento with bad credit rating
+=======
+Choose your difficulty level.
+Easier: Live in SF with good credit
+Difficult: Live in Sacramento with bad credit
+>>>>>>> master
 
 * [Easier]
 ~ home="sf"
@@ -179,10 +185,13 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
 * [Drop him off] 
-
+->drop_off
+=drop_off
+# day_1_locate_passenger.drop_off
 "Thanks! Sorry again for making you wait," he says as he gets out.
 
 Congratulations! You've just earned your first fare, for $16.
+~ moments=true
 # button
 ** [That was easy]
 ->car_choice
@@ -389,7 +398,7 @@ It's getting late and you have a two hour drive to get back home.
 
 =go_home
 # day_1_sac_night_in_sf.go_home
-You decide to go home.
+You start driving back to Sacramento
 ~add_time(2,4)
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
@@ -442,7 +451,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯] ->sac_afternoon
+* [🌯 (Burritos)] ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -1102,6 +1111,7 @@ It takes you two hours to finish the last {quest_rides} rides, but you finish th
 ~ alter(fares_earned_total, quest_bonus)
 ~quest_completion=true
 ~quest_rides=0
+~moments=true
 {home=="sac" && current_city=="sf":
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
@@ -1151,6 +1161,7 @@ You get back in your car and turn the app back on.
 It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 ~quest_completion=true
 ~quest_rides=0
+~moments=true
 You are completely exhausted.
     # button
     ** [💤]
@@ -1684,7 +1695,14 @@ You go home for some much needed sleep.
 You're really tired but decide to keep going.
 
 In your next ride, the passenger complains that you seem sleepy behind the wheel. Uber immediately deactivates you, without telling you the reason.
+~ moments=true
+# button
+*[Oh no!]
+->what_to_do
 
+=what_to_do
+# day_5_late_late.what_to_do
+What do you do?
 # link
 *[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour on the phone, but all you get is a promise that they'll look into it.
     ~add_time(0,44)
@@ -1990,6 +2008,7 @@ You are driving when you hear a splintering sound. The chip in your windshield h
     *[Finish the quest]
     Congrats! You completed the quest and got an extra ${quest_bonus}.
     ~quest_completion=true
+    ~moments=true
     ->day_7_end
 
 - quest_rides>=10:
@@ -2022,6 +2041,7 @@ With no phone mount, you're left fiddling with your phone on your lap. A passeng
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
+~moments=true
 {sac_morning:
 ~current_city="sf"
 }
