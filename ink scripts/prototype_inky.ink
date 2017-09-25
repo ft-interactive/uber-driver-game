@@ -357,7 +357,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗&nbsp;&nbsp;(Keep driving)]
+*[🚗&nbsp;&nbsp;(Drive)]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -383,7 +383,7 @@ After driving for so long, you're starting to get hungry.
 You get back online just in time for the busy evening period. 
 ~time_passes(2,1,1)
 # button
-*[🚗]
+*[🚗&nbsp;&nbsp;(Drive)]
 ->day_1_sac_night_in_sf
 
 ===day_1_sac_night_in_sf===
@@ -402,7 +402,7 @@ You start driving back to Sacramento
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
-*[🚗]
+*[🚗&nbsp;&nbsp;(Drive)]
 ->day_1_end
 
 =keep_driving
@@ -450,7 +450,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯] ->sac_afternoon
+* [🌯&nbsp;&nbsp;(Burritos)] ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -644,7 +644,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     
 * ["Nice! I love burgers too."]They get in the car and you start driving. 
 
-- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
+- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat.
 
     ~add_time(0,22)
     # link
@@ -657,27 +657,56 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ->dirty_car 
     
 ===dirty_car===
-# link
 # dirty_car
-What do you do about your dirty backseat?
+{cleaning_supplies==true:
+Your backseat is dirty. Fortunately, you have cleaning supplies in the trunk. You spend some time cleaning up.
 
-* [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
-    ~add_time(0,13)
+Your next passenger is impressed by how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
+->day_2_afternoon
 
-    # link
-    ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
-    ~ alter(rating,-10) 
-    ~ alter(ride_count_total,1)
-    ~ alter(fares_earned_total,8)
-    ~ alter(day_ride_count,1)
-    ~ alter(day_fares_earned,8)
+- else:
+You backseat is dirty and you don't have cleaning supplies.
+->no_cleaning_supplies
+}
 
-    ** [Decline the ride] You finish cleaning up.
+=no_cleaning_supplies
+# dirty_car.no_cleaning_supplies
+#link
+* [Find cleaning supplies]It takes you some time to find a convenience store. You spend $20 stocking up on cleaning supplies.
+~cleaning_supplies=true
+~alter(accessories_cost,20)
+~add_time(0,16)
 
-* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
-    ~ alter(rating,-10) 
+->ride_request
 
-- ->day_2_afternoon
+* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with your dirty backseat.
+    ~ alter(rating,-15) 
+    ->day_2_afternoon
+
+=ride_request
+# dirty_car.ride_request
+# link
+Just as you start cleaning, a ride request comes in.
+~add_time(0,13)
+* [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
+~ alter(rating,-10) 
+~ alter(ride_count_total,1)
+~ alter(fares_earned_total,8)
+~ alter(day_ride_count,1)
+~ alter(day_fares_earned,8)
+->day_2_afternoon
+* [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
+->day_2_afternoon
 
 ===day_2_afternoon===
 # button
