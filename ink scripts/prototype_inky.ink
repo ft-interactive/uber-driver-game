@@ -88,8 +88,7 @@ link = choice
 ->welcome
 === welcome ===
 # welcome
-Welcome! You're a full-time Uber driver trying to make ends meet.
-
+You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $850, the average weekly income in the United States.
 
@@ -99,35 +98,37 @@ Can you do it?
 ->choose_difficulty
 
 === choose_difficulty===
-# link 
+
 # choose_difficulty
 
-The difficulty level will affect how easy it is to make $850 in a week.
-
-Easier: You live in San Francisco and have good credit rating
-
-Harder: You have bad credit rating and can't afford to live in SF. Instead, you live two hours away in Sacramento
-
-* [Easier]
+Your difficulty level will affect how easy it is to make $850 in a week.
+# link 
++ [Easier]
 ~ home="sf"
 ~ credit_rating="good"
-You live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
+You live in San Francisco and have good bank credit, making it cheaper for you to rent a car. 
+You have two kids to support, and a mortgage payment coming due.
+->confirm
 
-* [Difficult]
++ [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
-You live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
+You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+You have two kids to support, and a mortgage payment coming due.
+-> confirm
 
+=confirm
+# choose_difficulty.confirm
+# link
+{home=="sf":Choose the easier difficulty?}
+{home=="sac":Choose the harder difficulty?} 
+
++ [Go back]
+->choose_difficulty
++ [Yes]
 - ~current_city=home
-->get_started
-
-=get_started
-# get_started
-Remember, you have seven days to make $850.
-
-# button
-* [Let's go]
 ->day_1_start
+
 
 === day_1_start ===
 
@@ -136,13 +137,12 @@ Remember, you have seven days to make $850.
 You start bright and early on a Monday morning.
 
 Pretty soon, you get your first ride request, from someone called Chris.
-# button
-* [Go pick him up] ->day_1_locate_passenger
+->day_1_locate_passenger
 
 ===day_1_locate_passenger===
 # link
 # day_1_locate_passenger
-You arrive, but don't see anyone waiting for a ride. What do you do?
+You go to pick him up, but don't see anyone waiting for a ride when you arrive. What do you do?
 ~add_time(0, 5)
 * [Call Chris]->call_chris
 * [Wait] You wait in your car. ->chris_arrives
