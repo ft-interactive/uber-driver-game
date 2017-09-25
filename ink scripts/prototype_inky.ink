@@ -91,42 +91,39 @@ link = choice
 Welcome! You're a full-time Uber driver trying to make ends meet.
 
 
-You have one week to try to make $850 - the average weekly income in the United States.
+You have one week to try to make $850, the average weekly income in the United States.
 
 Can you do it?
 # button 
-* [Yep!] 
+* [Yes] 
 ->choose_difficulty
 
 === choose_difficulty===
 # link 
 # choose_difficulty
-<<<<<<< HEAD
-Choose your difficulty level:
-Easier: Live in SF and have good credit rating
-Harder: Live in Sacramento with bad credit rating
-=======
-Choose your difficulty level.
-Easier: Live in SF with good credit
-Difficult: Live in Sacramento with bad credit
->>>>>>> master
+
+The difficulty level will affect how easy it is to make $850 in a week.
+
+Easier: You live in San Francisco and have good credit rating
+
+Harder: You have bad credit rating and can't afford to live in SF. Instead, you live two hours away in Sacramento
 
 * [Easier]
 ~ home="sf"
 ~ credit_rating="good"
-In Easy mode, you live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
+You live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
 
 * [Difficult]
 ~ home="sac"
 ~ credit_rating="bad"
-In Hard mode, you live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
+You live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
 
 - ~current_city=home
 ->get_started
 
 =get_started
 # get_started
-Remember, you have 7 days to make $850.
+Remember, you have seven days to make $850.
 
 # button
 * [Let's go]
@@ -232,11 +229,12 @@ The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_
 # link
 Rent this car? You will also buy insurance for ${insurance} a week.
 
-+ [Yes]
-~ alter(car_cost, insurance)
-->buy_accessories
 + [Go back]
 ->car_choice
++ [Choose this car]
+~ alter(car_cost, insurance)
+->buy_accessories
+
 
 ===buy_accessories===
 # list
