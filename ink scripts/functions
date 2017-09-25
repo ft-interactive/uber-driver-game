@@ -55,6 +55,7 @@
 }
 {quest_rides<1:
 ~quest_completion=true
+~moments=true
 }
 /*
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}

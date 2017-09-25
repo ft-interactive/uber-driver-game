@@ -1105,6 +1105,7 @@ It takes you two hours to finish the last {quest_rides} rides, but you finish th
 ~ alter(fares_earned_total, quest_bonus)
 ~quest_completion=true
 ~quest_rides=0
+~moments=true
 {home=="sac" && current_city=="sf":
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
@@ -1154,6 +1155,7 @@ You get back in your car and turn the app back on.
 It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 ~quest_completion=true
 ~quest_rides=0
+~moments=true
 You are completely exhausted.
     # button
     ** [💤]
@@ -2000,6 +2002,7 @@ You are driving when you hear a splintering sound. The chip in your windshield h
     *[Finish the quest]
     Congrats! You completed the quest and got an extra ${quest_bonus}.
     ~quest_completion=true
+    ~moments=true
     ->day_7_end
 
 - quest_rides>=10:
