@@ -35,8 +35,8 @@ let knotContainerMaxHeight;
 const defaultInDuration = 500;
 const defaultOutDuration = 300;
 const earningsObj = { value: 0 };
-const timeObj = { value: 1502096400000 };
-const ratingObj = { value: 490 };
+const timeObj = { value: 1502092800000 };
+const ratingObj = { value: 500 };
 
 function handleResize() {
   const d = new Date();
@@ -88,6 +88,8 @@ function continueStory() {
   const timePassing = story.variablesState.$('time_passing');
   const timePassingObj = { value: 3 };
 
+  console.log(timeObj.value, new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true }), 'continueStory');
+
   function showPanel() {
     anime({
       targets: knotContainer,
@@ -136,7 +138,7 @@ function continueStory() {
           timeDisplay.style.textShadow = '0 0 6px white';
         },
         update: () => {
-          const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us');
+          const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
 
           if (timeString.length < 11) {
             timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
@@ -320,7 +322,9 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
-  const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us');
+  const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+
+  console.log(timeObj.value, timeString, 'startStory');
 
   tint.style.webkitBackdropFilter = 'blur(0px)';
   tint.style.backdropFilter = 'blur(0px)';
@@ -333,7 +337,7 @@ function startStory() {
       easing: 'linear',
       begin: () => {
         earningsDisplay.innerHTML = earningsObj.value;
-        timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+        timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.bottom = `-${articleBodyHeight}px`;
       },
@@ -353,6 +357,8 @@ function startStory() {
       easing: 'easeOutQuad',
       complete: () => {
         storyScreen.style.display = 'block';
+        logo.style.right = 0;
+        logo.style.left = '';
       },
     })
     .add({
@@ -361,12 +367,8 @@ function startStory() {
       duration: defaultInDuration,
       easing: 'linear',
       offset: `-=${defaultOutDuration}`,
-      begin: () => {
-        continueStory();
-      },
       complete: () => {
-        logo.style.right = 0;
-        logo.style.left = '';
+        continueStory();
       },
     });
 }

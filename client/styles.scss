@@ -162,7 +162,7 @@ html {
                   margin-right: 10px;
                   margin-bottom: 20px;
                   border-radius: 14px;
-                  padding: 6px 10px;
+                  padding: 6px 15px 6px 59px;
                   background-color: rgba(38, 43, 51, 0.9);
                   -webkit-backdrop-filter: blur(8px);
                   backdrop-filter: blur(8px);
@@ -210,16 +210,12 @@ html {
                   }
 
                   &--total {
-                    width: 77px;
-
                     &:before {
                       content: "attach_money";
                     }
                   }
 
                   &--time {
-                    width: 102px;
-
                     span {
                       text-transform: lowercase;
                     }
@@ -230,8 +226,6 @@ html {
                   }
 
                   &--rating {
-                    width: 73px;
-
                     &:before {
                       content: 'star_rate';
                     }
