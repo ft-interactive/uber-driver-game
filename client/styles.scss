@@ -386,6 +386,11 @@ html {
 
 // "Please rotate device" screen
 @media only screen and (min-aspect-ratio: 1/1) and (max-width: 740px) {
+  .tint {
+    opacity: 1 !important;
+    display: block !important;
+  }
+
   .screen {
     &--intro, &--caveats, &--story {
       display: none !important;
