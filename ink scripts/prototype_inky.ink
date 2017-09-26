@@ -240,7 +240,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
 ===buy_accessories===
 # list
 # buy_accessories
-{!To prepare for life as a professional driver, you also bought...|What else did you buy?|You also bought...|Do you need anything else?}
+{!To prepare for life as a professional driver, you bought...|What else did you buy?|You also bought...|Do you need anything else?}
 
 * [Unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
@@ -383,7 +383,7 @@ After driving for so long, you're starting to get hungry.
 You get back online just in time for the busy evening period. 
 ~time_passes(2,1,1)
 # button
-*[🚗&nbsp;&nbsp;(Drive)]
+*[🚗]
 ->day_1_sac_night_in_sf
 
 ===day_1_sac_night_in_sf===
@@ -402,7 +402,7 @@ You start driving back to Sacramento
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
-*[🚗&nbsp;&nbsp;(Drive)]
+*[🚗]
 ->day_1_end
 
 =keep_driving
@@ -426,7 +426,7 @@ You take a shower at the gym. Feeling refreshed, you keep driving.
 ~time_passes(3,0,1)
 You start driving.
 # button
-*[🚗]
+*[🚗&nbsp;&nbsp;(Drive)]
 {phone_mount==false:
 ->no_phone_mount->day_1_sac_afternoon_in_sf
 }
@@ -799,10 +799,10 @@ You head over to San Francisco. <>
 ~add_time(0,19)
 As you drive along the highway, a pebble hits your windshield and leaves a chip.
 
-* [Repair it immediately]
-->repair
+* [Repair it immediately ($30)]
+->repair->day_3_morning
 
-* [Ignore it] It's just a small chip. You don't want to spend the time and money repairing a car you leased.
+* [Ignore it] It's just a small chip. It'll probably be fine to leave it, and you don't want to spend the time and money repairing a car you leased.
 ~ windshield_cracked=true
 ->day_3_morning
 
@@ -814,7 +814,7 @@ You find a nearby auto shop.
 * [🔧]
 They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
 ~alter(repair_cost,30)
-->day_3_morning
+->->
 
 ===day_3_morning===
 # day_3_morning
@@ -1468,10 +1468,53 @@ You head into San Francisco at your usual hour.
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,3)
-~time_passes(7,0,1)
-- else:
-~time_passes(9,0,1)
 }
+
+{
+- home=="sf" && windshield_cracked==true:
+    ~time_passes(5,0,1)
+    # button
+    *[🚗]
+    ->windshield_reminder
+    
+- home=="sac" && windshield_cracked==true:
+    ~time_passes(3,0,1)
+    # button
+    *[🚗]
+    ->windshield_reminder
+
+- home=="sf" && windshield_cracked==false:
+    ~time_passes(9,0,1)
+    # button
+    *[🚗]
+    ->day_5_afternoon
+
+- home=="sac" && windshield_cracked==false:
+    ~time_passes(7,0,1)
+    # button
+    *[🚗]
+    ->day_5_afternoon
+}
+
+===windshield_reminder===
+# windshield_reminder
+You check the chip in your windshield. You can't tell whether it has become bigger or not.
+# link
+* [Repair it ($30)]
+->pebble_start.repair->windshield_reminder.get_it_fixed
+* [Leave it]
+->leave
+
+=get_it_fixed
+~time_passes(3,0,1)
+# button
+*[🚗]
+->day_5_afternoon
+
+=leave
+# windshield_reminder.leave
+You decide it's still the same size. It'll be fine.
+~time_passes(4,0,1)
 # button
 *[🚗]
 ->day_5_afternoon
@@ -2069,7 +2112,7 @@ It's the end of the week. Were you savvy enough to survive as a full-time Uber d
 
 ===no_phone_mount===
 # no_phone_mount
-With no phone mount, you're left fiddling with your phone on your lap. A passenger notices and complains to Uber about your dangerous driving.
+With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
