@@ -20,11 +20,15 @@ const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
-const timePassingScreen = document.querySelector('.time-passing');
+const timePassingScreen = document.querySelector('.time-passing-container');
 const timePassingDisplay = document.getElementById('countdown');
 // const timePassingEarnings = document.getElementById('tp-earnings');
 // const timePassingTime = document.getElementById('tp-time');
 // const timePassingRating = document.getElementById('tp-rating');
+const momentScreen = document.querySelector('.moment-container');
+const momentText = document.getElementById('moment-text')
+const momentImage = document.querySelector('.moment-image')
+const momentButton = document.getElementById('moment-button');
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -56,10 +60,6 @@ function handleResize() {
   console.log(`Window resized ${d.toLocaleTimeString()}`);
 }
 
-window.addEventListener('load', handleResize);
-
-window.addEventListener('resize', handleResize);
-
 function showCaveats() {
   anime({
     targets: introScreen,
@@ -79,8 +79,6 @@ function showCaveats() {
     },
   });
 }
-
-caveatsButton.addEventListener('click', showCaveats);
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
@@ -184,6 +182,24 @@ function continueStory() {
     }
   }
 
+  function hideMoment() {
+    anime({
+      targets: momentScreen,
+      opacity: 0,
+      duration: defaultInDuration,
+      easing: 'linear',
+      begin: () => {
+        momentScreen.style.webkitBackdropFilter = 'blur(0px)';
+        momentScreen.style.backdropFilter = 'blur(0px)';
+      },
+      complete: () => {
+        momentScreen.style.display = 'none';
+        showPanel();
+        momentButton.removeEventListener('click', hideMoment);
+      },
+    });
+  }
+
   if (timePassing > 0) {
     const showTimePassingScreen = anime.timeline();
 
@@ -193,7 +209,7 @@ function continueStory() {
       .add({
         targets: timePassingScreen,
         opacity: 1,
-        duration: 300,
+        duration: defaultInDuration,
         easing: 'linear',
         begin: () => {
           timePassingScreen.style.display = 'flex';
@@ -230,11 +246,35 @@ function continueStory() {
         },
       });
   } else if (moment > 0) {
-    console.log(`A moment just happened. It was ${story.currentTags}`);
+    console.log(`A moment just happened. It was ${story.currentTags[1]}`);
 
-    story.variablesState.$('moments', 0);
+    if (story.currentTags[1] === 'first_fare') {
+      momentText.innerText = 'You completed your first fare!';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569815-ed2um.png)';
+    } else if (story.currentTags[1] === 'deactivation') {
+      momentText.innerText = 'You are temporarily deactivated';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569802-n5e5e.png)';
+    } else {
+      momentText.innerText = 'Quest completed!';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
+    }
 
-    showPanel();
+    momentButton.addEventListener('click', hideMoment);
+
+    anime({
+      targets: momentScreen,
+      opacity: 1,
+      duration: defaultInDuration,
+      easing: 'linear',
+      begin: () => {
+        momentScreen.style.display = 'block';
+        momentScreen.style.webkitBackdropFilter = 'blur(8px)';
+        momentScreen.style.backdropFilter = 'blur(8px)';
+      },
+      complete: () => {
+        story.variablesState.$('moments', 0);
+      },
+    });
   } else {
     console.log('>>>');
 
@@ -390,4 +430,7 @@ function startStory() {
     });
 }
 
+window.addEventListener('load', handleResize);
+window.addEventListener('resize', handleResize);
+caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);

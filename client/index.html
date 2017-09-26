@@ -4,6 +4,8 @@
 {% block article_body %}
 
 {% markdown %}
+<div class="moments-preload"></div>
+
 <div id="intro" class="screen screen--intro">
   <div class="o-grid-container">
     <div class="o-grid-row">
@@ -30,7 +32,6 @@
   <div class="o-grid-container">
     <div class="o-grid-row">
       <div data-o-grid-colspan="12 S11 Scenter M9 L8 XL7">
-        <!-- <p>This game was designed for and tested in the current (July 2017) versions of <a href="https://www.apple.com/safari/" target="_blank">Safari</a> and <a href="https://www.google.com/chrome/index.html" target="_blank">Chrome</a> on mobile devices and desktop, and <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Firefox</a> on desktop only. Other browsers or versions may not be fully supported.</p> -->
         <p>For the best experience, please open this game in the latest version of either Safari, Chrome or Firefox.</p>
         <p>Other browsers or versions may not be fully supported.</p>
         <div>
@@ -42,9 +43,19 @@
 </div>
 
 <div id="story" class="screen screen--story" data-anime-opacity="true">
-  <div class="time-passing">
+  <div class="time-passing-container">
     <h1>Time is passing…</h1>
     <h1 id="countdown">3</h1>
+    <div class="time-passing-image"></div>
+  </div>
+  <div class="moment-container">
+    <div class="moment-upper">
+      <p id="moment-text"></p>
+      <div class="moment-image"></div>
+    </div>
+    <div class="moment-dashboard">
+      <button type="button" id="moment-button">Continue</button>
+    </div>
   </div>
   <div class="o-grid-container">
     <div class="o-grid-row">
