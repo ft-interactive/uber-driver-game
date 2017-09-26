@@ -1,5 +1,6 @@
 import anime from 'animejs';
 import { Story } from 'inkjs';
+import Modernizr from './modernizr';
 import twemoji from 'twemoji';
 import json from './uber.json';
 import './styles.scss';
@@ -61,23 +62,25 @@ function handleResize() {
 }
 
 function showCaveats() {
-  anime({
-    targets: introScreen,
-    opacity: 0,
-    duration: defaultOutDuration,
-    easing: 'linear',
-    complete: () => {
-      introScreen.style.display = 'none';
-      caveatsScreen.style.display = 'block';
+  const showCaveatsScreen = anime.timeline();
 
-      anime({
-        targets: caveatsScreen,
-        opacity: 1,
-        duration: defaultInDuration,
-        easing: 'linear',
-      });
-    },
-  });
+  showCaveatsScreen
+    .add({
+      targets: introScreen,
+      opacity: 0,
+      duration: defaultOutDuration,
+      easing: 'linear',
+      complete: () => {
+        introScreen.style.display = 'none';
+        caveatsScreen.style.display = 'block';
+      },
+    })
+    .add({
+      targets: caveatsScreen,
+      opacity: 1,
+      duration: defaultInDuration,
+      easing: 'linear',
+    });
 }
 
 function continueStory() {
@@ -383,15 +386,13 @@ function startStory() {
   const showStoryScreen = anime.timeline();
   const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
 
-  tint.style.webkitBackdropFilter = 'blur(0px)';
-  tint.style.backdropFilter = 'blur(0px)';
-
   showStoryScreen
     .add({
-      targets: [shareButtons, caveatsScreen, footer, tint],
+      targets: [shareButtons, caveatsScreen, footer],
       opacity: 0,
       duration: defaultOutDuration,
       easing: 'linear',
+      offset: 0,
       begin: () => {
         earningsDisplay.innerHTML = earningsObj.value;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
@@ -404,7 +405,7 @@ function startStory() {
         shareButtons.style.left = 0;
         caveatsScreen.style.display = 'none';
         footer.style.display = 'none';
-        tint.style.display = 'none';
+        tint.style.webkitBackdropFilter = 'blur(0px)';
       },
     })
     .add({
@@ -416,6 +417,15 @@ function startStory() {
         storyScreen.style.display = 'block';
         logo.style.right = 0;
         logo.style.left = '';
+      },
+    })
+    .add({
+      targets: tint,
+      opacity: 0,
+      duration: defaultOutDuration,
+      easing: 'linear',
+      complete: () => {
+        tint.style.display = 'none';
       },
     })
     .add({
