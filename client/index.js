@@ -144,6 +144,8 @@ function continueStory() {
         update: () => {
           const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
 
+          console.log(timeString);
+
           if (timeString.length < 11) {
             timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
           } else {
@@ -362,7 +364,7 @@ function continueStory() {
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all existing paragraphs
-          const existingPars = knotElement.querySelectorAll('p');
+          const existingPars = Array.from(knotElement.querySelectorAll('p'));
 
           existingPars.forEach((existingPar) => {
             const p = existingPar;

@@ -1,3 +1,4 @@
+import 'babel-register';
 import 'babel-polyfill';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ImageminWebpackPlugin from 'imagemin-webpack-plugin';
