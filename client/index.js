@@ -16,6 +16,7 @@ const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
+const endingScreen = document.getElementById('ending');
 const earningsDisplay = document.getElementById('earnings');
 const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
@@ -446,3 +447,16 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', handleResize);
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
+
+function endStory() {
+  introScreen.style.display = 'none';
+  storyScreen.style.display = 'none';
+  endingScreen.style.display = 'flex';
+}
+
+// keyboard shortcut CTRL+E to show ending
+addEventListener('keypress', (event) => {
+  if (event.ctrlKey && event.key.toLowerCase() === 'e') {
+    endStory();
+  }
+});

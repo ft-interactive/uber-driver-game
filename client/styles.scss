@@ -356,6 +356,17 @@ html {
               }
             }
 
+            &--ending {
+              display: none;
+              height: 100%;
+              position: relative;
+              background: #363943;
+              opacity: 0.5;
+              justify-content: center;
+              align-items: center;
+              font-size: 30px;
+            }
+
             &--landscape {
               display: none;
               align-self: center;
