@@ -216,8 +216,6 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
-~ alter(day_ride_count, 1)
-~ alter(day_fares_earned, 16)
 * [Drop him off] 
 ->drop_off
 =drop_off
@@ -311,11 +309,11 @@ Rent this car? You will also buy insurance for ${insurance} a week.
  - !unlimited_data && !phone_mount && !cleaning_supplies && !biz_licence && !gym_member:You didn't buy anything.
  
  - else: You bought: 
- {unlimited_data:Unlimited data plan}
- {phone_mount:Phone mount}
- {cleaning_supplies:Cleaning supplies}
- {biz_licence:Business licence}
- {gym_member:Gym membership}
+ {unlimited_data:• Unlimited data plan}
+ {phone_mount:• Phone mount}
+ {cleaning_supplies:• Cleaning supplies}
+ {biz_licence:• Business licence}
+ {gym_member:• Gym membership}
 // {tip_sign:Tip sign}
 
 It cost ${accessories_cost}. You put it on your credit card so you don't have to pay right away.
@@ -439,7 +437,7 @@ You start driving back to Sacramento
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
-*[Call it a day]
+*[🚗]
 ->day_1_end
 
 =keep_driving
@@ -526,7 +524,7 @@ It's starting to get late.
 You decide to go home.
 ~add_time(0,23)
 # button
-*[Call it a day]
+*[🚗]
 ->day_1_end
 
 =keep_driving
@@ -601,7 +599,7 @@ It's starting to get late
 You decide to go home.
 ~add_time(0,23)
 # button
-*[Call it a day]
+*[🚗]
 
 ->day_1_end
 
@@ -794,9 +792,11 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 
 Working is more important. You say you can't make it.
 ~time_passes(3,1,1)
+{home=="sac":
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,1)
+}
 #button
 *[🚗]
 ->day_2_end
@@ -922,6 +922,8 @@ Just {quest_rides} more rides until you get ${quest_bonus} bonus!
 It's getting late.
 {home=="sac":
 ~add_time(1,52)
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 }
 * [Call it a day]
 ->day_3_end
@@ -945,6 +947,9 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
     ~ alter(day_ride_count, 1)
     ~ alter(day_fares_earned, 30)
     ~ alter(day_hours_driven, 1)
+    ~ alter(ride_count_total, 1)
+    ~ alter(fares_earned_total, 30)
+    ~ alter(hours_driven_total, 1)
     ~ alter(quest_rides, -1)
     ->day_3_end
 
