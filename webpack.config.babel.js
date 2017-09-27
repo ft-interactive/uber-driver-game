@@ -58,6 +58,18 @@ module.exports = async (env = 'development') => ({
         ],
       },
       {
+        test: /\.(woff2?|ttf|eot)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'fonts/',
+              name: '[name]--[hash].[ext]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
         use: [
           {
