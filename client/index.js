@@ -27,6 +27,7 @@ const timePassingEarnings = document.getElementById('tp-earnings');
 const timePassingTime = document.getElementById('tp-time');
 const timePassingRides = document.getElementById('tp-rides');
 const timePassingRideGoal = document.getElementById('tp-ride-goal');
+const timePassingRideGoalTotal = document.getElementById('tp-ride-goal-total');
 const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text')
 const momentImage = document.querySelector('.moment-image')
@@ -46,6 +47,7 @@ const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
 const ridesObj = { value: 0 };
+const questRidesObj = { value: 0 };
 
 function handleResize() {
   const d = new Date();
@@ -88,6 +90,7 @@ function showCaveats() {
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
+  const questRidesTotal = story.variablesState.$('quest_rides');
   const rating = story.variablesState.$('rating');
   const rideCountTotal = story.variablesState.$('ride_count_total');
   const time = story.variablesState.$('timestamp') * 1000;
@@ -218,6 +221,7 @@ function continueStory() {
     const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
     timePassingObj.value = timeObj.value;
     timePassingTextHours.innerText = timePassingAmountHours;
+    timePassingRideGoalTotal.innerText = 75; // @TODO: Add logic for either 65 or 75
 
     showTimePassingScreen
       .add({
@@ -281,6 +285,21 @@ function continueStory() {
         },
         complete: () => {
           ridesObj.value = rideCountTotal;
+        },
+      })
+      .add({
+        targets: questRidesObj,
+        value: questRidesTotal,
+        round: 1,
+        duration: timePassingScreenDuration,
+        easing: 'linear',
+        offset: 0,
+        update: () => {
+          console.log('quest rides total: ', questRidesTotal);
+          timePassingRideGoal.innerHTML = questRidesObj.value;
+        },
+        complete: () => {
+          questRidesObj.value = questRidesTotal;
         },
       })
       .add({
