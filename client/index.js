@@ -90,7 +90,7 @@ function showCaveats() {
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
-  const questRidesTotal = story.variablesState.$('quest_rides');
+  const questRidesTotal = 75 - story.variablesState.$('quest_rides'); // @TODO: Get 75 from variable
   const rating = story.variablesState.$('rating');
   const rideCountTotal = story.variablesState.$('ride_count_total');
   const time = story.variablesState.$('timestamp') * 1000;
