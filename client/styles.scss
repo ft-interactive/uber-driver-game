@@ -306,7 +306,8 @@ html, body {
             }
           }
 
-          .time-passing-container, .moment-container {
+          .time-passing-container,
+          .moment-container {
             display: none;
             position: absolute;
             top: 0;
@@ -338,7 +339,8 @@ html, body {
                 font-weight: 600;
               }
 
-              .time-passing-image, .moment-image {
+              .time-passing-image,
+              .moment-image {
                 width: 100%;
                 height: 100%;
                 max-width: 250px;
@@ -356,10 +358,6 @@ html, body {
               width: 100%;
               height: 30vh;
               background-color: rgb(38, 43, 51);
-
-              .stats-container__time #tp-time {
-                color: white;
-              }
 
               .dashboard-container {
                 display: flex;
@@ -485,6 +483,7 @@ html, body {
     }
   }
 
+  .time-passing-image,
   .moment-image {
     max-width: 300px !important;
     max-height: 300px !important;

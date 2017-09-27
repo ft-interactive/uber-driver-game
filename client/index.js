@@ -223,7 +223,7 @@ function continueStory() {
         duration: defaultInDuration,
         easing: 'linear',
         begin: () => {
-          timePassingScreen.style.display = 'flex';
+          timePassingScreen.style.display = 'block';
           timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
           timePassingScreen.style.backdropFilter = 'blur(8px)';
         },
