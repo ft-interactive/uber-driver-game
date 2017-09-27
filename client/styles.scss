@@ -180,7 +180,7 @@ html, body {
               border-radius: 14px;
               padding: 6px 15px 6px 59px;
               background-color: rgba(38, 43, 51, 0.8);
-              // -webkit-backdrop-filter: blur(8px);
+              -webkit-backdrop-filter: blur(12px);
               text-align: right;
               font-weight: 600;
               -webkit-font-feature-settings: 'tnum';
@@ -255,7 +255,7 @@ html, body {
             overflow: scroll;
 
             .knot {
-              padding-bottom: 10px;
+              padding-bottom: 20px;
 
               .choices-container {
                 float: none;
@@ -471,7 +471,7 @@ html, body {
     margin: 0 20px 64px !important;
 
     .knot {
-      padding-bottom: 20px !important;
+      padding-bottom: 30px !important;
     }
   }
 
