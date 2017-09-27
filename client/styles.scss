@@ -149,12 +149,19 @@ html {
 
             &--story {
               display: none;
+              flex-direction: column;
+              justify-content: flex-end;
               opacity: 0;
               height: 100%;
 
               .meters-container {
-                margin-top: 18px;
-                padding-left: 0;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                margin-top: 24px;
+                // padding-left: 0;
+                // right: 0px;
+                // left: 0px;
 
                 .meter {
                   position: relative;
@@ -234,18 +241,19 @@ html {
               }
 
               .knot-container {
-                position: absolute;
-                right: 0px;
-                left: 0px;
-                padding: 1em 0 85px 0;
+                margin: 0 10px 10px;
                 background-color: rgba(38, 43, 51, 0.9);
-                -webkit-backdrop-filter: blur(8px);
-                backdrop-filter: blur(8px);
                 overflow: scroll;
 
                 .knot {
-                  border-top: solid 1px #fff;
-                  padding-top: 1em;
+                  height: 100%;
+                  padding: 1em 0 85px 0;
+                  -webkit-backdrop-filter: blur(8px);
+                  backdrop-filter: blur(8px);
+
+                  // p:first-of-type {
+                  //   border-top: solid 1px #fff;
+                  // }
 
                   .choices-container {
                     padding-left: 0;
@@ -456,19 +464,18 @@ html {
   }
 }
 
-@include oGridRespondTo(L) {
-  .time-passing-container, .moment-container {
-    .moment-upper {
-      // p {
-      //   font-size: 40px;
-      // }
-
-      .moment-image {
-        max-width: 300px !important;
-        max-height: 300px !important;
-      }
-    }
+@include oGridRespondTo(M) {
+  .knot-container {
+    margin: 0 20px 20px !important;
   }
+
+  .moment-image {
+    max-width: 300px !important;
+    max-height: 300px !important;
+  }
+}
+
+@include oGridRespondTo(L) {
 }
 
 .no-backdropfilter {
