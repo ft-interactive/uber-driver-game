@@ -171,8 +171,7 @@ html {
                   border-radius: 14px;
                   padding: 6px 15px 6px 59px;
                   background-color: rgba(38, 43, 51, 0.9);
-                  -webkit-backdrop-filter: blur(8px);
-                  backdrop-filter: blur(8px);
+                  // -webkit-backdrop-filter: blur(8px);
                   text-align: right;
                   font-weight: 600;
                   -webkit-font-feature-settings: 'tnum';
@@ -241,21 +240,16 @@ html {
               }
 
               .knot-container {
-                margin: 0 10px 10px;
+                margin: 0 10px 54px;
                 background-color: rgba(38, 43, 51, 0.9);
+                -webkit-backdrop-filter: blur(12px);
                 overflow: scroll;
 
                 .knot {
-                  height: 100%;
-                  padding: 1em 0 85px 0;
-                  -webkit-backdrop-filter: blur(8px);
-                  backdrop-filter: blur(8px);
-
-                  // p:first-of-type {
-                  //   border-top: solid 1px #fff;
-                  // }
+                  padding-bottom: 10px;
 
                   .choices-container {
+                    float: none;
                     padding-left: 0;
 
                     button {
@@ -466,7 +460,11 @@ html {
 
 @include oGridRespondTo(M) {
   .knot-container {
-    margin: 0 20px 20px !important;
+    margin: 0 20px 64px !important;
+
+    .knot {
+      padding-bottom: 20px !important;
+    }
   }
 
   .moment-image {
