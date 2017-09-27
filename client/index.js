@@ -237,6 +237,7 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
+        offset: 0,
         update: () => {
           earningsDisplay.innerHTML = earningsObj.value;
           timePassingEarnings.innerHTML = earningsObj.value;
@@ -251,6 +252,7 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
+        offset: 0,
         update: () => {
           const timeString = new Date(parseInt(timePassingObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
 
@@ -273,6 +275,7 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
+        offset: 0,
         update: () => {
           timePassingRides.innerHTML = ridesObj.value;
         },
