@@ -46,7 +46,9 @@ const timePassingScreenDuration = 3000;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
-const ridesObj = { value: 0 };
+// ridesObj.value counts for ride count during time passing screens
+// ridesObj.totalValue counts total number of rides during game
+const ridesObj = { value: 0, totalValue: 0 };
 const questRidesObj = { value: 0 };
 
 function handleResize() {
@@ -93,6 +95,7 @@ function continueStory() {
   const questRidesTotal = 75 - story.variablesState.$('quest_rides'); // @TODO: Get 75 from variable
   const rating = story.variablesState.$('rating');
   const rideCountTotal = story.variablesState.$('ride_count_total');
+  const rideCountDuringTimePassing = rideCountTotal - ridesObj.totalValue;
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
@@ -276,7 +279,7 @@ function continueStory() {
       })
       .add({
         targets: ridesObj,
-        value: rideCountTotal,
+        value: rideCountDuringTimePassing,
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
@@ -285,7 +288,7 @@ function continueStory() {
           timePassingRides.innerHTML = ridesObj.value;
         },
         complete: () => {
-          ridesObj.value = rideCountTotal;
+          ridesObj.totalValue = rideCountTotal;
         },
       })
       .add({
@@ -296,7 +299,6 @@ function continueStory() {
         easing: 'linear',
         offset: 0,
         update: () => {
-          console.log('quest rides total: ', questRidesTotal);
           timePassingRideGoal.innerHTML = questRidesObj.value;
         },
         complete: () => {
