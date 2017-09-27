@@ -96,7 +96,8 @@ function continueStory() {
   function showPanel() {
     anime({
       targets: knotContainer,
-      bottom: 0,
+      // bottom: 0,
+      translateY: 0,
       opacity: 1,
       duration: defaultInDuration,
       easing: 'easeOutQuad',
@@ -356,8 +357,7 @@ function continueStory() {
 
       anime({
         targets: knotContainer,
-        // bottom: `-${articleBodyHeight}px`,
-        bottom: '-40px',
+        translateY: 40,
         opacity: 0,
         duration: defaultOutDuration,
         // delay: defaultOutDuration,
@@ -400,7 +400,7 @@ function startStory() {
         earningsDisplay.innerHTML = earningsObj.value;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
-        knotContainer.style.bottom = '-40px';
+        knotContainer.style.transform = 'translateY(40)';
         knotContainer.style.opacity = 0;
       },
       complete: () => {
@@ -418,7 +418,7 @@ function startStory() {
       duration: defaultInDuration,
       easing: 'easeOutQuad',
       complete: () => {
-        storyScreen.style.display = 'block';
+        storyScreen.style.display = 'flex';
         logo.style.right = 0;
         logo.style.left = '';
       },
