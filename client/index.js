@@ -44,6 +44,7 @@ const defaultOutDuration = 200;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
+const ridesObj = { value: 0 };
 
 function handleResize() {
   const d = new Date();
@@ -87,6 +88,7 @@ function showCaveats() {
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const rating = story.variablesState.$('rating');
+  const rideCountTotal = story.variablesState.$('ride_count_total');
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
@@ -262,6 +264,19 @@ function continueStory() {
         complete: () => {
           story.variablesState.$('time_passing', 0);
           timeObj.value = time;
+        },
+      })
+      .add({
+        targets: ridesObj,
+        value: rideCountTotal,
+        round: 1,
+        duration: 3000,
+        easing: 'linear',
+        update: () => {
+          timePassingRides.innerHTML = ridesObj.value;
+        },
+        complete: () => {
+          ridesObj.value = rideCountTotal;
         },
       })
       .add({
