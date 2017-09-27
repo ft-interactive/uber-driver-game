@@ -22,10 +22,11 @@ const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
 const timePassingScreen = document.querySelector('.time-passing-container');
-const timePassingDisplay = document.getElementById('countdown');
-// const timePassingEarnings = document.getElementById('tp-earnings');
-// const timePassingTime = document.getElementById('tp-time');
-// const timePassingRating = document.getElementById('tp-rating');
+const timePassingTextHours = document.getElementById('time-passing-text__hours');
+const timePassingEarnings = document.getElementById('tp-earnings');
+const timePassingTime = document.getElementById('tp-time');
+const timePassingRides = document.getElementById('tp-rides');
+const timePassingRideGoal = document.getElementById('tp-ride-goal');
 const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text')
 const momentImage = document.querySelector('.moment-image')
@@ -211,6 +212,10 @@ function continueStory() {
 
     console.log('Time is passing...');
 
+    const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
+    timePassingObj.value = timeObj.value;
+    timePassingTextHours.innerText = timePassingAmountHours;
+
     showTimePassingScreen
       .add({
         targets: timePassingScreen,
@@ -225,15 +230,24 @@ function continueStory() {
       })
       .add({
         targets: timePassingObj,
-        value: 1,
+        value: time,
         round: 1,
         duration: 3000,
         easing: 'linear',
         update: () => {
-          timePassingDisplay.innerHTML = timePassingObj.value;
+          const timeString = new Date(parseInt(timePassingObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+
+          if (timeString.length < 11) {
+            timePassingTime.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+            timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+          } else {
+            timePassingTime.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+            timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+          }
         },
         complete: () => {
           story.variablesState.$('time_passing', 0);
+          timeObj.value = time;
         },
       })
       .add({
