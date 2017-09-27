@@ -88,8 +88,7 @@ link = choice
 ->welcome
 === welcome ===
 # welcome
-Welcome! You're a full-time Uber driver trying to make ends meet.
-
+You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $850, the average weekly income in the United States.
 
@@ -99,35 +98,37 @@ Can you do it?
 ->choose_difficulty
 
 === choose_difficulty===
-# link 
+
 # choose_difficulty
 
-The difficulty level will affect how easy it is to make $850 in a week.
-
-Easier: You live in San Francisco and have good credit rating
-
-Harder: You have bad credit rating and can't afford to live in SF. Instead, you live two hours away in Sacramento
-
-* [Easier]
+Your difficulty level will affect how easy it is to make $850 in a week.
+# link 
++ [Easier]
 ~ home="sf"
 ~ credit_rating="good"
-You live in San Francisco and have good bank credit. You have two kids to support, and a mortgage payment coming due.
+You live in San Francisco and have good bank credit, making it cheaper for you to rent a car. 
+You have two kids to support, and a mortgage payment coming due.
+->confirm
 
-* [Difficult]
++ [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
-You live in Sacramento and have bad bank credit. You have two kids to support, and a mortgage payment coming due.
+You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+You have two kids to support, and a mortgage payment coming due.
+-> confirm
 
+=confirm
+# choose_difficulty.confirm
+# link
+{home=="sf":Choose the easier difficulty?}
+{home=="sac":Choose the harder difficulty?} 
+
++ [Go back]
+->choose_difficulty
++ [Yes]
 - ~current_city=home
-->get_started
-
-=get_started
-# get_started
-Remember, you have seven days to make $850.
-
-# button
-* [Let's go]
 ->day_1_start
+
 
 === day_1_start ===
 
@@ -136,13 +137,12 @@ Remember, you have seven days to make $850.
 You start bright and early on a Monday morning.
 
 Pretty soon, you get your first ride request, from someone called Chris.
-# button
-* [Go pick him up] ->day_1_locate_passenger
+->day_1_locate_passenger
 
 ===day_1_locate_passenger===
 # link
 # day_1_locate_passenger
-You arrive, but don't see anyone waiting for a ride. What do you do?
+You go to pick him up, but don't see anyone waiting for a ride when you arrive. What do you do?
 ~add_time(0, 5)
 * [Call Chris]->call_chris
 * [Wait] You wait in your car. ->chris_arrives
@@ -240,7 +240,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
 ===buy_accessories===
 # list
 # buy_accessories
-{!To prepare for life as a professional driver, you also bought...|What else did you buy?}
+{!To prepare for life as a professional driver, you bought...|What else did you buy?|You also bought...|Do you need anything else?}
 
 * [Unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
@@ -357,7 +357,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗&nbsp;&nbsp;(Keep driving)]
+*[🚗&nbsp;&nbsp;(Drive)]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -426,7 +426,7 @@ You take a shower at the gym. Feeling refreshed, you keep driving.
 ~time_passes(3,0,1)
 You start driving.
 # button
-*[🚗]
+*[🚗&nbsp;&nbsp;(Drive)]
 {phone_mount==false:
 ->no_phone_mount->day_1_sac_afternoon_in_sf
 }
@@ -450,7 +450,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯] ->sac_afternoon
+* [🌯&nbsp;&nbsp;(Burritos)] ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -644,7 +644,7 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     
 * ["Nice! I love burgers too."]They get in the car and you start driving. 
 
-- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat."
+- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat.
 
     ~add_time(0,22)
     # link
@@ -657,27 +657,56 @@ You get a trip request from a burger joint, and when you arrive the passengers h
     ->dirty_car 
     
 ===dirty_car===
-# link
 # dirty_car
-What do you do about your dirty backseat?
+{cleaning_supplies==true:
+Your backseat is dirty. Fortunately, you have cleaning supplies in the trunk. You spend some time cleaning up.
 
-* [Stop to clean it] You pull over to clean the back seat. Before you start cleaning, a ride request comes in.
-    ~add_time(0,13)
+Your next passenger is impressed by how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
+->day_2_afternoon
 
-    # link
-    ** [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
-    ~ alter(rating,-10) 
-    ~ alter(ride_count_total,1)
-    ~ alter(fares_earned_total,8)
-    ~ alter(day_ride_count,1)
-    ~ alter(day_fares_earned,8)
+- else:
+You backseat is dirty and you don't have cleaning supplies.
+->no_cleaning_supplies
+}
 
-    ** [Decline the ride] You finish cleaning up.
+=no_cleaning_supplies
+# dirty_car.no_cleaning_supplies
+#link
+* [Find cleaning supplies]It takes you some time to find a convenience store. You spend $20 stocking up on cleaning supplies.
+~cleaning_supplies=true
+~alter(accessories_cost,20)
+~add_time(0,16)
 
-* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with the dirty backseat.
-    ~ alter(rating,-10) 
+->ride_request
 
-- ->day_2_afternoon
+* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with your dirty backseat.
+    ~ alter(rating,-15) 
+    ->day_2_afternoon
+
+=ride_request
+# dirty_car.ride_request
+# link
+Just as you start cleaning, a ride request comes in.
+~add_time(0,13)
+* [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
+~ alter(rating,-10) 
+~ alter(ride_count_total,1)
+~ alter(fares_earned_total,8)
+~ alter(day_ride_count,1)
+~ alter(day_fares_earned,8)
+->day_2_afternoon
+* [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
+->day_2_afternoon
 
 ===day_2_afternoon===
 # button
@@ -770,10 +799,10 @@ You head over to San Francisco. <>
 ~add_time(0,19)
 As you drive along the highway, a pebble hits your windshield and leaves a chip.
 
-* [Repair it immediately]
-->repair
+* [Repair it immediately ($30)]
+->repair->day_3_morning
 
-* [Ignore it] It's just a small chip. You don't want to spend the time and money repairing a car you leased.
+* [Ignore it] It's just a small chip. It'll probably be fine to leave it, and you don't want to spend the time and money repairing a car you leased.
 ~ windshield_cracked=true
 ->day_3_morning
 
@@ -785,7 +814,7 @@ You find a nearby auto shop.
 * [🔧]
 They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
 ~alter(repair_cost,30)
-->day_3_morning
+->->
 
 ===day_3_morning===
 # day_3_morning
@@ -1067,7 +1096,8 @@ You take it easy today.
 - else:
     It might be a stretch to do {quest_rides} rides, especially in Sacramento, but you give it a shot.
     ~ temp remaining=quest_rides-3
-    NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+/*    NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+*/
     ~ time_passing = true
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -1345,7 +1375,9 @@ You take it easy today.
 - else:
     It might be a stretch to do {quest_rides} rides, but you give it a shot.
     ~ temp remaining=quest_rides-3
+/*    
     NEXT SCREEN: You drive for 9 hours. During this time, you completed {remaining} rides, and earned ${remaining*6} in fares. Your driver rating is {rating/100} 
+*/
     ~ time_passing = true
     ~ alter(day_ride_count, remaining)
     ~ alter(day_fares_earned, remaining*6)
@@ -1371,7 +1403,7 @@ It's the end of day 4.
 ~alter(hours_driven_total,2)
 ~alter(day_hours_driven,2)
 }
-Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. Your driver rating is {rating/100}.
+Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned ${day_fares_earned} in fares. /*Your driver rating is {rating/100}.*/
 
 { 
 - quest_completion==true && finished_quest_on_weds==false:
@@ -1436,10 +1468,53 @@ You head into San Francisco at your usual hour.
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,3)
-~time_passes(7,0,1)
-- else:
-~time_passes(9,0,1)
 }
+
+{
+- home=="sf" && windshield_cracked==true:
+    ~time_passes(5,0,1)
+    # button
+    *[🚗]
+    ->windshield_reminder
+    
+- home=="sac" && windshield_cracked==true:
+    ~time_passes(3,0,1)
+    # button
+    *[🚗]
+    ->windshield_reminder
+
+- home=="sf" && windshield_cracked==false:
+    ~time_passes(9,0,1)
+    # button
+    *[🚗]
+    ->day_5_afternoon
+
+- home=="sac" && windshield_cracked==false:
+    ~time_passes(7,0,1)
+    # button
+    *[🚗]
+    ->day_5_afternoon
+}
+
+===windshield_reminder===
+# windshield_reminder
+You check the chip in your windshield. You can't tell whether it has become bigger or not.
+# link
+* [Repair it ($30)]
+->pebble_start.repair->windshield_reminder.get_it_fixed
+* [Leave it]
+->leave
+
+=get_it_fixed
+~time_passes(3,0,1)
+# button
+*[🚗]
+->day_5_afternoon
+
+=leave
+# windshield_reminder.leave
+You decide it's still the same size. It'll be fine.
+~time_passes(4,0,1)
 # button
 *[🚗]
 ->day_5_afternoon
@@ -2037,7 +2112,7 @@ It's the end of the week. Were you savvy enough to survive as a full-time Uber d
 
 ===no_phone_mount===
 # no_phone_mount
-With no phone mount, you're left fiddling with your phone on your lap. A passenger notices and complains to Uber about your dangerous driving.
+With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
 ~add_time(4,0)
 ~phone_mount=true 
 ~alter(accessories_cost,25)
