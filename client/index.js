@@ -90,7 +90,7 @@ function continueStory() {
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
-  const timePassingObj = { value: 3 };
+  const timePassingObj = { value: null };
 
   console.log(timePassing, moment);
 
@@ -226,6 +226,20 @@ function continueStory() {
           timePassingScreen.style.display = 'block';
           timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
           timePassingScreen.style.backdropFilter = 'blur(8px)';
+        },
+      })
+      .add({
+        targets: earningsObj,
+        value: earnings,
+        round: 1,
+        duration: 3000,
+        easing: 'linear',
+        update: () => {
+          earningsDisplay.innerHTML = earningsObj.value;
+          timePassingEarnings.innerHTML = earningsObj.value;
+        },
+        complete: () => {
+          earningsObj.value = earnings;
         },
       })
       .add({
