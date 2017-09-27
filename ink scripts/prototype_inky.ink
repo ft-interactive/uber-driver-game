@@ -216,6 +216,8 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 
 Twenty minutes later, you arrive at his destination.
 ~ alter(fares_earned_total, 16)
+~ alter(day_ride_count, 1)
+~ alter(day_fares_earned, 16)
 * [Drop him off] 
 ->drop_off
 =drop_off
@@ -437,7 +439,7 @@ You start driving back to Sacramento
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
-*[🚗]
+*[Call it a day]
 ->day_1_end
 
 =keep_driving
@@ -524,7 +526,7 @@ It's starting to get late.
 You decide to go home.
 ~add_time(0,23)
 # button
-*[🚗]
+*[Call it a day]
 ->day_1_end
 
 =keep_driving
@@ -599,7 +601,7 @@ It's starting to get late
 You decide to go home.
 ~add_time(0,23)
 # button
-*[🚗]
+*[Call it a day]
 
 ->day_1_end
 
