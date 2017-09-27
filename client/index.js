@@ -38,8 +38,8 @@ const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 // Needed for animations
-const defaultInDuration = 500;
-const defaultOutDuration = 300;
+const defaultInDuration = 300;
+const defaultOutDuration = 200;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -97,6 +97,7 @@ function continueStory() {
     anime({
       targets: knotContainer,
       bottom: 0,
+      opacity: 1,
       duration: defaultInDuration,
       easing: 'easeOutQuad',
     });
@@ -355,9 +356,11 @@ function continueStory() {
 
       anime({
         targets: knotContainer,
-        bottom: `-${articleBodyHeight}px`,
+        // bottom: `-${articleBodyHeight}px`,
+        bottom: '-40px',
+        opacity: 0,
         duration: defaultOutDuration,
-        delay: defaultOutDuration,
+        // delay: defaultOutDuration,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all existing paragraphs
@@ -397,7 +400,8 @@ function startStory() {
         earningsDisplay.innerHTML = earningsObj.value;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
-        knotContainer.style.bottom = `-${articleBodyHeight}px`;
+        knotContainer.style.bottom = '-40px';
+        knotContainer.style.opacity = 0;
       },
       complete: () => {
         shareButtons.style.display = 'none';
