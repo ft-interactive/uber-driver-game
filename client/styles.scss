@@ -242,8 +242,8 @@ html {
 
               .knot-container {
                 margin: 0 10px 10px;
-                overflow: scroll;
                 background-color: rgba(38, 43, 51, 0.9);
+                overflow: scroll;
 
                 .knot {
                   height: 100%;
@@ -251,9 +251,9 @@ html {
                   -webkit-backdrop-filter: blur(8px);
                   backdrop-filter: blur(8px);
 
-                  p:first-of-type {
-                    border-top: solid 1px #fff;
-                  }
+                  // p:first-of-type {
+                  //   border-top: solid 1px #fff;
+                  // }
 
                   .choices-container {
                     padding-left: 0;
@@ -468,13 +468,14 @@ html {
   .knot-container {
     margin: 0 20px 20px !important;
   }
-}
 
-@include oGridRespondTo(L) {
   .moment-image {
     max-width: 300px !important;
     max-height: 300px !important;
   }
+}
+
+@include oGridRespondTo(L) {
 }
 
 .no-backdropfilter {
