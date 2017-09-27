@@ -358,6 +358,10 @@ html, body {
                 #tp-earnings {
                   font-size: 100px;
                   font-size: 10vh;
+
+                  &:before {
+                    content: '$';
+                  }
                 }
               }
             }
