@@ -220,6 +220,7 @@ function continueStory() {
 
     const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
     timePassingObj.value = timeObj.value;
+    ridesObj.value = 0; // reset ridesObj value to 0 each time
     timePassingTextHours.innerText = timePassingAmountHours;
     timePassingRideGoalTotal.innerText = 75; // @TODO: Add logic for either 65 or 75
 
