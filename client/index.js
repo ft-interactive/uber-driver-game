@@ -41,6 +41,7 @@ let knotContainerMaxHeight;
 // Needed for animations
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
+const timePassingScreenDuration = 3000;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -234,7 +235,7 @@ function continueStory() {
         targets: earningsObj,
         value: earnings,
         round: 1,
-        duration: 3000,
+        duration: timePassingScreenDuration,
         easing: 'linear',
         update: () => {
           earningsDisplay.innerHTML = earningsObj.value;
@@ -248,7 +249,7 @@ function continueStory() {
         targets: timePassingObj,
         value: time,
         round: 1,
-        duration: 3000,
+        duration: timePassingScreenDuration,
         easing: 'linear',
         update: () => {
           const timeString = new Date(parseInt(timePassingObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
@@ -270,7 +271,7 @@ function continueStory() {
         targets: ridesObj,
         value: rideCountTotal,
         round: 1,
-        duration: 3000,
+        duration: timePassingScreenDuration,
         easing: 'linear',
         update: () => {
           timePassingRides.innerHTML = ridesObj.value;
