@@ -38,11 +38,11 @@ VAR ticketed=false
 VAR saturday_off=false
 
 // Quest variables
-VAR quest_rides=0
-VAR quest_bonus=0
+VAR quest_rides=75
+VAR quest_bonus=180
 VAR quest_completion=false
 VAR weekday_quest_completion=false
-VAR weekday_quest_bonus=0
+VAR weekday_quest_bonus=180
 VAR weekend_quest_completion=false
 VAR weekend_quest_bonus=0
 VAR finished_quest_on_weds=false
@@ -332,9 +332,6 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 ===weekday_quest_message===
 
 # weekday_quest_message
-~quest_rides=75
-~quest_bonus=180
-~weekday_quest_bonus=quest_bonus
 MESSAGE FROM UBER 
 "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 # button
@@ -422,34 +419,36 @@ You get back online just in time for the busy evening period.
 ===day_1_sac_night_in_sf===
 # day_1_sac_night_in_sf
 # link
-It's getting late and you have a two hour drive to get back home.
+It's getting late and you have a two-hour drive to get back home.
 
-* [Go home]->go_home
-* [Keep driving]->keep_driving
+* [That's enough for today]->go_home
+* {!gym_member} [Keep driving]->keep_driving
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
 # day_1_sac_night_in_sf.go_home
-You start driving back to Sacramento
+It's been a long day, and you don't want to burn out too quickly.
 ~add_time(2,4)
 ~ alter(day_hours_driven, 2)
 ~ alter(hours_driven_total, 2)
 # button
-*[🚗]
+*[Drive home]
 ->day_1_end
 
 =keep_driving
 # day_1_sac_night_in_sf.keep_driving
-You call home to say you won't be back for dinner, and keep driving.
-~time_passes(2,1,1)
+You're feeling tired and dirty. You might have been able to drive for longer if you had somewhere to shower in the city, like a gym. 
+~add_time(2,4)
+~ alter(day_hours_driven, 2)
+~ alter(hours_driven_total, 2)
 # button
-*[🚗]
+*[Drive home]
 ->go_home
 
 =gym
 # day_1_sac_night_in_sf.gym
-You take a shower at the gym. Feeling refreshed, you keep driving.
-~time_passes(3,1,1)
+You take a shower at the gym. Feeling refreshed, you keep driving for just a while longer.
+~time_passes(2,1,1)
 # button
 *[🚗]
 ->go_home
@@ -499,6 +498,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 It's 4pm, and you've only earned ${day_fares_earned}.
 * [Call it a day] You head home, in time for dinner.-> day_1_end
 * [Keep going] Things should pick up during rush hour and dinner time. ->sac_late_afternoon
+* [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to SF. You stay in Sacramento, regretting that you didn't go earlier.->sac_late_afternoon
 
 =sac_late_afternoon
 # day_1_sacramento.sac_late_afternoon
@@ -510,6 +510,7 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 =sac_evening
 # day_1_sacramento.sac_evening
 # link
+It's getting late.
 
 * [Go home]->go_home
 * [Keep driving]->keep_driving
@@ -584,7 +585,7 @@ You get back online just in time for the busy evening period.
  
 ===day_1_sf_keep_going===
 #day_1_sf_keep_going
-It's starting to get late
+It's getting late.
 # link
 * [Go home]->go_home
 * [Keep driving]->keep_driving
@@ -664,6 +665,7 @@ You turn on your Uber app and start driving.
 # link
 # burgers
 ~temp dirty=false
+You get a trip request from a burger joint, and when you arrive the passengers have two In-N-Out burgers that they are about to eat in the car.
 ~add_time(0,4)
 * ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
     # link
