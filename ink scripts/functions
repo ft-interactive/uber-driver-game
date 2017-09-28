@@ -83,7 +83,7 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end o
     ~ alter(XL_total,XL_bonus)
 }
 
-=== function add_ride(number) ===
-~alter(ride_count_total,number)
+=== function add_ride(number)===
 ~alter(day_ride_count,number)
+~alter(ride_count_total,number)
 ~alter(quest_rides,-number)

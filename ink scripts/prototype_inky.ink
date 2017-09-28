@@ -1,7 +1,6 @@
 INCLUDE functions
 INCLUDE check_quest
 INCLUDE ratings
-INCLUDE results
 
 //Set-up variables 
 VAR car="Prius"
@@ -100,6 +99,8 @@ Can you do it?
 * [goto time passing]
 ~home="sac"
 ~current_city="sac"
+~quest_rides=64
+~quest_bonus=120
 ->sac_morning
 * [goto deactivated phone mount]
 ~home="sac"
@@ -129,8 +130,6 @@ Can you do it?
 ~ repair_cost=140
 ~ took_day_off=true
 ->end_sequence
-
-
 
 === choose_difficulty===
 
@@ -215,7 +214,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 # day_1_locate_passenger.driving
 
 Twenty minutes later, you arrive at his destination.
-~ alter(fares_earned_total, 16)
+~add_ride(1)
 * [Drop him off] 
 ->drop_off
 =drop_off
