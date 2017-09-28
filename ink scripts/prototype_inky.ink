@@ -356,10 +356,9 @@ You live in Sacramento, where fares are a third less than in a bigger city like 
 # button
 # day_1_sacramento.go_to_sf
 ~ add_time(2,0)
-~ alter(day_ride_count, 1)
+~ add_ride(1)
 ~ alter(day_fares_earned, 56)
 ~ alter(day_hours_driven, 2)
-~ alter(ride_count_total, 1)
 ~ alter(fares_earned_total, 56)
 ~ alter(hours_driven_total, 2)
 ~ current_city="sf"
@@ -510,35 +509,9 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 =sac_evening
 # day_1_sacramento.sac_evening
 # link
-It's getting late.
+It's getting late, and you don't want to burn out too quickly.
 
-* [Go home]->go_home
-* [Keep driving]->keep_driving
-* {gym_member} [Freshen up at the gym]->gym
-
-=go_home
-# day_1_sacramento.go_home
-You decide to go home.
-~add_time(0,23)
-# button
-*[🚗]
-->day_1_end
-
-=keep_driving
-# day_1_sacramento.keep_driving
-You call home to say you won't be back for dinner, and keep driving.
-~time_passes(2,1,1)
-# button
-*[🚗]
-->go_home
-
-=gym
-# day_1_sacramento.gym
-You take a shower at the gym. Feeling refresed, you keep driving.
-~time_passes(3,1,1)
-# button
-*[🚗]
-->go_home
+* [Call it a day]->day_1_end
 
 
 === day_1_sf ===
@@ -585,36 +558,10 @@ You get back online just in time for the busy evening period.
  
 ===day_1_sf_keep_going===
 #day_1_sf_keep_going
-It's getting late.
+It's getting late, and you don't want to burn out too quickly.
 # link
-* [Go home]->go_home
-* [Keep driving]->keep_driving
-* {gym_member} [Freshen up at the gym]->gym
+* [Go home]->day_1_end
 
-=go_home
-#day_1_sf_keep_going.go_home
-You decide to go home.
-~add_time(0,23)
-# button
-*[🚗]
-
-->day_1_end
-
-=keep_driving
-#day_1_sf_keep_going.keep_driving
-You call home to say you won't be back for dinner, and keep driving.
-~time_passes(2,1,1)
-# button
-*[🚗]
-->go_home
-
-=gym
-#day_1_sf_keep_going.gym
-You take a shower at the gym. Feeling refresed, you keep driving.
-~time_passes(3,1,1)
-# button
-*[🚗]
-->go_home
 
 ===day_1_end===
 # day_1_end
@@ -627,7 +574,7 @@ It's the end of the first day.
 
 === day_2_begin ===
 # day_2_start
-It's Tuesday. You wake up, tired from having spent a whole day in the car yesterday.
+It's Tuesday. Your back aches from having spent the whole day in the car yesterday.
 # button
 {home=="sac":
 ~alter(day_hours_driven,2)
@@ -727,9 +674,8 @@ Just as you start cleaning, a ride request comes in.
 ~add_time(0,13)
 * [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
 ~ alter(rating,-10) 
-~ alter(ride_count_total,1)
+~ add_ride(1)
 ~ alter(fares_earned_total,8)
-~ alter(day_ride_count,1)
 ~ alter(day_fares_earned,8)
 ->day_2_afternoon
 * [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
@@ -941,13 +887,11 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 # button
     **[🚗]
     You decide to call it a day and finish the quest tomorrow instead.
-    ~ alter(day_ride_count, 1)
+    ~ add_ride(1)
     ~ alter(day_fares_earned, 30)
     ~ alter(day_hours_driven, 1)
-    ~ alter(ride_count_total, 1)
     ~ alter(fares_earned_total, 30)
     ~ alter(hours_driven_total, 1)
-    ~ alter(quest_rides, -1)
     ->day_3_end
 
 =in_hurry
@@ -971,13 +915,12 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 
 You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
 ~add_time(1,13)
-~ alter(ride_count_total, 1)
+~ add_ride(1)
 ~ alter(fares_earned_total, 30)
 ~ alter(hours_driven_total, 1)
-~ alter(day_ride_count, 1)
 ~ alter(day_fares_earned, 30)
 ~ alter(day_hours_driven, 1)
-~ alter(quest_rides, -1)
+
     # button
     **[🚗]
     You decide to call it a day and finish the quest tomorrow instead.
@@ -1247,11 +1190,9 @@ Soon after you arrive, you get a long ride alert on your Uber app. Someone is re
 # link
 You pick up some tourists who want to drive across the Golden Gate Bridge and go to Napa.
 ~ alter(fares_earned_total,265)
-~ alter(ride_count_total,1)
+~ add_ride(1)
 ~ alter(day_fares_earned,265)
 ~ alter(hours_driven_total,2)
-~ alter(day_ride_count,1)
-~ alter(quest_rides, -1)
 ~ alter(day_hours_driven,2)
 ~ add_time(1,49)
 * [Put your favourite dance mix on Spotify]
@@ -1969,9 +1910,7 @@ You hear on the radio that the baseball game has just ended.
 
 You make your way to the baseball stadium before the game ends.
 Sure enough, lots of people are requesting rides there. 
-    ~ alter(day_ride_count, 1)
-    ~ alter(ride_count_total, 1)
-    ~ alter(quest_rides, -1)
+    ~ add_ride(1)
     ~ alter(day_fares_earned, 30)
     ~ alter(fares_earned_total, 30)
     ~add_time(0,48)
@@ -2166,7 +2105,7 @@ With no phone mount, you're left fiddling with your phone on your lap. Your pass
 }
 # button
 # deactivation
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to SF}.
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}
 ->->
 
 ===data_plan===
