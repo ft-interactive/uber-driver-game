@@ -136,7 +136,7 @@ Can you do it?
 
 # choose_difficulty
 
-Your difficulty level will affect how [[[easy]]] it is to make $850 in a week.
+Your difficulty level will affect how easy it is to make $850 in a week.
 # link 
 + [Easier]
 ~ home="sf"
