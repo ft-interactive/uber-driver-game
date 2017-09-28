@@ -211,16 +211,15 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 =driving
 # button
 # day_1_locate_passenger.driving
-
 Twenty minutes later, you arrive at his destination.
+~alter(fares_earned_total,16)
+~alter(day_fares_earned,16)
 ~add_ride(1)
 * [Drop him off] 
 ->drop_off
 =drop_off
 # day_1_locate_passenger.drop_off
-"Thanks! Sorry again for making you wait," he says as he gets out.
-
-Congratulations! You've just earned your first fare, for $16.
+"Thanks! Sorry again for making you wait," he says as he gets out. You mark the ride as complete on the Uber app.
 ~ moments=true
 # button
 # first_fare
@@ -244,7 +243,7 @@ Congratulations! You've just earned your first fare, for $16.
     ~insurance=60    
 }
 
-You're going to be spending a lot of time in your car. What model did you lease?
+You're going to be spending a lot of time in your car. What model do you lease?
  
 + [Toyota Prius] 
 The Prius is fuel efficient, getting up to 50 miles per gallon. {credit_rating == "good":Your good credit rating means it only costs ${prius_cost} per week.}{credit_rating=="bad":Unfortunately, your poor credit means it costs ${prius_cost} per week.}
@@ -273,7 +272,7 @@ Rent this car? You will also buy insurance for ${insurance} a week.
 ===buy_accessories===
 # list
 # buy_accessories
-{!To prepare for life as a professional driver, you bought...|What else did you buy?|You also bought...|Do you need anything else?}
+{!To prepare for life as a professional driver, you buy...|What else do  you buy?|You also buy...|Do you need anything else?}
 
 * [Unlimited data plan ($20/week)]Since you always have to be connected to the Uber app, an unlimited data plan will save you from paying overage charges. 
     ~unlimited_data=true
@@ -318,8 +317,17 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 
 } 
 # button
-** [Get back to driving]
+** [All set]
 -> sf_or_sacramento
+
+=== sf_or_sacramento ===
+# sf_or_sacramento
+{
+- home=="sf":
+->weekday_quest_message->day_1_sf
+
+- home=="sac":->day_1_sacramento
+}
 
 ===weekday_quest_message===
 
@@ -330,19 +338,11 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 MESSAGE FROM UBER 
 "Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
 # button
-* [Accept quest]Getting that bonus would really help.
+* [Accept quest]
 
 ->->
 
-=== sf_or_sacramento ===
-# sf_or_sacramento
-{
-- home=="sf":
-You live in San Francisco, Uber's hometown.
-->weekday_quest_message->day_1_sf
 
-- home=="sac":->day_1_sacramento
-}
 
 === day_1_sacramento ===
 # link
@@ -545,9 +545,9 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 === day_1_sf ===
 # button
 # day_1_sf
-
+You're excited to see parts of San Francisco you haven't been to yet.
 ~time_passes(4,0,1)
-* [Start driving] 
+* [🚗&nbsp;&nbsp;(Drive)] 
 
 ->day_1_sf_morning
 
@@ -556,8 +556,8 @@ You take a shower at the gym. Feeling refresed, you keep driving.
 # day_1_sf_morning
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯&nbsp;&nbsp;(Burritos)] You spot a Señor Sisig food truck and decide on burritos
-* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni
+* [🌯&nbsp;&nbsp;(Burritos)] You enjoy a burrito from Señor Sisig food truck before continuing on.
+* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni before getting back on the road.
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
