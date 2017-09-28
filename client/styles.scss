@@ -382,20 +382,19 @@ html, body {
                 padding: 10px 0 0;
 
                 &__time {
-                  // flex-grow: 1;
-                  min-width: 33%;
+                  min-width: 30%;
                   margin-right: 10px;
                 }
 
                 &__rides {
                   flex-grow: 1;
-                  max-width: 33%;
+                  max-width: 30%;
                   margin-right: 10px;
                 }
 
                 &__ride-goal {
                   flex-grow: 1;
-                  max-width: 33%;
+                  max-width: 30%;
                 }
 
                 i.material-icons {
