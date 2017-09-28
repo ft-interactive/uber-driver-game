@@ -1,0 +1,27 @@
+{
+  "name": "uber-game-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/micro": "^7.3.1",
+    "@types/node": "^8.0.31",
+    "@types/sequelize": "^4.0.75",
+    "micro": "^9.0.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.11.1",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.5.3"
+  },
+  "devDependencies": {
+    "tslint": "^5.7.0",
+    "tslint-config-airbnb": "^5.3.0"
+  }
+}
