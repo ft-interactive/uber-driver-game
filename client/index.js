@@ -4,19 +4,20 @@ import Modernizr from './modernizr';
 import twemoji from 'twemoji';
 import json from './uber.json';
 import './styles.scss';
+import endStory from './components/ending';
 
-const story = new Story(json);
+export const story = new Story(json);
+
 // Elements
 const logo = document.querySelector('.logo');
 const shareButtons = document.querySelector('.article__share');
 const footer = document.querySelector('.o-typography-footer');
 const tint = document.querySelector('.tint');
-const introScreen = document.getElementById('intro');
+export const introScreen = document.getElementById('intro');
 const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
 const startButton = document.getElementById('start-button');
-const storyScreen = document.getElementById('story');
-const endingScreen = document.getElementById('ending');
+export const storyScreen = document.getElementById('story');
 const earningsDisplay = document.getElementById('earnings');
 const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
@@ -31,6 +32,8 @@ const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text')
 const momentImage = document.querySelector('.moment-image')
 const momentButton = document.getElementById('moment-button');
+
+
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -39,8 +42,8 @@ const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 // Needed for animations
-const defaultInDuration = 300;
-const defaultOutDuration = 200;
+export const defaultInDuration = 300;
+export const defaultOutDuration = 200;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -92,7 +95,10 @@ function continueStory() {
   const moment = story.variablesState.$('moments');
   const timePassingObj = { value: 3 };
 
-  console.log(timePassing, moment);
+  // Short-circuit logic and run custom end sequence
+  // if (story.currentTags.indexOf('end_sequence') > -1) {
+  //   return endStory();
+  // }
 
   function showPanel() {
     anime({
@@ -294,8 +300,6 @@ function continueStory() {
     // Create paragraph element
     const paragraphElement = document.createElement('p');
 
-    console.log(story.currentTags);
-
     paragraphElement.innerHTML = paragraphText;
 
     // Remove existing choices container element
@@ -448,14 +452,11 @@ window.addEventListener('resize', handleResize);
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
 
-function endStory() {
-  introScreen.style.display = 'none';
-  storyScreen.style.display = 'none';
-  endingScreen.style.display = 'flex';
-}
-
 // keyboard shortcut CTRL+E to show ending
 addEventListener('keypress', (event) => {
+  if (event.ctrlKey && event.key.toLowerCase() === 's') {
+    window.STORY = story;
+  }
   if (event.ctrlKey && event.key.toLowerCase() === 'e') {
     endStory();
   }

@@ -3,7 +3,7 @@
 
 {% block article_body %}
 
-{% markdown %}
+{# {% markdown %} #}
 <div class="moments-preload"></div>
 
 <div id="intro" class="screen screen--intro">
@@ -99,7 +99,66 @@
 </div>
 
 <div id="ending" class="screen screen--ending">
-  ENDING!
+  <div class="ending__header-primary"></div>
+
+  <div class="ending__container ending__income-costs">
+    <figure class="ending__big-number"></figure>
+    <ul class="ending__list"></ul>
+  </div>
+
+  <div class="ending__container ending__stats">
+    <div class="ending__header-tertiary ending__header-tertiary--hours-driven"></div>
+    <figure class="ending__big-number ending__big-number--hours-driven"></figure>
+    <div class="ending__header-tertiary ending__header-tertiary--rides-completed"></div>
+    <figure class="ending__big-number ending__big-number--rides-completed"></figure>
+    <div class="ending__header-tertiary ending__header-tertiary--driver-rating"></div>
+    <figure class="ending__big-number ending__big-number--driver-rating"></figure>
+    <i class="material-icons">grade</i>
+  </div>
+
+  <div class="ending__container ending__outcomes">
+    <img class="ending__outcomes-image" />
+    <div class="ending__header-secondary"></div>
+    <div class="ending__text"></div>
+  </div>
+
+  <div class="ending__container ending__onward">
+    <p>
+      This game was produced by <span class="ending__author-list"></span>.
+    </p>
+    <p>
+      This game is based on reporting and interviews with Uber drivers. Read more about their story:
+    </p>
+
+    <div class="ending__onward-image-with-caption">
+      <img class="ending__onward-image" />
+      <div class="ending__onward-caption"></div>
+    </div>
+
+    <div class="ending__container ending__social-share" data-trackable="share | ending">
+      <div class="ending__social-share-label">Share this game:</div>
+      <div class="container">
+        <div data-o-component="o-share" class="o-share o-share--inverse">
+          <ul>
+            <li class="o-share__action o-share__action--twitter">
+              <a href="https://twitter.com/intent/tweet?url=https://ig.ft.com/uber-driver-game&amp;text=The Uber Game&amp;via=FT" rel="noopener"><i>Twitter</i></a>
+            </li>
+            <li class="o-share__action o-share__action--facebook">
+              <a href="http://www.facebook.com/sharer.php?u=https://ig.ft.com/uber-driver-game" rel="noopener"><i>Facebook</i></a>
+            </li>
+            <li class="o-share__action o-share__action--linkedin">
+              <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://ig.ft.com/uber-driver-game&amp;source=Financial%20Times" rel="noopener"><i>LinkedIn</i></a>
+            </li>
+            <li class="o-share__action o-share__action--whatsapp">
+              <a target="_blank" href="whatsapp://send?text=The Uber Game%20-%20https://ig.ft.com/uber-driver-game" data-trackable="whatsapp" rel="noopener"><i>Whatsapp</i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="ending__continue-button"><i class="material-icons">expand_more</i></button>
 </div>
 
 <div id="landscape" class="screen screen--landscape">
@@ -108,5 +167,5 @@
     Please rotate your device to portrait orientation
   </p>
 </div>
-{% endmarkdown %}
+{# {% endmarkdown %} #}
 {% endblock %}
