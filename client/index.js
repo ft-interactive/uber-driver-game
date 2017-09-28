@@ -28,6 +28,7 @@ const timePassingTime = document.getElementById('tp-time');
 const timePassingRides = document.getElementById('tp-rides');
 const timePassingRideGoal = document.getElementById('tp-ride-goal');
 const timePassingRideGoalTotal = document.getElementById('tp-ride-goal-total');
+const timePassingButton = document.getElementById('tp-button');
 const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text')
 const momentImage = document.querySelector('.moment-image')
@@ -99,6 +100,7 @@ function continueStory() {
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
+  const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
   // then number of quests is 75, else 65
@@ -206,6 +208,24 @@ function continueStory() {
     }
   }
 
+  function closeTimePassing() {
+    anime({
+      targets: timePassingScreen,
+      opacity: 0,
+      duration: defaultOutDuration,
+      easing: 'linear',
+      begin: () => {
+        timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
+        timePassingScreen.style.backdropFilter = 'blur(0px)';
+      },
+      complete: () => {
+        timePassingScreen.style.display = 'none';
+        timePassingButton.removeEventListener('click', closeTimePassing);
+        showPanel();
+      },
+    });
+  }
+
   function hideMoment() {
     anime({
       targets: momentScreen,
@@ -229,7 +249,6 @@ function continueStory() {
 
     console.log('Time is passing...');
 
-    const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     timePassingTextHours.innerText = timePassingAmountHours;
@@ -255,8 +274,8 @@ function continueStory() {
         easing: 'linear',
         offset: 0,
         update: () => {
-          earningsDisplay.innerHTML = earningsObj.value;
           timePassingEarnings.innerHTML = earningsObj.value;
+          earningsDisplay.innerHTML = earningsObj.value;
         },
         complete: () => {
           earningsObj.value = earnings;
@@ -312,22 +331,9 @@ function continueStory() {
         complete: () => {
           questRidesObj.value = questRidesTotal;
         },
-      })
-      .add({
-        targets: timePassingScreen,
-        opacity: 0,
-        duration: defaultOutDuration,
-        easing: 'linear',
-        begin: () => {
-          timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
-          timePassingScreen.style.backdropFilter = 'blur(0px)';
-        },
-        complete: () => {
-          timePassingScreen.style.display = 'none';
-
-          showPanel();
-        },
       });
+
+    timePassingButton.addEventListener('click', closeTimePassing);
   } else if (moment > 0) {
     console.log(`A moment just happened. It was ${story.currentTags[1]}`);
 
