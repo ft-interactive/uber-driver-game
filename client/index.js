@@ -219,14 +219,15 @@ function continueStory() {
         timePassingScreen.style.backdropFilter = 'blur(0px)';
       },
       complete: () => {
-        timePassingScreen.style.display = 'none';
         timePassingButton.removeEventListener('click', closeTimePassing);
+        story.variablesState.$('time_passing', 0);
+        timePassingScreen.style.display = 'none';
         showPanel();
       },
     });
   }
 
-  function hideMoment() {
+  function closeMoment() {
     anime({
       targets: momentScreen,
       opacity: 0,
@@ -239,7 +240,7 @@ function continueStory() {
       complete: () => {
         momentScreen.style.display = 'none';
         showPanel();
-        momentButton.removeEventListener('click', hideMoment);
+        momentButton.removeEventListener('click', closeMoment);
       },
     });
   }
@@ -253,6 +254,8 @@ function continueStory() {
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     timePassingTextHours.innerText = timePassingAmountHours;
     timePassingRideGoalTotal.innerText = totalQuests;
+    timePassingButton.addEventListener('click', closeTimePassing);
+    timePassingButton.disabled = true;
 
     showTimePassingScreen
       .add({
@@ -300,7 +303,6 @@ function continueStory() {
           }
         },
         complete: () => {
-          story.variablesState.$('time_passing', 0);
           timeObj.value = time;
         },
       })
@@ -330,10 +332,9 @@ function continueStory() {
         },
         complete: () => {
           questRidesObj.value = questRidesTotal;
+          timePassingButton.disabled = false;
         },
       });
-
-    timePassingButton.addEventListener('click', closeTimePassing);
   } else if (moment > 0) {
     console.log(`A moment just happened. It was ${story.currentTags[1]}`);
 
@@ -348,7 +349,7 @@ function continueStory() {
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
     }
 
-    momentButton.addEventListener('click', hideMoment);
+    momentButton.addEventListener('click', closeMoment);
 
     anime({
       targets: momentScreen,
