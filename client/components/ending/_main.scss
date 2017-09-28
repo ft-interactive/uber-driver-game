@@ -1,3 +1,5 @@
+$inverseColor: #ff1a66;
+
 #ending {
   background: #262b33;
   opacity: 1;
@@ -18,10 +20,6 @@
     border: 0;
     width: 40px;
     height: 40px;
-
-    &--inverse {
-      background: #ff1a66;
-    }
   }
 
   .o-typography-wrapper & ul li {
@@ -30,5 +28,15 @@
     &:before {
       display: none;
     }
+  }
+
+  &.screen--ending--inverse {
+    .ending__header-primary {
+      color: $inverseColor;
+    }
+    .ending__continue-button {
+      background: $inverseColor;
+    }
+
   }
 }
