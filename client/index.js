@@ -383,7 +383,8 @@ function continueStory() {
 
     console.log(story.currentTags);
 
-    paragraphElement.innerHTML = paragraphText;
+    // if there is a [[[x]]], return string with rounded x (without square brackets)
+    paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) => Math.round(earningNum));
 
     // Remove existing choices container element
     if (existingChoicesContainer) {
