@@ -8,6 +8,7 @@ VAR home="sf"
 VAR credit_rating="good"
 VAR timestamp=1502092800
 // start time: Monday, August 7, 2017 8:00:00 AM GMT
+VAR go_to_endscreen=false
 
 //accessories variables
 VAR unlimited_data=false
@@ -84,17 +85,8 @@ button = no choice
 link = choice
 */
 
-->welcome
-=== welcome ===
-# welcome
-You're a full-time Uber driver trying to make ends meet.
-
-You have one week to try to make $850, the average weekly income in the United States.
-
-Can you do it?
-# link
-* [Yes]
-->choose_difficulty
+->dev_mode
+===dev_mode===
 * [goto first fare] ->day_1_locate_passenger.driving
 * [goto time passing]
 ~home="sac"
@@ -130,27 +122,39 @@ Can you do it?
 ~ repair_cost=140
 ~ took_day_off=true
 ->end_sequence
+*[goto start]
+->welcome
+
+
+=== welcome ===
+# welcome
+You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week. 
+
+Can you earn enough to pay the bill?
+# button
+* [Yes]
+->choose_difficulty
+
 
 === choose_difficulty===
-
 # choose_difficulty
-
-Your difficulty level will affect how easy it is to make $850 in a week.
+Your difficulty level will affect how easy it is to earn $1000.
 # link 
-+ [Easier]
+* [Easier]
 ~ home="sf"
 ~ credit_rating="good"
-You live in San Francisco and have good bank credit, making it cheaper for you to rent a car. 
-You have two kids to support, and a mortgage payment coming due.
-->confirm
+~ current_city=home
+You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+->day_1_start
 
-+ [Harder]
+* [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
+~ current_city=home
 You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
-You have two kids to support, and a mortgage payment coming due.
--> confirm
+->day_1_start
 
+/*
 =confirm
 # choose_difficulty.confirm
 # link
@@ -160,26 +164,22 @@ You have two kids to support, and a mortgage payment coming due.
 + [Go back]
 ->choose_difficulty
 + [Yes]
-- ~current_city=home
 ->day_1_start
-
+*/
 
 === day_1_start ===
 
 # day_1_start
-~ add_time(0,10)
-You start bright and early on a Monday morning.
-
-Pretty soon, you get your first ride request, from someone called Chris.
+You start bright and early on a Monday morning. Pretty soon, you get your first ride request, from someone called Chris. <>
 ->day_1_locate_passenger
 
 ===day_1_locate_passenger===
 # link
 # day_1_locate_passenger
 You go to pick him up, but don't see anyone waiting for a ride when you arrive. What do you do?
-~add_time(0, 5)
+~add_time(0,5)
 * [Call Chris]->call_chris
-* [Wait] You wait in your car. ->chris_arrives
+* [Wait]->chris_arrives
 
 =call_chris
 # link
@@ -187,26 +187,25 @@ You go to pick him up, but don't see anyone waiting for a ride when you arrive. 
 He answers the phone. "I'll be right there! Just coming out now," he says.
 ~ add_time(0,3)
 * ["Hurry up, will you?"]
-*"No worries[!"], take your time!"
-- He hangs up. You wait. 
+* ["Take your time!"]
 ->chris_arrives
 
 =chris_arrives
 # button
 # day_1_locate_passenger.chris_arrives
-A few minutes later, a flustered man with a big backpack comes out of a nearby apartment and walk towards your car.
+A few minutes later, a flustered man with a big backpack comes out of a nearby apartment.
 
-* "Are you Chris[?"]," you ask.
+* ["Are you Chris?"]
 ->in_car
 
 =in_car
 # link
 # day_1_locate_passenger.in_car
-"That's me. Sorry about being late," he replies, as he gets in the car.
+"That's me. Sorry about being late," he says as he gets in the car.
 ~ add_time(0, 20)
 * [Drive in silence] You start driving. Chris checks his phone.
 * [Strike up a conversation]"Going camping?"
-"Yeah," Chris replies, brightening up. "Meeting up with a friend, and then we're driving to this amazing place a few hours away. Lemme tell ya..."
+"Yeah," Chris replies. "Meeting up with a friend, then we're driving to this amazing place in Marin. Lemme tell ya..."
 - ->driving
 
 =driving
@@ -1117,7 +1116,7 @@ You take it easy today.
     You make it home in time to spend the evening with your son as you promised.
     ~helped_homework=true
         # button
-        **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        **[Help with homework] You tuck him into bed afterwards. He gives you a goodnight kiss.
             ->day_4_end
     ->day_4_end
 
@@ -1131,7 +1130,7 @@ You take it easy today.
     You make it home in time to spend the evening with your son as you promised.
         ~helped_homework=true
         # button
-        **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        **[Help with homework] You tuck him into bed afterwards. He gives you a goodnight kiss.
             ->day_4_end
 
 - else:
@@ -1369,7 +1368,7 @@ You drive as quickly as you can to get back to Sacramento, but your son is alrea
 You get back in time to keep your promise.
 ~helped_homework=true
 # button
-*[Help with homework] You help your son with his maths homework, and tuck him into bed when you're done.
+*[Help with homework] You tuck him into bed afterwards. He gives you a goodnight kiss.
 ->day_4_end
 
 ===day_4_sf===
@@ -1396,7 +1395,7 @@ You take it easy today.
     You make it home in time to spend the evening with your son as you promised.
     ~helped_homework=true
         # button
-        **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        **[Help with homework] You tuck him into bed afterwards. He gives you a goodnight kiss.
             ->day_4_end
     ->day_4_end
 
@@ -1410,7 +1409,7 @@ You take it easy today.
     You make it home in time to spend the evening with your son as you promised.
         ~helped_homework=true
         # button
-        **[Help with homework] You help him with his maths homework, and tuck him into bed when you're done.
+        **[Help with homework] You tuck him into bed afterwards. He gives you a goodnight kiss.
             ->day_4_end
 
 - else:
@@ -2147,9 +2146,14 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 # end_sequence
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
 # button
+~go_to_endscreen=true
 *[See how you did]
-->results_revenue
+->endscreen
 
+===endscreen===
+# endscreen
+You shouldn't see this - it should already have gone to the end screen sequence
+->END
 
 ===no_phone_mount===
 # no_phone_mount
@@ -2178,7 +2182,7 @@ You get a message from your phone provider: You've reached your data limit this 
 ~alter(accessories_cost,30)
 - ->nice_passenger
 
-
+/*
 ===results_revenue===
 # button
 # results_revenue
@@ -2267,13 +2271,8 @@ Not only did you not meet your target of earning $1000 this week, you actually l
 *[THE END]
 ->endscreen
 
-===endscreen===
-# endscreen
-You've reached the end
-->END
 
 
-/* 
 ===airport_incident===
 "You are driving a passenger to the airport when you miss the freeway exit. The passenger gets very angry, saying: "Do I need to drive for you?"
 
@@ -2281,23 +2280,6 @@ You've reached the end
 
 */
 
-===dev_mode===
-~fares_earned_total=RANDOM(700,1600)
-~hours_driven_total=RANDOM(60,140)
-~ride_count_total=RANDOM(120,220)
-~rating=RANDOM(460,500)
-~ weekday_quest_completion=true
-~ weekday_quest_bonus=230
-~ weekend_quest_completion=true
-~ weekend_quest_bonus=180
-~ car_cost=180
-~ gas_cost=RANDOM(160,300)
-~ accessories_cost=90
-~ repair_cost=140
-~ took_day_off=true
 
-*[goto first fare]
-*goto
-->END
 
 
