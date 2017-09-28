@@ -1,1 +1,36 @@
 
+
+/*
+hours_driven_total
+ride_count_total
+rating
+
+// for second screen
+
+fares_earned_total
+weekday_quest_completion (boolean)
+weekday_quest_bonus
+
+weekend_quest_completion (boolean)
+weekend_quest_bonus
+
+// for 3rd screen
+// these should not show if value = 0
+car_cost
+gas_cost
+accessories_cost
+repair_cost
+tax_cost 
+ticket_cost
+
+// for 'your choices' screens
+// these are all true/false. design now only has 2 but i think we should have 3?
+// this is the full list of 'social choices variables i'm recording in the game script
+
+took_day_off
+helped_homework
+biz_licence
+friends_dinner
+overnight
+
+*/

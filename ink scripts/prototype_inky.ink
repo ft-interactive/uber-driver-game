@@ -9,6 +9,8 @@ VAR home="sf"
 VAR credit_rating="good"
 VAR timestamp=1502092800
 // start time: Monday, August 7, 2017 8:00:00 AM GMT
+VAR go_to_endscreen=false
+
 
 //accessories variables
 VAR unlimited_data=false
@@ -2139,11 +2141,18 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 
 ===end_sequence===
 # end_sequence
+
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
 # button
+~ go_to_endscreen=true
 *[See how you did]
-->results_revenue
+->endscreen
 
+
+===endscreen===
+# endscreen
+You should not see this sentence. It should have gone to the endscreens by now.
+->END
 
 ===no_phone_mount===
 # no_phone_mount
@@ -2173,6 +2182,7 @@ You get a message from your phone provider: You've reached your data limit this 
 - ->nice_passenger
 
 
+/*
 ===results_revenue===
 # button
 # results_revenue
@@ -2260,38 +2270,6 @@ Not only did you not meet your target of earning $1000 this week, you actually l
 }
 *[THE END]
 ->endscreen
-
-===endscreen===
-# endscreen
-You've reached the end
-->END
-
-
-/* 
-===airport_incident===
-"You are driving a passenger to the airport when you miss the freeway exit. The passenger gets very angry, saying: "Do I need to drive for you?"
-
-* "Sorry[!"], you say. But you stew over the remark. Especially when you see they've given you a bad rating"
-
 */
-
-===dev_mode===
-~fares_earned_total=RANDOM(700,1600)
-~hours_driven_total=RANDOM(60,140)
-~ride_count_total=RANDOM(120,220)
-~rating=RANDOM(460,500)
-~ weekday_quest_completion=true
-~ weekday_quest_bonus=230
-~ weekend_quest_completion=true
-~ weekend_quest_bonus=180
-~ car_cost=180
-~ gas_cost=RANDOM(160,300)
-~ accessories_cost=90
-~ repair_cost=140
-~ took_day_off=true
-
-*[goto first fare]
-*goto
-->END
 
 
