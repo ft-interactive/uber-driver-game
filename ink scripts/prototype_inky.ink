@@ -4,9 +4,9 @@ INCLUDE ratings
 INCLUDE results
 
 //Set-up variables 
-VAR car="none"
-VAR home="none"
-VAR credit_rating="none"
+VAR car="Prius"
+VAR home="sf"
+VAR credit_rating="good"
 VAR timestamp=1502092800
 // start time: Monday, August 7, 2017 8:00:00 AM GMT
 
@@ -18,7 +18,7 @@ VAR biz_licence=false
 VAR gym_member=false
 
 //Vital stats variables
-VAR current_city="none"
+VAR current_city="sf"
 
 VAR day_ride_count=0
 VAR day_fares_earned=0
@@ -93,9 +93,44 @@ You're a full-time Uber driver trying to make ends meet.
 You have one week to try to make $850, the average weekly income in the United States.
 
 Can you do it?
-# button 
-* [Yes] 
+# link
+* [Yes]
 ->choose_difficulty
+* [goto first fare] ->day_1_locate_passenger.driving
+* [goto time passing]
+~home="sac"
+~current_city="sac"
+->sac_morning
+* [goto deactivated phone mount]
+~home="sac"
+~current_city="sf"
+->day_1_sac_afternoon_in_sf
+* [goto deactivated friday night]->day_5_late_late.insist
+* [goto weekday quest complete]
+~ quest_rides=6
+~ quest_bonus=120
+->quest_nudge.keep_driving
+* [goto weekend quest complete]
+~ quest_rides=6
+~ quest_bonus=120
+->day_7_evening
+* [goto end]
+~fares_earned_total=RANDOM(700,1600)
+~hours_driven_total=RANDOM(60,140)
+~ride_count_total=RANDOM(120,220)
+~rating=RANDOM(460,500)
+~ weekday_quest_completion=true
+~ weekday_quest_bonus=230
+~ weekend_quest_completion=true
+~ weekend_quest_bonus=180
+~ car_cost=180
+~ gas_cost=RANDOM(160,300)
+~ accessories_cost=90
+~ repair_cost=140
+~ took_day_off=true
+->end_sequence
+
+
 
 === choose_difficulty===
 
@@ -274,11 +309,11 @@ Rent this car? You will also buy insurance for ${insurance} a week.
  - !unlimited_data && !phone_mount && !cleaning_supplies && !biz_licence && !gym_member:You didn't buy anything.
  
  - else: You bought: 
- {unlimited_data:Unlimited data plan}
- {phone_mount:Phone mount}
- {cleaning_supplies:Cleaning supplies}
- {biz_licence:Business licence}
- {gym_member:Gym membership}
+ {unlimited_data:• Unlimited data plan}
+ {phone_mount:• Phone mount}
+ {cleaning_supplies:• Cleaning supplies}
+ {biz_licence:• Business licence}
+ {gym_member:• Gym membership}
 // {tip_sign:Tip sign}
 
 It cost ${accessories_cost}. You put it on your credit card so you don't have to pay right away.
@@ -757,9 +792,11 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 
 Working is more important. You say you can't make it.
 ~time_passes(3,1,1)
+{home=="sac":
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,1)
+}
 #button
 *[🚗]
 ->day_2_end
@@ -885,6 +922,8 @@ Just {quest_rides} more rides until you get ${quest_bonus} bonus!
 It's getting late.
 {home=="sac":
 ~add_time(1,52)
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
 }
 * [Call it a day]
 ->day_3_end
@@ -908,6 +947,9 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
     ~ alter(day_ride_count, 1)
     ~ alter(day_fares_earned, 30)
     ~ alter(day_hours_driven, 1)
+    ~ alter(ride_count_total, 1)
+    ~ alter(fares_earned_total, 30)
+    ~ alter(hours_driven_total, 1)
     ~ alter(quest_rides, -1)
     ->day_3_end
 
@@ -2239,5 +2281,24 @@ You've reached the end
 * "Sorry[!"], you say. But you stew over the remark. Especially when you see they've given you a bad rating"
 
 */
+
+===dev_mode===
+~fares_earned_total=RANDOM(700,1600)
+~hours_driven_total=RANDOM(60,140)
+~ride_count_total=RANDOM(120,220)
+~rating=RANDOM(460,500)
+~ weekday_quest_completion=true
+~ weekday_quest_bonus=230
+~ weekend_quest_completion=true
+~ weekend_quest_bonus=180
+~ car_cost=180
+~ gas_cost=RANDOM(160,300)
+~ accessories_cost=90
+~ repair_cost=140
+~ took_day_off=true
+
+*[goto first fare]
+*goto
+->END
 
 

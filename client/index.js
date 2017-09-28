@@ -38,8 +38,8 @@ const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 // Needed for animations
-const defaultInDuration = 500;
-const defaultOutDuration = 300;
+const defaultInDuration = 300;
+const defaultOutDuration = 200;
 const earningsObj = { value: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -96,8 +96,9 @@ function continueStory() {
   function showPanel() {
     anime({
       targets: knotContainer,
-      bottom: 0,
-      duration: defaultInDuration,
+      translateY: 0,
+      opacity: 1,
+      duration: 150,
       easing: 'easeOutQuad',
     });
 
@@ -142,6 +143,8 @@ function continueStory() {
         },
         update: () => {
           const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+
+          console.log(timeString);
 
           if (timeString.length < 11) {
             timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
@@ -355,13 +358,13 @@ function continueStory() {
 
       anime({
         targets: knotContainer,
-        bottom: `-${articleBodyHeight}px`,
-        duration: defaultOutDuration,
-        delay: defaultOutDuration,
+        translateY: 40,
+        opacity: 0,
+        duration: 100,
         easing: 'easeOutQuad',
         complete: () => {
           // Remove all existing paragraphs
-          const existingPars = knotElement.querySelectorAll('p');
+          const existingPars = Array.from(knotElement.querySelectorAll('p'));
 
           existingPars.forEach((existingPar) => {
             const p = existingPar;
@@ -397,7 +400,8 @@ function startStory() {
         earningsDisplay.innerHTML = earningsObj.value;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
-        knotContainer.style.bottom = `-${articleBodyHeight}px`;
+        knotContainer.style.transform = 'translateY(40px)';
+        knotContainer.style.opacity = 0;
       },
       complete: () => {
         shareButtons.style.display = 'none';
@@ -414,7 +418,7 @@ function startStory() {
       duration: defaultInDuration,
       easing: 'easeOutQuad',
       complete: () => {
-        storyScreen.style.display = 'block';
+        storyScreen.style.display = 'flex';
         logo.style.right = 0;
         logo.style.left = '';
       },

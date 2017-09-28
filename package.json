@@ -61,7 +61,7 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.7.1"
   },
   "engines": {
     "node": ">=8",
@@ -78,7 +78,7 @@
     "prebuild": "npm run clean",
     "pretest": "npm run build",
     "qa": "mocha ./test/**/*.spec.js",
-    "start": "webpack-dev-server --watch"
+    "start": "webpack-dev-server --watch --host 0.0.0.0"
   },
   "dependencies": {
     "animejs": "^2.1.0",

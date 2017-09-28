@@ -1,3 +1,4 @@
+import 'babel-register';
 import 'babel-polyfill';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ImageminWebpackPlugin from 'imagemin-webpack-plugin';
@@ -52,6 +53,18 @@ module.exports = async (env = 'development') => ({
             loader: 'file-loader',
             options: {
               outputPath: 'images/',
+              name: '[name]--[hash].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff2?|ttf|eot)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'fonts/',
               name: '[name]--[hash].[ext]',
             },
           },
