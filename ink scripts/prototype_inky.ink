@@ -144,14 +144,14 @@ Your difficulty level will affect how easy it is to earn $1000.
 ~ home="sf"
 ~ credit_rating="good"
 ~ current_city=home
-You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+Easier: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
 ->day_1_start
 
 * [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
 ~ current_city=home
-You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+Harder: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
 ->day_1_start
 
 /*
@@ -499,7 +499,6 @@ You like driving in a familiar town, especially since it means you can get lunch
 It's 4pm, and you've only earned ${day_fares_earned}.
 * [Call it a day] You head home, in time for dinner.-> day_1_end
 * [Keep going] Things should pick up during rush hour and dinner time. ->sac_late_afternoon
-* [Go to San Francisco] By this point, it doesn't really make sense to make the two-hour trip to SF. You decide to stay in Sacramento, regretting that you didn't go earlier.->sac_late_afternoon
 
 =sac_late_afternoon
 # day_1_sacramento.sac_late_afternoon
@@ -511,7 +510,6 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 =sac_evening
 # day_1_sacramento.sac_evening
 # link
-It's starting to get late.
 
 * [Go home]->go_home
 * [Keep driving]->keep_driving
@@ -666,7 +664,6 @@ You turn on your Uber app and start driving.
 # link
 # burgers
 ~temp dirty=false
-You get a trip request from a burger joint, and when you arrive the passengers have two juicy In-N-Out burgers that they are about to eat in the car.
 ~add_time(0,4)
 * ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
     # link
