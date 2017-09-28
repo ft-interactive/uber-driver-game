@@ -254,6 +254,19 @@ html, body {
             -webkit-backdrop-filter: blur(12px);
             overflow: scroll;
 
+            .decoration {
+              width: 100%;
+              height: 20px;
+              margin-top: 10px;
+              background-color: red;
+              background-image: url();
+              background: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493381260-9g2o8.png) no-repeat center center;
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+            }
+
             .knot {
               padding: 10px 0;
 
@@ -535,6 +548,11 @@ html, body {
 @include oGridRespondTo(M) {
   .knot-container {
     margin: 0 20px 64px !important;
+
+    .decoration {
+      height: 40px !important;
+      margin-top: 20px !important;
+    }
 
     .knot {
       padding: 20px 0 !important;
