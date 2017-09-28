@@ -341,7 +341,9 @@ html, body {
                 height: 100%;
                 max-width: 250px;
                 max-height: 250px;
-                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
               }
 
               .time-passing-image {
