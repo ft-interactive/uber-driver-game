@@ -125,6 +125,7 @@ function continueStory() {
     // Animate meter readouts
     if (earnings !== earningsObj.totalValue) {
       console.log('Earnings changed, animating meter readout');
+      earningsObj.value = earningsObj.totalValue;
 
       anime({
         targets: earningsObj,
@@ -144,7 +145,6 @@ function continueStory() {
         },
         complete: () => {
           earningsDisplay.style.textShadow = 'none';
-          earningsObj.value = earnings;
           earningsObj.totalValue = earnings;
         },
       });
@@ -474,7 +474,7 @@ function startStory() {
       easing: 'linear',
       offset: 0,
       begin: () => {
-        earningsDisplay.innerHTML = earningsObj.value;
+        earningsDisplay.innerHTML = earningsObj.totalValue;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.transform = 'translateY(40px)';
