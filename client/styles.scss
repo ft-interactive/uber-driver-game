@@ -360,7 +360,7 @@ html, body {
                   }
                 }
 
-                span {
+                p {
                   font-size: 14px;
                   font-weight: 600;
                   letter-spacing: 1px;
@@ -376,19 +376,49 @@ html, body {
               background-color: rgb(38, 43, 51);
 
               .stats-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 0 0;
+
                 &__time {
-                  display: inline-block;
-                  width: 33%;
+                  // flex-grow: 1;
+                  min-width: 33%;
+                  margin-right: 10px;
                 }
 
                 &__rides {
-                  display: inline-block;
-                  width: 33%;
+                  flex-grow: 1;
+                  max-width: 33%;
+                  margin-right: 10px;
                 }
 
                 &__ride-goal {
-                  display: inline-block;
-                  width: auto;
+                  flex-grow: 1;
+                  max-width: 33%;
+                }
+
+                i.material-icons {
+                  font-size: 20px;
+                  display: block;
+                  color: #1aecff;
+                }
+
+                span {
+                  font-size: 28px;
+                  font-weight: 600;
+                  line-height: 45px;
+                  -webkit-font-feature-settings: 'tnum';
+                  -moz-font-feature-settings: 'tnum';
+                  font-feature-settings: 'tnum';
+                  text-transform: lowercase;
+                }
+
+                p {
+                  font-size: 14px;
+                  font-weight: 600;
+                  letter-spacing: 1px;
+                  line-height: 16px;
                 }
               }
 
@@ -404,29 +434,6 @@ html, body {
           display: none;
           align-self: center;
           text-align: center;
-
-          i.material-icons {
-            /* Material icons */
-            font-family: 'Material Icons';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 48px; /* Preferred icon size */
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            letter-spacing: normal;
-            word-wrap: normal;
-            white-space: nowrap;
-            direction: ltr;
-            /* Support for all WebKit browsers. */
-            -webkit-font-smoothing: antialiased;
-            /* Support for Safari and Chrome. */
-            text-rendering: optimizeLegibility;
-            /* Support for Firefox. */
-            -moz-osx-font-smoothing: grayscale;
-            /* Support for IE. */
-            font-feature-settings: 'liga';
-          }
         }
       }
     }
@@ -453,6 +460,29 @@ html, body {
         border-bottom-color: transparent;
       }
     }
+  }
+
+  i.material-icons {
+    /* Material icons */
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 48px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
   }
 }
 
