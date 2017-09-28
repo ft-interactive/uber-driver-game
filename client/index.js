@@ -1,6 +1,6 @@
 import anime from 'animejs';
 import { Story } from 'inkjs';
-import Modernizr from './modernizr';
+import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 import json from './uber.json';
 import './styles.scss';
 
@@ -29,8 +29,8 @@ const timePassingRideGoal = document.getElementById('tp-ride-goal');
 const timePassingRideGoalTotal = document.getElementById('tp-ride-goal-total');
 const timePassingButton = document.getElementById('tp-button');
 const momentScreen = document.querySelector('.moment-container');
-const momentText = document.getElementById('moment-text')
-const momentImage = document.querySelector('.moment-image')
+const momentText = document.getElementById('moment-text');
+const momentImage = document.querySelector('.moment-image');
 const momentButton = document.getElementById('moment-button');
 let choicesContainerElement;
 // Dimensions
@@ -65,7 +65,7 @@ function handleResize() {
 
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
-  console.log(`Window resized ${d.toLocaleTimeString()}`);
+  console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
 }
 
 function showCaveats() {
@@ -124,7 +124,7 @@ function continueStory() {
 
     // Animate meter readouts
     if (earnings !== earningsObj.totalValue) {
-      console.log('Earnings changed, animating meter readout');
+      console.log('Earnings changed, animating meter readout'); // eslint-disable-line no-console
       earningsObj.value = earningsObj.totalValue;
 
       anime({
@@ -151,7 +151,7 @@ function continueStory() {
     }
 
     if (time !== timeObj.value) {
-      console.log('Time changed, animating meter readout');
+      console.log('Time changed, animating meter readout'); // eslint-disable-line no-console
 
       anime({
         targets: timeObj,
@@ -181,7 +181,7 @@ function continueStory() {
     }
 
     if (rating !== ratingObj.value) {
-      console.log('Rating changed, animating meter readout');
+      console.log('Rating changed, animating meter readout'); // eslint-disable-line no-console
 
       anime({
         targets: ratingObj,
@@ -249,7 +249,7 @@ function continueStory() {
   if (timePassing > 0) {
     const showTimePassingScreen = anime.timeline();
 
-    console.log('Time is passing...');
+    console.log('Time is passing...'); // eslint-disable-line no-console
 
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
@@ -338,8 +338,6 @@ function continueStory() {
         },
       });
   } else if (moment > 0) {
-    console.log(`A moment just happened. It was ${story.currentTags[1]}`);
-
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569815-ed2um.png)';
@@ -368,7 +366,7 @@ function continueStory() {
       },
     });
   } else {
-    console.log('>>>');
+    console.log('>>>'); // eslint-disable-line no-console
 
     showPanel();
   }
