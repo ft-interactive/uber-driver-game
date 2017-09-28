@@ -92,7 +92,6 @@ function showCaveats() {
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
-  const questRidesTotal = 75 - story.variablesState.$('quest_rides'); // @TODO: Get 75 from variable
   const rating = story.variablesState.$('rating');
   const rideCountTotal = story.variablesState.$('ride_count_total');
   const rideCountDuringTimePassing = rideCountTotal - ridesObj.totalValue;
@@ -100,6 +99,15 @@ function continueStory() {
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
+
+  // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
+  // then number of quests is 75, else 65
+  // 1502424000000 is timestamp at 4 a.m. on Friday
+  let totalQuests = 75;
+  if (time > 1502424000000) {
+    totalQuests = 65;
+  }
+  const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
   console.log(timePassing, moment);
 
@@ -225,7 +233,7 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     timePassingTextHours.innerText = timePassingAmountHours;
-    timePassingRideGoalTotal.innerText = 75; // @TODO: Add logic for either 65 or 75
+    timePassingRideGoalTotal.innerText = totalQuests;
 
     showTimePassingScreen
       .add({
