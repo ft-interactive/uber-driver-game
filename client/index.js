@@ -259,6 +259,13 @@ function continueStory() {
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
 
+    // reset questRidesObj if we've switched from weekday to weekend
+    // during switch, the current questRidesObj.value will be greater than
+    // the value it is changing to
+    if (questRidesObj.value > questRidesTotal) {
+      questRidesObj.value = 0;
+    }
+
     showTimePassingScreen
       .add({
         targets: timePassingScreen,
