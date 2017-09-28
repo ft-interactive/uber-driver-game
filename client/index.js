@@ -1,7 +1,6 @@
 import anime from 'animejs';
 import { Story } from 'inkjs';
 import Modernizr from './modernizr';
-import twemoji from 'twemoji';
 import json from './uber.json';
 import './styles.scss';
 
@@ -22,10 +21,13 @@ const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
 const timePassingScreen = document.querySelector('.time-passing-container');
-const timePassingDisplay = document.getElementById('countdown');
-// const timePassingEarnings = document.getElementById('tp-earnings');
-// const timePassingTime = document.getElementById('tp-time');
-// const timePassingRating = document.getElementById('tp-rating');
+const timePassingTextHours = document.getElementById('time-passing-text__hours');
+const timePassingEarnings = document.getElementById('tp-earnings');
+const timePassingTime = document.getElementById('tp-time');
+const timePassingRides = document.getElementById('tp-rides');
+const timePassingRideGoal = document.getElementById('tp-ride-goal');
+const timePassingRideGoalTotal = document.getElementById('tp-ride-goal-total');
+const timePassingButton = document.getElementById('tp-button');
 const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text')
 const momentImage = document.querySelector('.moment-image')
@@ -40,9 +42,14 @@ let knotContainerMaxHeight;
 // Needed for animations
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
-const earningsObj = { value: 0 };
+const timePassingScreenDuration = 3000;
+const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
+// ridesObj.value counts for ride count during time passing screens
+// ridesObj.totalValue counts total number of rides during game
+const ridesObj = { value: 0, totalValue: 0 };
+const questRidesObj = { value: 0 };
 
 function handleResize() {
   const d = new Date();
@@ -85,11 +92,24 @@ function showCaveats() {
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
+  const earningsDuringTimePassing = earnings - earningsObj.totalValue;
   const rating = story.variablesState.$('rating');
+  const rideCountTotal = story.variablesState.$('ride_count_total');
+  const rideCountDuringTimePassing = rideCountTotal - ridesObj.totalValue;
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
   const moment = story.variablesState.$('moments');
-  const timePassingObj = { value: 3 };
+  const timePassingObj = { value: null };
+  const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
+
+  // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
+  // then number of quests is 75, else 65
+  // 1502424000000 is timestamp at 4 a.m. on Friday
+  let totalQuests = 75;
+  if (time > 1502424000000) {
+    totalQuests = 65;
+  }
+  const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
   console.log(timePassing, moment);
 
@@ -103,8 +123,9 @@ function continueStory() {
     });
 
     // Animate meter readouts
-    if (earnings !== earningsObj.value) {
+    if (earnings !== earningsObj.totalValue) {
       console.log('Earnings changed, animating meter readout');
+      earningsObj.value = earningsObj.totalValue;
 
       anime({
         targets: earningsObj,
@@ -124,7 +145,7 @@ function continueStory() {
         },
         complete: () => {
           earningsDisplay.style.textShadow = 'none';
-          earningsObj.value = earnings;
+          earningsObj.totalValue = earnings;
         },
       });
     }
@@ -188,7 +209,26 @@ function continueStory() {
     }
   }
 
-  function hideMoment() {
+  function closeTimePassing() {
+    anime({
+      targets: timePassingScreen,
+      opacity: 0,
+      duration: defaultOutDuration,
+      easing: 'linear',
+      begin: () => {
+        timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
+        timePassingScreen.style.backdropFilter = 'blur(0px)';
+      },
+      complete: () => {
+        timePassingButton.removeEventListener('click', closeTimePassing);
+        story.variablesState.$('time_passing', 0);
+        timePassingScreen.style.display = 'none';
+        showPanel();
+      },
+    });
+  }
+
+  function closeMoment() {
     anime({
       targets: momentScreen,
       opacity: 0,
@@ -201,7 +241,7 @@ function continueStory() {
       complete: () => {
         momentScreen.style.display = 'none';
         showPanel();
-        momentButton.removeEventListener('click', hideMoment);
+        momentButton.removeEventListener('click', closeMoment);
       },
     });
   }
@@ -211,6 +251,14 @@ function continueStory() {
 
     console.log('Time is passing...');
 
+    timePassingObj.value = timeObj.value;
+    ridesObj.value = 0; // reset ridesObj value to 0 each time
+    earningsObj.value = 0;
+    timePassingTextHours.innerText = timePassingAmountHours;
+    timePassingRideGoalTotal.innerText = totalQuests;
+    timePassingButton.addEventListener('click', closeTimePassing);
+    timePassingButton.disabled = true;
+
     showTimePassingScreen
       .add({
         targets: timePassingScreen,
@@ -218,37 +266,75 @@ function continueStory() {
         duration: defaultInDuration,
         easing: 'linear',
         begin: () => {
-          timePassingScreen.style.display = 'flex';
+          timePassingScreen.style.display = 'block';
           timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
           timePassingScreen.style.backdropFilter = 'blur(8px)';
         },
       })
       .add({
-        targets: timePassingObj,
-        value: 1,
+        targets: earningsObj,
+        value: earningsDuringTimePassing,
         round: 1,
-        duration: 3000,
+        duration: timePassingScreenDuration,
         easing: 'linear',
+        offset: 0,
         update: () => {
-          timePassingDisplay.innerHTML = timePassingObj.value;
+          timePassingEarnings.innerHTML = earningsObj.value;
+          earningsDisplay.innerHTML = earningsObj.totalValue + earningsObj.value;
         },
         complete: () => {
-          story.variablesState.$('time_passing', 0);
+          earningsObj.totalValue = earnings;
         },
       })
       .add({
-        targets: timePassingScreen,
-        opacity: 0,
-        duration: defaultOutDuration,
+        targets: timePassingObj,
+        value: time,
+        round: 1,
+        duration: timePassingScreenDuration,
         easing: 'linear',
-        begin: () => {
-          timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
-          timePassingScreen.style.backdropFilter = 'blur(0px)';
+        offset: 0,
+        update: () => {
+          const timeString = new Date(parseInt(timePassingObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+
+          if (timeString.length < 11) {
+            timePassingTime.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+            timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+          } else {
+            timePassingTime.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+            timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
+          }
         },
         complete: () => {
-          timePassingScreen.style.display = 'none';
-
-          showPanel();
+          timeObj.value = time;
+        },
+      })
+      .add({
+        targets: ridesObj,
+        value: rideCountDuringTimePassing,
+        round: 1,
+        duration: timePassingScreenDuration,
+        easing: 'linear',
+        offset: 0,
+        update: () => {
+          timePassingRides.innerHTML = ridesObj.value;
+        },
+        complete: () => {
+          ridesObj.totalValue = rideCountTotal;
+        },
+      })
+      .add({
+        targets: questRidesObj,
+        value: questRidesTotal,
+        round: 1,
+        duration: timePassingScreenDuration,
+        easing: 'linear',
+        offset: 0,
+        update: () => {
+          timePassingRideGoal.innerHTML = questRidesObj.value;
+        },
+        complete: () => {
+          questRidesObj.value = questRidesTotal;
+          timePassingButton.disabled = false;
         },
       });
   } else if (moment > 0) {
@@ -265,7 +351,7 @@ function continueStory() {
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
     }
 
-    momentButton.addEventListener('click', hideMoment);
+    momentButton.addEventListener('click', closeMoment);
 
     anime({
       targets: momentScreen,
@@ -317,21 +403,12 @@ function continueStory() {
   story.currentChoices.forEach((choice) => {
     // Create button element
     const choiceElement = document.createElement('button');
-    let choiceString = twemoji.parse(choice.text, {
-      callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
-      size: 18,
-    });
     choiceElement.classList.add('choice');
-    choiceElement.innerHTML = `<span>${choiceString}</span>`;
+    choiceElement.innerHTML = `<span>${choice.text}</span>`;
 
     // Make it look different if there's more than one choice available
     if (story.currentTags.indexOf('button') === -1) {
-      choiceString = twemoji.parse(choice.text, {
-        callback: (iconId, options) => `/assets/${options.size}/${iconId}.gif`,
-        size: 18,
-      });
       choiceElement.classList.add('link-like');
-      choiceElement.innerHTML = `<span>${choiceString}</span>`;
     }
 
     choicesContainerElement.appendChild(choiceElement);
@@ -397,7 +474,7 @@ function startStory() {
       easing: 'linear',
       offset: 0,
       begin: () => {
-        earningsDisplay.innerHTML = earningsObj.value;
+        earningsDisplay.innerHTML = earningsObj.totalValue;
         timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.transform = 'translateY(40px)';

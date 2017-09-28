@@ -44,9 +44,48 @@
 
 <div id="story" class="screen screen--story" data-anime-opacity="true">
   <div class="time-passing-container">
-    <h1>Time is passing…</h1>
-    <h1 id="countdown">3</h1>
-    <div class="time-passing-image"></div>
+    <div class="o-grid-container">
+      <div class="o-grid-row">
+        <div data-o-grid-colspan="12 S11 Scenter L7 XL6">
+          <div class="time-passing-upper">
+            <p id="time-passing-text">You drive for <span id="time-passing-text__hours">4</span> hours</p>
+            <div class="time-passing-image"></div>
+            <div class="tp-earnings-container">
+              <div id="tp-earnings">56</div>
+              <p>MONEY EARNED</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="time-passing-dashboard">
+      <div class="o-grid-container">
+        <div class="o-grid-row">
+          <div data-o-grid-colspan="12 S11 Scenter M6 L5 XL4">
+            <div class="stats-container">
+              <div class="stats-container__time">
+                <i class="material-icons">access_time</i>
+                <span id="tp-time">1</span>
+                <p>TIME</p>
+              </div>
+              <div class="stats-container__rides">
+                <i class="material-icons">directions_car</i>
+                <span id="tp-rides">12</span>
+                <p>RIDES</p>
+              </div>
+              <div class="stats-container__ride-goal">
+                <i class="material-icons">directions_car</i>
+                <span id="tp-ride-goal">24</span>
+                <span>/</span>
+                <span id="tp-ride-goal-total">65</span>
+                <p>RIDE GOAL</p>
+              </div>
+            </div>
+            <button type="button" id="tp-button">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="moment-container">
     <div class="o-grid-container">
@@ -62,8 +101,26 @@
     <div class="moment-dashboard">
       <div class="o-grid-container">
         <div class="o-grid-row">
-          <div data-o-grid-colspan="12 S11 Scenter L7 XL6">
-            <div class="stats-container"></div>
+          <div data-o-grid-colspan="12 S11 Scenter M6 L5 XL4">
+            <div class="stats-container">
+              <div class="stats-container__time">
+                <i class="material-icons">access_time</i>
+                <span id="moment-time">1</span>
+                <p>TIME</p>
+              </div>
+              <div class="stats-container__rides">
+                <i class="material-icons">directions_car</i>
+                <span id="moment-rides">12</span>
+                <p>RIDES</p>
+              </div>
+              <div class="stats-container__ride-goal">
+                <i class="material-icons">directions_car</i>
+                <span id="moment-ride-goal">24</span>
+                <span>/</span>
+                <span id="moment-ride-goal-total">65</span>
+                <p>RIDE GOAL</p>
+              </div>
+            </div>
             <button type="button" id="moment-button">Continue</button>
           </div>
         </div>

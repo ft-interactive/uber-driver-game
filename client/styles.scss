@@ -306,7 +306,8 @@ html, body {
             }
           }
 
-          .time-passing-container, .moment-container {
+          .time-passing-container,
+          .moment-container {
             display: none;
             position: absolute;
             top: 0;
@@ -320,6 +321,7 @@ html, body {
             -webkit-transition: -webkit-backdrop-filter 0.3s linear;
             transition: backdrop-filter 0.3s linear;
 
+            .time-passing-upper,
             .moment-upper {
               display: flex;
               flex-direction: column;
@@ -333,33 +335,97 @@ html, body {
                 font-weight: 600;
               }
 
-              .time-passing-image, .moment-image {
+              .time-passing-image,
+              .moment-image {
                 width: 100%;
                 height: 100%;
                 max-width: 250px;
                 max-height: 250px;
-                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
               }
 
               .time-passing-image {
                 background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569778-ia4se.png);
               }
+
+              .tp-earnings-container {
+                text-align: center;
+
+                div {
+                  font-size: 80px;
+                  font-weight: 600;
+
+                  &:before {
+                    content: '$';
+                  }
+                }
+
+                p {
+                  font-size: 14px;
+                  font-weight: 600;
+                  letter-spacing: 1px;
+                  line-height: 16px;
+                }
+              }
             }
 
+            .time-passing-dashboard,
             .moment-dashboard {
               width: 100%;
               height: 30vh;
               background-color: rgb(38, 43, 51);
 
-              .dashboard-container {
+              .stats-container {
                 display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-                align-items: center;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 0 0;
 
-                // button {
-                //   margin-bottom: 44px;
-                // }
+                &__time {
+                  width: 30%;
+                  margin-right: 10px;
+                }
+
+                &__rides {
+                  flex-grow: 1;
+                  max-width: 30%;
+                  margin-right: 10px;
+                }
+
+                &__ride-goal {
+                  flex-grow: 1;
+                  max-width: 30%;
+                }
+
+                i.material-icons {
+                  font-size: 20px;
+                  display: block;
+                  color: #1aecff;
+                }
+
+                span {
+                  font-size: 28px;
+                  font-weight: 600;
+                  line-height: 45px;
+                  -webkit-font-feature-settings: 'tnum';
+                  -moz-font-feature-settings: 'tnum';
+                  font-feature-settings: 'tnum';
+                  text-transform: lowercase;
+                }
+
+                p {
+                  font-size: 14px;
+                  font-weight: 600;
+                  letter-spacing: 1px;
+                  line-height: 16px;
+                }
+              }
+
+              button {
+                display: block;
+                margin: 10px auto;
               }
             }
           }
@@ -369,29 +435,6 @@ html, body {
           display: none;
           align-self: center;
           text-align: center;
-
-          i.material-icons {
-            /* Material icons */
-            font-family: 'Material Icons';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 48px; /* Preferred icon size */
-            display: inline-block;
-            line-height: 1;
-            text-transform: none;
-            letter-spacing: normal;
-            word-wrap: normal;
-            white-space: nowrap;
-            direction: ltr;
-            /* Support for all WebKit browsers. */
-            -webkit-font-smoothing: antialiased;
-            /* Support for Safari and Chrome. */
-            text-rendering: optimizeLegibility;
-            /* Support for Firefox. */
-            -moz-osx-font-smoothing: grayscale;
-            /* Support for IE. */
-            font-feature-settings: 'liga';
-          }
         }
       }
     }
@@ -418,6 +461,29 @@ html, body {
         border-bottom-color: transparent;
       }
     }
+  }
+
+  i.material-icons {
+    /* Material icons */
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 48px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
   }
 }
 
@@ -475,6 +541,7 @@ html, body {
     }
   }
 
+  .time-passing-image,
   .moment-image {
     max-width: 300px !important;
     max-height: 300px !important;

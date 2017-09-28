@@ -82,7 +82,6 @@
   },
   "dependencies": {
     "animejs": "^2.1.0",
-    "inkjs": "^1.6.0",
-    "twemoji": "^2.5.0"
+    "inkjs": "^1.6.0"
   }
 }
