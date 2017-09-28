@@ -351,13 +351,20 @@ html, body {
               .tp-earnings-container {
                 text-align: center;
 
-                > div {
-                  font-size: 100px;
-                  font-size: 10vh;
+                div {
+                  font-size: 80px;
+                  font-weight: 600;
 
                   &:before {
                     content: '$';
                   }
+                }
+
+                span {
+                  font-size: 14px;
+                  font-weight: 600;
+                  letter-spacing: 1px;
+                  line-height: 16px;
                 }
               }
             }
@@ -370,27 +377,24 @@ html, body {
 
               .stats-container {
                 &__time {
-
+                  display: inline-block;
+                  width: 33%;
                 }
 
                 &__rides {
-
+                  display: inline-block;
+                  width: 33%;
                 }
 
                 &__ride-goal {
-
+                  display: inline-block;
+                  width: auto;
                 }
               }
 
-              .dashboard-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-                align-items: center;
-
-                // button {
-                //   margin-bottom: 44px;
-                // }
+              button {
+                display: block;
+                margin: 10px auto;
               }
             }
           }
