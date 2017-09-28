@@ -43,7 +43,7 @@ let knotContainerMaxHeight;
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
 const timePassingScreenDuration = 3000;
-const earningsObj = { value: 0 };
+const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
 // ridesObj.value counts for ride count during time passing screens
@@ -92,6 +92,7 @@ function showCaveats() {
 
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
+  const earningsDuringTimePassing = earnings - earningsObj.totalValue;
   const rating = story.variablesState.$('rating');
   const rideCountTotal = story.variablesState.$('ride_count_total');
   const rideCountDuringTimePassing = rideCountTotal - ridesObj.totalValue;
@@ -122,7 +123,7 @@ function continueStory() {
     });
 
     // Animate meter readouts
-    if (earnings !== earningsObj.value) {
+    if (earnings !== earningsObj.totalValue) {
       console.log('Earnings changed, animating meter readout');
 
       anime({
@@ -144,6 +145,7 @@ function continueStory() {
         complete: () => {
           earningsDisplay.style.textShadow = 'none';
           earningsObj.value = earnings;
+          earningsObj.totalValue = earnings;
         },
       });
     }
@@ -251,6 +253,7 @@ function continueStory() {
 
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
+    earningsObj.value = 0;
     timePassingTextHours.innerText = timePassingAmountHours;
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
@@ -270,17 +273,17 @@ function continueStory() {
       })
       .add({
         targets: earningsObj,
-        value: earnings,
+        value: earningsDuringTimePassing,
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
         offset: 0,
         update: () => {
           timePassingEarnings.innerHTML = earningsObj.value;
-          earningsDisplay.innerHTML = earningsObj.value;
+          earningsDisplay.innerHTML = earningsObj.totalValue + earningsObj.value;
         },
         complete: () => {
-          earningsObj.value = earnings;
+          earningsObj.totalValue = earnings;
         },
       })
       .add({
