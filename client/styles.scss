@@ -380,7 +380,7 @@ html, body {
               .stats-container {
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: space-around;
                 padding: 10px 0 0;
 
                 &__time {
