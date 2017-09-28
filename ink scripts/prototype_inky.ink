@@ -170,13 +170,13 @@ You have a bad credit rating and can't afford to live in San Francisco. Instead,
 === day_1_start ===
 
 # day_1_start
-You start bright and early on a Monday morning. Pretty soon, you get your first ride request, from someone called Chris. <>
+You start bright and early on a Monday morning. Pretty soon, you get your first ride request, from a "Chris". <>
 ->day_1_locate_passenger
 
 ===day_1_locate_passenger===
 # link
 # day_1_locate_passenger
-You go to pick him up, but don't see anyone waiting for a ride when you arrive. What do you do?
+But when you arrive at the pick-up point, you don't see anyone waiting for a ride. What do you do?
 ~add_time(0,5)
 * [Call Chris]->call_chris
 * [Wait]->chris_arrives
@@ -184,11 +184,11 @@ You go to pick him up, but don't see anyone waiting for a ride when you arrive. 
 =call_chris
 # link
 # day_1_locate_passenger.call_chris
-He answers the phone. "I'll be right there! Just coming out now," he says.
+He answers the phone. "I'll be right there. Just coming out now," he says.
 ~ add_time(0,3)
 * ["Hurry up, will you?"]
 * ["Take your time!"]
-->chris_arrives
+- ->chris_arrives
 
 =chris_arrives
 # button
