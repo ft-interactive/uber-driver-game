@@ -335,10 +335,6 @@ html, body {
                 font-weight: 600;
               }
 
-              p.time-passing-text {
-                font-weight: 600;
-              }
-
               .time-passing-image,
               .moment-image {
                 width: 100%;
@@ -352,10 +348,10 @@ html, body {
                 background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569778-ia4se.png);
               }
 
-              #tp-earnings-container {
+              .tp-earnings-container {
                 text-align: center;
 
-                #tp-earnings {
+                > div {
                   font-size: 100px;
                   font-size: 10vh;
 
