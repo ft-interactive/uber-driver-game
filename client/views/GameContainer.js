@@ -52,18 +52,5 @@ export default class GameContainer {
 
     await Bluebird.delay(2000);
     oldBackground.remove();
-
-    // await new Promise((resolve) => {
-    //   anime({
-    //     targets: newBackground,
-    //     opacity: 1,
-    //     duration: 1000,
-    //     easing: 'easeInOutQuart',
-    //     complete: () => {
-    //       if (oldBackground) oldBackground.remove();
-    //       resolve();
-    //     },
-    //   });
-    // });
   }
 }
