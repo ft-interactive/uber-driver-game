@@ -106,7 +106,7 @@ function showCaveats() {
     });
 }
 
-async function continueStory() {
+function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDuringTimePassing = earnings - earningsObj.totalValue;
   const rating = story.variablesState.$('rating');
@@ -410,8 +410,7 @@ async function continueStory() {
     // Update background image if appropriate
     const bgImageURL = stateUtils.getBackgroundImageURL();
     if (bgImageURL) {
-      // eslint-disable-next-line no-await-in-loop
-      await gameContainer.setBackgroundImage(bgImageURL);
+      gameContainer.setBackgroundImage(bgImageURL);
     }
 
 
@@ -508,6 +507,11 @@ async function continueStory() {
 }
 
 function startStory() {
+  // preload images - TODO don't download images for both car types
+  stateUtils.preloadAllImages('prius').then(() => {
+    stateUtils.preloadAllImages('minivan');
+  });
+
   const showStoryScreen = anime.timeline();
   const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
 

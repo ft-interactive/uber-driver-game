@@ -1,4 +1,4 @@
-import anime from 'animejs';
+import Bluebird from 'bluebird';
 
 const getBackgroundDiv = (url) => {
   const div = document.createElement('div');
@@ -30,12 +30,11 @@ export default class GameContainer {
 
     this.currentBackgroundURL = url;
 
-    // TODO check stateUtils.isImageLoaded(url) first (use bluebird), in which case forget loading
-    // indicator
+    const alreadyLoaded = this.stateUtils.isImageLoaded(url);
 
-    this.element.classList.add('game-container--loading');
+    if (!alreadyLoaded) this.element.classList.add('game-container--loading');
 
-    const blob = await this.stateUtils.loadImage(url);
+    const [blob] = await Promise.all([this.stateUtils.loadImage(url), Bluebird.delay(500)]);
 
     const newBackground = getBackgroundDiv(URL.createObjectURL(blob));
     const oldBackground = this.currentBackground;
@@ -46,19 +45,25 @@ export default class GameContainer {
     newBackground.style.opacity = '0';
     this.backgroundContainer.appendChild(newBackground);
 
-    // await Bluebird.delay(100);
+    this.element.classList.remove('game-container--loading');
 
-    anime({
-      targets: newBackground,
-      opacity: 1,
-      duration: 2000,
-      complete: () => {
-        if (oldBackground) oldBackground.remove();
-      },
-    });
+    newBackground.getBoundingClientRect(); // trigger paint
+    newBackground.style.opacity = 1;
 
-    setTimeout(() => {
-      this.element.classList.remove('game-container--loading');
-    }, 500);
+    await Bluebird.delay(2000);
+    oldBackground.remove();
+
+    // await new Promise((resolve) => {
+    //   anime({
+    //     targets: newBackground,
+    //     opacity: 1,
+    //     duration: 1000,
+    //     easing: 'easeInOutQuart',
+    //     complete: () => {
+    //       if (oldBackground) oldBackground.remove();
+    //       resolve();
+    //     },
+    //   });
+    // });
   }
 }

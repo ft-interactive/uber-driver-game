@@ -79,6 +79,22 @@ export default class StateUtils {
     return loadImageMemo[originalURL];
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  isImageLoaded(url) {
+    return loadImageMemo[url] && loadImageMemo[url].isFulfilled();
+  }
+
+  /**
+   * Sets off a chain preloading the images. Failure to load is OK.
+   */
+  async preloadAllImages(carType) {
+    await Bluebird.mapSeries(Object.keys(this.config.backgroundImages), (key) => {
+      const url = this.config.backgroundImages[key][carType];
+      if (url) return this.loadImage(url).catch(() => {});
+      return null;
+    });
+  }
+
   /**
    * Returns the appropriate background image URL for the current scene.
    */
