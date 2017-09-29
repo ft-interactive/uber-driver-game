@@ -5,7 +5,9 @@
 import Sequelize = require('sequelize');
 
 export const sequelize = new Sequelize(
-  process.env.CONNECTION_STRING || 'postgres://localhost/uber');
+  process.env.CONNECTION_STRING || 'postgres://localhost/uber', {
+    logging: false,
+  });
 
 export const Decision = sequelize.define('decision', {
   type: Sequelize.STRING, // Maps to Ink variable name
@@ -19,10 +21,11 @@ export const Decision = sequelize.define('decision', {
 
 export const Result = sequelize.define('result', {
   difficulty: Sequelize.STRING, // Game difficulty chosen
-  hourlyWage: Sequelize.NUMBER,
-  revenue: Sequelize.NUMBER,
-  income: Sequelize.NUMBER,
-  expenses: Sequelize.NUMBER,
+  hourlyWage: Sequelize.FLOAT,
+  revenue: Sequelize.INTEGER,
+  income: Sequelize.INTEGER,
+  expenses: Sequelize.INTEGER,
+  meta: Sequelize.JSONB,
 }, {
   timestamps: true,
   updatedAt: false, // Only add createdAt column

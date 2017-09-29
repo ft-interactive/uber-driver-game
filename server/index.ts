@@ -13,6 +13,7 @@ const server = micro(async (req, res) => {
           await Decision.create(json(req));
           return 'Decision added';
         } catch (e) {
+          console.error(e);
           send(res, 500, 'Server Error');
         }
       } else {
@@ -37,6 +38,7 @@ const server = micro(async (req, res) => {
               type: sequelize.QueryTypes.SELECT
             });
         } catch (e) {
+          console.error(e);
           send(res, 500, 'Server Error');
         }
       }
@@ -45,4 +47,6 @@ const server = micro(async (req, res) => {
   send(res, 500, 'Invalid route');
 });
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3000, () => {
+  console.log(`Listening on ${process.env.PORT || 3000}`);
+});
