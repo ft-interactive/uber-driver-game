@@ -414,7 +414,7 @@ function continueStory() {
 
     // Create choices container element
     choicesContainerElement = document.createElement('div');
-    choicesContainerElement.setAttribute('data-o-grid-colspan', '12 S11 Scenter M7 L6 XL5');
+    choicesContainerElement.setAttribute('data-o-grid-colspan', '12 S11 Scenter M7 L6');
     choicesContainerElement.classList.add('choices-container');
 
     knotElement.appendChild(paragraphElement);
