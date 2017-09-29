@@ -606,100 +606,46 @@ You turn on your Uber app and start driving.
 ~ UberXL()
 # button
 *[🚗]
-->burgers
+->surge
 
-===burgers===
+===surge===
+# surge
+As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing in the Sunset district. 
+
+The 3x fare is attractive, but Sunset is 30 minutes away. 
+
 # link
-# burgers
-~temp dirty=false
-You get a trip request from a burger joint, and when you arrive the passengers have two In-N-Out burgers that they are about to eat in the car.
-~add_time(0,4)
-* ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
-    # link
-    ** "No means no[."]," you say, as you cancel their ride.
-    ->day_2_afternoon
-    
-    ** "Oh, alright[."]," you say. They get in the car. <>
-    
-* ["Nice! I love burgers too."]They get in the car and you start driving. 
 
-- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat.
+* [Chase the surge]->chase_surge 
 
-    ~add_time(0,22)
-    # link
-    ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
-    ~ dirty=true 
-    ~ alter(rating,-5)
-    ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
-    ~ dirty=true
-    -- They finish their burgers. The rest of the trip passes without incident.
-    ->dirty_car 
-    
-===dirty_car===
-# dirty_car
-{cleaning_supplies==true:
-Your backseat is dirty. Fortunately, you have cleaning supplies in the trunk. You spend some time cleaning up.
+* [Don't chase the surge] ->no_surge
 
-Your next passenger is impressed by how clean your car is.
-    {rating>490:
-        ~rating=500
-    - else:
-        ~ alter(rating, 10)
-    }
-->day_2_afternoon
-
-- else:
-You backseat is dirty and you don't have cleaning supplies.
-->no_cleaning_supplies
-}
-
-=no_cleaning_supplies
-# dirty_car.no_cleaning_supplies
-#link
-* [Find cleaning supplies]It takes you some time to find a convenience store. You spend $20 stocking up on cleaning supplies.
-~cleaning_supplies=true
-~alter(accessories_cost,20)
-~add_time(0,16)
-
-->ride_request
-
-* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with your dirty backseat.
-    ~ alter(rating,-15) 
-    ->day_2_afternoon
-
-=ride_request
-# dirty_car.ride_request
-# link
-Just as you start cleaning, a ride request comes in.
-~add_time(0,13)
-* [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
-~ alter(rating,-10) 
-~ add_ride(1)
-~ alter(fares_earned_total,8)
-~ alter(day_fares_earned,8)
-->day_2_afternoon
-* [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
-    {rating>490:
-        ~rating=500
-    - else:
-        ~ alter(rating, 10)
-    }
-->day_2_afternoon
-
-===day_2_afternoon===
+=chase_surge
+# surge.chase_surge
+Tripling your earning is just too tempting. You start driving over to the surge zone.
+    ~add_time(0,32)
 # button
-# day_2_afternoon
+* [Try to get there as fast as possible] The roads are busy and the traffic lights are not on your side tonight. You are three blocks away when the surge ends. 
 {home=="sf":
 ~time_passes(5,0,1)
 - else:
 ~time_passes(3,0,1)
 }
-*[🚗]
-{rating > 480 :
-    -> day_2_evening
-  - else :
-    ->low_rating->day_2_evening
-    }
+    # button
+    **[Darn]
+->day_2_evening
+
+=no_surge
+# surge.no_surge
+'It'll probably be gone by the time you get there,' you think to yourself.
+    # button
+{home=="sf":
+~time_passes(5,0,1)
+- else:
+~time_passes(3,0,1)
+}
+*[Keep driving]
+->day_2_evening
 
 ===day_2_evening===
 # day_2_evening
@@ -1517,10 +1463,8 @@ You would normally finish up around now. {home=="sac":Especially since you you h
     On the drive back, you wonder if you made the right decision.
     # link
     * It's important to keep to a routine[], you tell yourself.
-    You arrive home.
     ->day_5_end
-    * Probably should've stuck it out[], but it's too late now.
-    You arrive home.
+    * Probably should've stuck it out[], you think. But it's too late now.
     ->day_5_end
 
 - else:
@@ -1534,14 +1478,14 @@ You decide to try to catch the evening crowd.
 ~time_passes(3,1,1)
 # button
 *[🚗] 
--> day_5_evening
+->burgers
 
 =gym
 # day_5_afternoon.gym
 You take a break to shower and freshen up at the gym before continuing.
 ~time_passes(3,1,1)
 # button
-*[🚗]->day_5_evening
+*[🚗]->burgers
 
 ===day_5_evening_start===
 # day_5_evening_start
@@ -1553,41 +1497,87 @@ You're refreshed after resting during the day. {home=="sac":You leave for San Fr
 ~alter(hours_driven_total,2)
 ~add_time(2,3)
 }
-~ time_passes(2,1,1)
+~ time_passes(1,1,1)
 # button
-*[🚗]->day_5_evening
+*[🚗]->burgers
 
-
-===day_5_evening===
-# day_5_evening
+===burgers===
 //9pm
-As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing in the Sunset district. 
-
-The 3x fare is attractive, but Sunset is 30 minutes away. 
-
 # link
+# burgers
+~temp dirty=false
+You arrive at a pick-up to find two passengers holding In-N-Out burgers that they are about to eat in the car.
+~add_time(0,4)
+* ["The food can’t come in the car"]"Aww, come on," they say. "We'll be careful."
+    # link
+    ** "No means no[."]," you say, as you cancel their ride.
+    ->home_or_not
+    
+    ** "Oh, alright[."]," you say. They get in the car. <>
+    
+* ["Nice! I love burgers too."]They get in the car and you start driving. 
 
-* [Chase the surge]->chase_surge 
+- From the rear-view mirror, you see one of them take a bite, and some ketchup drips onto the seat.
 
-* [Don't chase the surge] ->no_surge
+    ~add_time(0,22)
+    # link
+    ** [Say something] After your admonishment, they wipe the seat, but there's still a stain. They look unhappy at being called out.
+    ~ dirty=true 
+    ~ alter(rating,-5)
+    ** [Keep quiet] They blithely continue eating. You can't stop thinking about the stain.
+    ~ dirty=true
+    -- They finish their burgers. The rest of the trip passes without incident.
+    ->dirty_car 
+    
+===dirty_car===
+# dirty_car
+{cleaning_supplies==true:
+Your backseat is dirty. Fortunately, you have cleaning supplies in the trunk. You spend some time cleaning up.
 
-=chase_surge
-# surge.chase_surge
-Tripling your earning is just too tempting. You start driving over to the surge zone.
-    ~add_time(0,32)
-# button
-* [Try to get there as fast as possible] The roads are busy and the traffic lights are not on your side tonight. You are three blocks away when the surge ends. 
-~time_passes(3,1,1)
-    # button
-    **[Darn]
+Your next passenger is impressed by how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
 ->home_or_not
 
-=no_surge
-# surge.no_surge
-'It'll probably be gone by the time you get there,' you think to yourself.
-    # button
-~time_passes(3,1,1)
-*[Keep driving]
+- else:
+You backseat is dirty and you don't have cleaning supplies.
+->no_cleaning_supplies
+}
+
+=no_cleaning_supplies
+# dirty_car.no_cleaning_supplies
+#link
+* [Find cleaning supplies]It takes you some time to find a convenience store. You spend $20 stocking up on cleaning supplies.
+~cleaning_supplies=true
+~alter(accessories_cost,20)
+~add_time(0,16)
+
+->ride_request
+
+* [Ignore it] You put it out of your mind. Your next passenger is not too impressed with your dirty backseat.
+    ~ alter(rating,-15) 
+    ->home_or_not
+
+=ride_request
+# dirty_car.ride_request
+# link
+Just as you start cleaning, a ride request comes in.
+~add_time(0,13)
+* [Take the request]You abandon the cleaning and go pick up the passenger. He's not impressed with the dirty backseat.
+~ alter(rating,-10) 
+~ add_ride(1)
+~ alter(fares_earned_total,8)
+~ alter(day_fares_earned,8)
+->home_or_not
+* [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
+    {rating>490:
+        ~rating=500
+    - else:
+        ~ alter(rating, 10)
+    }
 ->home_or_not
 
 ===home_or_not===
@@ -2070,7 +2060,6 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 }
 
 ===day_7_end===
-
 # day_7_end
 ~day_end()
 {quest_completion==true:
