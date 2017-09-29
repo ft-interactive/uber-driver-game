@@ -180,7 +180,7 @@ function continueStory() {
           timeDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
-          const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
+          const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
 
           timeDisplay.innerHTML = timeString;
         },
@@ -317,9 +317,10 @@ function continueStory() {
         offset: `-=${timePassingScreenDuration}`,
         update: () => {
           const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
+          const timeStringDay = moment(timePassingObj.value).tz('Etc/GMT').format('ddd h:mma');
 
           timePassingTime.innerHTML = timeString;
-          timeDisplay.innerHTML = timeString;
+          timeDisplay.innerHTML = timeStringDay;
         },
         complete: () => {
           timePassingTime.style.textShadow = 'none';
@@ -369,7 +370,7 @@ function continueStory() {
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
     }
 
-    momentTime.innerText = timeDisplay.innerText;
+    momentTime.innerText = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
     momentDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     momentRides.innerText = rideCountTotal;
     momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
@@ -492,7 +493,7 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
-  const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
+  const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
 
   showStoryScreen
     .add({
