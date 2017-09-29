@@ -3,9 +3,14 @@ import { Story } from 'inkjs';
 import moment from 'moment-timezone';
 import './styles.scss';
 import json from './uber.json';
+import config from './config.yml';
+import StateUtils from './StateUtils';
+import GameContainer from './views/GameContainer';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
 const story = new Story(json);
+const stateUtils = new StateUtils(story, config);
+
 // Elements
 const logo = document.querySelector('.logo');
 const shareButtons = document.querySelector('.article__share');
@@ -37,6 +42,7 @@ const momentTime = document.getElementById('moment-time');
 const momentRides = document.getElementById('moment-rides');
 const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
+const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -95,7 +101,7 @@ function showCaveats() {
     });
 }
 
-function continueStory() {
+async function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDuringTimePassing = earnings - earningsObj.totalValue;
   const rating = story.variablesState.$('rating');
@@ -379,6 +385,14 @@ function continueStory() {
 
   // Generate story text - loop through available content
   while (story.canContinue) {
+    // Update background image if appropriate
+    const bgImageURL = stateUtils.getBackgroundImageURL();
+    if (bgImageURL) {
+      // eslint-disable-next-line no-await-in-loop
+      await gameContainer.setBackgroundImage(bgImageURL);
+    }
+
+
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
