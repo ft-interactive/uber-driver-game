@@ -6,6 +6,7 @@
 import Bluebird from 'bluebird';
 
 const loadImageMemo = {};
+let preloadDone = false;
 
 export default class StateUtils {
   constructor(story, config) {
@@ -74,6 +75,16 @@ export default class StateUtils {
             reject(error);
           });
       });
+    }
+
+    // preload remaining images if this is the first one
+    if (!preloadDone) {
+      // TODO only download images for the car type we actually need
+      this.preloadAllImages('prius').then(() => {
+        this.preloadAllImages('minivan');
+      });
+
+      preloadDone = true;
     }
 
     return loadImageMemo[originalURL];

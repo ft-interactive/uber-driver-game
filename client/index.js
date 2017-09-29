@@ -507,11 +507,6 @@ function continueStory() {
 }
 
 function startStory() {
-  // preload images - TODO don't download images for both car types
-  stateUtils.preloadAllImages('prius').then(() => {
-    stateUtils.preloadAllImages('minivan');
-  });
-
   const showStoryScreen = anime.timeline();
   const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
 
