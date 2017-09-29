@@ -58,6 +58,8 @@ const ratingObj = { value: 500 };
 const ridesObj = { value: 0, totalValue: 0 };
 const questRidesObj = { value: 0 };
 
+const yourChoices = [];
+
 function handleResize() {
   const d = new Date();
 
@@ -442,6 +444,10 @@ function continueStory() {
       // Remove unclicked choices
       const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
       const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
+
+      yourChoices.push(choice.text);
+      console.log(yourChoices.map(thing => `${thing}\n`).join(''));
+      // console.log('Your choices', JSON.stringify(yourChoices));
 
       prevChoices.forEach((prevChoice, i) => {
         const el = prevChoice;
