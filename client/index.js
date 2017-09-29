@@ -1,8 +1,9 @@
 import anime from 'animejs';
 import { Story } from 'inkjs';
-import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
-import json from './uber.json';
+import moment from 'moment-timezone';
 import './styles.scss';
+import json from './uber.json';
+import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
 const story = new Story(json);
 // Elements
@@ -32,6 +33,10 @@ const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text');
 const momentImage = document.querySelector('.moment-image');
 const momentButton = document.getElementById('moment-button');
+const momentTime = document.getElementById('moment-time');
+const momentRides = document.getElementById('moment-rides');
+const momentRideGoal = document.getElementById('moment-ride-goal');
+const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -98,7 +103,7 @@ function continueStory() {
   const rideCountDuringTimePassing = rideCountTotal - ridesObj.totalValue;
   const time = story.variablesState.$('timestamp') * 1000;
   const timePassing = story.variablesState.$('time_passing');
-  const moment = story.variablesState.$('moments');
+  const showMoment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
 
@@ -111,7 +116,7 @@ function continueStory() {
   }
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
-  console.log(timePassing, moment);
+  console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
   function showPanel() {
     anime({
@@ -163,15 +168,9 @@ function continueStory() {
           timeDisplay.style.textShadow = '0 0 6px white';
         },
         update: () => {
-          const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+          const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
 
-          console.log(timeString);
-
-          if (timeString.length < 11) {
-            timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
-          } else {
-            timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
-          }
+          timeDisplay.innerHTML = timeString;
         },
         complete: () => {
           timeDisplay.style.textShadow = 'none';
@@ -301,15 +300,10 @@ function continueStory() {
         easing: 'linear',
         offset: 0,
         update: () => {
-          const timeString = new Date(parseInt(timePassingObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+          const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
 
-          if (timeString.length < 11) {
-            timePassingTime.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
-            timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
-          } else {
-            timePassingTime.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
-            timeDisplay.innerHTML = `${timeString.slice(0, 5)}${timeString.slice(-2)}`;
-          }
+          timePassingTime.innerHTML = timeString;
+          timeDisplay.innerHTML = timeString;
         },
         complete: () => {
           timeObj.value = time;
@@ -344,7 +338,7 @@ function continueStory() {
           timePassingButton.disabled = false;
         },
       });
-  } else if (moment > 0) {
+  } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569815-ed2um.png)';
@@ -355,6 +349,11 @@ function continueStory() {
       momentText.innerText = 'Quest completed!';
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
     }
+
+    momentTime.innerText = timeDisplay.innerText;
+    momentRides.innerText = rideCountTotal;
+    momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
+    momentRideGoalTotal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : totalQuests);
 
     momentButton.addEventListener('click', closeMoment);
 
@@ -385,8 +384,6 @@ function continueStory() {
     const paragraphText = story.Continue();
     // Create paragraph element
     const paragraphElement = document.createElement('p');
-
-    console.log(story.currentTags);
 
     // if there is a [[[x]]], return string with rounded x (without square brackets)
     paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) => Math.round(earningNum));
@@ -470,7 +467,7 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
-  const timeString = new Date(parseInt(timeObj.value, 10)).toLocaleTimeString('en-us', { timeZone: 'GMT', hour12: true });
+  const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
 
   showStoryScreen
     .add({
@@ -481,7 +478,7 @@ function startStory() {
       offset: 0,
       begin: () => {
         earningsDisplay.innerHTML = earningsObj.totalValue;
-        timeDisplay.innerHTML = `${timeString.slice(0, 4)}${timeString.slice(-2)}`;
+        timeDisplay.innerHTML = timeString;
         ratingDisplay.innerHTML = (ratingObj.value / 100).toFixed(2);
         knotContainer.style.transform = 'translateY(40px)';
         knotContainer.style.opacity = 0;
