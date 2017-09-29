@@ -116,7 +116,7 @@ function continueStory() {
   }
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
-  console.log(timePassing, showMoment);
+  console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
   function showPanel() {
     anime({
@@ -302,8 +302,6 @@ function continueStory() {
         update: () => {
           const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
 
-          console.log(timeString);
-
           timePassingTime.innerHTML = timeString;
           timeDisplay.innerHTML = timeString;
         },
@@ -386,8 +384,6 @@ function continueStory() {
     const paragraphText = story.Continue();
     // Create paragraph element
     const paragraphElement = document.createElement('p');
-
-    console.log(story.currentTags);
 
     // if there is a [[[x]]], return string with rounded x (without square brackets)
     paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) => Math.round(earningNum));
