@@ -218,7 +218,8 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 Twenty minutes later, you arrive at his destination.
 ~alter(fares_earned_total,16)
 ~alter(day_fares_earned,16)
-~add_ride(1)
+~alter(day_ride_count,1)
+~alter(ride_count_total,1)
 * [Drop him off] 
 ->drop_off
 =drop_off
@@ -282,19 +283,19 @@ Rent this car? You will also buy insurance for ${insurance} a week.
     ~unlimited_data=true
     ~alter(accessories_cost,10)
     ->buy_accessories
-* [Phone mount & charging cords ($25):]A phone mount lets you use your phone with one hand while keeping your eyes on the road. And you don't want to run out of batteries.
+* [Phone mount & charging cords ($25)]A phone mount lets you use your phone with one hand while keeping your eyes on the road. And you don't want to run out of batteries.
     ~phone_mount=true
     ~alter(accessories_cost,25)
     ->buy_accessories
-* [Cleaning supplies ($20): ]In case someone makes a mess in your car 
+* [Cleaning supplies ($20)]In case someone makes a mess in your car 
     ~cleaning_supplies=true
     ~alter(accessories_cost,20)
     ->buy_accessories
-* [Business license ($91): ]You are, after all, technically running a business as an independent contracter. 
+* [Business license ($91)]You are, after all, technically running a business as an independent contractor. 
     ~biz_licence=true
     ~alter(accessories_cost,91)
     ->buy_accessories
-* [Gym membership ($10/week): ]You could go work out at the gym, but the main perk is having a place to shower and freshen up.
+* [Gym membership ($10/week)]Having a gym membership gives you a place to shower.
     ~gym_member=true
     ~alter(accessories_cost,10)
     ->buy_accessories
@@ -334,10 +335,10 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 }
 
 ===weekday_quest_message===
-
 # weekday_quest_message
 MESSAGE FROM UBER 
-"Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
+"Uber Quest: Drive {quest_rides+1} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
+//need to add 1 to the display because the opening Chris trip has counted quest_rides down by 1
 # button
 * [Accept quest]
 
@@ -390,7 +391,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
-*[🚗&nbsp;&nbsp;(Drive)]
+*[🚗&nbsp;&nbsp;Drive]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
 ->day_1_sac_evening_in_sf
@@ -406,8 +407,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯&nbsp;&nbsp;(Burritos)] You go for burritos
-* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni
+* [🌯&nbsp;&nbsp;Burrito] You go for burritos
+* [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni
 
 - ->day_1_sac_night_in_sf
 
@@ -446,7 +447,7 @@ You're feeling tired and dirty. You might have been able to drive for longer if 
 ~ alter(hours_driven_total, 2)
 # button
 *[Drive home]
-->go_home
+->day_1_end
 
 =gym
 # day_1_sac_night_in_sf.gym
@@ -461,7 +462,7 @@ You take a shower at the gym. Feeling refreshed, you keep driving for just a whi
 ~time_passes(3,0,1)
 You start driving.
 # button
-*[🚗&nbsp;&nbsp;(Drive)]
+*[🚗&nbsp;&nbsp;Drive]
 {phone_mount==false:
 ->no_phone_mount->day_1_sac_afternoon_in_sf
 }
@@ -469,7 +470,7 @@ You start driving.
 = stay_or_go
 # link
 # day_1_sacramento.stay_or_go
-You only earned ${day_fares_earned}. At this rate, you're unlikely to make $850 by the end of the week.
+You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000 by the end of the week.
 
 * [Stay in Sacramento] 
 ->sac_lunch
@@ -523,17 +524,17 @@ It's getting late, and you don't want to burn out too quickly.
 # day_1_sf
 You're excited to see parts of San Francisco you haven't been to yet.
 ~time_passes(4,0,1)
-* [🚗&nbsp;&nbsp;(Drive)] 
+* [🚗&nbsp;&nbsp;Drive] 
 
 ->day_1_sf_morning
 
 ===day_1_sf_morning===
 # link
 # day_1_sf_morning
-That was a productive morning! You decide to stop for lunch.
+That was a productive morning! You decide to stop for lunch. {quest_rides}
 ~add_time(0,30)
-* [🌯&nbsp;&nbsp;(Burritos)] You enjoy a burrito from Señor Sisig food truck before continuing on.
-* [🍕&nbsp;&nbsp;(Pizza)] You grab a quick slice of pepperoni before getting back on the road.
+* [🌯&nbsp;&nbsp;Burrito] You enjoy a burrito from Señor Sisig food truck before continuing on.
+* [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni before getting back on the road.
 - ->day_1_sf_afternoon
 
 ===day_1_sf_afternoon===
@@ -615,7 +616,6 @@ You turn on your Uber app and start driving.
 ===surge===
 # surge
 As you drop off a passenger in the Financial District in the northeast of San Francisco, you notice there's surge pricing in the Sunset district. 
-
 The 3x fare is attractive, but Sunset is 30 minutes away. 
 
 # link

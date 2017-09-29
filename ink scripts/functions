@@ -9,7 +9,7 @@
 === function time_passes(hours, peak, mult)  ===
 ~ temp rides=0
 ~ temp fares=0
-~ temp randomised_minutes=RANDOM(0,20)-10
+~ temp randomised_minutes=RANDOM(0,10)-5
 ~ temp avg_hourly_fare=15.38
 ~ temp rating_change=RANDOM(0,10)-5
 // avg_fare_per_ride=6.83
@@ -60,6 +60,7 @@
 /*
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}
 */
+
 
 
 === function day_end ===
