@@ -447,7 +447,6 @@ function continueStory() {
 
       yourChoices.push(choice.text);
       console.log(yourChoices.map(thing => `${thing}\n`).join(''));
-      // console.log('Your choices', JSON.stringify(yourChoices));
 
       prevChoices.forEach((prevChoice, i) => {
         const el = prevChoice;
