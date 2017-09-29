@@ -335,7 +335,7 @@ html, body {
               -webkit-justify-content: center;
               justify-content: center;
               align-items: center;
-              height: 70vh;
+              height: 62vh;
 
               p {
                 font-family: MetricWeb, sans-serif;
@@ -346,8 +346,8 @@ html, body {
               .moment-image {
                 width: 100%;
                 height: 100%;
-                max-width: 250px;
-                max-height: 250px;
+                max-width: 200px;
+                max-height: 200px;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
@@ -384,7 +384,7 @@ html, body {
             .time-passing-dashboard,
             .moment-dashboard {
               width: 100%;
-              height: 30vh;
+              height: 38vh;
               background-color: rgb(38, 43, 51);
 
               .stats-container {
