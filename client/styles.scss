@@ -35,6 +35,9 @@ html, body {
   background-position: center center;
   background-repeat: no-repeat;
   background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493658866-h0aa7.png?source=ig&width=4096&format=png&quality=high);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
   color: #fff;
