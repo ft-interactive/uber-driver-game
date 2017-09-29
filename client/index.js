@@ -43,6 +43,7 @@ const momentRides = document.getElementById('moment-rides');
 const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
+gameContainer.initialise();
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;

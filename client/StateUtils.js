@@ -3,22 +3,9 @@
  * the story, as well as acting as a state container for asset loading.
  */
 
+import Bluebird from 'bluebird';
+
 const loadImageMemo = {};
-
-const delay = milliseconds =>
-  new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-
-const loadImage = url =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = url;
-    img.addEventListener('load', () => {
-      resolve(img);
-    });
-    img.addEventListener('error', reject);
-  });
 
 export default class StateUtils {
   constructor(story, config) {
@@ -52,32 +39,44 @@ export default class StateUtils {
     return carType;
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  getImageServiceURL(url) {
+    return `https://www.ft.com/__origami/service/image/v2/images/raw/${encodeURIComponent(
+      url,
+    )}?source=ig&width=2000&format=jpg&quality=high`;
+  }
+
   /**
    * Memoized image-loading function. If called multiple times with the same image, only loads once.
+   *
+   * This returns a blob, which can then be used as a background image via
+   * `URL.createObjectURL(blob)`.
    */
-  // eslint-disable-next-line class-methods-use-this
-  async loadImage(url) {
-    if (!loadImageMemo[url]) {
-      loadImageMemo[url] = new Promise((resolve, reject) => {
-        // load the image (three attempts)
-        loadImage(url)
-          .catch(async () => {
-            await delay(200);
-            return loadImage(url);
-          })
-          .catch(async () => {
-            await delay(200);
-            return loadImage(url);
-          })
+  async loadImage(originalURL) {
+    if (!loadImageMemo[originalURL]) {
+      loadImageMemo[originalURL] = new Bluebird((resolve, reject) => {
+        // convert URL to Image Service
+        const url = this.getImageServiceURL(originalURL);
+
+        // load the image (with three attempts)
+        const retry = async () => {
+          await Bluebird.delay(100);
+          return fetch(url);
+        };
+
+        fetch(url)
+          .catch(retry)
+          .catch(retry)
+          .then(res => res.blob())
           .then(resolve, (error) => {
-            // allow trying again later (e.g. when back online)
-            delete loadImageMemo[url];
+            // delete from memo so it's still possible to load it later
+            delete loadImageMemo[originalURL];
             reject(error);
           });
       });
     }
 
-    return loadImageMemo[url];
+    return loadImageMemo[originalURL];
   }
 
   /**
@@ -93,5 +92,9 @@ export default class StateUtils {
     }
 
     return null;
+  }
+
+  getInitialBackgroundImage() {
+    return this.config.initialBackgroundImage;
   }
 }
