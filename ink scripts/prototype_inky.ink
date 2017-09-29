@@ -337,8 +337,8 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 ===weekday_quest_message===
 # weekday_quest_message
 MESSAGE FROM UBER 
-"Uber Quest: Drive {quest_rides+1} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
-//need to add 1 to the display because the opening Chris trip has counted quest_rides down by 1
+"Uber Quest: Drive {quest_rides} trips, make ${quest_bonus} extra. You have until Friday May 26, 4 am"
+
 # button
 * [Accept quest]
 
@@ -598,7 +598,7 @@ It's Tuesday. Your back aches from having spent the whole day in the car yesterd
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt? 
 ~add_time(0,14)
-*[Yes]You keep it in a folder for your expenses.
+*[Yes]You keep it in a folder for your expenses, so you can claim tax deductions on them.
 ~kept_receipt=true
 *[No]You don’t have time to keep track of stuff like that.
 ~kept_receipt=false
