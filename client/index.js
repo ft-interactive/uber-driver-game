@@ -47,8 +47,8 @@ const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 // Needed for animations
-const defaultInDuration = 2000;
-const defaultOutDuration = 2000;
+const defaultInDuration = 300;
+const defaultOutDuration = 200;
 const timePassingScreenDuration = 3000;
 const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
