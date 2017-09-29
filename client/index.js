@@ -300,7 +300,9 @@ function continueStory() {
         easing: 'linear',
         offset: 0,
         update: () => {
-          const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
+          const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
+
+          console.log(timeString);
 
           timePassingTime.innerHTML = timeString;
           timeDisplay.innerHTML = timeString;
