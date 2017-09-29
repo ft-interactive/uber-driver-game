@@ -88,6 +88,7 @@ link = choice
 ->welcome
 === welcome ===
 # welcome
+# bg:image1
 You're a full-time Uber driver trying to make ends meet.
 
 You have one week to try to make $850, the average weekly income in the United States.
@@ -133,9 +134,8 @@ Can you do it?
 
 
 === choose_difficulty===
-
 # choose_difficulty
-
+# bg:image2
 Your difficulty level will affect how easy it is to make $850 in a week.
 # link 
 + [Easier]
@@ -166,8 +166,8 @@ You have two kids to support, and a mortgage payment coming due.
 
 
 === day_1_start ===
-
 # day_1_start
+# bg:image3
 ~ add_time(0,10)
 You start bright and early on a Monday morning.
 
