@@ -41,16 +41,17 @@ export default class GameContainer {
 
     this.currentBackground = newBackground;
 
-    // swap them
+    oldBackground.style.opacity = '0';
+
     newBackground.style.opacity = '0';
     this.backgroundContainer.appendChild(newBackground);
-
-    this.element.classList.remove('game-container--loading');
+    if (!alreadyLoaded) this.element.classList.remove('game-container--loading');
 
     newBackground.getBoundingClientRect(); // trigger paint
-    newBackground.style.opacity = 1;
 
-    await Bluebird.delay(2000);
+    await Bluebird.delay(300);
     oldBackground.remove();
+    newBackground.style.opacity = '1';
+    await Bluebird.delay(300);
   }
 }
