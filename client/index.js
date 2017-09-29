@@ -121,13 +121,23 @@ function continueStory() {
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
   function showPanel() {
-    anime({
-      targets: knotContainer,
-      translateY: 0,
-      opacity: 1,
-      duration: 150,
-      easing: 'easeOutQuad',
-    });
+    const panelIn = anime.timeline();
+
+    panelIn
+      .add({
+        targets: knotContainer,
+        opacity: 1,
+        duration: defaultInDuration,
+        easing: 'linear',
+        offset: 0,
+      })
+      .add({
+        targets: knotContainer,
+        translateY: 0,
+        duration: defaultInDuration,
+        easing: 'easeOutQuad',
+        offset: 0,
+      });
 
     // Animate meter readouts
     if (earnings !== earningsObj.totalValue) {
@@ -429,10 +439,6 @@ function continueStory() {
     function handleClick(event) {
       event.preventDefault();
 
-      if (choiceElement.classList.contains('link-like')) {
-        choiceElement.style.color = '#333';
-      }
-
       // Remove unclicked choices
       const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
       const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
@@ -445,29 +451,39 @@ function continueStory() {
         }
       });
 
-      anime({
-        targets: knotContainer,
-        translateY: 40,
-        opacity: 0,
-        duration: 100,
-        easing: 'easeOutQuad',
-        complete: () => {
-          // Remove all existing paragraphs
-          const existingPars = Array.from(knotElement.querySelectorAll('p'));
+      const panelOut = anime.timeline();
 
-          existingPars.forEach((existingPar) => {
-            const p = existingPar;
+      panelOut
+        .add({
+          targets: knotContainer,
+          opacity: 0,
+          duration: defaultOutDuration,
+          easing: 'linear',
+          offset: 0,
+        })
+        .add({
+          targets: knotContainer,
+          translateY: 40,
+          duration: defaultOutDuration,
+          easing: 'easeOutQuad',
+          offset: 0,
+          complete: () => {
+            // Remove all existing paragraphs
+            const existingPars = Array.from(knotElement.querySelectorAll('p'));
 
-            p.parentNode.removeChild(p);
-          });
+            existingPars.forEach((existingPar) => {
+              const p = existingPar;
 
-          // Tell the story where to go next
-          story.ChooseChoiceIndex(choice.index);
+              p.parentNode.removeChild(p);
+            });
 
-          // Aaand loop
-          continueStory();
-        },
-      });
+            // Tell the story where to go next
+            story.ChooseChoiceIndex(choice.index);
+
+            // Aaand loop
+            continueStory();
+          },
+        });
     }
 
     choiceElement.onclick = handleClick;
@@ -484,7 +500,6 @@ function startStory() {
       opacity: 0,
       duration: defaultOutDuration,
       easing: 'linear',
-      offset: 0,
       begin: () => {
         earningsDisplay.innerHTML = earningsObj.totalValue;
         timeDisplay.innerHTML = timeString;
@@ -498,7 +513,6 @@ function startStory() {
         shareButtons.style.left = 0;
         caveatsScreen.style.display = 'none';
         footer.style.display = 'none';
-        tint.style.webkitBackdropFilter = 'blur(0px)';
       },
     })
     .add({
@@ -507,9 +521,9 @@ function startStory() {
       duration: defaultInDuration,
       easing: 'easeOutQuad',
       complete: () => {
-        storyScreen.style.display = 'flex';
         logo.style.right = 0;
         logo.style.left = '';
+        tint.style.webkitBackdropFilter = 'blur(0px)';
       },
     })
     .add({
@@ -519,6 +533,7 @@ function startStory() {
       easing: 'linear',
       complete: () => {
         tint.style.display = 'none';
+        storyScreen.style.display = 'flex';
       },
     })
     .add({
@@ -526,7 +541,6 @@ function startStory() {
       opacity: 1,
       duration: defaultInDuration,
       easing: 'linear',
-      offset: `-=${defaultOutDuration}`,
       complete: () => {
         continueStory();
       },
