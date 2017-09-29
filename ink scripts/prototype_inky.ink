@@ -130,7 +130,7 @@ link = choice
 # welcome
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week. 
 
-Can you earn enough to pay the bill?
+Can you earn enough to pay the bill - and make more than other players?  
 # button
 * [Yes]
 ->choose_difficulty
@@ -144,14 +144,14 @@ Your difficulty level will affect how easy it is to earn $1000.
 ~ home="sf"
 ~ credit_rating="good"
 ~ current_city=home
-Easier: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+Easier difficulty: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
 ->day_1_start
 
 * [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
 ~ current_city=home
-Harder: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+Harder difficulty: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
 ->day_1_start
 
 /*
