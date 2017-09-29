@@ -5,7 +5,7 @@
 import Sequelize = require('sequelize');
 
 export const sequelize = new Sequelize(
-  process.env.CONNECTION_STRING || 'postgres://localhost/uber', {
+  process.env.DATABASE_URL || 'postgres://localhost/uber', {
     logging: false,
   });
 

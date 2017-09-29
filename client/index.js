@@ -126,6 +126,27 @@ function showCaveats() {
     });
 }
 
+function recordDecision(decision, story) {
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
+
+  return fetch('https://ft-ig-uber-game-backend.herokuapp.com/decisions', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify({
+      type: decision,
+      value: story.variablesState.$(decision),
+      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
+      meta,
+    }),
+  })
+  .then(() => console.info(`${decision} recorded`))
+  .catch((e) => console.error(`Error recording: ${e}`));
+}
+
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDuringTimePassing = earnings - earningsObj.totalValue;
@@ -137,6 +158,14 @@ function continueStory() {
   const showMoment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
+
+  if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
+    recordDecision('', story);
+  } else if (story.currentTags.indexOf('day_5_start') > -1) {
+    recordDecision('', story);
+  } else if (story.currentTags.indexOf('day_7_start') > -1) {
+    recordDecision('', story);
+  }
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
   // then number of quests is 75, else 65

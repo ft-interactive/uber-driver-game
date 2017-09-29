@@ -10,7 +10,7 @@ const server = micro(async (req, res) => {
     case '/decisions':
       if (req.method && req.method.toLowerCase() === 'post') {
         try {
-          await Decision.create(json(req));
+          await Decision.create(await json(req));
           return 'Decision added';
         } catch (e) {
           console.error(e);
@@ -25,7 +25,7 @@ const server = micro(async (req, res) => {
     case '/results':
       if (req.method && req.method.toLowerCase() === 'post') {
         try {
-          await Result.create(json(req));
+          await Result.create(await json(req));
           return await sequelize.query(
             `
             SELECT unnest(
