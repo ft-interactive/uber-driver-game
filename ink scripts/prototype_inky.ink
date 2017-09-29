@@ -130,6 +130,7 @@ link = choice
 # welcome
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week. 
 
+
 Can you earn enough to pay the bill - and make more than other players?  
 # button
 * [Yes]
@@ -138,7 +139,9 @@ Can you earn enough to pay the bill - and make more than other players?
 
 === choose_difficulty===
 # choose_difficulty
+# bg:image2
 Your difficulty level will affect how easy it is to earn $1000.
+
 # link 
 * [Easier]
 ~ home="sf"
@@ -168,9 +171,10 @@ Harder difficulty: You have a bad credit rating and can't afford to live in San 
 */
 
 === day_1_start ===
-
 # day_1_start
+# bg:image3
 You start bright and early on a Monday morning. Pretty soon, you get your first ride request, from a "Chris". <>
+
 ->day_1_locate_passenger
 
 ===day_1_locate_passenger===

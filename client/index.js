@@ -25,6 +25,7 @@ const timePassingScreen = document.querySelector('.time-passing-container');
 const timePassingTextHours = document.getElementById('time-passing-text__hours');
 const timePassingEarnings = document.getElementById('tp-earnings');
 const timePassingTime = document.getElementById('tp-time');
+const timePassingDay = document.getElementById('tp-day');
 const timePassingRides = document.getElementById('tp-rides');
 const timePassingRideGoal = document.getElementById('tp-ride-goal');
 const timePassingRideGoalTotal = document.getElementById('tp-ride-goal-total');
@@ -32,11 +33,12 @@ const timePassingButton = document.getElementById('tp-button');
 const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text');
 const momentImage = document.querySelector('.moment-image');
-const momentButton = document.getElementById('moment-button');
 const momentTime = document.getElementById('moment-time');
+const momentDay = document.getElementById('moment-day');
 const momentRides = document.getElementById('moment-rides');
 const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
+const momentButton = document.getElementById('moment-button');
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -45,8 +47,8 @@ const logoHeight = logo.offsetHeight;
 let articleBodyHeight;
 let knotContainerMaxHeight;
 // Needed for animations
-const defaultInDuration = 300;
-const defaultOutDuration = 200;
+const defaultInDuration = 2000;
+const defaultOutDuration = 2000;
 const timePassingScreenDuration = 3000;
 const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
@@ -143,7 +145,7 @@ function continueStory() {
         },
         easing: 'linear',
         begin: () => {
-          earningsDisplay.style.textShadow = '0 0 6px white';
+          earningsDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
           earningsDisplay.innerHTML = earningsObj.value;
@@ -165,7 +167,7 @@ function continueStory() {
         duration: 500,
         easing: 'linear',
         begin: () => {
-          timeDisplay.style.textShadow = '0 0 6px white';
+          timeDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
           const timeString = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
@@ -193,7 +195,7 @@ function continueStory() {
         },
         easing: 'linear',
         begin: () => {
-          ratingDisplay.style.textShadow = '0 0 6px white';
+          ratingDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
           const r = (ratingObj.value / 100).toFixed(2);
@@ -216,7 +218,6 @@ function continueStory() {
       easing: 'linear',
       begin: () => {
         timePassingScreen.style.webkitBackdropFilter = 'blur(0px)';
-        timePassingScreen.style.backdropFilter = 'blur(0px)';
       },
       complete: () => {
         timePassingButton.removeEventListener('click', closeTimePassing);
@@ -235,7 +236,6 @@ function continueStory() {
       easing: 'linear',
       begin: () => {
         momentScreen.style.webkitBackdropFilter = 'blur(0px)';
-        momentScreen.style.backdropFilter = 'blur(0px)';
       },
       complete: () => {
         momentScreen.style.display = 'none';
@@ -254,6 +254,7 @@ function continueStory() {
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
     timePassingTextHours.innerText = timePassingAmountHours;
+    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -273,8 +274,13 @@ function continueStory() {
         easing: 'linear',
         begin: () => {
           timePassingScreen.style.display = 'block';
-          timePassingScreen.style.webkitBackdropFilter = 'blur(8px)';
-          timePassingScreen.style.backdropFilter = 'blur(8px)';
+          timePassingScreen.style.webkitBackdropFilter = 'blur(12px)';
+        },
+        complete: () => {
+          timePassingEarnings.style.textShadow = '0 0 12px #ffffff';
+          timePassingTime.style.textShadow = '0 0 9px #ffffff';
+          timePassingRides.style.textShadow = '0 0 9px #ffffff';
+          timePassingRideGoal.style.textShadow = '0 0 9px #ffffff';
         },
       })
       .add({
@@ -283,12 +289,12 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
-        offset: 0,
         update: () => {
           timePassingEarnings.innerHTML = earningsObj.value;
           earningsDisplay.innerHTML = earningsObj.totalValue + earningsObj.value;
         },
         complete: () => {
+          timePassingEarnings.style.textShadow = 'none';
           earningsObj.totalValue = earnings;
         },
       })
@@ -298,7 +304,7 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
-        offset: 0,
+        offset: `-=${timePassingScreenDuration}`,
         update: () => {
           const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
 
@@ -306,6 +312,7 @@ function continueStory() {
           timeDisplay.innerHTML = timeString;
         },
         complete: () => {
+          timePassingTime.style.textShadow = 'none';
           timeObj.value = time;
         },
       })
@@ -315,11 +322,12 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
-        offset: 0,
+        offset: `-=${timePassingScreenDuration}`,
         update: () => {
           timePassingRides.innerHTML = ridesObj.value;
         },
         complete: () => {
+          timePassingRides.style.textShadow = 'none';
           ridesObj.totalValue = rideCountTotal;
         },
       })
@@ -329,11 +337,12 @@ function continueStory() {
         round: 1,
         duration: timePassingScreenDuration,
         easing: 'linear',
-        offset: 0,
+        offset: `-=${timePassingScreenDuration}`,
         update: () => {
           timePassingRideGoal.innerHTML = questRidesObj.value;
         },
         complete: () => {
+          timePassingRideGoal.style.textShadow = 'none';
           questRidesObj.value = questRidesTotal;
           timePassingButton.disabled = false;
         },
@@ -351,6 +360,7 @@ function continueStory() {
     }
 
     momentTime.innerText = timeDisplay.innerText;
+    momentDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     momentRides.innerText = rideCountTotal;
     momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
     momentRideGoalTotal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : totalQuests);
@@ -364,8 +374,7 @@ function continueStory() {
       easing: 'linear',
       begin: () => {
         momentScreen.style.display = 'block';
-        momentScreen.style.webkitBackdropFilter = 'blur(8px)';
-        momentScreen.style.backdropFilter = 'blur(8px)';
+        momentScreen.style.webkitBackdropFilter = 'blur(12px)';
       },
       complete: () => {
         story.variablesState.$('moments', 0);

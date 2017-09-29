@@ -171,9 +171,6 @@ html, body {
             top: 0;
             width: 100%;
             margin-top: 24px;
-            // padding-left: 0;
-            // right: 0px;
-            // left: 0px;
 
             .meter {
               position: relative;
@@ -333,9 +330,8 @@ html, body {
             background-color: rgba(38, 43, 51, 0.8);
             color: #ffffff;
             -webkit-backdrop-filter: blur(12px);
-            opacity: 0;
             -webkit-transition: -webkit-backdrop-filter 0.3s linear;
-            transition: backdrop-filter 0.3s linear;
+            opacity: 0;
 
             .time-passing-upper,
             .moment-upper {
@@ -372,6 +368,9 @@ html, body {
                 div {
                   font-size: 80px;
                   font-weight: 600;
+                  -webkit-transition: text-shadow 0.1s linear;
+                  -moz-transition: text-shadow 0.1s linear;
+                  transition: text-shadow 0.1s linear;
 
                   &:before {
                     content: '$';
@@ -422,13 +421,25 @@ html, body {
                 }
 
                 span {
-                  font-size: 28px;
-                  font-weight: 600;
-                  line-height: 45px;
-                  -webkit-font-feature-settings: 'tnum';
-                  -moz-font-feature-settings: 'tnum';
-                  font-feature-settings: 'tnum';
-                  text-transform: lowercase;
+                  &.large {
+                    font-size: 28px;
+                    font-weight: 600;
+                    line-height: 45px;
+                    -webkit-font-feature-settings: 'tnum';
+                    -moz-font-feature-settings: 'tnum';
+                    font-feature-settings: 'tnum';
+                    text-transform: lowercase;
+                    -webkit-transition: text-shadow 0.1s linear;
+                    -moz-transition: text-shadow 0.1s linear;
+                    transition: text-shadow 0.1s linear;
+                  }
+
+                  &.small {
+                    font-size: 14px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    line-height: 16px;
+                  }
                 }
 
                 p {
