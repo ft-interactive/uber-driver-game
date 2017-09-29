@@ -32,6 +32,10 @@ const momentScreen = document.querySelector('.moment-container');
 const momentText = document.getElementById('moment-text');
 const momentImage = document.querySelector('.moment-image');
 const momentButton = document.getElementById('moment-button');
+const momentTime = document.getElementById('moment-time');
+const momentRides = document.getElementById('moment-rides');
+const momentRideGoal = document.getElementById('moment-ride-goal');
+const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -355,6 +359,11 @@ function continueStory() {
       momentText.innerText = 'Quest completed!';
       momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
     }
+
+    momentTime.innerText = timeDisplay.innerText;
+    momentRides.innerText = rideCountTotal;
+    momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
+    momentRideGoalTotal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : totalQuests);
 
     momentButton.addEventListener('click', closeMoment);
 
