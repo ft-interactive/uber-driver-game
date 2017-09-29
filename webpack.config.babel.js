@@ -29,6 +29,11 @@ module.exports = async (env = 'development') => ({
         },
       },
       {
+        test: /\.ya?ml$/,
+        exclude: /(node_modules|bower_components)/,
+        use: ['json-loader', 'yaml-loader'],
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules(?!\/inkjs)|bower_components)/,
         use: {
