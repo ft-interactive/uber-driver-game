@@ -254,8 +254,21 @@ html, body {
             -webkit-backdrop-filter: blur(12px);
             overflow: scroll;
 
+            .decoration {
+              width: 100%;
+              height: 20px;
+              margin: 10px 0 0;
+              background-color: red;
+              background-image: url();
+              background: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png) no-repeat center center;
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+            }
+
             .knot {
-              padding: 10px 0;
+              padding: 0 0 10px;
 
               .choices-container {
                 float: none;
@@ -263,7 +276,7 @@ html, body {
 
                 button {
                   display: block;
-                  margin: 10px auto;
+                  margin: 0 auto 10px;
 
                   &.link-like {
                     width: 100%;
@@ -536,8 +549,12 @@ html, body {
   .knot-container {
     margin: 0 20px 64px !important;
 
+    .decoration {
+      margin: 20px 0 0 !important;
+    }
+
     .knot {
-      padding: 20px 0 !important;
+      padding: 0 0 20px !important;
     }
   }
 
