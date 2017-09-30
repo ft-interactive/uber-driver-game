@@ -9,7 +9,7 @@
 === function time_passes(hours, peak, mult)  ===
 ~ temp rides=0
 ~ temp fares=0
-~ temp randomised_minutes=RANDOM(0,20)-10
+~ temp randomised_minutes=RANDOM(0,10)-5
 ~ temp avg_hourly_fare=15.38
 ~ temp rating_change=RANDOM(0,10)-5
 // avg_fare_per_ride=6.83
@@ -26,7 +26,7 @@
 - else:
 ~ rides = RANDOM((hours*2),(hours*3))
     {current_city=="sac":
-    ~ alter(rides, -2)
+    ~ alter(rides, -3)
         {rides<0:
         ~rides=0
         }
@@ -50,9 +50,14 @@
 ~rating=500
 }
 
+{rating<460:
+~alter(rating, RANDOM(0,10))
+}
+
 {quest_rides<0: 
 ~quest_rides=0
 }
+
 {quest_rides<1:
 ~quest_completion=true
 ~moments=true
@@ -61,10 +66,9 @@
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}
 */
 
-
 === function day_end ===
 
-Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned $[[[{day_fares_earned}]]] in fares. /* Your driver rating is {rating/100}. */
+Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned $[[[{day_fares_earned}]]] in fares. /* Your driver rating is {rating/100}. */<>
 
 {quest_rides>0:
 You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end of Sunday | Friday} to get the bonus.
@@ -77,7 +81,7 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end o
 === function UberXL ===
 ~ temp XL_bonus= RANDOM(12,40)
 {car=="minivan": 
-    You also got a few UberXL rides that earned you an extra ${XL_bonus}
+    //You also got a few UberXL rides that earned you an extra ${XL_bonus}
     ~ alter(day_fares_earned,XL_bonus)
     ~ alter(fares_earned_total, XL_bonus)
     ~ alter(XL_total,XL_bonus)
@@ -87,3 +91,12 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end o
 ~alter(ride_count_total,number)
 ~alter(day_ride_count,number)
 ~alter(quest_rides,-number)
+
+=== quest_finish ===
+# quest_finish
+{ quest_rides == 0 :
+You finished the quest! You get the ${quest_bonus} bonus.
+~ quest_completion = true
+~ moments=true
+}
+->->
