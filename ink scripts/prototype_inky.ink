@@ -812,7 +812,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 ===day_3_pm===
 #day_3_pm
 
-~time_passes(5,0,1)
+~time_passes(4,0,1)
 
 #button
 *[🚗&nbsp;&nbsp;Drive]
@@ -1225,7 +1225,7 @@ By now, you've become used to the rhythm of the day and how this works.
 { 
 - quest_completion==true:
 ->quest_finish->
-    It's time to head back to Sacramento to keep your promise to your son
+    It's time to head back to Sacramento to keep your promise to your son.
     ~ add_time(1,56)
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
@@ -1421,10 +1421,10 @@ Friday and Saturday nights are some of the busiest times for rides, but the peak
 
 ===day_5_daytime===
 # day_5_daytime
-You decide that it's not worth it to disrupt your normal schedule.
+You decide that it's not worth it to disrupt your normal schedule. <>
 
 {home=="sac": 
-You head into San Francisco at your usual hour.
+<> You head into San Francisco at your usual hour.
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,3)
@@ -1509,7 +1509,7 @@ You would normally finish up around now. {home=="sac":Especially since you you h
 =keep_driving
 # day_5_afternoon.keep_driving
 You decide to try to catch the evening crowd.
-~time_passes(3,1,1)
+~time_passes(2,1,1)
 # button
 *[🚗&nbsp;&nbsp;Drive] 
 ->burgers
@@ -1605,6 +1605,8 @@ Just as you start cleaning, a ride request comes in.
 ~ add_ride(1)
 ~ alter(fares_earned_total,8)
 ~ alter(day_fares_earned,8)
+~ alter(day_hours_driven,1)
+~ alter(hours_driven_total,1)
 ->home_or_not
 * [Decline the ride] You finish cleaning up. Your next passenger compliments you on how clean your car is.
     {rating>490:
@@ -1864,6 +1866,8 @@ You finally have some much-needed time to clean up around the house, and spend t
 
 - You feel refreshed.
 # button
+~timestamp=1502614800
+//sun 9am
 ** [Start day 7]
 ->day_7_start
 
@@ -2021,7 +2025,7 @@ As you drop her off, you see a police car pull up behind you.
 ~ alter(ticket_cost,260)
 
 # button
-*[🚓]
+*[🚓&nbsp;&nbsp;Police]
 You get a traffic ticket (-$260). You'll have to go pay that later.
 ~ time_passes(3,0,1)
     # button
