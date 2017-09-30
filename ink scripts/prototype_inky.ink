@@ -460,7 +460,7 @@ You take a shower at the gym. Feeling refreshed, you keep driving for just a whi
 
 ===sac_morning===
 # day_1_sacramento.sac_morning
-~time_passes(3,0,1)
+~time_passes(4,0,1)
 You start driving.
 # button
 *[🚗&nbsp;&nbsp;Drive]
@@ -680,12 +680,9 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 #day_2_evening.keep_working
 
 Work is more important. You say you can't make it.
-~time_passes(3,1,1)
-{home=="sac":
+~time_passes(2,0,1)
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
-~add_time(2,1)
-}
 #button
 *[🚗&nbsp;&nbsp;Drive]
 ->day_2_end
@@ -699,6 +696,7 @@ You call it a day.
 {home=="sac":
 ~timestamp=1502265600 //Weds 8am
 The two-hour drive back to Sacramento is long and boring.
+
 }
 
 ~day_end()
@@ -717,6 +715,7 @@ You head over to San Francisco. <>
 ~alter(hours_driven_total,2)
 ~add_time(1,48)
 }
+~current_city="sf"
 ->pebble_start
 
 ===pebble_start===
@@ -728,9 +727,8 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 * [Repair it immediately ($30)]
 ->repair
 
-* [Ignore it] It's just a small chip. It'll probably be fine to leave it, and you don't want to spend the time and money repairing a car you leased.
-~ windshield_cracked=true
-->day_3_morning
+* [Ignore it]
+->ignore
 
 =repair
 # button
@@ -738,9 +736,26 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
 ~alter(repair_cost,30)
 ~add_time(1,0)
+
+{unlimited_data==false:
+~time_passes(2,0,1)
+- else:
 ~time_passes(4,0,1)
+}
 * [🔧&nbsp;&nbsp;Repair]
 
+->day_3_morning
+
+=ignore
+# pebble_start.ignore
+It's just a small chip, and you don't want to spend the time and money repairing a car you leased.
+~ windshield_cracked=true
+{unlimited_data==false:
+~time_passes(2,0,1)
+- else:
+~time_passes(4,0,1)
+}
+*[🚗&nbsp;&nbsp;Drive]
 ->day_3_morning
 
 ===day_3_morning===
@@ -753,6 +768,19 @@ You find a nearby auto shop. They take an hour to fix your windscreen, and charg
 ->nice_passenger
 }
 
+===data_plan===
+# link
+# data_plan
+You get a message from your phone provider: You've exceeded your data limit.
+
+In retrospect, maybe you should've upgraded to the unlimited data plan.
+~alter(accessories_cost,30)
+~time_passes(2,0,1)
+*[Incur overage charges ($30/week)]
+
+- ->nice_passenger
+
+->nice_passenger
 ===nice_passenger===
 # link
 # nice_passenger
@@ -1062,7 +1090,7 @@ You call home to say you won't be back. Your son is disappointed.
 ~ alter(hours_driven_total, 2)
 ~ add_time(2,3)
 ~ quest_rides=0
-~quest_completion=true
+~ quest_completion=true
 # button
 *[🚗&nbsp;&nbsp;Drive] 
 
@@ -2102,18 +2130,6 @@ With no phone mount, you're left fiddling with your phone on your lap. Your pass
 # deactivation
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
 ->->
-
-===data_plan===
-# link
-# data_plan
-You get a message from your phone provider: You've exceeded your data limit.
-
-In retrospect, maybe you should've upgraded to the unlimited data plan.
-~alter(accessories_cost,30)
-*[Incur overage charges ($30/week)]
-
-- ->nice_passenger
-
 /*
 ===results_revenue===
 # button

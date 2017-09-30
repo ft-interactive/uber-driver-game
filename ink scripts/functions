@@ -26,7 +26,7 @@
 - else:
 ~ rides = RANDOM((hours*2),(hours*3))
     {current_city=="sac":
-    ~ alter(rides, -2)
+    ~ alter(rides, -3)
         {rides<0:
         ~rides=0
         }
