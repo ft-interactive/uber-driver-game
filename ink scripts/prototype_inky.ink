@@ -188,7 +188,7 @@ But when you arrive at the pick-up point, you don't see anyone waiting for a rid
 =call_chris
 # link
 # day_1_locate_passenger.call_chris
-He answers the phone. "I'll be right there. Just coming out now," he says.
+A man's voice answers the phone. "I'll be right there. Just coming out now," he says.
 ~ add_time(0,3)
 * ["Hurry up, will you?"]
 * ["Take your time!"]
@@ -481,13 +481,15 @@ You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000
 ->day_1_sacramento.go_to_sf
 
 =sac_lunch
-# button
 # day_1_sacramento.sac_lunch
-You like driving in a familiar town, especially since it means you can get lunch at your favourite burrito place.
+You like driving in a familiar town, especially since it means you can get lunch at your favourite Tex-Mex restaurant.
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
-* [🌯&nbsp;&nbsp;(Burritos)] ->sac_afternoon
+# link
+* [🌯&nbsp;&nbsp;Burritos]
+* [🌮&nbsp;&nbsp;Tacos]
+- ->sac_afternoon
 
 =sac_afternoon
 # day_1_sacramento.afternoon
@@ -559,8 +561,17 @@ You get back online just in time for the busy evening period.
 # button
 *[🚗&nbsp;&nbsp;Drive]
 
-->day_1_sf_keep_going 
+->airport_incident
 
+ 
+ ===airport_incident===
+# airport_incident
+You are driving a passenger to the airport when you miss the freeway exit. She gets very angry, saying: "Do I need to drive for you?"
+~alter(rating,-15)
+#link
+* ["Sorry!"]But you stew over the remark. Especially when you see they've given you a bad rating
+* [Argue]You almost get into a shouting match with the woman as you find your way back to the airport.
+- ->day_1_sf_keep_going
  
 ===day_1_sf_keep_going===
 #day_1_sf_keep_going
@@ -795,20 +806,21 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 # link
 * [Give her 4 stars]
 * [Give her 5 stars]
-- Soon, you get a notification. She gave you an 'Excellent Service' badge, and a $10 tip! 
+- Soon, you get a notification. She gave you a $10 tip, and an 'Excellent Service' badge: 
 
 "Friendly and professional. Would ride again" 
 
-->reward
+->day_3_pm
 
+/*
 =reward
 # nice_passenger.reward
 # link
-* [Keep driving] Nice!
+* [Keep driving] It's no time to rest on your laurels. 
 -> day_3_pm
 * [Reward yourself] You stop for a brief break at Burger King before continuing.
 -> day_3_pm
-
+*/
 
 ===day_3_pm===
 #day_3_pm
@@ -830,13 +842,13 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 - quest_rides<5 && quest_rides > 0:
 MESSAGE FROM UBER
 Just {quest_rides} more rides until you get ${quest_bonus} bonus!
-* [Keep driving]As you pull up for the next pick up, you find, annoyingly, that it's for a long trip to the airport.
+* [Keep driving]As you pull up for the next pick up, you find that it's for a long trip to the airport.
 ->pickup
 * [Call it a day] 
 ->day_3_end
 
 - else:
-It's getting late.
+It's getting late. You turn off the app for a bit to stop the car and stretch your aching legs, but a wave of exhaustion hits you.
 {home=="sac":
 ~add_time(1,52)
 ~alter(day_hours_driven,2)
@@ -851,9 +863,8 @@ It's getting late.
 =pickup
 # day_3_quest_near_finish.pickup
 # link
-*[Ask the passenger if you could decline]The passenger says she's in a hurry.
+*[Ask the passenger if you could decline]The passenger says she's in a hurry and will miss her flight if she has to wait for another Uber.
     ->in_hurry
-
 *[Just go to the airport]You drop her off at the airport.
     
 You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
@@ -872,6 +883,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 # day_3_quest_near_finish.in_hurry
 # link
 *[Cancel on her]She shouts at you as you pull away. Fortunately, you quickly get a few short rides. 
+    
     ~ add_time(2,6)
     ~ alter(ride_count_total, quest_rides)
     ~ alter(fares_earned_total, quest_rides*6)
@@ -880,23 +892,22 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
     ~ alter(day_fares_earned, quest_rides*6)
     ~ alter(day_hours_driven, 2)
     ~ quest_rides=0
+    ~ quest_completion=true
+    ~ moments=true
     # button
     **[🚗&nbsp;&nbsp;Drive]
 
     ->quest_finish->day_3_end
 
-*[Go to the airport]You take her to the airport.
-
-You don't feel like getting in the queue for a ride back, so you drive back to town by yourself. 
+*[Go to the airport]You take her to the airport. You don't feel like getting in the queue for a ride back.
 ~add_time(1,13)
 ~ add_ride(1)
 ~ alter(fares_earned_total, 30)
 ~ alter(hours_driven_total, 1)
 ~ alter(day_fares_earned, 30)
 ~ alter(day_hours_driven, 1)
-
     # button
-    **[🚗&nbsp;&nbsp;Drive]
+    **[Drive back to town]
     You decide to call it a day and finish the quest tomorrow instead.
     ->day_3_end
 
@@ -1122,7 +1133,7 @@ You go home and help your son with his homework. He's happy you kept your promis
 
 =son_asleep
 # quest_nudge.son_asleep
-It's 10:30pm and you're tired after a long day, but the quest doesn't expire until 4am.
+You're tired after a long day, but the quest doesn't expire until 4am.
 # link
 * [Go back out]
 -> go_back_out
@@ -1133,6 +1144,7 @@ It's 10:30pm and you're tired after a long day, but the quest doesn't expire unt
 =go_back_out
 # quest_nudge.go_back_out
 You get back in your car and turn the app back on.
+~ time_passing=true
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
 ~ alter(day_ride_count, quest_rides)
@@ -1141,11 +1153,11 @@ You get back in your car and turn the app back on.
 ~ alter(ride_count_total, quest_rides)
 ~ alter(fares_earned_total, quest_bonus)
 ~ add_time(2,8)
+~ quest_completion=true
+~ quest_rides=0
 # button
 *[🚗&nbsp;&nbsp;Drive] 
 It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
-~quest_completion=true
-~quest_rides=0
 ~moments=true
 You are completely exhausted.
     # button
@@ -1458,7 +1470,7 @@ You decide that it's not worth it to disrupt your normal schedule. <>
 
 ===windshield_reminder===
 # windshield_reminder
-You check the chip in your windshield. You can't tell whether it has become bigger or not.
+You check your chipped windshield. You can't tell whether the small crack it has become bigger or not.
 # link
 * [Repair it ($30)]
 ->pebble_start.repair->windshield_reminder.get_it_fixed
@@ -1485,7 +1497,7 @@ You decide it's still the same size. It'll be fine.
 You would normally finish up around now. {home=="sac":Especially since you you have a two hour drive to get back home.}
 
 * [Go home]->go_home
-* [Keep driving] ->keep_driving
+* {!gym_member}[Keep driving] ->keep_driving
 * {gym_member} [Freshen up at the gym]->gym
 
 =go_home
@@ -1494,11 +1506,11 @@ You would normally finish up around now. {home=="sac":Especially since you you h
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
 ~add_time(2,3)
-    On the drive back, you wonder if you made the right decision.
+    On the drive back, you wonder if you made the right decision to start at your usual time.
     # link
     * It's important to keep to a routine[], you tell yourself.
     ->day_5_end
-    * Probably should've stuck it out[], you think. But it's too late now.
+    * Probably should've started later instead[], you think. But it's too late now.
     ->day_5_end
 
 - else:
@@ -1508,11 +1520,11 @@ You would normally finish up around now. {home=="sac":Especially since you you h
 
 =keep_driving
 # day_5_afternoon.keep_driving
-You decide to try to catch the evening crowd.
+You're getting tired, but decide to push on and try to catch the evening crowd.
 ~time_passes(2,1,1)
 # button
 *[🚗&nbsp;&nbsp;Drive] 
-->burgers
+->forced_home
 
 =gym
 # day_5_afternoon.gym
@@ -1622,6 +1634,8 @@ Just as you start cleaning, a ride request comes in.
 ~time_passes(3,0,1)
 *[🚗&nbsp;&nbsp;Drive]
 ->home_or_not
+- else:
+->forced_home
 }
 
 ===home_or_not===
@@ -1909,13 +1923,13 @@ The San Francisco Giants are playing at AT&T park today. Earn a boosted 1.5x far
 ->door_dent
 
 === door_dent ===
-# link
 # door_dent
-# deactivation
 As you finish a ride, the passenger opens the door to get out and hits a lamp post, denting your car door. 
 
 "I'm sorry! But I'm in a hurry," he says as he rushes off. "Why don't you take up with Uber?"
 ~add_time(2,21)
+# link
+# deactivation
 *[Report the incident to Uber] You document everything and report the incident to Uber. Uber begins the claim process, but in the meantime your account is suspended.
     ~timestamp=1502571600 //sat 9pm
     ~moments=true
@@ -2087,7 +2101,6 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 ~alter(repair_cost,-250)
 ~add_time(1,58)
 * [The mechanic charges you $250]You put it on your card, regretting that you didn't get it fixed earlier.
-
 ->->
 
 ===day_7_evening===
@@ -2233,13 +2246,6 @@ Not only did you not meet your target of earning $1000 this week, you actually l
 }
 *[THE END]
 ->endscreen
-
-
-
-===airport_incident===
-"You are driving a passenger to the airport when you miss the freeway exit. The passenger gets very angry, saying: "Do I need to drive for you?"
-
-* "Sorry[!"], you say. But you stew over the remark. Especially when you see they've given you a bad rating"
 
 */
 
