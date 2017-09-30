@@ -392,6 +392,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ~time_passes(7,0,1)
 }
 # button
+~alter(rating,-5)
 *[🚗&nbsp;&nbsp;Drive]
 {phone_mount==false: ->no_phone_mount->day_1_sac_evening_in_sf_mount}
 
@@ -562,7 +563,6 @@ You get back online just in time for the busy evening period.
 *[🚗&nbsp;&nbsp;Drive]
 
 ->airport_incident
-
  
  ===airport_incident===
 # airport_incident
@@ -571,6 +571,19 @@ You are driving a passenger to the airport when you miss the freeway exit. She g
 #link
 * ["Sorry!"]But you stew over the remark. Especially when you see they've given you a bad rating
 * [Argue]You almost get into a shouting match with the woman as you find your way back to the airport.
+- ->low_rating
+
+=== low_rating ===
+# low_rating
+
+Your rating has dipped to {rating/100}. If it falls below 4.6, you might be placed under review.
+# link
+* [Try extra hard to be nice and to drive carefully]Your emotional labour pays off, but leaves you feeling more tired at the end of the day.
+    ~alter (rating, 7)
+* [Stock amenities ($20)]You spend $20 buying water bottles and mints for your passengers.  You're not really sure if they'll have a big impact.
+    ~alter (rating, 3)
+    ~alter (accessories_cost,30)
+* [Don't worry about it]It's not like you earn more money with a higher rating anyways.
 - ->day_1_sf_keep_going
  
 ===day_1_sf_keep_going===
@@ -578,7 +591,6 @@ You are driving a passenger to the airport when you miss the freeway exit. She g
 It's getting late, and you don't want to burn out too quickly.
 # link
 * [Go home]->day_1_end
-
 
 ===day_1_end===
 # day_1_end
@@ -638,7 +650,7 @@ The 3x fare is attractive, but Sunset is 30 minutes away.
 
 =chase_surge
 # surge.chase_surge
-Tripling your earning is just too tempting. You start driving over to the surge zone.
+Tripling your earning is just too tempting. You start driving over to the surge zone. 
 
 But the roads are busy and the traffic lights are not on your side tonight. You are three blocks away when the surge ends. You've just wasted half an hour.
 ~add_time(1,0)  
@@ -652,7 +664,6 @@ But the roads are busy and the traffic lights are not on your side tonight. You 
 # surge.no_surge
 'It'll probably be gone by the time I get there,' you think to yourself.
     # button
-
 ~time_passes(5,0,1)
 
 *[Keep driving]
@@ -2154,6 +2165,7 @@ With no phone mount, you're left fiddling with your phone on your lap. Your pass
 {sac_morning:
 ~current_city="sf"
 }
+~alter(rating,-10)
 # button
 # deactivation
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.

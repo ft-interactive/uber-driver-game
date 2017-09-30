@@ -50,9 +50,14 @@
 ~rating=500
 }
 
+{rating<460:
+~alter(rating, RANDOM(0,10))
+}
+
 {quest_rides<0: 
 ~quest_rides=0
 }
+
 {quest_rides<1:
 ~quest_completion=true
 ~moments=true
@@ -60,8 +65,6 @@
 /*
 NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you completed {rides} rides, and earned ${fares} in fares.  {quest_rides > 0: You still need {quest_rides} more ride{quest_rides>1:s} to get the bonus.}
 */
-
-
 
 === function day_end ===
 
@@ -88,3 +91,12 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end o
 ~alter(ride_count_total,number)
 ~alter(day_ride_count,number)
 ~alter(quest_rides,-number)
+
+=== quest_finish ===
+# quest_finish
+{ quest_rides == 0 :
+You finished the quest! You get the ${quest_bonus} bonus.
+~ quest_completion = true
+~ moments=true
+}
+->->
