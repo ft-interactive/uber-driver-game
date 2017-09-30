@@ -1,0 +1,12 @@
+initialBackgroundImage: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493468347-w6on4.png
+
+backgroundImages:
+  image1:
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493468347-w6on4.png
+    minivan: null
+  image2:
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
+    minivan: null
+  image3:
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658196-6fw0m.png
+    minivan: null

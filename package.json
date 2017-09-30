@@ -24,7 +24,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
-    "bower": "^1.8.0",
+    "bluebird": "^3.5.0",
+    "bower": "^1.8.2",
     "chai": "^4.1.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.4",
@@ -61,7 +62,8 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.7.1"
+    "webpack-dev-server": "^2.7.1",
+    "yaml-loader": "^0.5.0"
   },
   "engines": {
     "node": ">=8",

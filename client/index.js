@@ -3,9 +3,14 @@ import { Story } from 'inkjs';
 import moment from 'moment-timezone';
 import './styles.scss';
 import json from './uber.json';
+import config from './config.yml';
+import StateUtils from './StateUtils';
+import GameContainer from './views/GameContainer';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
 const story = new Story(json);
+const stateUtils = new StateUtils(story, config);
+
 // Elements
 const logo = document.querySelector('.logo');
 const shareButtons = document.querySelector('.article__share');
@@ -39,6 +44,10 @@ const momentRides = document.getElementById('moment-rides');
 const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 const momentButton = document.getElementById('moment-button');
+
+const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
+gameContainer.initialise();
+
 let choicesContainerElement;
 // Dimensions
 let gutterWidth;
@@ -399,6 +408,13 @@ function continueStory() {
 
   // Generate story text - loop through available content
   while (story.canContinue) {
+    // Update background image if appropriate
+    const bgImageURL = stateUtils.getBackgroundImageURL();
+    if (bgImageURL) {
+      gameContainer.setBackgroundImage(bgImageURL);
+    }
+
+
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
