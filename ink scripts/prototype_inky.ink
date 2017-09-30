@@ -413,7 +413,7 @@ After driving for so long, you're starting to get hungry.
 ===day_1_sac_evening_in_sf_mount===
 # day_1_sac_evening_in_sf_mount
 You get back online just in time for the busy evening period. 
-~time_passes(2,1,1)
+~time_passes(2,0,1)
 # button
 *[🚗&nbsp;&nbsp;Drive]
 ->day_1_sac_night_in_sf
@@ -529,7 +529,7 @@ You're excited to see parts of San Francisco you haven't been to yet.
 ===day_1_sf_morning===
 # link
 # day_1_sf_morning
-That was a productive morning! You decide to stop for lunch. {quest_rides}
+That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
 * [🌯&nbsp;&nbsp;Burrito] You enjoy a burrito from Señor Sisig food truck before continuing on.
 * [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni before getting back on the road.
@@ -595,8 +595,8 @@ It's Tuesday. Your back aches from having spent the whole day in the car yesterd
 # link
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt? 
-~add_time(0,14)
-*[Yes]You keep it in a folder for your expenses, so you can claim tax deductions on them.
+
+*[Yes]You keep it in a folder for your expenses, so you can claim tax deductions later.
 ~kept_receipt=true
 *[No]You don’t have time to keep track of stuff like that.
 ~kept_receipt=false
@@ -681,7 +681,7 @@ You want to, but it'll take too long to get back to Sacramento. You eat dinner b
 =keep_working
 #day_2_evening.keep_working
 
-Working is more important. You say you can't make it.
+Work is more important. You say you can't make it.
 ~time_passes(3,1,1)
 {home=="sac":
 ~alter(day_hours_driven,2)
@@ -886,7 +886,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 }
 
 ~day_end()
-~ timestamp=1502352000
+~ timestamp=1502355600 //9am
 # button
 * [Start day 4] -> day_4_start
 
@@ -1065,6 +1065,7 @@ You call home to say you won't be back. Your son is disappointed.
 ~ add_time(2,3)
 # button
 *[🚗&nbsp;&nbsp;Drive] 
+
 It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
 ~ alter(fares_earned_total, quest_bonus)
 ~quest_completion=true
@@ -1130,7 +1131,7 @@ You are completely exhausted.
 # napa
 Soon after you arrive, you get a long ride alert on your Uber app. Someone is requesting a trip that will take more than 45 minutes to complete.
 * [Accept the ride]->napa_ride
-* [Reject the ride]->day_4_sf_from_sac
+* [Reject the ride]You want short trips so you can complete your quest faster. <>->day_4_sf_from_sac
 
 =napa_ride
 # napa.napa_ride
@@ -2095,15 +2096,17 @@ With no phone mount, you're left fiddling with your phone on your lap. Your pass
 }
 # button
 # deactivation
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
 ->->
 
 ===data_plan===
 # link
 # data_plan
-You get a message from your phone provider: You've reached your data limit this month. You should've upgraded to the unlimited data plan.
+You get a message from your phone provider: You've exceeded your data limit.
+
+In retrospect, maybe you should've upgraded to the unlimited data plan.
 ~alter(accessories_cost,30)
-*[Incur overage charges($30/week)]
+*[Incur overage charges ($30/week)]
 
 - ->nice_passenger
 
