@@ -1,6 +1,4 @@
 INCLUDE functions
-INCLUDE check_quest
-INCLUDE ratings
 
 //Set-up variables 
 VAR car="Prius"
@@ -27,12 +25,10 @@ VAR rating=500
 VAR ride_count_total=0
 VAR fares_earned_total=0
 VAR hours_driven_total=0
-VAR tip_total=0
-VAR XL_total=0
+VAR UberXL_total=0
 
 VAR kept_receipt=false
 VAR miles_tracked=false
-VAR money=0
 VAR windshield_cracked=false
 VAR ticketed=false
 VAR saturday_off=false
@@ -44,9 +40,8 @@ VAR quest_completion=false
 VAR weekday_quest_completion=false
 VAR weekday_quest_bonus=180
 VAR weekend_quest_completion=false
-VAR weekend_quest_bonus=0
+VAR weekend_quest_bonus=150
 VAR finished_quest_on_weds=false
-
 
 // Variables for the final screens
 VAR revenue_total=0
@@ -61,6 +56,7 @@ VAR car_cost=0
 VAR ticket_cost=0
 
 // Social choice variables
+VAR days_worked=0
 VAR took_day_off=false
 VAR helped_homework=false
 VAR friends_dinner=false
@@ -92,7 +88,7 @@ link = choice
 ~home="sac"
 ~current_city="sac"
 ~quest_rides=64
-~quest_bonus=120
+~quest_bonus=180
 ->sac_morning
 * [goto deactivated phone mount]
 ~home="sac"
@@ -101,11 +97,11 @@ link = choice
 * [goto deactivated friday night]->day_5_late_late.insist
 * [goto weekday quest complete]
 ~ quest_rides=6
-~ quest_bonus=120
+~ quest_bonus=180
 ->quest_nudge.keep_driving
 * [goto weekend quest complete]
 ~ quest_rides=6
-~ quest_bonus=120
+~ quest_bonus=150
 ->day_7_evening
 * [goto end]
 ~fares_earned_total=RANDOM(700,1600)
@@ -113,9 +109,9 @@ link = choice
 ~ride_count_total=RANDOM(120,220)
 ~rating=RANDOM(460,500)
 ~ weekday_quest_completion=true
-~ weekday_quest_bonus=230
+~ weekday_quest_bonus=180
 ~ weekend_quest_completion=true
-~ weekend_quest_bonus=180
+~ weekend_quest_bonus=150
 ~ car_cost=180
 ~ gas_cost=RANDOM(160,300)
 ~ accessories_cost=90
@@ -130,7 +126,6 @@ link = choice
 # welcome
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week. 
 
-
 Can you earn enough to pay the bill - and make more than other players?  
 # button
 * [Yes]
@@ -139,7 +134,6 @@ Can you earn enough to pay the bill - and make more than other players?
 
 === choose_difficulty===
 # choose_difficulty
-# bg:image2
 Your difficulty level will affect how easy it is to earn $1000.
 
 # link 
@@ -172,7 +166,7 @@ Harder difficulty: You have a bad credit rating and can't afford to live in San 
 
 === day_1_start ===
 # day_1_start
-# bg:image3
+# bg:chris_start
 You start bright and early on a Monday morning. Pretty soon, you get your first ride request, from a "Chris". <>
 
 ->day_1_locate_passenger
@@ -197,6 +191,7 @@ A man's voice answers the phone. "I'll be right there. Just coming out now," he 
 =chris_arrives
 # button
 # day_1_locate_passenger.chris_arrives
+# bg:chris_arrives
 A few minutes later, a flustered man with a big backpack comes out of a nearby apartment.
 
 * ["Are you Chris?"]
@@ -205,6 +200,7 @@ A few minutes later, a flustered man with a big backpack comes out of a nearby a
 =in_car
 # link
 # day_1_locate_passenger.in_car
+# bg:chris_start
 "That's me. Sorry about being late," he says as he gets in the car.
 ~ add_time(0, 20)
 * [Drive in silence] You start driving. Chris checks his phone.
@@ -235,6 +231,7 @@ Twenty minutes later, you arrive at his destination.
 === car_choice ===
 # link
 # car_choice
+# bg:choose_car
 ~ temp prius_cost=0
 ~ temp minivan_cost=0
 ~ temp insurance=0
@@ -330,7 +327,7 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 # sf_or_sacramento
 {
 - home=="sf":
-->weekday_quest_message->day_1_sf
+->day_1_sf
 
 - home=="sac":->day_1_sacramento
 }
@@ -345,11 +342,10 @@ MESSAGE FROM UBER
 
 ->->
 
-
-
 === day_1_sacramento ===
 # link
 # day_1_sacramento
+# bg: driving_sac
 You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to work in SF instead?
 
 * [Try your luck in SF]
@@ -361,6 +357,7 @@ You live in Sacramento, where fares are a third less than in a bigger city like 
 = go_to_sf
 # button
 # day_1_sacramento.go_to_sf
+# bg:main
 ~ add_time(2,0)
 ~ add_ride(1)
 ~ alter(day_fares_earned, 56)
@@ -379,6 +376,7 @@ You keep the app on, and score a ride that takes you all the way into San Franci
 
 ===day_1_sac_afternoon_in_sf===
 # day_1_sac_afternoon_in_sf
+# bg:driving_sf
 SF is a lot busier than Sacramento. It's pretty stressful driving here.
 
 {
@@ -401,6 +399,7 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 ===day_1_sac_evening_in_sf===
 # day_1_sac_evening_in_sf
 # link
+# bg:lunch_sf
 
 {sac_morning:
 After driving for so long, you're starting to get hungry.
@@ -416,6 +415,7 @@ After driving for so long, you're starting to get hungry.
 
 ===day_1_sac_evening_in_sf_mount===
 # day_1_sac_evening_in_sf_mount
+# bg:driving_sf
 You get back online just in time for the busy evening period. 
 ~time_passes(2,0,1)
 # button
@@ -433,6 +433,7 @@ It's getting late and you have a two-hour drive to get back home.
 
 =go_home
 # day_1_sac_night_in_sf.go_home
+# bg:home
 It's been a long day, and you don't want to burn out too quickly.
 ~add_time(2,4)
 ~ alter(day_hours_driven, 2)
@@ -453,6 +454,7 @@ You're tired and dirty. You might have been able to drive for longer if you had 
 
 =gym
 # day_1_sac_night_in_sf.gym
+# bg:gym
 You take a shower at the gym. Feeling refreshed, you keep driving for just a while longer.
 ~time_passes(2,1,1)
 # button
@@ -461,6 +463,7 @@ You take a shower at the gym. Feeling refreshed, you keep driving for just a whi
 
 ===sac_morning===
 # day_1_sacramento.sac_morning
+# bg:driving_sac
 ~time_passes(4,0,1)
 You start driving.
 # button
@@ -478,11 +481,11 @@ You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000
 ->sac_lunch
 * [Go to San Francisco] There's still time to salvage today, you think.
 ~current_city="sf"
-
 ->day_1_sacramento.go_to_sf
 
 =sac_lunch
 # day_1_sacramento.sac_lunch
+# bg:lunch_sac
 You like driving in a familiar town, especially since it means you can get lunch at your favourite Tex-Mex restaurant.
 {phone_mount==true: 
 ~time_passes(4,0,1)
@@ -503,6 +506,7 @@ You like driving in a familiar town, especially since it means you can get lunch
 =stay_or_go_2
 # link
 # day_1_sacramento.stay_or_go_2
+# bg:driving_sac
 It's 4pm, and you've only earned ${day_fares_earned}.
 * [Call it a day] You head home, in time for dinner.-> day_1_end
 * [Keep going] Things should pick up during rush hour and dinner time. ->sac_late_afternoon
@@ -510,7 +514,6 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 
 =sac_late_afternoon
 # day_1_sacramento.sac_late_afternoon
-
 ~time_passes(3,0,1)
 # button
 *[🚗&nbsp;&nbsp;Drive]->sac_evening
@@ -518,6 +521,7 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 =sac_evening
 # day_1_sacramento.sac_evening
 # link
+# bg:home
 It's getting late, and you don't want to burn out too quickly.
 
 * [Call it a day]->day_1_end
@@ -526,7 +530,12 @@ It's getting late, and you don't want to burn out too quickly.
 === day_1_sf ===
 # button
 # day_1_sf
-You're excited to see parts of San Francisco you haven't been to yet.
+# bg:driving_sf
+MESSAGE FROM UBER 
+"Uber Quest: Drive 75 trips, make ${quest_bonus} extra. You have until 4am on Friday"
+
+You accept the quest, excited at the prospect of exploring San Francisco while earning some money.
+
 ~time_passes(4,0,1)
 * [🚗&nbsp;&nbsp;Drive] 
 
@@ -535,6 +544,7 @@ You're excited to see parts of San Francisco you haven't been to yet.
 ===day_1_sf_morning===
 # link
 # day_1_sf_morning
+# bg:lunch_sf
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
 * [🌯&nbsp;&nbsp;Burrito] You enjoy a burrito from Señor Sisig food truck before continuing on.
@@ -543,7 +553,7 @@ That was a productive morning! You decide to stop for lunch.
 
 ===day_1_sf_afternoon===
 # day_1_sf_afternoon
-
+# bg:driving_sf
 {phone_mount==false:
 ->no_phone_mount->day_1_sf_evening_mount
 - else:
@@ -566,6 +576,7 @@ You get back online just in time for the busy evening period.
  
  ===airport_incident===
 # airport_incident
+# bg:airport
 You are driving a passenger to the airport when you miss the freeway exit. She gets very angry, saying: "Do I need to drive for you?"
 ~alter(rating,-15)
 #link
@@ -587,16 +598,36 @@ Your rating has dipped to {rating/100}. If it falls below 4.6, you might be plac
 - ->day_1_sf_keep_going
  
 ===day_1_sf_keep_going===
-#day_1_sf_keep_going
+# day_1_sf_keep_going
+# bg:driving_sf
 It's getting late, and you don't want to burn out too quickly.
 # link
 * [Go home]->day_1_end
 
+===no_phone_mount===
+# no_phone_mount
+# bg:main
+With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
+~add_time(4,0)
+~phone_mount=true 
+~alter(accessories_cost,25)
+~moments=true
+{sac_morning:
+~current_city="sf"
+}
+~alter(rating,-10)
+# button
+# deactivation
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
+->->
+
 ===day_1_end===
 # day_1_end
+# bg:night
 It's the end of the first day.
 ~ timestamp=1502179200
 ~day_end()
+~alter(days_worked,1)
 # button
 *[Start day 2]
 ->day_2_begin
@@ -722,6 +753,7 @@ The two-hour drive back to Sacramento is long and boring.
 }
 
 ~day_end()
+~alter(days_worked,1)
 # button
 * [Start Day 3]
 
@@ -935,6 +967,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 }
 
 ~day_end()
+~alter(days_worked,1)
 ~ timestamp=1502355600 //9am
 # button
 * [Start day 4] -> day_4_start
@@ -965,7 +998,7 @@ You need every penny you can earn.
 ->day_4_morning
 
 =day_off
-# day_4_start_day_off
+# day_4_start.day_off
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest. 
 ~helped_homework=true
 {home=="sf":
@@ -1400,6 +1433,12 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 ~ day_ride_count=0
 ~ day_fares_earned=0
 ~ day_hours_driven=0
+
+//add 1 to the days_worked count if you didn't take the day off
+{day_4_start.day_off==0:
+~ alter(days_worked,1)
+}
+
 # button
 *[Start day 5]->day_5_start
 
@@ -1698,6 +1737,7 @@ You're too tired to drive two hours to go back home. You find a quiet spot to pa
 ~timestamp=1502528400
 *[💤&nbsp;&nbps;Sleep] It's not very comfortable, but you eventually fall asleep.
 ~day_end()
+~ alter(days_worked,1)
     # button
     ** [Start day 6]
     -> day_6_slept_in_car
@@ -1827,6 +1867,7 @@ What do you do?
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1835,6 +1876,7 @@ What do you do?
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1845,6 +1887,7 @@ What do you do?
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1853,6 +1896,7 @@ What do you do?
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1864,6 +1908,7 @@ What do you do?
 ~timestamp=1502528600
 //sat 9am
 ~day_end()
+~ alter(days_worked,1)
 # button
 * [Start day 6]
 ->day_6_start
@@ -2013,6 +2058,8 @@ You can't wait to go home after two days out driving.
 
 # day_6_end
 ~ day_end()
+//add one to days_worked count because you don't end up here if you took day 6 off
+~alter(days_worked,1)
 # button
 * [Start day 7]
 ->day_7_start
@@ -2138,38 +2185,110 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 {quest_completion==true:
 ~weekend_quest_completion=true
 }
+~alter(days_worked,1)
 # button
 *[Finish the week]
+->earnings_calculations
+
+
+===earnings_calculations===
+//calculate total revenue
+~ alter(revenue_total,fares_earned_total)
+~ alter(revenue_total,UberXL_total)
+{weekday_quest_completion==true:
+    ~ alter(revenue_total,weekday_quest_bonus)
+}
+{weekend_quest_completion==true:
+    ~ alter(revenue_total,weekend_quest_bonus)
+}
+
+//calculate tax cost - tax is 10% of revenue if you didn't keep gas receipts
+{kept_receipt==true:
+~ tax_cost=0
+- else:
+~tax_cost=revenue_total/10
+}
+
+//calculate gas cost
+{
+- car=="minivan" && home=="sf":
+~gas_cost=days_worked*25
+
+- car=="minivan" && home=="sac":
+~gas_cost=days_worked*30
+
+- car=="Prius" && home=="sf":
+~gas_cost=days_worked*15
+
+- car=="Prius" && home=="sac":
+~gas_cost=days_worked*20
+}
+
+//calculate total cost
+~ cost_total=car_cost+accessories_cost+gas_cost+repair_cost+ticket_cost+tax_cost
+
 ->end_sequence
 
 ===end_sequence===
 # end_sequence
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
+
+Your stats
+
+Hours driven: {hours_driven_total}
+Rides completed: {ride_count_total}
+Ratings: {rating/100}
+
+Your income
+
+Fares and tips: {fares_earned_total}
+//Only show UberXL if {car}=="minivan"
+UberXL fares: {UberXL_total}
+//if {weekday_quest_completion}==false, show 0. Likewise for {weekend_quest_completion}
+Weekday quest: {weekday_quest_bonus}
+Weekend quest: {weekend_quest_bonus}
+
+Your costs
+
+Car rental: {car_cost}
+Accessories: {accessories_cost}
+Gasoline: {gas_cost}
+//Only show Repair and Traffic ticket costs if > 0??
+Repairs: {repair_cost}
+Traffic ticket: {ticket_cost}
+Tax: {tax_cost}
+
+//Congrats/sorry screens
+/*
+Total earnings = revenue_total - cost_total
+Earnings per hour = total earnings / hours_driven_total
+
+Tests on the two screens are:
+    Total earnings > 1000
+and
+    Earnings per hour > 12
+*/
+
+Your choices screen
+
+Took day off? (days worked: {days_worked}) (or,took_day_off boolean variable: {took_day_off})
+Kept promise to son? {helped_homework}
+Bought biz licence? {biz_licence}
+
+
 # button
 ~go_to_endscreen=true
-*[See how you did]
+*[to endscreen]
 ->endscreen
+
+
 
 ===endscreen===
 # endscreen
 You shouldn't see this - it should already have gone to the end screen sequence
 ->END
 
-===no_phone_mount===
-# no_phone_mount
-With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
-~add_time(4,0)
-~phone_mount=true 
-~alter(accessories_cost,25)
-~moments=true
-{sac_morning:
-~current_city="sf"
-}
-~alter(rating,-10)
-# button
-# deactivation
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
-->->
+
 /*
 ===results_revenue===
 # button
