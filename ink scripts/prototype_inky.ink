@@ -594,8 +594,7 @@ You are driving a passenger to the airport when you miss the freeway exit. She g
 
 === low_rating ===
 # low_rating
-
-Your rating has dipped to {rating/100}. If it falls below 4.6, you might be placed under review.
+Your rating is getting low. If it falls below 4.6, you might be placed under review.
 # link
 * [Try extra hard to be nice and to drive carefully]Your emotional labour pays off, but leaves you feeling more tired at the end of the day.
     ~alter (rating, 7)
