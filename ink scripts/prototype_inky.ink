@@ -588,7 +588,7 @@ You are driving a passenger to the airport when you miss the freeway exit. She g
 ~alter(rating,-15)
 #link
 # bg:airport
-* ["Sorry!"]But you stew over the remark. Especially when you see they've given you a bad rating
+* ["Sorry!"]But you stew over the remark. Especially when you see she gave you a bad rating
 * [Argue]You almost get into a shouting match with the woman as you find your way back to the airport.
 - ->low_rating
 
@@ -1735,6 +1735,8 @@ Just as you start cleaning, a ride request comes in.
 ->day_5_after_burger
 
 ===day_5_after_burger===
+# day_5_after_burger
+# button
 {day_5_evening_start:
 ~time_passes(3,0,1)
 *[🚗&nbsp;&nbsp;Drive]
@@ -1793,7 +1795,7 @@ You can barely keep your eyes open on the way back to Sacramento
 You're too tired to drive two hours to go back home. You find a quiet spot to park.
 ~ overnight = true
 ~timestamp=1502528400
-*[💤&nbsp;&nbps;Sleep] It's not very comfortable, but you eventually fall asleep.
+*[💤&nbsp;&nbsp;Sleep] It's not very comfortable, but you eventually fall asleep.
 ~day_end()
 ~ alter(days_worked,1)
     # button
@@ -2158,12 +2160,19 @@ A passenger insists you drop her off at the entrance to the Caltrain station, wh
 * [Agree to do so]->drop
 
 * [Refuse] You stop nearby and explain why you cannot drop her off at the entrance. She's not convinced.
-~ time_passes(3,0,1)
-    # button
+    # link
     **[Insist]
-    She slams the door as she gets out.
-    ->track_mileage
+    ->insist
     **[Relent]->drop
+
+=insist
+She slams the door as she gets out. You get a bad rating from her but that's better than risking a traffic ticket.
+#no_drop_zone.insist
+~ alter(rating,-10)
+~ time_passes(3,0,1)
+# button
+* [🚗&nbsp;&nbsp;Drive]
+->track_mileage
 
 =drop
 #no_drop_zone.drop
@@ -2190,6 +2199,7 @@ You get a traffic ticket (-$260). You'll have to go pay that later.
     **[That's a real setback]
     ->quest_finish->
     ->track_mileage
+    
 === track_mileage ===
 # track_mileage
 It's been a long week. You idly wonder just how far you've driven.
