@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ImageminWebpackPlugin from 'imagemin-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import { HotModuleReplacementPlugin } from 'webpack';
+import { DefinePlugin } from 'webpack';
 import { resolve } from 'path';
 import getContext from './config';
 import * as nunjucksFilters from './views/filters';
@@ -143,6 +143,9 @@ module.exports = async (env = 'development') => ({
   },
   devtool: 'source-map',
   plugins: [
+    new DefinePlugin({
+      'window.ENV': JSON.stringify(env),
+    }),
     // new HotModuleReplacementPlugin(), // Re-enable if devServer.hot is set to true
     new ExtractTextPlugin({
       filename: env === 'production' ? '[name].[contenthash].css' : '[name].css',

@@ -9,6 +9,8 @@ import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
+const endpoint = window.ENV === 'development' ? 'http://localhost:3000' : 'https://ft-ig-uber-game-backend.herokuapp.com';
+
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
 
@@ -130,7 +132,7 @@ function recordDecision(decision, story) {
   const meta = Object.entries(story.variablesState._globalVariables)
     .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
 
-  return fetch('https://ft-ig-uber-game-backend.herokuapp.com/decisions', {
+  return fetch(`${endpoint}/decisions`, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -160,11 +162,11 @@ function continueStory() {
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
 
   if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
-    recordDecision('', story);
+    recordDecision('biz_licence', story);
   } else if (story.currentTags.indexOf('day_5_start') > -1) {
-    recordDecision('', story);
+    recordDecision('helped_homework', story);
   } else if (story.currentTags.indexOf('day_7_start') > -1) {
-    recordDecision('', story);
+    recordDecision('took_day_off', story);
   }
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
