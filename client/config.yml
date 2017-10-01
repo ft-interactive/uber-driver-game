@@ -24,7 +24,7 @@ backgroundImages:
   cleanup:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/undefined
     minvan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131506-8x3wi.png
-  home:
+  night:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
     minvan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
   burger:
@@ -66,7 +66,7 @@ backgroundImages:
   son:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132007-0g3if.png
     minvan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131401-0rpyi.png
-  end_day:
+  home:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132115-eyqaw.png
     minvan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131447-5nr5r.png
   driving_sf:
