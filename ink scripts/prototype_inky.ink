@@ -134,6 +134,7 @@ Can you earn enough to pay the bill - and make more than other players?
 
 === choose_difficulty===
 # choose_difficulty
+# bg:chris_start
 Your difficulty level will affect how easy it is to earn $1000.
 
 # link 
@@ -345,7 +346,7 @@ MESSAGE FROM UBER
 === day_1_sacramento ===
 # link
 # day_1_sacramento
-# bg: driving_sac
+# bg:driving_sac
 You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to work in SF instead?
 
 * [Try your luck in SF]
@@ -528,7 +529,6 @@ It's getting late, and you don't want to burn out too quickly.
 
 
 === day_1_sf ===
-# button
 # day_1_sf
 # bg:driving_sf
 MESSAGE FROM UBER 
@@ -537,6 +537,7 @@ MESSAGE FROM UBER
 You accept the quest, excited at the prospect of exploring San Francisco while earning some money.
 
 ~time_passes(4,0,1)
+# button
 * [🚗&nbsp;&nbsp;Drive] 
 
 ->day_1_sf_morning
