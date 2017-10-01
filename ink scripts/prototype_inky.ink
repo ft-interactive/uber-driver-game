@@ -134,7 +134,6 @@ Can you earn enough to pay the bill - and make more than other players?
 
 === choose_difficulty===
 # choose_difficulty
-# bg:chris_start
 Your difficulty level will affect how easy it is to earn $1000.
 
 # link 
@@ -177,6 +176,7 @@ You start bright and early on a Monday morning. Pretty soon, you get your first 
 # day_1_locate_passenger
 But when you arrive at the pick-up point, you don't see anyone waiting for a ride. What do you do?
 ~add_time(0,5)
+
 * [Call Chris]->call_chris
 * [Wait]->chris_arrives
 
