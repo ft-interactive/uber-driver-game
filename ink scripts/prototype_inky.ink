@@ -401,7 +401,6 @@ SF is a lot busier than Sacramento. It's pretty stressful driving here.
 # day_1_sac_evening_in_sf
 # link
 # bg:lunch_sf
-
 {sac_morning:
 After driving for so long, you're starting to get hungry.
 
@@ -538,6 +537,7 @@ You accept the quest, excited at the prospect of exploring San Francisco while e
 
 ~time_passes(4,0,1)
 # button
+# bg:driving_sf
 * [🚗&nbsp;&nbsp;Drive] 
 
 ->day_1_sf_morning
@@ -554,13 +554,14 @@ That was a productive morning! You decide to stop for lunch.
 
 ===day_1_sf_afternoon===
 # day_1_sf_afternoon
-# bg:driving_sf
+
 {phone_mount==false:
 ->no_phone_mount->day_1_sf_evening_mount
 - else:
 
 ~time_passes(5,0,1)
 # button
+# bg:driving_sf
 *[Back to driving]
 
 ->day_1_sf_keep_going
@@ -577,10 +578,10 @@ You get back online just in time for the busy evening period.
  
  ===airport_incident===
 # airport_incident
-# bg:airport
 You are driving a passenger to the airport when you miss the freeway exit. She gets very angry, saying: "Do I need to drive for you?"
 ~alter(rating,-15)
 #link
+# bg:airport
 * ["Sorry!"]But you stew over the remark. Especially when you see they've given you a bad rating
 * [Argue]You almost get into a shouting match with the woman as you find your way back to the airport.
 - ->low_rating
@@ -600,14 +601,15 @@ Your rating has dipped to {rating/100}. If it falls below 4.6, you might be plac
  
 ===day_1_sf_keep_going===
 # day_1_sf_keep_going
-# bg:driving_sf
+
 It's getting late, and you don't want to burn out too quickly.
 # link
+# bg:driving_sf
 * [Go home]->day_1_end
 
 ===no_phone_mount===
 # no_phone_mount
-# bg:main
+
 With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
 ~add_time(4,0)
 ~phone_mount=true 
@@ -619,17 +621,19 @@ With no phone mount, you're left fiddling with your phone on your lap. Your pass
 ~alter(rating,-10)
 # button
 # deactivation
+# bg:main
 * [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
 ->->
 
 ===day_1_end===
 # day_1_end
-# bg:night
+
 It's the end of the first day.
 ~ timestamp=1502179200
 ~day_end()
 ~alter(days_worked,1)
 # button
+# bg:night
 *[Start day 2]
 ->day_2_begin
 
@@ -637,6 +641,7 @@ It's the end of the first day.
 # day_2_start
 It's Tuesday. Your back aches from having spent the whole day in the car yesterday.
 # button
+# bg:main
 {home=="sac":
 ~alter(day_hours_driven,2)
 ~alter(hours_driven_total,2)
@@ -666,6 +671,7 @@ You turn on your Uber app and start driving.
 ~time_passes(3,0,1)
 ~ UberXL()
 # button
+# bg:driving_sf
 *[🚗&nbsp;&nbsp;Drive]
 ->surge
 
@@ -675,7 +681,7 @@ As you drop off a passenger in the Financial District in the northeast of San Fr
 The 3x fare is attractive, but Sunset is 30 minutes away. 
 
 # link
-
+# bg:main
 * [Chase the surge]->chase_surge 
 
 * [Don't chase the surge] ->no_surge
