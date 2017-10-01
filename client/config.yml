@@ -22,7 +22,7 @@ backgroundImages:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131853-933cw.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131334-yb3z2.png
   cleanup:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/undefined
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132310-frcan.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131506-8x3wi.png
   night:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
