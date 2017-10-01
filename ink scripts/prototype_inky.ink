@@ -1,6 +1,5 @@
 INCLUDE functions
-INCLUDE check_quest
-INCLUDE ratings
+
 
 //Set-up variables 
 VAR car="Prius"
@@ -27,12 +26,10 @@ VAR rating=500
 VAR ride_count_total=0
 VAR fares_earned_total=0
 VAR hours_driven_total=0
-VAR tip_total=0
-VAR XL_total=0
+VAR UberXL_total=0
 
 VAR kept_receipt=false
 VAR miles_tracked=false
-VAR money=0
 VAR windshield_cracked=false
 VAR ticketed=false
 VAR saturday_off=false
@@ -44,9 +41,8 @@ VAR quest_completion=false
 VAR weekday_quest_completion=false
 VAR weekday_quest_bonus=180
 VAR weekend_quest_completion=false
-VAR weekend_quest_bonus=0
+VAR weekend_quest_bonus=150
 VAR finished_quest_on_weds=false
-
 
 // Variables for the final screens
 VAR revenue_total=0
@@ -61,6 +57,7 @@ VAR car_cost=0
 VAR ticket_cost=0
 
 // Social choice variables
+VAR days_worked=0
 VAR took_day_off=false
 VAR helped_homework=false
 VAR friends_dinner=false
@@ -92,7 +89,7 @@ link = choice
 ~home="sac"
 ~current_city="sac"
 ~quest_rides=64
-~quest_bonus=120
+~quest_bonus=180
 ->sac_morning
 * [goto deactivated phone mount]
 ~home="sac"
@@ -101,11 +98,11 @@ link = choice
 * [goto deactivated friday night]->day_5_late_late.insist
 * [goto weekday quest complete]
 ~ quest_rides=6
-~ quest_bonus=120
+~ quest_bonus=180
 ->quest_nudge.keep_driving
 * [goto weekend quest complete]
 ~ quest_rides=6
-~ quest_bonus=120
+~ quest_bonus=150
 ->day_7_evening
 * [goto end]
 ~fares_earned_total=RANDOM(700,1600)
@@ -113,9 +110,9 @@ link = choice
 ~ride_count_total=RANDOM(120,220)
 ~rating=RANDOM(460,500)
 ~ weekday_quest_completion=true
-~ weekday_quest_bonus=230
+~ weekday_quest_bonus=180
 ~ weekend_quest_completion=true
-~ weekend_quest_bonus=180
+~ weekend_quest_bonus=150
 ~ car_cost=180
 ~ gas_cost=RANDOM(160,300)
 ~ accessories_cost=90
@@ -592,11 +589,28 @@ It's getting late, and you don't want to burn out too quickly.
 # link
 * [Go home]->day_1_end
 
+===no_phone_mount===
+# no_phone_mount
+With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
+~add_time(4,0)
+~phone_mount=true 
+~alter(accessories_cost,25)
+~moments=true
+{sac_morning:
+~current_city="sf"
+}
+~alter(rating,-10)
+# button
+# deactivation
+* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
+->->
+
 ===day_1_end===
 # day_1_end
 It's the end of the first day.
 ~ timestamp=1502179200
 ~day_end()
+~alter(days_worked,1)
 # button
 *[Start day 2]
 ->day_2_begin
@@ -722,6 +736,7 @@ The two-hour drive back to Sacramento is long and boring.
 }
 
 ~day_end()
+~alter(days_worked,1)
 # button
 * [Start Day 3]
 
@@ -935,6 +950,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 }
 
 ~day_end()
+~alter(days_worked,1)
 ~ timestamp=1502355600 //9am
 # button
 * [Start day 4] -> day_4_start
@@ -965,7 +981,7 @@ You need every penny you can earn.
 ->day_4_morning
 
 =day_off
-# day_4_start_day_off
+# day_4_start.day_off
 You spend the day with your family. Your son is glad you made time for him, and you get some much needed rest. 
 ~helped_homework=true
 {home=="sf":
@@ -1400,6 +1416,12 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 ~ day_ride_count=0
 ~ day_fares_earned=0
 ~ day_hours_driven=0
+
+//add 1 to the days_worked count if you didn't take the day off
+{day_4_start.day_off==0:
+~ alter(days_worked,1)
+}
+
 # button
 *[Start day 5]->day_5_start
 
@@ -1698,6 +1720,7 @@ You're too tired to drive two hours to go back home. You find a quiet spot to pa
 ~timestamp=1502528400
 *[💤&nbsp;&nbps;Sleep] It's not very comfortable, but you eventually fall asleep.
 ~day_end()
+~ alter(days_worked,1)
     # button
     ** [Start day 6]
     -> day_6_slept_in_car
@@ -1827,6 +1850,7 @@ What do you do?
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1835,6 +1859,7 @@ What do you do?
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1845,6 +1870,7 @@ What do you do?
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1853,6 +1879,7 @@ What do you do?
     {home=="sac":
     You're too tired to drive back. You find a quiet spot to park and spend an uncomfortable night sleeping in your car.
     ~day_end()
+    ~ alter(days_worked,1)
     ~timestamp=1502528400
     //saturday 9am
         # button
@@ -1864,6 +1891,7 @@ What do you do?
 ~timestamp=1502528600
 //sat 9am
 ~day_end()
+~ alter(days_worked,1)
 # button
 * [Start day 6]
 ->day_6_start
@@ -2013,6 +2041,8 @@ You can't wait to go home after two days out driving.
 
 # day_6_end
 ~ day_end()
+//add one to days_worked count because you don't end up here if you took day 6 off
+~alter(days_worked,1)
 # button
 * [Start day 7]
 ->day_7_start
@@ -2138,38 +2168,110 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 {quest_completion==true:
 ~weekend_quest_completion=true
 }
+~alter(days_worked,1)
 # button
 *[Finish the week]
+->earnings_calculations
+
+
+===earnings_calculations===
+//calculate total revenue
+~ alter(revenue_total,fares_earned_total)
+~ alter(revenue_total,UberXL_total)
+{weekday_quest_completion==true:
+    ~ alter(revenue_total,weekday_quest_bonus)
+}
+{weekend_quest_completion==true:
+    ~ alter(revenue_total,weekend_quest_bonus)
+}
+
+//calculate tax cost - tax is 10% of revenue if you didn't keep gas receipts
+{kept_receipt==true:
+~ tax_cost=0
+- else:
+~tax_cost=revenue_total/10
+}
+
+//calculate gas cost
+{
+- car=="minivan" && home=="sf":
+~gas_cost=days_worked*25
+
+- car=="minivan" && home=="sac":
+~gas_cost=days_worked*30
+
+- car=="Prius" && home=="sf":
+~gas_cost=days_worked*15
+
+- car=="Prius" && home=="sac":
+~gas_cost=days_worked*20
+}
+
+//calculate total cost
+~ cost_total=car_cost+accessories_cost+gas_cost+repair_cost+ticket_cost+tax_cost
+
 ->end_sequence
 
 ===end_sequence===
 # end_sequence
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
+
+Your stats
+
+Hours driven: {hours_driven_total}
+Rides completed: {ride_count_total}
+Ratings: {rating/100}
+
+Your income
+
+Fares and tips: {fares_earned_total}
+//Only show UberXL if {car}=="minivan"
+UberXL fares: {UberXL_total}
+//if {weekday_quest_completion}==false, show 0. Likewise for {weekend_quest_completion}
+Weekday quest: {weekday_quest_bonus}
+Weekend quest: {weekend_quest_bonus}
+
+Your costs
+
+Car rental: {car_cost}
+Accessories: {accessories_cost}
+Gasoline: {gas_cost}
+//Only show Repair and Traffic ticket costs if > 0??
+Repairs: {repair_cost}
+Traffic ticket: {ticket_cost}
+Tax: {tax_cost}
+
+//Congrats/sorry screens
+/*
+Total earnings = revenue_total - cost_total
+Earnings per hour = total earnings / hours_driven_total
+
+Tests on the two screens are:
+    Total earnings > 1000
+and
+    Earnings per hour > 12
+*/
+
+Your choices screen
+
+Took day off? (days worked: {days_worked}) (or,took_day_off boolean variable: {took_day_off})
+Kept promise to son? {helped_homework}
+Bought biz licence? {biz_licence}
+
+
 # button
 ~go_to_endscreen=true
-*[See how you did]
+*[to endscreen]
 ->endscreen
+
+
 
 ===endscreen===
 # endscreen
 You shouldn't see this - it should already have gone to the end screen sequence
 ->END
 
-===no_phone_mount===
-# no_phone_mount
-With no phone mount, you're left fiddling with your phone on your lap. Your passenger notices and complains to Uber about your dangerous driving.
-~add_time(4,0)
-~phone_mount=true 
-~alter(accessories_cost,25)
-~moments=true
-{sac_morning:
-~current_city="sf"
-}
-~alter(rating,-10)
-# button
-# deactivation
-* [Uh oh] You are deactivated for 4 hours. You use that time to buy a phone mount and charging cables for $25 {sac_morning:and make your way to San Francisco}.
-->->
+
 /*
 ===results_revenue===
 # button
