@@ -137,7 +137,7 @@ function continueStory() {
       .add({
         targets: knotContainer,
         opacity: 1,
-        duration: 200,
+        duration: 150,
         easing: 'linear',
         offset: 0,
         begin: () => {
@@ -151,7 +151,7 @@ function continueStory() {
       .add({
         targets: knotContainer,
         translateY: 0,
-        duration: 200,
+        duration: 150,
         easing: 'easeOutQuad',
         offset: 0,
       });
@@ -476,14 +476,14 @@ function continueStory() {
         .add({
           targets: knotContainer,
           opacity: 0,
-          duration: 150,
+          duration: 100,
           easing: 'linear',
           offset: 0,
         })
         .add({
           targets: knotContainer,
           translateY: 40,
-          duration: 150,
+          duration: 100,
           easing: 'easeOutQuad',
           offset: 0,
           complete: () => {

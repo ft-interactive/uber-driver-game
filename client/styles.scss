@@ -151,8 +151,10 @@ html, body {
           opacity: 0;
           text-align: center;
 
-          p {
-            text-align: center;
+          p:first-of-type {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 32px;
           }
         }
 
