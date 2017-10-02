@@ -64,3 +64,20 @@ jobs:
       - run:
           name: General QA checks
           command: npm run qa || echo "Automatic QA checks failed. Continuing anyway"
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - deploy:
+          name: Deploy server to Heroku container registry
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then docker login -u $DOCKER_USER -p $DOCKER_PASS registry.heroku.com;
+              docker build --rm=false -t registry.heroku.com/ft-ig-uber-game-backend/web:latest .;
+              docker push registry.heroku.com/ft-ig-uber-game-backend/web:latest;
+            fi

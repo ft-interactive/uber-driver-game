@@ -10,7 +10,7 @@
   <div class="o-grid-container">
     <div class="o-grid-row">
       <div data-o-grid-colspan="12 S11 Scenter M8 L7 XL6">
-        <h1>The Uber Game</h1>
+        <img src="https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493047700-20jgj.png?source=ig&width=700&format=png&quality=high" alt="The Uber Game">
         <p class="subtitle">Can you make it in the gig economy?</p>
         <button type="button" id="caveats-button">Let's ride</button>
       </div>
@@ -22,6 +22,13 @@
         <div data-o-grid-colspan="12 S11 Scenter M8 L7 XL6">
           <small><a href="http://www.ft.com/servicestools/help/copyright" data-trackable="link-copyright">Copyright</a>
            <span itemprop="name">The Financial Times</span> Limited {{ now() | strftime('%Y') }}. All rights reserved.</small>
+          <div class="toggle-fullscreen">
+            <p>Enter full screen mode</p>
+            <div>
+              <button type="button" id="enter-fullscreen-button">Enter fullscreen</button>
+              <button type="button" id="exit-fullscreen-button">Exit fullscreen</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -32,8 +39,8 @@
   <div class="o-grid-container">
     <div class="o-grid-row">
       <div data-o-grid-colspan="12 S11 Scenter M8 L7 XL6">
-        <p>For the best experience, please open this game in the latest version of either Safari, Chrome or Firefox.</p>
-        <p>Other browsers or versions may not be fully supported.</p>
+        <p>This news game is based on real reporting, including interviews with dozens of Uber drivers.</p>
+        <p>For the best experience, please view this game in the latest version of <a href="https://www.google.com/chrome/" target="_blank">Chrome</a>, <a href="https://www.apple.com/uk/safari/" target="_blank">Safari</a> or <a href="https://www.mozilla.org/en-US/firefox/" target="_blank">Firefox</a> on desktop, or on the latest version of iOS or Android on mobile devices. Other browsers or versions may not be fully supported.</p>
         <div>
           <button type="button" id="start-button">Got it</button>
         </div>
@@ -52,7 +59,7 @@
             <div class="time-passing-image"></div>
             <div class="tp-earnings-container">
               <div id="tp-earnings">56</div>
-              <p>MONEY EARNED</p>
+              <p>FARES EARNED</p>
             </div>
           </div>
         </div>
@@ -157,7 +164,7 @@
 
   <div class="loading-indicator">
     <div class="o-loading o-loading--large o-loading--light" role="progressbar" aria-valuetext="loading" tabindex="0"></div>
-    <div class="loading-indicator__label">Loading</div>
+    <div class="loading-indicator__label">Loading…</div>
   </div>
 </div>
 

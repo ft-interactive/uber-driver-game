@@ -1,4 +1,5 @@
 initialBackgroundImage: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
+
 backgroundImages:
   main:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
@@ -22,14 +23,14 @@ backgroundImages:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131853-933cw.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131334-yb3z2.png
   cleanup:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132310-frcan.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131506-8x3wi.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055927-hvy29.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055803-v2nqe.png
   night:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
   burger:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493468347-w6on4.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131389-glx4i.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055894-v0n27.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055777-0lapj.png
   lunch_sf:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132033-x6adq.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131371-4xqnx.png
@@ -46,8 +47,8 @@ backgroundImages:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132286-2r7cb.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131508-czl9h.png
   vomit:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131615-nl3pv.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131245-2ktx5.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493056004-y2lpz.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055830-u206d.png
   caltrain:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132226-7g9g1.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131590-wnrrj.png

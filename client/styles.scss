@@ -28,6 +28,13 @@ html, body {
   background-color: rgb(38, 43, 51);
 }
 
+main {
+  &:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .game-container {
   position: relative;
   display: flex;
@@ -48,6 +55,7 @@ html, body {
     top: 0;
     right: 0;
     left: 0;
+    z-index: 999;
 
     a.logo {
       position: absolute;
@@ -129,8 +137,9 @@ html, body {
         &--intro {
           text-align: center;
 
-          h1 {
-            color: inherit;
+          img {
+            max-width: 250px;
+            width: 100%;
             margin: 0 0 8px;
           }
 
@@ -143,6 +152,16 @@ html, body {
             text-transform: uppercase;
             margin: .3em 0 .8em;
           }
+
+          .toggle-fullscreen {
+            display: none;
+
+            p {
+              font-size: 16px;
+              font-weight: 600;
+              line-height: 18px;
+            }
+          }
         }
 
         &--caveats {
@@ -150,8 +169,10 @@ html, body {
           opacity: 0;
           text-align: center;
 
-          p {
-            text-align: center;
+          p:first-of-type {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 32px;
           }
         }
 
@@ -255,9 +276,7 @@ html, body {
               width: 100%;
               height: 20px;
               margin: 10px 0 0;
-              background-color: red;
-              background-image: url();
-              background: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png) no-repeat center center;
+              background: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493380088-0jv5b.png?source=ig&width=2440&height=80&format=png&quality=high) no-repeat center center;
               -webkit-background-size: cover;
               -moz-background-size: cover;
               -o-background-size: cover;
@@ -322,7 +341,7 @@ html, body {
             background-color: rgba(38, 43, 51, 0.8);
             color: #ffffff;
             -webkit-backdrop-filter: blur(12px);
-            -webkit-transition: -webkit-backdrop-filter 300ms linear;
+            -webkit-transition: -webkit-backdrop-filter 200ms linear;
             opacity: 0;
 
             .time-passing-upper,
@@ -332,7 +351,7 @@ html, body {
               -webkit-justify-content: center;
               justify-content: center;
               align-items: center;
-              height: 62vh;
+              height: 60vh;
 
               p {
                 font-family: MetricWeb, sans-serif;
@@ -351,7 +370,7 @@ html, body {
               }
 
               .time-passing-image {
-                background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569778-ia4se.png);
+                background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048373-zks8k.png?source=ig&width=600&height=600&format=png&quality=high);
               }
 
               .tp-earnings-container {
@@ -381,7 +400,7 @@ html, body {
             .time-passing-dashboard,
             .moment-dashboard {
               width: 100%;
-              height: 38vh;
+              height: 40vh;
               background-color: rgb(38, 43, 51);
 
               .stats-container {
@@ -439,6 +458,7 @@ html, body {
                   font-weight: 600;
                   letter-spacing: 1px;
                   line-height: 16px;
+                  margin: 0;
                 }
               }
 
@@ -520,7 +540,7 @@ html, body {
     background-attachment: fixed;
     background-position: center center;
     background-repeat: no-repeat;
-    transition: opacity 0.3s linear;
+    transition: opacity 200ms linear;
   }
 
   .loading-indicator {
@@ -537,14 +557,18 @@ html, body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: rgba(black, 0.5);
-        padding: 30px;
+        background-color: rgba(38, 43, 51, 0.8);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 20px;
         height: 100px;
         width: 150px;
-        border-radius: 20px;
+        border-radius: 15px;
 
         .loading-indicator__label {
           margin-top: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 20px;
         }
       }
 
@@ -564,17 +588,16 @@ html, body {
   background-color: rgba(38, 43, 51, 0.2);
   opacity: 1;
   -webkit-backdrop-filter: blur(12px);
-  -webkit-transition: -webkit-backdrop-filter 300ms linear;
+  -webkit-transition: -webkit-backdrop-filter 200ms linear;
 }
 
 .moments-preload {
   display: inline;
   width: 0px;
   height: 0px;
-  background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569815-ed2um.png);
-  background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569802-n5e5e.png);
-  background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png);
-  background-image: url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569778-ia4se.png);
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048204-6w6qv.png?source=ig&width=600&height=600&format=png&quality=high);
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048057-z6js9.png?source=ig&width=600&height=600&format=png&quality=high);
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493047957-4ocgd.png?source=ig&width=600&height=600&format=png&quality=high);
 }
 
 // "Please rotate device" screen
@@ -601,8 +624,12 @@ html, body {
 }
 
 @include oGridRespondTo(M) {
+  .screen--intro img {
+    max-width: 350px !important;
+  }
+
   .knot-container {
-    margin: 0 20px 64px !important;
+    margin: 0 20px 20px !important;
 
     .decoration {
       margin: 20px 0 0 !important;
@@ -613,11 +640,26 @@ html, body {
     }
   }
 
+  .time-passing-upper,
+  .moment-upper {
+    height: 75vh !important;
+
+    p {
+      font-size: 28px !important;
+    }
+  }
+
+  .time-passing-dashboard,
+  .moment-dashboard {
+    height: 25vh !important;
+  }
+
   .time-passing-image,
   .moment-image {
     max-width: 300px !important;
     max-height: 300px !important;
   }
+
 }
 
 @include oGridRespondTo(L) {
@@ -625,10 +667,19 @@ html, body {
 
 .no-backdropfilter {
   .tint {
-    background-color: rgba(38, 43, 51, 0.9);
+    background-color: rgba(38, 43, 51, 0.9) !important;
+  }
+
+  .meter {
+    background-color: rgba(38, 43, 51, 0.9) !important;
   }
 
   .knot-container {
+    background-color: rgba(38, 43, 51, 0.9) !important;
+  }
+
+  .time-passing-container,
+  .moment-container {
     background-color: rgba(38, 43, 51, 0.9) !important;
   }
 }

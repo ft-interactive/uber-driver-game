@@ -2,11 +2,11 @@ export default () => ({
   // eslint-disable-line
 
   // link file UUID
-  id: '0746ce02-4f8b-11e7-bfb8-997009366969',
+  id: '4a9f8b6e-a76d-11e7-ab55-27219df83c97',
 
   // canonical URL of the published page
   //  get filled in by the ./configure script
-  url: 'https://ig.ft.com/uber-driver-game',
+  url: 'https://ig.ft.com/uber-game',
 
   // To set an exact publish date do this:
   //       new Date('2016-05-17T17:11:22Z')
@@ -16,17 +16,17 @@ export default () => ({
 
   // summary === standfirst (Summary is what the content API calls it)
   summary:
-    'Political language is designed to make lies sound truthful' +
-    'and murder respectable, and to give an appearance of solidity to pure wind',
+    'Can you make it in the gig economy? ' +
+    'Experience a week in the life of an Uber driver trying to make ends meet',
 
   topic: {
-    name: 'Starter Kit',
-    url: '/foo',
+    name: 'Uber',
+    url: 'https://www.ft.com/topics/organisations/Uber',
   },
 
   relatedArticle: {
     text: 'Related article »',
-    url: 'https://en.wikipedia.org/wiki/Politics_and_the_English_Language',
+    url: 'https://www.ft.com/content/dfad68ca-a49d-11e7-b797-b61809486fe2',
   },
 
   mainImage: {
@@ -34,7 +34,7 @@ export default () => ({
     description: '',
     credit: '',
 
-    // You can provide a UUID to an image and it was populate everything else
+    // You can provide a UUID to an image and it will populate everything else
     uuid: 'c4bf0be4-7c15-11e4-a7b8-00144feabdc0',
 
     // You can also provide a URL
@@ -43,13 +43,13 @@ export default () => ({
 
   // Byline can by a plain string, markdown, or array of authors
   // if array of authors, url is optional
-  byline: [{ name: 'Author One', url: '/foo/bar' }, { name: 'Author Two' }],
+  byline: [{ name: 'Robin Kwong' }, { name: 'Leslie Hook' }, { name: 'David Blood' }, { name: 'Rebecca Turner' }, { name: 'Callum Locke' }, { name: 'Ændrew Rininsland' }, { name: 'Nicolai Knoll' }, { name: 'Joanna Kao' }],
 
   // Appears in the HTML <title>
-  title: '',
+  title: 'The Uber Game',
 
   // meta data
-  description: '',
+  description: 'A news game based on interviews with dozens of Uber drivers.',
 
   /*
   TODO: Select Twitter card type -
@@ -58,7 +58,7 @@ export default () => ({
         Twitter card docs:
         https://dev.twitter.com/cards/markup
   */
-  twitterCard: 'summary',
+  twitterCard: 'summary_large_image',
 
   /*
   TODO: Do you want to tweak any of the
@@ -66,12 +66,12 @@ export default () => ({
   */
   // General social
   // socialImage: '',
-  // socialHeadline: '',
-  // socialDescription: '',
-  // twitterCreator: '@author's_account', // shows up in summary_large_image cards
+  socialHeadline: 'The Uber Game: Can you make it in the gig economy?',
+  socialDescription: 'A news game based on interviews with dozens of Uber drivers',
+  twitterCreator: '@FT', // shows up in summary_large_image cards
 
   // TWEET BUTTON CUSTOM TEXT
-  // tweetText: '',
+  tweetText: 'Could you make it as an Uber driver? Try the FT news game https://ig.ft.com/uber-game',
   //
   // Twitter lists these as suggested accounts to follow after a user tweets (do not include @)
   // twitterRelatedAccounts: ['authors_account_here', 'ftdata'],
@@ -81,13 +81,13 @@ export default () => ({
 
   // TWITTER METADATA (for Twitter cards)
   // twitterImage: '',
-  // twitterHeadline: '',
-  // twitterDescription: '',
+  twitterHeadline: 'The Uber Game',
+  twitterDescription: 'Can you make it in the gig economy?',
 
   // FACEBOOK
   // facebookImage: '',
-  // facebookHeadline: '',
-  // facebookDescription: '',
+  facebookHeadline: 'Could you make it as an Uber driver?',
+  facebookDescription: 'A news game based on interviews with dozens of Uber drivers',
 
   // ADVERTISING
   ads: {
