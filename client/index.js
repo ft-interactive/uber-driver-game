@@ -62,7 +62,7 @@ let knotContainerMaxHeight;
 // Needed for animations
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
-const timePassingScreenDuration = 2000;
+const timePassingScreenDuration = 1500;
 const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -146,14 +146,21 @@ function continueStory() {
       .add({
         targets: knotContainer,
         opacity: 1,
-        duration: 200,
+        duration: 150,
         easing: 'linear',
         offset: 0,
+        begin: () => {
+          // Update background image if appropriate
+          const bgImageURL = stateUtils.getBackgroundImageURL();
+          if (bgImageURL) {
+            gameContainer.setBackgroundImage(bgImageURL);
+          }
+        },
       })
       .add({
         targets: knotContainer,
         translateY: 0,
-        duration: 200,
+        duration: 150,
         easing: 'easeOutQuad',
         offset: 0,
       });
@@ -380,13 +387,13 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569815-ed2um.png)';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055454-f7qnm.png)';
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569802-n5e5e.png)';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055487-9fwdc.png)';
     } else {
       momentText.innerText = 'Quest completed!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493569784-1opf4.png)';
+      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055438-8fiwn.png)';
     }
 
     momentTime.innerText = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
@@ -441,12 +448,6 @@ function continueStory() {
     knotElement.appendChild(choicesContainerElement);
   }
 
-  // Update background image if appropriate
-  const bgImageURL = stateUtils.getBackgroundImageURL();
-  if (bgImageURL) {
-    gameContainer.setBackgroundImage(bgImageURL);
-  }
-
   // Show ending if appropriate
   console.log('Tags', story.currentTags);
   if (story.currentTags.indexOf('endscreen') !== -1) {
@@ -491,14 +492,14 @@ function continueStory() {
         .add({
           targets: knotContainer,
           opacity: 0,
-          duration: 150,
+          duration: 100,
           easing: 'linear',
           offset: 0,
         })
         .add({
           targets: knotContainer,
           translateY: 40,
-          duration: 150,
+          duration: 100,
           easing: 'easeOutQuad',
           offset: 0,
           complete: () => {
@@ -588,6 +589,7 @@ startButton.addEventListener('click', startStory);
 
 // HACK click through first few steps to get to the ending
 (async () => {
+  // eslint-disable-next-line global-require
   const Bluebird = require('bluebird');
   await Bluebird.delay(200);
   caveatsButton.click();
