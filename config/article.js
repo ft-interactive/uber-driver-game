@@ -1,21 +1,23 @@
-export default () => ({ // eslint-disable-line
+export default () => ({
+  // eslint-disable-line
 
   // link file UUID
   id: '0746ce02-4f8b-11e7-bfb8-997009366969',
 
   // canonical URL of the published page
-  // https://ig.ft.com/uber-driver-game get filled in by the ./configure script
+  //  get filled in by the ./configure script
   url: 'https://ig.ft.com/uber-driver-game',
 
   // To set an exact publish date do this:
   //       new Date('2016-05-17T17:11:22Z')
   publishedDate: new Date(),
 
-  headline: 'Politics and the English Language',
+  headline: 'The Uber Game',
 
   // summary === standfirst (Summary is what the content API calls it)
-  summary: 'Political language is designed to make lies sound truthful' +
-           'and murder respectable, and to give an appearance of solidity to pure wind',
+  summary:
+    'Political language is designed to make lies sound truthful' +
+    'and murder respectable, and to give an appearance of solidity to pure wind',
 
   topic: {
     name: 'Starter Kit',
@@ -31,17 +33,17 @@ export default () => ({ // eslint-disable-line
     title: '',
     description: '',
     credit: '',
-    url: 'https://image.webservices.ft.com/v1/images/raw/http%3A%2F%2Fcom.ft.imagepublish.prod.s3.amazonaws.com%2Fc4bf0be4-7c15-11e4-a7b8-00144feabdc0?source=ig&fit=scale-down&width=700',
-    width: 2048, // ensure correct width
-    height: 1152, // ensure correct height
+
+    // You can provide a UUID to an image and it was populate everything else
+    uuid: 'c4bf0be4-7c15-11e4-a7b8-00144feabdc0',
+
+    // You can also provide a URL
+    // url: 'https://image.webservices.ft.com/v1/images/raw/http%3A%2F%2Fcom.ft.imagepublish.prod.s3.amazonaws.com%2Fc4bf0be4-7c15-11e4-a7b8-00144feabdc0?source=ig&fit=scale-down&width=700',
   },
 
   // Byline can by a plain string, markdown, or array of authors
   // if array of authors, url is optional
-  byline: [
-    { name: 'Author One', url: '/foo/bar' },
-    { name: 'Author Two' },
-  ],
+  byline: [{ name: 'Author One', url: '/foo/bar' }, { name: 'Author Two' }],
 
   // Appears in the HTML <title>
   title: '',
@@ -70,7 +72,9 @@ export default () => ({ // eslint-disable-line
 
   // TWEET BUTTON CUSTOM TEXT
   // tweetText: '',
-  // twitterRelatedAccounts: ['authors_account_here', 'ftdata'], // Twitter lists these as suggested accounts to follow after a user tweets (do not include @)
+  //
+  // Twitter lists these as suggested accounts to follow after a user tweets (do not include @)
+  // twitterRelatedAccounts: ['authors_account_here', 'ftdata'],
 
   // Fill out the Facebook/Twitter metadata sections below if you want to
   // override the General social options above
@@ -85,16 +89,17 @@ export default () => ({ // eslint-disable-line
   // facebookHeadline: '',
   // facebookDescription: '',
 
-  //ADVERTISING
+  // ADVERTISING
   ads: {
-    // ad unit hierarchy makes ads more granular. Start with ft.com and /companies /markets /world as appropriate to your story
-    gptAdunit: 'ft.com/companies/european',
+    // Ad unit hierarchy makes ads more granular.
+    gptSite: 'ft.com',
+    // Start with ft.com and /companies /markets /world as appropriate to your story
+    gptZone: false,
     // granular targeting is optional and will be specified by the ads team
-    dftTargeting: '',
+    dfpTargeting: false,
   },
 
   tracking: {
-
     /*
 
     Microsite Name
@@ -106,7 +111,6 @@ export default () => ({ // eslint-disable-line
     Also used for pages that do not have a UUID for whatever reason
     */
     // micrositeName: '',
-
     /*
     Product name
 

@@ -48,7 +48,7 @@ const markdown = markdownIt({
 
 export function md(str, inline) {
   return !str ? '' :
-    new SafeString(inline ? markdown.renderInline(str) : markdown.render(str));
+    inline ? markdown.renderInline(str) : markdown.render(str);
 }
 
 export function plain(str, stripListLeaders = true) {
@@ -97,4 +97,14 @@ export function spoorTrackingPixel(str) {
   <![endif]-->
   <noscript data-o-component="o-tracking">${img}</noscript>`,
   );
+}
+
+export function imageUUID(uuid) {
+  return `https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A${uuid}?source=ig`;
+}
+
+export function getMainImage(img) {
+  if (Object.prototype.hasOwnProperty.call(img, 'uuid')) return imageUUID(img.uuid);
+  else if (Object.prototype.hasOwnProperty.call(img, 'url')) return img.url;
+  return '';
 }
