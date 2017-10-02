@@ -18,6 +18,7 @@ const shareButtons = document.querySelector('.article__share');
 const footer = document.querySelector('.o-typography-footer');
 const tint = document.querySelector('.tint');
 const introScreen = document.getElementById('intro');
+const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
 const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
 const enterFullscreenButton = document.getElementById('enter-fullscreen-button');
@@ -70,6 +71,14 @@ const ratingObj = { value: 500 };
 const ridesObj = { value: 0, totalValue: 0 };
 const questRidesObj = { value: 0 };
 
+function handleFullscreen() {
+  if (fscreen.fullscreenElement !== null) {
+    console.log('Entered fullscreen mode');
+  } else {
+    console.log('Exited fullscreen mode');
+  }
+}
+
 function handleResize() {
   const d = new Date();
 
@@ -85,23 +94,15 @@ function handleResize() {
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
-}
 
-function handleFullscreen() {
-  if (fscreen.fullscreenElement !== null) {
-    console.log('Entered fullscreen mode');
+  if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
+    fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
+    enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
+    exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
+    fullscreenButtonsElement.style.display = 'block';
   } else {
-    console.log('Exited fullscreen mode');
+    fullscreenButtonsElement.style.display = 'none';
   }
-}
-
-if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
-  const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
-
-  fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
-  enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
-  exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
-  fullscreenButtonsElement.style.display = 'block';
 }
 
 function showCaveats() {

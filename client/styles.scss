@@ -55,6 +55,7 @@ main {
     top: 0;
     right: 0;
     left: 0;
+    z-index: 999;
 
     a.logo {
       position: absolute;
@@ -150,6 +151,16 @@ main {
             letter-spacing: 2px;
             text-transform: uppercase;
             margin: .3em 0 .8em;
+          }
+
+          .toggle-fullscreen {
+            display: none;
+
+            p {
+              font-size: 16px;
+              font-weight: 600;
+              line-height: 18px;
+            }
           }
         }
 
@@ -447,6 +458,7 @@ main {
                   font-weight: 600;
                   letter-spacing: 1px;
                   line-height: 16px;
+                  margin: 0;
                 }
               }
 
@@ -545,14 +557,18 @@ main {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: rgba(black, 0.5);
-        padding: 30px;
+        background-color: rgba(38, 43, 51, 0.8);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 20px;
         height: 100px;
         width: 150px;
-        border-radius: 20px;
+        border-radius: 15px;
 
         .loading-indicator__label {
           margin-top: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 20px;
         }
       }
 
@@ -626,7 +642,7 @@ main {
 
   .time-passing-upper,
   .moment-upper {
-    height: 80vh !important;
+    height: 75vh !important;
 
     p {
       font-size: 28px !important;
@@ -635,7 +651,7 @@ main {
 
   .time-passing-dashboard,
   .moment-dashboard {
-    height: 20vh !important;
+    height: 25vh !important;
   }
 
   .time-passing-image,
@@ -651,10 +667,19 @@ main {
 
 .no-backdropfilter {
   .tint {
-    background-color: rgba(38, 43, 51, 0.9);
+    background-color: rgba(38, 43, 51, 0.9) !important;
+  }
+
+  .meter {
+    background-color: rgba(38, 43, 51, 0.9) !important;
   }
 
   .knot-container {
+    background-color: rgba(38, 43, 51, 0.9) !important;
+  }
+
+  .time-passing-container,
+  .moment-container {
     background-color: rgba(38, 43, 51, 0.9) !important;
   }
 }
