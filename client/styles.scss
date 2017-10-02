@@ -55,7 +55,6 @@ main {
     top: 0;
     right: 0;
     left: 0;
-    z-index: 999;
 
     a.logo {
       position: absolute;
@@ -90,7 +89,6 @@ main {
   .article-body.o-typography-wrapper {
     order: 2;
     flex-grow: 1;
-    z-index: 1;
     position: relative;
 
     .screen-container {
@@ -370,6 +368,8 @@ main {
               }
 
               .time-passing-image {
+                max-width: 150px;
+                max-height: 150px;
                 background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048373-zks8k.png?source=ig&width=600&height=600&format=png&quality=high);
               }
 
@@ -377,7 +377,7 @@ main {
                 text-align: center;
 
                 div {
-                  font-size: 80px;
+                  font-size: 72px;
                   font-weight: 600;
                   -webkit-transition: text-shadow 100ms linear;
                   -moz-transition: text-shadow 100ms linear;
@@ -433,7 +433,7 @@ main {
 
                 span {
                   &.large {
-                    font-size: 28px;
+                    font-size: 24px;
                     font-weight: 600;
                     line-height: 45px;
                     -webkit-font-feature-settings: 'tnum';
