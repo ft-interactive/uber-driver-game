@@ -6,7 +6,7 @@ import json from './uber.json';
 import config from './config.yml';
 import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
-import Ending from './views/Ending';
+import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
 const story = new Story(json);
@@ -49,8 +49,6 @@ const momentButton = document.getElementById('moment-button');
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
 const ending = Ending.createIn(document.querySelector('.ending-container'));
-
-console.log('ending', ending.setState({}));
 
 let choicesContainerElement;
 // Dimensions
