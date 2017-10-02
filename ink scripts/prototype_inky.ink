@@ -1289,7 +1289,6 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
     ** [Go home]
     ~helped_homework=true
     You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
@@ -1320,7 +1319,7 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
+    # bg:driving_sf
     ** [Go home]
         ~helped_homework=true
         You spend a pleasant evening helping your son with his homework.
@@ -1339,7 +1338,7 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
+    # bg:driving_sf
     * [Go home]        
         ~helped_homework=true
         You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
@@ -1924,7 +1923,6 @@ What do you do?
 *[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour on the phone, but all you get is a promise that they'll look into it.
     ~add_time(0,44)
 # button
-# bg:home
     **[Go home]
     {home=="sf":
     You drive home and collapse into bed.
@@ -1946,7 +1944,6 @@ What do you do?
     }
 *[Don't contact Uber] You're too tired to try to sort this out over the phone right now.
     #button
-    #bg:home
     **[Go home]
     {home=="sf":
     You drive home and collapse into bed.
