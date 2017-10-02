@@ -133,22 +133,25 @@ Can you earn enough to pay the bill — and make more than other players?
 
 
 === choose_difficulty===
-# choose_difficulty
 Your difficulty level will affect how easy it is to earn $1000.
 
+Easier difficulty: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+
+Harder difficulty: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
 # link 
+# choose_difficulty
 * [Easier]
 ~ home="sf"
 ~ credit_rating="good"
 ~ current_city=home
-Easier difficulty: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+
 ->day_1_start
 
 * [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
 ~ current_city=home
-Harder difficulty: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+
 ->day_1_start
 
 /*
@@ -1159,6 +1162,7 @@ But you promised to be home by {home=="sac":8pm}{home=="sf":7pm}.
 =keep_driving
 # quest_nudge.keep_driving
 You call home to say you won't be back. Your son is disappointed.
+~ temp remaining=quest_rides
 ~ time_passing=true
 ~ alter(day_ride_count, quest_rides)
 ~ alter(day_fares_earned, 19)
@@ -1172,7 +1176,7 @@ You call home to say you won't be back. Your son is disappointed.
 # button
 *[🚗&nbsp;&nbsp;Drive] 
 
-It takes you two hours to finish the last {quest_rides} rides, but you finish the quest.
+It takes you two hours to finish the last {remaining} rides, but you finish the quest.
 ~moments=true
 {home=="sac" && current_city=="sf":
 ~ alter(day_hours_driven, 2)
@@ -1212,6 +1216,7 @@ You're tired after a long day, but the quest doesn't expire until 4am.
 =go_back_out
 # quest_nudge.go_back_out
 You get back in your car and turn the app back on.
+~ temp remaining=quest_rides
 ~ time_passing=true
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
@@ -1226,7 +1231,7 @@ You get back in your car and turn the app back on.
 # button
 # bg:night
 *[🚗&nbsp;&nbsp;Drive] 
-It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
+It takes you two hours to finish the last {remaining} rides, but you finish the quest. You get ${quest_bonus}!
 ~moments=true
 You are completely exhausted.
     # button
