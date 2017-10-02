@@ -64,3 +64,11 @@ jobs:
       - run:
           name: General QA checks
           command: npm run qa || echo "Automatic QA checks failed. Continuing anyway"
+      - deploy:
+          name: Deploy server to Heroku container registry
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then docker login -u $DOCKER_USER -p $DOCKER_PASS registry.heroku.com;
+              docker build --rm=false -t ft-ig-uber-game-backend/web:latest .;
+              docker push registry.heroku.com/ft-ig-uber-game-backend/web:latest;
+            fi
