@@ -129,6 +129,7 @@ function continueStory() {
 
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
+
   function showPanel() {
     const panelIn = anime.timeline();
 
@@ -408,13 +409,6 @@ function continueStory() {
 
   // Generate story text - loop through available content
   while (story.canContinue) {
-    // Update background image if appropriate
-    const bgImageURL = stateUtils.getBackgroundImageURL();
-    if (bgImageURL) {
-      gameContainer.setBackgroundImage(bgImageURL);
-    }
-
-
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
@@ -438,12 +432,19 @@ function continueStory() {
     knotElement.appendChild(choicesContainerElement);
   }
 
+  // Update background image if appropriate
+  const bgImageURL = stateUtils.getBackgroundImageURL();
+  if (bgImageURL) {
+    gameContainer.setBackgroundImage(bgImageURL);
+  }
+
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
     // Create button element
     const choiceElement = document.createElement('button');
     choiceElement.classList.add('choice');
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
+    console.log(`tags: ${story.currentTags}`);
 
     // Make it look different if there's more than one choice available
     if (story.currentTags.indexOf('button') === -1) {

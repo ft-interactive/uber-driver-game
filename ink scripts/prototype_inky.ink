@@ -176,6 +176,7 @@ You start bright and early on a Monday morning. Pretty soon, you get your first 
 # day_1_locate_passenger
 But when you arrive at the pick-up point, you don't see anyone waiting for a ride. What do you do?
 ~add_time(0,5)
+
 * [Call Chris]->call_chris
 * [Wait]->chris_arrives
 
@@ -345,7 +346,7 @@ MESSAGE FROM UBER
 === day_1_sacramento ===
 # link
 # day_1_sacramento
-# bg: driving_sac
+# bg:driving_sac
 You live in Sacramento, where fares are a third less than in a bigger city like San Francisco. Do you drive 2 hours to work in SF instead?
 
 * [Try your luck in SF]
@@ -528,7 +529,6 @@ It's getting late, and you don't want to burn out too quickly.
 
 
 === day_1_sf ===
-# button
 # day_1_sf
 # bg:driving_sf
 MESSAGE FROM UBER 
@@ -537,6 +537,7 @@ MESSAGE FROM UBER
 You accept the quest, excited at the prospect of exploring San Francisco while earning some money.
 
 ~time_passes(4,0,1)
+# button
 * [🚗&nbsp;&nbsp;Drive] 
 
 ->day_1_sf_morning
