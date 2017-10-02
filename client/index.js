@@ -143,6 +143,7 @@ function continueStory() {
         begin: () => {
           // Update background image if appropriate
           const bgImageURL = stateUtils.getBackgroundImageURL();
+
           if (bgImageURL) {
             gameContainer.setBackgroundImage(bgImageURL);
           }
@@ -154,6 +155,18 @@ function continueStory() {
         duration: 150,
         easing: 'easeOutQuad',
         offset: 0,
+        complete: () => {
+          const existingChoicesContainer = knotElement.querySelector('.choices-container');
+          const existingChoices = Array.from(existingChoicesContainer.querySelectorAll('button'));
+
+          existingChoices.forEach((existingChoice) => {
+            const e = existingChoice;
+
+            console.log(e);
+
+            e.disabled = false;
+          });
+        },
       });
 
     // Animate meter readouts
@@ -265,9 +278,10 @@ function continueStory() {
         momentScreen.style.webkitBackdropFilter = 'blur(0px)';
       },
       complete: () => {
+        momentButton.removeEventListener('click', closeMoment);
+        story.variablesState.$('moments', 0);
         momentScreen.style.display = 'none';
         showPanel();
-        momentButton.removeEventListener('click', closeMoment);
       },
     });
   }
@@ -404,9 +418,6 @@ function continueStory() {
         momentScreen.style.display = 'block';
         momentScreen.style.webkitBackdropFilter = 'blur(12px)';
       },
-      complete: () => {
-        story.variablesState.$('moments', 0);
-      },
     });
   } else {
     console.log('>>>'); // eslint-disable-line no-console
@@ -444,7 +455,9 @@ function continueStory() {
     // Create button element
     const choiceElement = document.createElement('button');
     choiceElement.classList.add('choice');
+    choiceElement.disabled = true;
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
+
     console.log(`tags: ${story.currentTags}`);
 
     // Make it look different if there's more than one choice available
@@ -459,16 +472,16 @@ function continueStory() {
       event.preventDefault();
 
       // Remove unclicked choices
-      const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
-      const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
-
-      prevChoices.forEach((prevChoice, i) => {
-        const el = prevChoice;
-
-        if (i !== clickedChoiceIndex) {
-          el.style.opacity = 0;
-        }
-      });
+      // const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
+      // const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
+      //
+      // prevChoices.forEach((prevChoice, i) => {
+      //   const el = prevChoice;
+      //
+      //   if (i !== clickedChoiceIndex) {
+      //     el.style.opacity = 0;
+      //   }
+      // });
 
       const panelOut = anime.timeline();
 
@@ -479,6 +492,15 @@ function continueStory() {
           duration: 100,
           easing: 'linear',
           offset: 0,
+          begin: () => {
+            const existingChoices = Array.from(choicesContainerElement.querySelectorAll('button'));
+
+            existingChoices.forEach((existingChoice) => {
+              const e = existingChoice;
+
+              e.disabled = true;
+            });
+          },
         })
         .add({
           targets: knotContainer,
