@@ -1,0 +1,29 @@
+// // HACK for use in development
+// .screen:not(#ending) {
+//   display: none;
+// }
+
+
+.ending {
+  display: none;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #333;
+
+  &__contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    * { color: white !important; }
+  }
+
+  &--active {
+    display: flex;
+  }
+}

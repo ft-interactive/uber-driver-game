@@ -6,6 +6,7 @@ import json from './uber.json';
 import config from './config.yml';
 import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
+import Ending from './views/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
 const story = new Story(json);
@@ -47,6 +48,9 @@ const momentButton = document.getElementById('moment-button');
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
+
+const ending = new Ending(document.querySelector('.ending'), stateUtils);
+ending.initialise();
 
 let choicesContainerElement;
 // Dimensions
@@ -104,6 +108,11 @@ function showCaveats() {
       duration: defaultInDuration,
       easing: 'linear',
     });
+}
+
+function endStory() {
+  storyScreen.style.display = 'none';
+  ending.show();
 }
 
 function continueStory() {
@@ -438,12 +447,19 @@ function continueStory() {
     gameContainer.setBackgroundImage(bgImageURL);
   }
 
+  // Show ending if appropriate
+  console.log('Tags', story.currentTags);
+  if (story.currentTags.indexOf('endscreen') !== -1) {
+    endStory();
+  }
+
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
     // Create button element
     const choiceElement = document.createElement('button');
     choiceElement.classList.add('choice');
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
+    choiceElement.setAttribute('data-choice-text', choice.text);
     console.log(`tags: ${story.currentTags}`);
 
     // Make it look different if there's more than one choice available
@@ -569,3 +585,16 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', handleResize);
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
+
+// HACK click through first few steps to get to the ending
+(async () => {
+  const Bluebird = require('bluebird');
+  await Bluebird.delay(200);
+  caveatsButton.click();
+  await Bluebird.delay(500);
+  startButton.click();
+  await Bluebird.delay(2000);
+  document.querySelector('[data-choice-text="goto end"]').click();
+  await Bluebird.delay(1000);
+  document.querySelector('[data-choice-text="to endscreen"]').click();
+})();
