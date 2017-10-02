@@ -4,68 +4,78 @@
 // }
 
 .ending {
-  display: none;
-  position: relative;
-  // justify-content: center;
-  // position: absolute;
+  $dark-grey: #2a323b;
+
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(yellow, 0.2); // TEMP
-
-  &__splash {
-    background: rgba(red, 0.2);
-    height: 100%;
-    width: 100%;
-    display: block;
-    // display: none;
-    // height: calc(100vh + 200px);
-    // transform: translateY(calc(100vh + 200px));
-  }
-
-  // &__confetti {
-  //   background: rgba(blue, 0.5);
-  //   height: 100%;
-  // }
-  //
-  // &__solid-background {
-  //   height: 100%;
-  //   background: #333;
-  // }
-
-  // &__stripe {
-  //   height: 300px;
-  //   overflow: hidden;
-  //   background: red;
-  //   position: relative;
-  //
-  //   &:before {
-  //     content: '';
-  //     height: 100px;
-  //     background: skyblue;
-  //     display: block;
-  //     width: 200%;
-  //     transform: rotateZ(-20deg) translateX(-40%);
-  //
-  //     @include oGridRespondTo('M') {
-  //       // transofrm
-  //     }
-  //   }
-  // }
-
-  // &__contents {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  //   align-items: center;
-  //
-  //   * {
-  //     color: white !important;
-  //   }
-  // }
 
   &--visible {
     display: block;
+  }
+
+  .info-panel {
+    width: 100%;
+    height: 100%;
+    background: $dark-grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    > header {
+      display: flex;
+      justify-content: center;
+
+      > h1 {
+        color: skyblue;
+        text-transform: uppercase;
+        font: 300 34px MetricWeb, sans-serif;
+        margin: -18px 18px 0;
+      }
+    }
+
+    &__heading-rule {
+      width: 80px;
+      height: 2px;
+      background: skyblue;
+    }
+
+    &__statistic {
+      margin-top: 40px;
+
+      > h2 {
+        color: white;
+        font: 700 18px MetricWeb, sans-serif;
+        margin: 0 0 10px;
+      }
+
+      > div {
+        color: white;
+        font: 700 48px MetricWeb, sans-serif;
+      }
+    }
+
+    &__button {
+      display: block;
+      margin-top: 40px;
+      background: skyblue;
+      width: 50px;
+      height: 50px;
+      border: 0;
+      text-align: center;
+
+      > i.material-icons {
+        font-size: 32px;
+        color: $dark-grey;
+        margin-top: 5px;
+      }
+
+      > span {
+        @include visuallyHidden;
+      }
+    }
   }
 }

@@ -48,7 +48,9 @@ const momentButton = document.getElementById('moment-button');
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-const ending = new Ending(document.querySelector('.ending'), stateUtils);
+const ending = Ending.createIn(document.querySelector('.ending-container'));
+
+console.log('ending', ending.setState({}));
 
 let choicesContainerElement;
 // Dimensions
@@ -108,9 +110,21 @@ function showCaveats() {
     });
 }
 
+document.querySelector('.game-container').classList.add('game-container--loading');
+
 function endStory() {
   storyScreen.style.display = 'none';
-  ending.show();
+
+  ending.show({
+    // TODO get real values from game
+    hoursDriven: 124,
+    ridesCompleted: 35,
+    driverRating: 3.5,
+    income: 4221,
+    faresAndTips: 3910,
+    weekendQuestBonus: 311,
+    weekdayQuestBonus: 182,
+  });
 }
 
 function continueStory() {
@@ -607,5 +621,5 @@ startButton.addEventListener('click', startStory);
 (async () => {
   tint.style.display = 'none';
   introScreen.style.display = 'none';
-  ending.show({});
+  endStory();
 })();
