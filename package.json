@@ -84,6 +84,7 @@
   },
   "dependencies": {
     "animejs": "^2.1.0",
+    "fscreen": "^1.0.2",
     "inkjs": "^1.6.0",
     "moment-timezone": "^0.5.13"
   }

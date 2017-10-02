@@ -1,4 +1,5 @@
 import anime from 'animejs';
+import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import moment from 'moment-timezone';
 import './styles.scss';
@@ -19,6 +20,8 @@ const tint = document.querySelector('.tint');
 const introScreen = document.getElementById('intro');
 const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
+const enterFullscreenButton = document.getElementById('enter-fullscreen-button');
+const exitFullscreenButton = document.getElementById('exit-fullscreen-button');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
 const earningsDisplay = document.getElementById('earnings');
@@ -84,6 +87,23 @@ function handleResize() {
   console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
 }
 
+function handleFullscreen() {
+  if (fscreen.fullscreenElement !== null) {
+    console.log('Entered fullscreen mode');
+  } else {
+    console.log('Exited fullscreen mode');
+  }
+}
+
+if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
+  const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
+
+  fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
+  enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
+  exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
+  fullscreenButtonsElement.style.display = 'block';
+}
+
 function showCaveats() {
   const showCaveatsScreen = anime.timeline();
 
@@ -128,7 +148,6 @@ function continueStory() {
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
-
 
   function showPanel() {
     const panelIn = anime.timeline();
