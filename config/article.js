@@ -1,4 +1,4 @@
-export default () => ({
+export default (environment = 'development') => ({ // eslint-disable-line
   // eslint-disable-line
 
   // link file UUID
