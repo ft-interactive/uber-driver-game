@@ -94,7 +94,7 @@ module.exports = async (env = 'development') => ({
             options: {
               searchPaths: [resolve(__dirname, 'views')],
               filters: nunjucksFilters,
-              context: await getContext(),
+              context: await getContext(env),
             },
           },
         ],

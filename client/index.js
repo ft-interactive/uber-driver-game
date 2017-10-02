@@ -1,4 +1,5 @@
 import anime from 'animejs';
+import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import moment from 'moment-timezone';
 import './styles.scss';
@@ -18,8 +19,11 @@ const shareButtons = document.querySelector('.article__share');
 const footer = document.querySelector('.o-typography-footer');
 const tint = document.querySelector('.tint');
 const introScreen = document.getElementById('intro');
+const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
 const caveatsButton = document.getElementById('caveats-button');
 const caveatsScreen = document.getElementById('caveats');
+const enterFullscreenButton = document.getElementById('enter-fullscreen-button');
+const exitFullscreenButton = document.getElementById('exit-fullscreen-button');
 const startButton = document.getElementById('start-button');
 const storyScreen = document.getElementById('story');
 const earningsDisplay = document.getElementById('earnings');
@@ -69,6 +73,14 @@ const ratingObj = { value: 500 };
 const ridesObj = { value: 0, totalValue: 0 };
 const questRidesObj = { value: 0 };
 
+function handleFullscreen() {
+  if (fscreen.fullscreenElement !== null) {
+    console.log('Entered fullscreen mode');
+  } else {
+    console.log('Exited fullscreen mode');
+  }
+}
+
 function handleResize() {
   const d = new Date();
 
@@ -84,6 +96,17 @@ function handleResize() {
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
+
+  if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
+    fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
+    enterFullscreenButton.addEventListener('click', () =>
+      fscreen.requestFullscreen(document.querySelector('main')),
+    );
+    exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
+    fullscreenButtonsElement.style.display = 'block';
+  } else {
+    fullscreenButtonsElement.style.display = 'none';
+  }
 }
 
 function showCaveats() {
@@ -170,6 +193,7 @@ function continueStory() {
         begin: () => {
           // Update background image if appropriate
           const bgImageURL = stateUtils.getBackgroundImageURL();
+
           if (bgImageURL) {
             gameContainer.setBackgroundImage(bgImageURL);
           }
@@ -181,6 +205,18 @@ function continueStory() {
         duration: 150,
         easing: 'easeOutQuad',
         offset: 0,
+        complete: () => {
+          const existingChoicesContainer = knotElement.querySelector('.choices-container');
+          const existingChoices = Array.from(existingChoicesContainer.querySelectorAll('button'));
+
+          existingChoices.forEach((existingChoice) => {
+            const e = existingChoice;
+
+            console.log(e);
+
+            e.disabled = false;
+          });
+        },
       });
 
     // Animate meter readouts
@@ -294,9 +330,10 @@ function continueStory() {
         momentScreen.style.webkitBackdropFilter = 'blur(0px)';
       },
       complete: () => {
+        momentButton.removeEventListener('click', closeMoment);
+        story.variablesState.$('moments', 0);
         momentScreen.style.display = 'none';
         showPanel();
-        momentButton.removeEventListener('click', closeMoment);
       },
     });
   }
@@ -414,15 +451,15 @@ function continueStory() {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
       momentImage.style.backgroundImage =
-        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055454-f7qnm.png)';
+        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048204-6w6qv.png?source=ig&width=600&height=600&format=png&quality=high)';
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
       momentImage.style.backgroundImage =
-        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055487-9fwdc.png)';
+        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048057-z6js9.png?source=ig&width=600&height=600&format=png&quality=high)';
     } else {
       momentText.innerText = 'Quest completed!';
       momentImage.style.backgroundImage =
-        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055438-8fiwn.png)';
+        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493047957-4ocgd.png?source=ig&width=600&height=600&format=png&quality=high)';
     }
 
     momentTime.innerText = moment(timeObj.value)
@@ -445,9 +482,6 @@ function continueStory() {
       begin: () => {
         momentScreen.style.display = 'block';
         momentScreen.style.webkitBackdropFilter = 'blur(12px)';
-      },
-      complete: () => {
-        story.variablesState.$('moments', 0);
       },
     });
   } else {
@@ -494,6 +528,7 @@ function continueStory() {
     // Create button element
     const choiceElement = document.createElement('button');
     choiceElement.classList.add('choice');
+    choiceElement.disabled = true;
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
     choiceElement.setAttribute('data-choice-text', choice.text);
     console.log(`tags: ${story.currentTags}`);
@@ -510,16 +545,16 @@ function continueStory() {
       event.preventDefault();
 
       // Remove unclicked choices
-      const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
-      const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
-
-      prevChoices.forEach((prevChoice, i) => {
-        const el = prevChoice;
-
-        if (i !== clickedChoiceIndex) {
-          el.style.opacity = 0;
-        }
-      });
+      // const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
+      // const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
+      //
+      // prevChoices.forEach((prevChoice, i) => {
+      //   const el = prevChoice;
+      //
+      //   if (i !== clickedChoiceIndex) {
+      //     el.style.opacity = 0;
+      //   }
+      // });
 
       const panelOut = anime.timeline();
 
@@ -530,6 +565,15 @@ function continueStory() {
           duration: 100,
           easing: 'linear',
           offset: 0,
+          begin: () => {
+            const existingChoices = Array.from(choicesContainerElement.querySelectorAll('button'));
+
+            existingChoices.forEach((existingChoice) => {
+              const e = existingChoice;
+
+              e.disabled = true;
+            });
+          },
         })
         .add({
           targets: knotContainer,
