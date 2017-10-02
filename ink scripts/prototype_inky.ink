@@ -2020,6 +2020,7 @@ You finally have some much-needed time to clean up around the house, and spend t
 - You feel refreshed.
 # button
 # bg:night
+# to_day_7
 ~timestamp=1502614800
 //sun 9am
 ** [Start day 7]
