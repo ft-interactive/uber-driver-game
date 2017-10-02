@@ -128,16 +128,16 @@ function showCaveats() {
     });
 }
 
-function recordDecision(decision, story) {
+function recordDecision(decision) {
   const meta = Object.entries(story.variablesState._globalVariables)
     .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
 
   return fetch(`${endpoint}/decisions`, {
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({
       type: decision,
       value: story.variablesState.$(decision),
