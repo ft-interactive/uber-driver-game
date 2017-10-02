@@ -409,10 +409,6 @@ function continueStory() {
 
   // Generate story text - loop through available content
   while (story.canContinue) {
-<<<<<<< HEAD
- 
-=======
->>>>>>> master
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
