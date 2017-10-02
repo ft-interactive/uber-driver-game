@@ -8,6 +8,7 @@ import config from './config.yml';
 import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
+import gaAnalytics from './components/analytics';
 
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
@@ -125,6 +126,8 @@ function showCaveats() {
       duration: defaultInDuration,
       easing: 'linear',
     });
+
+  gaAnalytics('uber-game', 'show-caveats');
 }
 
 function continueStory() {
@@ -149,6 +152,11 @@ function continueStory() {
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
+
+  //  record events for analytics
+  if (story.currentTags.length > 0 && story.currentTags[0] === 'welcome') {
+    gaAnalytics('uber-game', 'start-game');
+  }
 
   function showPanel() {
     const panelIn = anime.timeline();
@@ -478,7 +486,9 @@ function continueStory() {
     choiceElement.disabled = true;
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
 
-    console.log(`tags: ${story.currentTags}`);
+    if (story.currentTags.length > 0 && story.currentTags[story.currentTags.length - 1].match(/^to_day_\d+/)) {
+      gaAnalytics('uber-game', 'finish-day', parseInt(story.currentTags[story.currentTags.length - 1].split('_')[2], 10) - 1);
+    }
 
     // Make it look different if there's more than one choice available
     if (story.currentTags.indexOf('button') === -1) {
@@ -537,6 +547,14 @@ function continueStory() {
 
               p.parentNode.removeChild(p);
             });
+
+            if (story.currentTags.length > 0) {
+              if (story.currentTags[0] === 'choose_difficulty') {
+                gaAnalytics('uber-game', 'choose-difficulty', choice.text);
+              } else if (story.currentTags[story.currentTags.length - 1].match(/^to_day_\d+/)) {
+                gaAnalytics('uber-game', 'start-day', parseInt(story.currentTags[story.currentTags.length - 1].split('_')[2], 10));
+              }
+            }
 
             // Tell the story where to go next
             story.ChooseChoiceIndex(choice.index);
@@ -606,6 +624,8 @@ function startStory() {
         continueStory();
       },
     });
+
+  gaAnalytics('uber-game', 'start-story');
 }
 
 window.addEventListener('load', handleResize);
