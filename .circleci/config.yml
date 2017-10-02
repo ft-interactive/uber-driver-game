@@ -64,6 +64,7 @@ jobs:
       - run:
           name: General QA checks
           command: npm run qa || echo "Automatic QA checks failed. Continuing anyway"
+      - setup_remote_docker
       - deploy:
           name: Deploy server to Heroku container registry
           command: |
