@@ -1,4 +1,5 @@
 initialBackgroundImage: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
+
 backgroundImages:
   main:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
