@@ -28,7 +28,6 @@ VAR hours_driven_total=0
 VAR UberXL_total=0
 
 VAR kept_receipt=false
-VAR miles_tracked=false
 VAR windshield_cracked=false
 VAR ticketed=false
 VAR saturday_off=false
@@ -665,7 +664,7 @@ It's Tuesday. Your back aches from having spent the whole day in the car yesterd
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt? 
 
-*[Yes] You keep it in a folder for your expenses, so you can claim tax deductions later.
+*[Yes] You keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
 ~kept_receipt=true
 *[No] You don’t have time to keep track of stuff like that.
 ~kept_receipt=false
@@ -2170,7 +2169,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 ~ time_passes(3,0,1)
 # button
 * [🚗&nbsp;&nbsp;Drive]
-->track_mileage
+->day_7_afternoon
 
 =drop
 #no_drop_zone.drop
@@ -2179,7 +2178,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 You drop her off quickly. Luckily, there weren't any cops around.
     ~time_passes(3,0,1)
     # button
-    ** [Phew!]->track_mileage
+    ** [Phew!]->day_7_afternoon
 - else: ->caught
 }
 
@@ -2196,27 +2195,14 @@ You get a traffic ticket (-$260). You'll have to go pay that later.
     # button
     **[That's a real setback]
     ->quest_finish->
-    ->track_mileage
-    
-=== track_mileage ===
-# track_mileage
-It's been a long week. You idly wonder just how far you've driven.
-
-# link
-# bg:driving_sf
-* [Good thing you've been keeping track] {home=="sf": You check your notes: 869 miles. That's quite a lot.}{home=="sac":You check your notes: 1567 miles. That's quite a lot.}
-~miles_tracked=true
-
-* [Who cares]It doesn't really matter.
-~miles_tracked=false
-
-- ->day_7_afternoon
+    ->day_7_afternoon
 
 ===day_7_afternoon===
 
 # day_7_afternoon
 ~time_passes(3,0,1)
 # button
+# bg:driving_sf
 * [🚗&nbsp;&nbsp;Drive]
 ->quest_finish->
 {windshield_cracked==true:
