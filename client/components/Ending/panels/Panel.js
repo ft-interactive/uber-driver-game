@@ -1,12 +1,14 @@
 // @flow
 
 import React, { Component } from 'react';
+import type { Element } from 'react';
 import * as colours from '../colours';
 
 type Props = {
   heading?: string,
   magentaStyle?: boolean,
   next?: null | (() => void),
+  children: Element<any> | Element<any>[],
 };
 
 export default class Panel extends Component<Props> {
@@ -19,21 +21,21 @@ export default class Panel extends Component<Props> {
   };
 
   render() {
-    const { heading, next, magentaStyle } = this.props;
+    const { heading, next, magentaStyle, children } = this.props;
 
     const highlightColour = magentaStyle ? colours.magenta : colours.blue;
 
     return (
       <div className="panel">
-        <div className="content">
-          {heading && (
-            <header className="heading">
-              <div className="heading-rule" />
-              <h1>{heading}</h1>
-              <div className="heading-rule" />
-            </header>
-          )}
-        </div>
+        {heading && (
+          <header className="heading">
+            <div className="heading-rule" />
+            <h1>{heading}</h1>
+            <div className="heading-rule" />
+          </header>
+        )}
+
+        <div className="content">{children}</div>
 
         {next && (
           <button onClick={next}>
