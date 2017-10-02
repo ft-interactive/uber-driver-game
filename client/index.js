@@ -115,13 +115,22 @@ function endStory() {
 
   ending.show({
     // TODO get real values from game
+    // stats overview
     hoursDriven: 124,
     ridesCompleted: 35,
     driverRating: 3.5,
-    income: 4221,
+
+    // income
     faresAndTips: 3910,
     weekendQuestBonus: 311,
     weekdayQuestBonus: 182,
+
+    // costs
+    carRental: -1360,
+    upgrades: -120,
+    fuel: -380,
+    trafficTickets: -80,
+    tax: -80,
   });
 }
 

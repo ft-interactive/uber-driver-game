@@ -6,6 +6,7 @@ import invariant from 'invariant';
 import Splash from './Splash';
 import Panel from './panels/Panel';
 import StatsPanel from './panels/StatsPanel';
+import MathsPanel from './panels/MathsPanel';
 
 type Props = {};
 
@@ -14,9 +15,16 @@ type Results = {
   ridesCompleted: number,
   driverRating: number,
   income: number,
+
   faresAndTips: number,
   weekendQuestBonus: number,
   weekdayQuestBonus: number,
+
+  carRental: number,
+  upgrades: number,
+  fuel: number,
+  trafficTickets: number,
+  tax: number,
 };
 
 type SectionName =
@@ -91,25 +99,43 @@ export default class Ending extends Component<Props, State> {
 
                 case 'income':
                   return (
-                    <Panel
+                    <MathsPanel
                       heading="Your income"
-                      priceInfo={[
-                        { amount: results.faresAndTips, type: 'Fares and tips' },
-                        { amount: results.weekendQuestBonus, type: 'Weekend quest bonus' },
-                        { amount: results.weekdayQuestBonus, type: 'Weekday quest bonus' },
+                      figures={[
+                        { amount: results.faresAndTips, title: 'Fares and tips' },
+                        { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
+                        { amount: results.weekdayQuestBonus, title: 'Weekday quest bonus' },
                       ]}
                       next={go('costs')}
                     />
                   );
 
                 case 'costs':
-                  return <Panel heading="Costs (TODO)" next={go('total-income-summary')} />;
+                  return (
+                    <MathsPanel
+                      heading="Your costs"
+                      magentaStyle
+                      startingTotal={
+                        results.faresAndTips + results.weekendQuestBonus + results.weekdayQuestBonus
+                      }
+                      figures={[
+                        { amount: results.carRental, title: 'Car rental' },
+                        { amount: results.upgrades, title: 'Upgrades' },
+                        { amount: results.fuel, title: 'Fuel' },
+                        { amount: results.trafficTickets, title: 'Traffic tickets' },
+                        { amount: results.tax, title: 'Tax' },
+                      ]}
+                      next={go('total-income-summary')}
+                    />
+                  );
 
                 case 'total-income-summary':
-                  return <Panel heading="Congrats!! (TODO)" next={go('hourly-rate-summary')} />;
+                  return (
+                    <Panel heading="Total income summary (TODO)" next={go('hourly-rate-summary')} />
+                  );
 
                 case 'hourly-rate-summary':
-                  return <Panel heading="But you only made... (TODO)" next={go('choices')} />;
+                  return <Panel heading="Hourly rate summary (TODO)" next={go('choices')} />;
 
                 case 'choices':
                   return <Panel heading="Your choices (TODO)" next={go('credits')} />;

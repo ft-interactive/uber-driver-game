@@ -4,11 +4,14 @@ import React, { Component } from 'react';
 import type { Element } from 'react';
 import * as colours from '../colours';
 
+type NestedArray<T> = Array<T | NestedArray<T>>;
+type Child = Element<any>;
+
 type Props = {
   heading?: string,
   magentaStyle?: boolean,
   next?: null | (() => void),
-  children: Element<any> | Element<any>[],
+  children?: null | Child | NestedArray<Child>,
 };
 
 export default class Panel extends Component<Props> {
@@ -18,6 +21,7 @@ export default class Panel extends Component<Props> {
     heading: null,
     next: null,
     magentaStyle: false,
+    children: null,
   };
 
   render() {
