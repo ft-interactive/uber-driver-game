@@ -71,7 +71,7 @@ export default () => ({
   twitterCreator: '@FT', // shows up in summary_large_image cards
 
   // TWEET BUTTON CUSTOM TEXT
-  tweetText: 'Could you make it as an Uber driver? Try the FT news game https://ig.ft.com/uber-game',
+  tweetText: 'Could you make it as an Uber driver? Try the FT news game',
   //
   // Twitter lists these as suggested accounts to follow after a user tweets (do not include @)
   // twitterRelatedAccounts: ['authors_account_here', 'ftdata'],
