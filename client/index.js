@@ -392,13 +392,13 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055454-f7qnm.png)';
+      momentImage.style.backgroundImage = 'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048204-6w6qv.png?source=ig&width=600&height=600&format=png&quality=high)';
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055487-9fwdc.png)';
+      momentImage.style.backgroundImage = 'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048057-z6js9.png?source=ig&width=600&height=600&format=png&quality=high)';
     } else {
       momentText.innerText = 'Quest completed!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055438-8fiwn.png)';
+      momentImage.style.backgroundImage = 'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493047957-4ocgd.png?source=ig&width=600&height=600&format=png&quality=high)';
     }
 
     momentTime.innerText = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
