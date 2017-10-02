@@ -58,7 +58,7 @@ let knotContainerMaxHeight;
 // Needed for animations
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
-const timePassingScreenDuration = 3000;
+const timePassingScreenDuration = 2000;
 const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -137,14 +137,14 @@ function continueStory() {
       .add({
         targets: knotContainer,
         opacity: 1,
-        duration: defaultInDuration,
+        duration: 200,
         easing: 'linear',
         offset: 0,
       })
       .add({
         targets: knotContainer,
         translateY: 0,
-        duration: defaultInDuration,
+        duration: 200,
         easing: 'easeOutQuad',
         offset: 0,
       });
@@ -475,14 +475,14 @@ function continueStory() {
         .add({
           targets: knotContainer,
           opacity: 0,
-          duration: defaultOutDuration,
+          duration: 150,
           easing: 'linear',
           offset: 0,
         })
         .add({
           targets: knotContainer,
           translateY: 40,
-          duration: defaultOutDuration,
+          duration: 150,
           easing: 'easeOutQuad',
           offset: 0,
           complete: () => {
