@@ -149,6 +149,35 @@ function recordDecision(decision) {
   .catch((e) => console.error(`Error recording: ${e}`));
 }
 
+export function recordPlayerResult() {
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
+
+  const revenue = story.variablesState.$('revenue_total');
+  const costs = story.variablesState.$('cost_total');
+  const difficulty = story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard';
+  const income = revenue - costs;
+  const hourlyWage = income / story.variablesState.$('hours_driven_total');
+
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      revenue,
+      meta,
+      income,
+      hourlyWage,
+      difficulty,
+      expenses: costs,
+    }),
+  })
+  .then(() => console.info('Endgame data recorded'))
+  .catch((e) => console.error(`Error recording: ${e}`));
+}
+
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDuringTimePassing = earnings - earningsObj.totalValue;
@@ -162,11 +191,11 @@ function continueStory() {
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
 
   if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
-    recordDecision('biz_licence', story);
+    recordDecision('biz_licence');
   } else if (story.currentTags.indexOf('day_5_start') > -1) {
-    recordDecision('helped_homework', story);
+    recordDecision('helped_homework');
   } else if (story.currentTags.indexOf('day_7_start') > -1) {
-    recordDecision('took_day_off', story);
+    recordDecision('took_day_off');
   }
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,

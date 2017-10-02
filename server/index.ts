@@ -16,7 +16,6 @@ Promise.all([Result.sync(), Decision.sync()])
     }
     switch (req.url) {
       case '/decisions':
-        console.log(req.method);
         if (req.method && req.method.toLowerCase() === 'post') {
           try {
             await Decision.create(await json(req));
