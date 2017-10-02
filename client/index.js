@@ -71,8 +71,6 @@ const ridesObj = { value: 0, totalValue: 0 };
 const questRidesObj = { value: 0 };
 
 function handleResize() {
-  const articleBody = document.querySelector('.article-body');
-  const metersElement = document.querySelector('.meters');
   const d = new Date();
 
   gutterWidth = window.innerWidth < 740 ? 10 : 20;
@@ -87,6 +85,23 @@ function handleResize() {
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
   console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
+}
+
+function handleFullscreen() {
+  if (fscreen.fullscreenElement !== null) {
+    console.log('Entered fullscreen mode');
+  } else {
+    console.log('Exited fullscreen mode');
+  }
+}
+
+if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
+  const fullscreenButtonsElement = document.querySelector('.toggle-fullscreen');
+
+  fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
+  enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
+  exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
+  fullscreenButtonsElement.style.display = 'block';
 }
 
 function showCaveats() {
@@ -132,14 +147,6 @@ function continueStory() {
   }
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
-  function handleFullscreen() {
-    if (fscreen.fullscreenElement !== null) {
-      console.log('Entered fullscreen mode');
-    } else {
-      console.log('Exited fullscreen mode');
-    }
-  }
-  
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
   function showPanel() {
