@@ -129,8 +129,9 @@ html, body {
         &--intro {
           text-align: center;
 
-          h1 {
-            color: inherit;
+          img {
+            max-width: 350px;
+            width: 100%;
             margin: 0 0 8px;
           }
 
@@ -323,7 +324,7 @@ html, body {
             background-color: rgba(38, 43, 51, 0.8);
             color: #ffffff;
             -webkit-backdrop-filter: blur(12px);
-            -webkit-transition: -webkit-backdrop-filter 300ms linear;
+            -webkit-transition: -webkit-backdrop-filter 200ms linear;
             opacity: 0;
 
             .time-passing-upper,
@@ -521,7 +522,7 @@ html, body {
     background-attachment: fixed;
     background-position: center center;
     background-repeat: no-repeat;
-    transition: opacity 0.3s linear;
+    transition: opacity 200ms linear;
   }
 
   .loading-indicator {
@@ -565,7 +566,7 @@ html, body {
   background-color: rgba(38, 43, 51, 0.2);
   opacity: 1;
   -webkit-backdrop-filter: blur(12px);
-  -webkit-transition: -webkit-backdrop-filter 300ms linear;
+  -webkit-transition: -webkit-backdrop-filter 200ms linear;
 }
 
 .moments-preload {
@@ -603,7 +604,7 @@ html, body {
 
 @include oGridRespondTo(M) {
   .knot-container {
-    margin: 0 20px 64px !important;
+    margin: 0 20px 20px !important;
 
     .decoration {
       margin: 20px 0 0 !important;
@@ -614,11 +615,26 @@ html, body {
     }
   }
 
+  .time-passing-upper,
+  .moment-upper {
+    height: 80vh !important;
+
+    p {
+      font-size: 28px !important;
+    }
+  }
+
+  .time-passing-dashboard,
+  .moment-dashboard {
+    height: 20vh !important;
+  }
+
   .time-passing-image,
   .moment-image {
     max-width: 300px !important;
     max-height: 300px !important;
   }
+
 }
 
 @include oGridRespondTo(L) {

@@ -58,7 +58,7 @@ let knotContainerMaxHeight;
 // Needed for animations
 const defaultInDuration = 300;
 const defaultOutDuration = 200;
-const timePassingScreenDuration = 2000;
+const timePassingScreenDuration = 1500;
 const earningsObj = { value: 0, totalValue: 0 };
 const timeObj = { value: 1502092800000 };
 const ratingObj = { value: 500 };
@@ -140,6 +140,13 @@ function continueStory() {
         duration: 200,
         easing: 'linear',
         offset: 0,
+        begin: () => {
+          // Update background image if appropriate
+          const bgImageURL = stateUtils.getBackgroundImageURL();
+          if (bgImageURL) {
+            gameContainer.setBackgroundImage(bgImageURL);
+          }
+        },
       })
       .add({
         targets: knotContainer,
@@ -430,12 +437,6 @@ function continueStory() {
 
     knotElement.appendChild(paragraphElement);
     knotElement.appendChild(choicesContainerElement);
-  }
-
-  // Update background image if appropriate
-  const bgImageURL = stateUtils.getBackgroundImageURL();
-  if (bgImageURL) {
-    gameContainer.setBackgroundImage(bgImageURL);
   }
 
   // Create HTML choices from ink choices
