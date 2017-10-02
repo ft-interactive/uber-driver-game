@@ -751,17 +751,14 @@ Work is more important. You say you can't make it.
 ~alter(hours_driven_total,2)
 #button
 #bg:driving_sf
-*[🚗&nbsp;&nbsp;Drive]
+*[🚗&nbsp;&nbsp;Drive] You turn off the app for a bit to stop the car and stretch your aching legs, but a wave of exhaustion hits you. You decide to call it a day.
 ->day_2_end
 === day_2_end ===
 # day_2_end
-~timestamp=1502269200 //Weds 9am
-{home=="sf":
-You call it a day.
-}
+~timestamp=1502278740 //Weds 11:39am
 
 {home=="sac":
-~timestamp=1502265600 //Weds 8am
+~timestamp=1502278740 //Weds 11:39am
 The two-hour drive back to Sacramento is long and boring.
 
 }
@@ -776,8 +773,11 @@ The two-hour drive back to Sacramento is long and boring.
 
 === day_3_start ===
 # day_3_start
-
-It's Wednesday. You're feeling more confident behind the wheel. 
+It's Wednesday. You wake up to find the sun bright in the sky, and your phone's clock showing 11:39am. You must've slept clean through your alarm.
+#button
+#bg:main
+* [Start working]
+You're feeling less tired after a good night's sleep, and more confident getting behind the wheel. 
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
@@ -908,7 +908,7 @@ MESSAGE FROM UBER: “Just {quest_rides} more rides until you get ${quest_bonus}
 ->day_3_end
 
 - else:
-It's getting late. You turn off the app for a bit to stop the car and stretch your aching legs, but a wave of exhaustion hits you.
+It's getting late.
 {home=="sac":
 ~add_time(1,52)
 ~alter(day_hours_driven,2)
@@ -1882,7 +1882,7 @@ It's getting really late, and despite having taken a nap during the day, you're 
 
 * [Keep driving] Are you sure you want to keep driving? You can barely keep your eyes open.
     # link
-    ** [Keep driving]->insist
+    ** [Yes, keep going]->insist
     ** [Go home]->bed
 
 * [Go home] 
@@ -1931,6 +1931,7 @@ What do you do?
     ~timestamp=1502528400
     //saturday 9am
         # button
+        # bg:home
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
     {home=="sac":
@@ -1942,9 +1943,7 @@ What do you do?
         # button
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
-*[Don't contact Uber] You're too tired to try to sort this out over the phone right now.
-    #button
-    **[Go home]
+*[Don't contact Uber] You're too tired to sort this out over the phone right now.
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
