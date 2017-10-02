@@ -136,7 +136,7 @@ main {
           text-align: center;
 
           img {
-            max-width: 250px;
+            max-width: 200px;
             width: 100%;
             margin: 0 0 8px;
           }
@@ -269,6 +269,7 @@ main {
             -webkit-backdrop-filter: blur(12px);
             overflow: auto;
             border-radius: 15px;
+            z-index: 999;
 
             .decoration {
               width: 100%;
