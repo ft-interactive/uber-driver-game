@@ -78,6 +78,6 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ];
               then docker login -u $DOCKER_USER -p $DOCKER_PASS registry.heroku.com;
-              docker build --rm=false -t ft-ig-uber-game-backend/web:latest .;
+              docker build --rm=false -t registry.heroku.com/ft-ig-uber-game-backend/web:latest .;
               docker push registry.heroku.com/ft-ig-uber-game-backend/web:latest;
             fi
