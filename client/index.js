@@ -48,9 +48,7 @@ const momentButton = document.getElementById('moment-button');
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-
 const ending = new Ending(document.querySelector('.ending'), stateUtils);
-ending.initialise();
 
 let choicesContainerElement;
 // Dimensions
@@ -138,7 +136,6 @@ function continueStory() {
 
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
-
   function showPanel() {
     const panelIn = anime.timeline();
 
@@ -206,7 +203,9 @@ function continueStory() {
           timeDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
-          const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
+          const timeString = moment(timeObj.value)
+            .tz('Etc/GMT')
+            .format('ddd h:mma');
 
           timeDisplay.innerHTML = timeString;
         },
@@ -290,7 +289,9 @@ function continueStory() {
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
     timePassingTextHours.innerText = timePassingAmountHours;
-    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
+    timePassingDay.innerText = moment(timeObj.value)
+      .tz('Etc/GMT')
+      .format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -342,8 +343,12 @@ function continueStory() {
         easing: 'linear',
         offset: `-=${timePassingScreenDuration}`,
         update: () => {
-          const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
-          const timeStringDay = moment(timePassingObj.value).tz('Etc/GMT').format('ddd h:mma');
+          const timeString = moment(timePassingObj.value)
+            .tz('Etc/GMT')
+            .format('h:mma');
+          const timeStringDay = moment(timePassingObj.value)
+            .tz('Etc/GMT')
+            .format('ddd h:mma');
 
           timePassingTime.innerHTML = timeString;
           timeDisplay.innerHTML = timeStringDay;
@@ -387,20 +392,27 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055454-f7qnm.png)';
+      momentImage.style.backgroundImage =
+        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055454-f7qnm.png)';
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055487-9fwdc.png)';
+      momentImage.style.backgroundImage =
+        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055487-9fwdc.png)';
     } else {
       momentText.innerText = 'Quest completed!';
-      momentImage.style.backgroundImage = 'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055438-8fiwn.png)';
+      momentImage.style.backgroundImage =
+        'url(http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055438-8fiwn.png)';
     }
 
-    momentTime.innerText = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
-    momentDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
+    momentTime.innerText = moment(timeObj.value)
+      .tz('Etc/GMT')
+      .format('h:mma');
+    momentDay.innerText = moment(timeObj.value)
+      .tz('Etc/GMT')
+      .format('E');
     momentRides.innerText = rideCountTotal;
-    momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
-    momentRideGoalTotal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : totalQuests);
+    momentRideGoal.innerText = story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal;
+    momentRideGoalTotal.innerText = story.currentTags[1] === 'first_fare' ? '—' : totalQuests;
 
     momentButton.addEventListener('click', closeMoment);
 
@@ -432,7 +444,9 @@ function continueStory() {
     const paragraphElement = document.createElement('p');
 
     // if there is a [[[x]]], return string with rounded x (without square brackets)
-    paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) => Math.round(earningNum));
+    paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) =>
+      Math.round(earningNum),
+    );
 
     // Remove existing choices container element
     if (existingChoicesContainer) {
@@ -527,7 +541,9 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
-  const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
+  const timeString = moment(timeObj.value)
+    .tz('Etc/GMT')
+    .format('ddd h:mma');
 
   showStoryScreen
     .add({
@@ -589,14 +605,7 @@ startButton.addEventListener('click', startStory);
 
 // HACK click through first few steps to get to the ending
 (async () => {
-  // eslint-disable-next-line global-require
-  const Bluebird = require('bluebird');
-  await Bluebird.delay(200);
-  caveatsButton.click();
-  await Bluebird.delay(500);
-  startButton.click();
-  await Bluebird.delay(2000);
-  document.querySelector('[data-choice-text="goto end"]').click();
-  await Bluebird.delay(1000);
-  document.querySelector('[data-choice-text="to endscreen"]').click();
+  tint.style.display = 'none';
+  introScreen.style.display = 'none';
+  ending.show({});
 })();

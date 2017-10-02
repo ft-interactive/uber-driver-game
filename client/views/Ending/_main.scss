@@ -3,27 +3,69 @@
 //   display: none;
 // }
 
-
 .ending {
   display: none;
-  justify-content: center;
-  position: absolute;
+  position: relative;
+  // justify-content: center;
+  // position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #333;
+  background: rgba(yellow, 0.2); // TEMP
 
-  &__contents {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    * { color: white !important; }
+  &__splash {
+    background: rgba(red, 0.2);
+    height: 100%;
+    width: 100%;
+    display: block;
+    // display: none;
+    // height: calc(100vh + 200px);
+    // transform: translateY(calc(100vh + 200px));
   }
 
-  &--active {
-    display: flex;
+  // &__confetti {
+  //   background: rgba(blue, 0.5);
+  //   height: 100%;
+  // }
+  //
+  // &__solid-background {
+  //   height: 100%;
+  //   background: #333;
+  // }
+
+  // &__stripe {
+  //   height: 300px;
+  //   overflow: hidden;
+  //   background: red;
+  //   position: relative;
+  //
+  //   &:before {
+  //     content: '';
+  //     height: 100px;
+  //     background: skyblue;
+  //     display: block;
+  //     width: 200%;
+  //     transform: rotateZ(-20deg) translateX(-40%);
+  //
+  //     @include oGridRespondTo('M') {
+  //       // transofrm
+  //     }
+  //   }
+  // }
+
+  // &__contents {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center;
+  //   align-items: center;
+  //
+  //   * {
+  //     color: white !important;
+  //   }
+  // }
+
+  &--visible {
+    display: block;
   }
 }
