@@ -795,7 +795,7 @@ You head over to San Francisco. <>
 As you drive along the highway, a pebble hits your windshield and leaves a chip.
 #bg:pebble
 * [Repair it immediately ($30)]
-->repair
+->repair->day_3_morning
 
 * [Ignore it]
 ->ignore
@@ -814,7 +814,7 @@ You find a nearby auto shop. They take an hour to fix your windscreen, and charg
 }
 * [🔧&nbsp;&nbsp;Repair]
 
-->day_3_morning
+->->
 
 =ignore
 # pebble_start.ignore
