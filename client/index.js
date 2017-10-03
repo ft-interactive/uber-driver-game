@@ -771,3 +771,36 @@ stateUtils.loadImage(
   'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
   true,
 ); // Uber message panel decoration
+
+function endStory() {
+  storyScreen.style.display = 'none';
+  document.body.classList.add('showing-ending');
+
+  ending.show({
+    // TODO get real values from game
+    // stats overview
+    hoursDriven: 124,
+    ridesCompleted: 35,
+    driverRating: 4.53,
+
+    // income
+    faresAndTips: 3910,
+    weekendQuestBonus: 311,
+    weekdayQuestBonus: 182,
+
+    // costs
+    carRental: -1360,
+    upgrades: -120,
+    fuel: -380,
+    trafficTickets: -80,
+    tax: -80,
+  });
+}
+
+// TEMP end story immediately to ease development of the ending sequence
+(async () => {
+  tint.style.display = 'none';
+  introScreen.style.display = 'none';
+  document.querySelector('.article-head').style.display = 'none';
+  endStory();
+})();
