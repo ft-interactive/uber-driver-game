@@ -1,8 +1,13 @@
+/**
+ * This is used for both the 'income' and 'costs' panels, which both add/subtract several values one
+ * by one to modify the player's net total, which is displayed in big text at the top.
+ */
+
 // @flow
 
 import React, { Component } from 'react';
 import Panel from './Panel';
-import formatDollars from '../formatDollars';
+import formatDollars from '../../../lib/formatDollars';
 
 type Props = {
   heading: string,
