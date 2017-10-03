@@ -1662,7 +1662,7 @@ Feeling refreshed after resting during the day, you get in your car and prepare 
 ~temp dirty=false
 You arrive at a pick-up to find two passengers holding In-N-Out burgers that they are about to eat in the car.
 ~add_time(0,4)
-* [“The food can’t come in the car”] “Aww, come on,” they say. “We'll be careful.”
+* [“The food can’t come in the car.”] “Aww, come on,” they say. “We'll be careful.”
     # link
     ** “No means no[.”],” you say, as you cancel their ride.
     ->day_5_after_burger
