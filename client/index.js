@@ -31,6 +31,7 @@ const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
+const knotDecoration = document.querySelector('.decoration');
 const timePassingScreen = document.querySelector('.time-passing-container');
 const timePassingTextHours = document.getElementById('time-passing-text__hours');
 const timePassingEarnings = document.getElementById('tp-earnings');
@@ -466,6 +467,13 @@ function continueStory() {
     choicesContainerElement = document.createElement('div');
     choicesContainerElement.setAttribute('data-o-grid-colspan', '12 S11 Scenter M7 L6');
     choicesContainerElement.classList.add('choices-container');
+
+    // Conditionally set panel decoration
+    if (story.currentTags.indexOf('uber-message') > -1) {
+      knotDecoration.classList.toggle('uber-message');
+    } else if (knotDecoration.classList.contains('uber-message')) {
+      knotDecoration.classList.toggle('uber-message');
+    }
 
     knotElement.appendChild(paragraphElement);
     knotElement.appendChild(choicesContainerElement);
