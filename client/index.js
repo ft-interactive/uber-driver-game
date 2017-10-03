@@ -236,6 +236,14 @@ function continueStory() {
   function showPanel() {
     const panelIn = anime.timeline();
 
+    // Update background image if appropriate
+    const bgImageURL = stateUtils.getBackgroundImageURL();
+    let delay = 0;
+    if (bgImageURL) {
+      delay = 1100;
+      gameContainer.setBackgroundImage(bgImageURL);
+    }
+
     panelIn
       .add({
         targets: knotContainer,
@@ -243,14 +251,7 @@ function continueStory() {
         duration: 150,
         easing: 'linear',
         offset: 0,
-        begin: () => {
-          // Update background image if appropriate
-          const bgImageURL = stateUtils.getBackgroundImageURL();
-
-          if (bgImageURL) {
-            gameContainer.setBackgroundImage(bgImageURL);
-          }
-        },
+        delay,
       })
       .add({
         targets: knotContainer,
