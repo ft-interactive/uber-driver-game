@@ -50,6 +50,9 @@ const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 const momentButton = document.getElementById('moment-button');
 
+// keep list of choices made in game for analytics
+const yourChoices = [];
+
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
 
@@ -513,6 +516,9 @@ function continueStory() {
       //   }
       // });
 
+      // record choices for analytics
+      yourChoices.push(choice.text);
+
       const panelOut = anime.timeline();
 
       panelOut
@@ -627,6 +633,12 @@ function startStory() {
 
   gaAnalytics('uber-game', 'start-story');
 }
+
+// for analytics when user leaves page
+const unloadEventName = ('onbeforeunload' in window) ? 'beforeunload' : 'unload';
+window.addEventListener(unloadEventName, () => {
+  gaAnalytics('uber-game', 'exit-game', JSON.stringify(yourChoices), yourChoices.length);
+});
 
 window.addEventListener('load', handleResize);
 window.addEventListener('resize', handleResize);
