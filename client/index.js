@@ -470,9 +470,9 @@ function continueStory() {
 
     // Conditionally set panel decoration
     if (story.currentTags.indexOf('uber-message') > -1) {
-      knotDecoration.classList.toggle('uber-message');
-    } else if (knotDecoration.classList.contains('uber-message')) {
-      knotDecoration.classList.toggle('uber-message');
+      knotDecoration.classList.add('uber-message');
+    } else {
+      knotDecoration.classList.remove('uber-message');
     }
 
     knotElement.appendChild(paragraphElement);
