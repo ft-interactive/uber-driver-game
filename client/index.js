@@ -7,7 +7,7 @@ import './styles.scss';
 import json from './uber.json';
 import config from './config.yml';
 import StateUtils from './StateUtils';
-import GameContainer from './views/GameContainer';
+import GameContainer from './components/GameContainer';
 import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 import gaAnalytics from './components/analytics';
