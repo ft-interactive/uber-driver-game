@@ -2051,48 +2051,38 @@ It's Saturday. Do you take the day off? It is the weekend, after all.
 # day_6_work
 //9am
 MESSAGE FROM UBER: “The San Francisco Giants are playing at AT&T park today. Earn a boosted 1.5x fare for trips from there, from 5pm-6:30pm today”
-~ time_passes(3,0,1)
+{windshield_cracked==true:
+~ time_passes(6,0,1)
+- else:
+~ time_passes(8,0,1)
+}
 # button
 # bg:stadium
 #uber-message
 *[Got it]
-->door_dent
+{windshield_cracked==true:
+->pebble_crack->day_6_afternoon
+- else:
+->day_6_afternoon
+}
 
-=== door_dent ===
-# door_dent
-As you finish a ride, the passenger opens the door to get out and hits a lamp post, denting your car door. 
+===pebble_crack===
+# pebble_crack
 
-“I'm sorry! But I'm in a hurry,” he says as he rushes off. “Why don't you take up with Uber?”
-~add_time(2,21)
-# link
-# bg:door
-# deactivation
-*[Report the incident to Uber] You document everything and report the incident to Uber. Uber begins the claim process, but in the meantime your account is suspended.
-    ~timestamp=1502571600 //sat 9pm
-    ~moments=true
-    # button
-    **[🔧&nbsp;&nbsp;Repair]
-    ->reported
-
-*[Don't report it] You decide to get it repaired yourself instead. It takes the mechanics two hours to fix it, and they charge you $100. You put it on your credit card.
-    ~alter(repair_cost,100)
-    ~ time_passes(3,0,1)
-    # button
-    ** [🚗&nbsp;&nbsp;Drive]
-    ->day_6_afternoon
-        
-=reported
-# door_dent.reported
+You are driving when you hear a splintering sound. The chip in your windshield has cracked across the whole windshield. You have no choice but to get it repaired.
+~alter(repair_cost,-250)
+~add_time(1,58)
+~windshield_cracked=false
 # button
-You spend the rest of the day getting your car fixed and arranging for a different rental car so you can get back on the road.
-*[End day 6]
--> day_6_end
+# bg:crack
+* [The mechanic charges you $250]You put it on your card, regretting that you didn't get it fixed earlier.
+->->
 
 === day_6_afternoon ===
 # link
 # day_6_afternoon
 # bg:stadium
-//5:30pm
+//noon if no pebble repair, 2pm if pebble repair
 You hear on the radio that the baseball game has just ended.
 
 * [Head over to the stadium]
@@ -2152,9 +2142,6 @@ You can't wait to go home after two days out driving.
 ===day_7_start===
 
 # day_7_start
-
-{door_dent.reported: You manage to get a different {car}, and Uber has reactivated your account.}
-
 It's Sunday! You still need {quest_rides} more rides to get the weekend bonus.
 # button
 # bg:main
@@ -2208,66 +2195,96 @@ You get a traffic ticket (-$260). You'll have to go pay that later.
 ~ time_passes(3,0,1)
     # button
     **[That's a real setback]
-    ->quest_finish->
     ->day_7_afternoon
 
 ===day_7_afternoon===
-
-# day_7_afternoon
-~time_passes(3,0,1)
-# button
-# bg:driving_sf
-* [🚗&nbsp;&nbsp;Drive]
-->quest_finish->
 {windshield_cracked==true:
-->pebble_crack->
+->pebble_crack->door_dent
+- else: ->door_dent
 }
 
-{quest_completion==true:
-Having finished the quest, you decide to call it a day.
-# button
-*[Finish driving] 
-->day_7_end
-- else:
-# button
-*[Keep driving]
-->day_7_evening
-}
+=== door_dent ===
+# door_dent
+As you finish a ride, the passenger opens the door to get out and hits a lamp post, denting your car door. 
 
-===pebble_crack===
+“I'm sorry! But I'm in a hurry,” he says as he rushes off. “Why don't you take up with Uber?”
+~add_time(2,21)
+# link
+# bg:door
+# deactivation
+*[Report the incident to Uber] You document everything and report the incident to Uber. Uber begins the claim process, but in the meantime your account is suspended.
+    ~timestamp=1502658000 //SUN 9pm
+    ~moments=true
+    # button
+    **[🔧&nbsp;&nbsp;Repair]
+    ->reported
 
-# pebble_crack
+*[Don't report it] You decide to get it repaired yourself instead. It takes the mechanics two hours to fix it, and they charge you $100. You put it on your credit card.
+    ~alter(repair_cost,100)
+    ~ time_passes(3,0,1)
+    # button
+    ** [🚗&nbsp;&nbsp;Drive]
+    ->day_7_evening
 
-You are driving when you hear a splintering sound. The chip in your windshield has cracked across the whole windshield. You have no choice but to get it repaired
-~alter(repair_cost,-250)
-~add_time(1,58)
+=reported
+# door_dent.reported
 # button
-# bg:crack
-* [The mechanic charges you $250]You put it on your card, regretting that you didn't get it fixed earlier.
-->->
+You spend the rest of the day getting your car fixed and arranging for a different rental car so you can get back on the road next week.
+-> day_7_end
 
 ===day_7_evening===
-# link
+//8pm
 # day_7_evening
 {
+-quest_completion==true:
+You finished the quest! You earn a bonus ${weekend_quest_bonus}. 
+~moments=true
+# button
+*[A good end to a long week]
+->day_7_end
+
 -quest_rides < 7 && quest_completion==false:
     MESSAGE FROM UBER: “Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!”
     # button
     ~time_passes(3,0,1)
-    ~quest_completion=true
-    ~moments=true
     #bg:driving_sf
     #uber-message
     *[Finish the quest]
     ->day_7_end
+-quest_rides >=7 && quest_rides < 15:
+    You still need {quest_rides} more rides to finish the weekend quest. 
+    # link
+    * [Keep going]
+    You are determined to try to get the bonus payment.
+    ~time_passes(4,0,1)
+        ** [🚗&nbsp;&nbsp;Drive]
+        ->kept_going
+    
+    * [Give up] It's getting late and there are too many rides left to finish. You go home instead.
+    ->day_7_end
 
-- quest_rides>=10:
+-quest_rides>=15:
     You still need too many more rides to complete the quest. There's not much you can do about it, so you head home.
     ->day_7_end
 }
 
+=kept_going
+#kept_going
+{quest_completion==true:
+Your hustle has paid off and you finished the quest!
+->day_7_end
+- else:
+You just couldn't get enough rides before you became too tired to continue.
+->day_7_end
+}
+
 ===day_7_end===
 # day_7_end
+{home=="sac":
+~alter(day_hours_driven,2)
+~alter(hours_driven_total,2)
+~add_time(2,8)
+}
 ~day_end()
 {quest_completion==true:
 ~weekend_quest_completion=true
@@ -2277,7 +2294,6 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 #bg:night
 *[Finish the week]
 ->earnings_calculations
-
 
 ===earnings_calculations===
 //calculate total revenue
@@ -2467,7 +2483,6 @@ Not only did you not meet your target of earning $1000 this week, you actually l
 ->endscreen
 
 */
-
 
 
 
