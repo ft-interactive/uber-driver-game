@@ -122,11 +122,12 @@ link = choice
 
 
 === welcome ===
-# welcome
+
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week. 
 
 Can you earn enough to pay the bill — and make more than other players?  
 # button
+# welcome
 * [Yes]
 ->choose_difficulty
 
@@ -641,6 +642,7 @@ It's the end of the first day.
 ~alter(days_worked,1)
 # button
 # bg:night
+# to_day_2
 *[Start day 2]
 ->day_2_begin
 
@@ -769,6 +771,7 @@ The two-hour drive back to Sacramento is long and boring.
 ~alter(days_worked,1)
 # button
 # bg:night
+# to_day_3
 * [Start Day 3]
 
 -> day_3_start
@@ -991,6 +994,7 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 ~ timestamp=1502355600 //9am
 # button
 # bg:night
+# to_day_4
 * [Start day 4] -> day_4_start
 
 ===day_4_start===
@@ -1483,6 +1487,7 @@ You didn't finish the quest in time, and lose out on the ${quest_bonus} bonus.
 
 # button
 # bg:night
+# to_day_5
 *[Start day 5]->day_5_start
 
 ===day_5_start===
@@ -1800,6 +1805,7 @@ You're too tired to drive two hours to go back home. You find a quiet spot to pa
 ~day_end()
 ~ alter(days_worked,1)
     # button
+    # to_day_6
     ** [Start day 6]
     -> day_6_slept_in_car
 
@@ -1936,6 +1942,7 @@ What do you do?
     //saturday 9am
         # button
         # bg:home
+        # to_day_6
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
     {home=="sac":
@@ -1945,6 +1952,7 @@ What do you do?
     ~timestamp=1502528400
     //saturday 9am
         # button
+        # to_day_6
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
 *[Don't contact Uber] You're too tired to sort this out over the phone right now.
@@ -1955,6 +1963,7 @@ What do you do?
     ~timestamp=1502528400
     //saturday 9am
         # button
+        # to_day_6
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
     {home=="sac":
@@ -1964,6 +1973,7 @@ What do you do?
     ~timestamp=1502528400
     //saturday 9am
         # button
+        # to_day_6
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
 
@@ -1975,6 +1985,7 @@ What do you do?
 ~ alter(days_worked,1)
 # button
 # bg:night
+# to_day_6
 * [Start day 6]
 ->day_6_start
 
@@ -2012,6 +2023,7 @@ You finally have some much-needed time to clean up around the house, and spend t
 - You feel refreshed.
 # button
 # bg:night
+# to_day_7
 ~timestamp=1502614800
 //sun 9am
 ** [Start day 7]
@@ -2133,6 +2145,7 @@ You can't wait to go home after two days out driving.
 ~alter(days_worked,1)
 # button
 # bg:night
+# to_day_7
 * [Start day 7]
 ->day_7_start
 
