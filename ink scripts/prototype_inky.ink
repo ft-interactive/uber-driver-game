@@ -2384,8 +2384,9 @@ Bought biz licence? {biz_licence}
 
 
 # button
+# end_sequence
 ~go_to_endscreen=true
-*[to endscreen]
+*[See how you did]
 ->endscreen
 
 
