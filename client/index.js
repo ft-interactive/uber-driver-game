@@ -738,6 +738,9 @@ stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.co
 stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png', true); // Uber message panel decoration
 
 function endStory() {
+  tint.style.display = 'none';
+  introScreen.style.display = 'none';
+  document.querySelector('.article-head').style.display = 'none';
   storyScreen.style.display = 'none';
   document.body.classList.add('showing-ending');
 
@@ -764,8 +767,5 @@ function endStory() {
 
 // // TEMP end story immediately to ease development of the ending sequence
 // (async () => {
-//   tint.style.display = 'none';
-//   introScreen.style.display = 'none';
-//   document.querySelector('.article-head').style.display = 'none';
 //   endStory();
 // })();
