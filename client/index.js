@@ -1,6 +1,7 @@
 import anime from 'animejs';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
+import { throttle } from 'lodash';
 import moment from 'moment-timezone';
 import './styles.scss';
 import json from './uber.json';
@@ -9,6 +10,8 @@ import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 import gaAnalytics from './components/analytics';
+
+const endpoint = window.ENV === 'development' ? 'http://localhost:3000' : 'https://ft-ig-uber-game-backend.herokuapp.com';
 
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
@@ -31,6 +34,7 @@ const timeDisplay = document.getElementById('time');
 const ratingDisplay = document.getElementById('rating');
 const knotContainer = document.querySelector('.knot-container');
 const knotElement = document.querySelector('.knot');
+const knotDecoration = document.querySelector('.decoration');
 const timePassingScreen = document.querySelector('.time-passing-container');
 const timePassingTextHours = document.getElementById('time-passing-text__hours');
 const timePassingEarnings = document.getElementById('tp-earnings');
@@ -101,10 +105,17 @@ function handleResize() {
 
   if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
     fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
-    enterFullscreenButton.addEventListener('click', () => fscreen.requestFullscreen(document.querySelector('main')));
-    exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
     fullscreenButtonsElement.style.display = 'block';
+
+    document.addEventListener('oForms.toggled', (event) => {
+      if (event.target.checked) {
+        fscreen.requestFullscreen(document.querySelector('main'));
+      } else {
+        fscreen.exitFullscreen();
+      }
+    }, false);
   } else {
+    fscreen.removeEventListener('fullscreenchange', handleFullscreen);
     fullscreenButtonsElement.style.display = 'none';
   }
 }
@@ -133,6 +144,56 @@ function showCaveats() {
   gaAnalytics('uber-game', 'show-caveats');
 }
 
+function recordDecision(decision) {
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
+
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      type: decision,
+      value: story.variablesState.$(decision) === 1,
+      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
+      meta,
+    }),
+  })
+  .then(() => console.info(`${decision} recorded`))
+  .catch((e) => console.error(`Error recording: ${e}`));
+}
+
+export function recordPlayerResult() {
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
+
+  const revenue = story.variablesState.$('revenue_total');
+  const costs = story.variablesState.$('cost_total');
+  const difficulty = story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard';
+  const income = revenue - costs;
+  const hourlyWage = income / story.variablesState.$('hours_driven_total');
+
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      revenue,
+      meta,
+      income,
+      hourlyWage,
+      difficulty,
+      expenses: costs,
+    }),
+  })
+  .then(() => console.info('Endgame data recorded'))
+  .catch((e) => console.error(`Error recording: ${e}`));
+}
+
 function continueStory() {
   const earnings = parseInt(story.variablesState.$('fares_earned_total'), 10);
   const earningsDuringTimePassing = earnings - earningsObj.totalValue;
@@ -144,6 +205,14 @@ function continueStory() {
   const showMoment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
+
+  if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
+    recordDecision('biz_licence');
+  } else if (story.currentTags.indexOf('day_5_start') > -1) {
+    recordDecision('helped_homework');
+  } else if (story.currentTags.indexOf('day_7_start') > -1) {
+    recordDecision('took_day_off');
+  }
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
   // then number of quests is 75, else 65
@@ -325,7 +394,7 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText = timePassingAmountHours;
+    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
     timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
@@ -476,6 +545,13 @@ function continueStory() {
     choicesContainerElement = document.createElement('div');
     choicesContainerElement.setAttribute('data-o-grid-colspan', '12 S11 Scenter M7 L6');
     choicesContainerElement.classList.add('choices-container');
+
+    // Conditionally set panel decoration
+    if (story.currentTags.indexOf('uber-message') > -1) {
+      knotDecoration.classList.add('uber-message');
+    } else {
+      knotDecoration.classList.remove('uber-message');
+    }
 
     knotElement.appendChild(paragraphElement);
     knotElement.appendChild(choicesContainerElement);
@@ -641,6 +717,6 @@ window.addEventListener(unloadEventName, () => {
 });
 
 window.addEventListener('load', handleResize);
-window.addEventListener('resize', handleResize);
+window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);

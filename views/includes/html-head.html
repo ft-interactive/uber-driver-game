@@ -9,7 +9,7 @@
 
 {# Stylesheets #}
 <link rel="stylesheet" href="components/core/top.css">
-<link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-normalise@^1.2.1,o-fonts@^3.0.1,o-grid@^4.3.3,o-typography@^5.1.1,o-header@^7.0.4,o-card@^3.0.0,o-footer@^6.0.2{{',o-comments@^4.0.2' if flags.comments}}{{ ',o-share@^5.0.0' if flags.shareButtons }}{{ ',o-ads@^7.0.0' if flags.ads}}">
+<link rel="stylesheet" href="https://www.ft.com/__origami/service/build/v2/bundles/css?modules=o-normalise@^1.2.1,o-fonts@^3.0.1,o-grid@^4.3.3,o-typography@^5.1.1,o-header@^7.0.4,o-card@^3.0.0,o-footer@^6.0.2,o-forms@^4.1.1{{',o-comments@^4.0.2' if flags.comments}}{{ ',o-share@^5.0.0' if flags.shareButtons }}{{ ',o-ads@^7.0.0' if flags.ads}}">
 
 {%- if stylesheets %}{% for stylesheet in stylesheets %}
 <link rel="stylesheet" href="{{ stylesheet | safe }}">
@@ -18,8 +18,9 @@
 
 <link href="https://plus.google.com/113457471429583444041/" rel="publisher" />
 <meta property="fb:app_id" content="429755910551755" />
-<link rel="shortcut icon" href="https://ig.ft.com/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="https://ig.ft.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="https://www.ft.com/__assets/creatives/brand-ft/icons/v2/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://www.ft.com/__assets/creatives/brand-ft/icons/v2/favicon-194x194.png" sizes="194x194">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.ft.com/__assets/creatives/brand-ft/icons/v2/apple-touch-icon-180x180.png">
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="index,follow">
 <meta name="copyright" content="Financial Times">
@@ -138,7 +139,7 @@
 {% endif -%}
       s.parentNode.insertBefore(o, s);
     }
-  }('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-header@^7.0.4,o-footer@^6.0.2,o-date@^2.8.0,o-errors@^3.5.1{{ ",o-comments@^4.0.2" if flags.comments }}{{ ",o-share@^5.0.0" if flags.shareButtons }}{{ ",o-tracking@^1.2.3" if flags.analytics }}{{ ",o-ads@^7.0.0" if flags.ads}}'));
+  }('https://www.ft.com/__origami/service/build/v2/bundles/js?modules=o-header@^7.0.4,o-footer@^6.0.2,o-date@^2.8.0,o-errors@^3.5.1,o-forms@^4.1.1{{ ",o-comments@^4.0.2" if flags.comments }}{{ ",o-share@^5.0.0" if flags.shareButtons }}{{ ",o-tracking@^1.2.3" if flags.analytics }}{{ ",o-ads@^7.0.0" if flags.ads}}'));
 </script>
 
 <title>{{ title | default(headline, true) }}</title>

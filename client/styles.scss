@@ -154,10 +154,14 @@ main {
           .toggle-fullscreen {
             display: none;
 
-            p {
-              font-size: 16px;
-              font-weight: 600;
-              line-height: 18px;
+            fieldset.o-forms {
+              margin: 0 auto;
+
+              label {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 18px;
+              }
             }
           }
         }
@@ -275,11 +279,17 @@ main {
               width: 100%;
               height: 20px;
               margin: 10px 0 0;
-              background: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493380088-0jv5b.png?source=ig&width=2440&height=80&format=png&quality=high) no-repeat center center;
+              background-position: center center;
+              background-repeat: no-repeat;
               -webkit-background-size: cover;
               -moz-background-size: cover;
               -o-background-size: cover;
               background-size: cover;
+              background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493380088-0jv5b.png?source=ig&width=2440&height=80&format=png&quality=high);
+
+              &.uber-message {
+                background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8492973346-7mu0u.png?source=ig&width=2440&height=80&format=png&quality=high);
+              }
             }
 
             .knot {
@@ -359,18 +369,16 @@ main {
 
               .time-passing-image,
               .moment-image {
-                width: 100%;
-                height: 100%;
-                max-width: 200px;
-                max-height: 200px;
+                width: 200px;
+                height: 200px;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
               }
 
               .time-passing-image {
-                max-width: 150px;
-                max-height: 150px;
+                width: 150px;
+                height: 150px;
                 background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048373-zks8k.png?source=ig&width=600&height=600&format=png&quality=high);
               }
 
@@ -657,8 +665,8 @@ main {
 
   .time-passing-image,
   .moment-image {
-    max-width: 300px !important;
-    max-height: 300px !important;
+    width: 300px !important;
+    height: 300px !important;
   }
 
 }

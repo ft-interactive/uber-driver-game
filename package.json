@@ -86,6 +86,7 @@
     "animejs": "^2.1.0",
     "fscreen": "^1.0.2",
     "inkjs": "^1.6.0",
+    "lodash": "^4.17.4",
     "moment-timezone": "^0.5.13"
   }
 }
