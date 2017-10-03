@@ -2281,16 +2281,16 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 //calculate gas cost
 {
 - car=="minivan" && home=="sf":
-~gas_cost=days_worked*25
+~gas_cost=days_worked*35
 
 - car=="minivan" && home=="sac":
-~gas_cost=days_worked*30
+~gas_cost=days_worked*45
 
 - car=="Prius" && home=="sf":
 ~gas_cost=days_worked*15
 
 - car=="Prius" && home=="sac":
-~gas_cost=days_worked*20
+~gas_cost=days_worked*25
 }
 
 //calculate total cost
