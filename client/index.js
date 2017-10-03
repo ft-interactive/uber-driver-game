@@ -1,4 +1,4 @@
-import anime from 'animejs';
+import anime from 'animejs/anime';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import { throttle } from 'lodash';
