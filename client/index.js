@@ -766,6 +766,4 @@ function endStory() {
 }
 
 // // TEMP end story immediately to ease development of the ending sequence
-// (async () => {
-//   endStory();
-// })();
+// endStory();
