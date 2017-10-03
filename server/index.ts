@@ -54,7 +54,7 @@ Promise.all([Result.sync(), Decision.sync()])
           }
         } else {
           try {
-            return await sequelize.query(
+            return (await sequelize.query(
               `
               SELECT percentile_cont(array[.1,.2,.3,.4,.5,.6,.7,.8,.9,1])
               WITHIN GROUP (ORDER BY income) AS deciles
@@ -62,7 +62,7 @@ Promise.all([Result.sync(), Decision.sync()])
               `,
               {
                 type: sequelize.QueryTypes.SELECT,
-              });  
+              })).shift();  
           } catch (e) {
             console.error(e);
             send(res, 500, 'Server Error');
