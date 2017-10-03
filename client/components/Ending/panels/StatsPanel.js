@@ -154,7 +154,7 @@ export default class StatsPanel extends Component<Props, State> {
             }}
           >
             <h2>{title}</h2>
-            <div>
+            <div className="value">
               {title === 'Driver rating' ? Math.round(value * 100) / 100 : Math.round(value)}
             </div>
           </div>
@@ -162,16 +162,26 @@ export default class StatsPanel extends Component<Props, State> {
 
         <style jsx>{`
           .stat {
-            margin-top: 40px;
+            margin: 20px 0;
           }
-          .stat > h2 {
+          h2 {
             color: white;
-            font: 700 18px MetricWeb, sans-serif;
-            margin: 0 0 10px;
+            font: 700 15px MetricWeb, sans-serif;
+            margin: 0;
           }
-          .stat > div {
+          .value {
             color: white;
-            font: 700 48px MetricWeb, sans-serif;
+            font: 700 40px MetricWeb, sans-serif;
+          }
+
+          @media (min-width: 740px) {
+            h2 {
+              font-size: 17px;
+            }
+
+            .value {
+              font-size: 50px;
+            }
           }
         `}</style>
       </Panel>

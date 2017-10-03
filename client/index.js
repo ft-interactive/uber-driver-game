@@ -723,6 +723,7 @@ startButton.addEventListener('click', startStory);
 
 function endStory() {
   storyScreen.style.display = 'none';
+  document.body.classList.add('showing-ending');
 
   ending.show({
     // TODO get real values from game
@@ -749,5 +750,6 @@ function endStory() {
 (async () => {
   tint.style.display = 'none';
   introScreen.style.display = 'none';
+  document.querySelector('.article-head').style.display = 'none';
   endStory();
 })();
