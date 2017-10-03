@@ -106,12 +106,21 @@ function handleResize() {
 
   if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
     fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
-    enterFullscreenButton.addEventListener('click', () =>
-      fscreen.requestFullscreen(document.querySelector('main')),
-    );
-    exitFullscreenButton.addEventListener('click', () => fscreen.exitFullscreen());
     fullscreenButtonsElement.style.display = 'block';
+
+    document.addEventListener(
+      'oForms.toggled',
+      (event) => {
+        if (event.target.checked) {
+          fscreen.requestFullscreen(document.querySelector('main'));
+        } else {
+          fscreen.exitFullscreen();
+        }
+      },
+      false,
+    );
   } else {
+    fscreen.removeEventListener('fullscreenchange', handleFullscreen);
     fullscreenButtonsElement.style.display = 'none';
   }
 }

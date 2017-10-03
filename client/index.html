@@ -20,15 +20,20 @@
     <div class="o-grid-container">
       <div class="o-grid-row">
         <div data-o-grid-colspan="12 S11 Scenter M8 L7 XL6">
+          <div class="toggle-fullscreen">
+            <form action="" data-o-component="o-forms">
+              <fieldset class="o-forms">
+                <div class="inverse-demo">
+                  <div class="o-forms__checkbox-toggle o-forms__checkbox-toggle--inverse">
+                    <input class="o-forms__checkbox-toggle__checkbox" data-o-form-toggle="" type="checkbox" name="checkbox" value="1" id="fullscreen" />
+                    <label for="fullscreen" class="o-forms__label">Enter fullscreen mode</label>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
           <small><a href="http://www.ft.com/servicestools/help/copyright" data-trackable="link-copyright">Copyright</a>
            <span itemprop="name">The Financial Times</span> Limited {{ now() | strftime('%Y') }}. All rights reserved.</small>
-          <div class="toggle-fullscreen">
-            <p>Enter full screen mode</p>
-            <div>
-              <button type="button" id="enter-fullscreen-button">Enter fullscreen</button>
-              <button type="button" id="exit-fullscreen-button">Exit fullscreen</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

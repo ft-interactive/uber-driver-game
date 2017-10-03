@@ -157,10 +157,14 @@ main {
           .toggle-fullscreen {
             display: none;
 
-            p {
-              font-size: 16px;
-              font-weight: 600;
-              line-height: 18px;
+            fieldset.o-forms {
+              margin: 0 auto;
+
+              label {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 18px;
+              }
             }
           }
         }
