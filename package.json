@@ -80,6 +80,7 @@
     "inkjs": "^1.6.0",
     "invariant": "^2.2.2",
     "jsdom": "^11.3.0",
+    "lodash": "^4.17.4",
     "markdown-it": "^8.4.0",
     "minimist": "^1.2.0",
     "mocha": "^3.5.3",

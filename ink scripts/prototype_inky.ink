@@ -28,7 +28,6 @@ VAR hours_driven_total=0
 VAR UberXL_total=0
 
 VAR kept_receipt=false
-VAR miles_tracked=false
 VAR windshield_cracked=false
 VAR ticketed=false
 VAR saturday_off=false
@@ -133,22 +132,25 @@ Can you earn enough to pay the bill — and make more than other players?
 
 
 === choose_difficulty===
-# choose_difficulty
 Your difficulty level will affect how easy it is to earn $1000.
 
+Easier difficulty: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+
+Harder difficulty: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
 # link 
+# choose_difficulty
 * [Easier]
 ~ home="sf"
 ~ credit_rating="good"
 ~ current_city=home
-Easier difficulty: You live in San Francisco and have good bank credit, so it is cheaper for you to rent a car. 
+
 ->day_1_start
 
 * [Harder]
 ~ home="sac"
 ~ credit_rating="bad"
 ~ current_city=home
-Harder difficulty: You have a bad credit rating and can't afford to live in San Francisco. Instead, you live two hours away in Sacramento.
+
 ->day_1_start
 
 /*
@@ -662,7 +664,7 @@ It's Tuesday. Your back aches from having spent the whole day in the car yesterd
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt? 
 
-*[Yes] You keep it in a folder for your expenses, so you can claim tax deductions later.
+*[Yes] You keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
 ~kept_receipt=true
 *[No] You don’t have time to keep track of stuff like that.
 ~kept_receipt=false
@@ -749,17 +751,14 @@ Work is more important. You say you can't make it.
 ~alter(hours_driven_total,2)
 #button
 #bg:driving_sf
-*[🚗&nbsp;&nbsp;Drive]
+*[🚗&nbsp;&nbsp;Drive] You turn off the app for a bit to stop the car and stretch your aching legs, but a wave of exhaustion hits you. You decide to call it a day.
 ->day_2_end
 === day_2_end ===
 # day_2_end
-~timestamp=1502269200 //Weds 9am
-{home=="sf":
-You call it a day.
-}
+~timestamp=1502278740 //Weds 11:39am
 
 {home=="sac":
-~timestamp=1502265600 //Weds 8am
+~timestamp=1502278740 //Weds 11:39am
 The two-hour drive back to Sacramento is long and boring.
 
 }
@@ -774,8 +773,11 @@ The two-hour drive back to Sacramento is long and boring.
 
 === day_3_start ===
 # day_3_start
-
-It's Wednesday. You're feeling more confident behind the wheel. 
+It's Wednesday. You wake up to find the sun bright in the sky, and your phone's clock showing 11:39am. You must've slept clean through your alarm.
+#button
+#bg:main
+* [Start working]
+You're feeling less tired after a good night's sleep, and more confident getting behind the wheel. 
 {home=="sac":
 You head over to San Francisco. <> 
 ~alter(day_hours_driven,2)
@@ -792,7 +794,7 @@ You head over to San Francisco. <>
 As you drive along the highway, a pebble hits your windshield and leaves a chip.
 #bg:pebble
 * [Repair it immediately ($30)]
-->repair
+->repair->day_3_morning
 
 * [Ignore it]
 ->ignore
@@ -811,7 +813,7 @@ You find a nearby auto shop. They take an hour to fix your windscreen, and charg
 }
 * [🔧&nbsp;&nbsp;Repair]
 
-->day_3_morning
+->->
 
 =ignore
 # pebble_start.ignore
@@ -906,7 +908,7 @@ MESSAGE FROM UBER: “Just {quest_rides} more rides until you get ${quest_bonus}
 ->day_3_end
 
 - else:
-It's getting late. You turn off the app for a bit to stop the car and stretch your aching legs, but a wave of exhaustion hits you.
+It's getting late.
 {home=="sac":
 ~add_time(1,52)
 ~alter(day_hours_driven,2)
@@ -1159,6 +1161,7 @@ But you promised to be home by {home=="sac":8pm}{home=="sf":7pm}.
 =keep_driving
 # quest_nudge.keep_driving
 You call home to say you won't be back. Your son is disappointed.
+~ temp remaining=quest_rides
 ~ time_passing=true
 ~ alter(day_ride_count, quest_rides)
 ~ alter(day_fares_earned, 19)
@@ -1172,7 +1175,7 @@ You call home to say you won't be back. Your son is disappointed.
 # button
 *[🚗&nbsp;&nbsp;Drive] 
 
-It takes you two hours to finish the last {quest_rides} rides, but you finish the quest.
+It takes you two hours to finish the last {remaining} rides, but you finish the quest.
 ~moments=true
 {home=="sac" && current_city=="sf":
 ~ alter(day_hours_driven, 2)
@@ -1212,6 +1215,7 @@ You're tired after a long day, but the quest doesn't expire until 4am.
 =go_back_out
 # quest_nudge.go_back_out
 You get back in your car and turn the app back on.
+~ temp remaining=quest_rides
 ~ time_passing=true
 ~ alter(day_fares_earned, 19)
 ~ alter(day_hours_driven, 2)
@@ -1226,7 +1230,7 @@ You get back in your car and turn the app back on.
 # button
 # bg:night
 *[🚗&nbsp;&nbsp;Drive] 
-It takes you two hours to finish the last {quest_rides} rides, but you finish the quest. You get ${quest_bonus}!
+It takes you two hours to finish the last {remaining} rides, but you finish the quest. You get ${quest_bonus}!
 ~moments=true
 You are completely exhausted.
     # button
@@ -1285,7 +1289,6 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
     ** [Go home]
     ~helped_homework=true
     You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
@@ -1316,7 +1319,7 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
+    # bg:driving_sf
     ** [Go home]
         ~helped_homework=true
         You spend a pleasant evening helping your son with his homework.
@@ -1335,7 +1338,7 @@ By now, you've become used to the rhythm of the day and how this works.
     ~ alter(day_hours_driven,2)
     ~ alter(hours_driven_total,2)
     # button
-    # bg:son
+    # bg:driving_sf
     * [Go home]        
         ~helped_homework=true
         You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
@@ -1879,7 +1882,7 @@ It's getting really late, and despite having taken a nap during the day, you're 
 
 * [Keep driving] Are you sure you want to keep driving? You can barely keep your eyes open.
     # link
-    ** [Keep driving]->insist
+    ** [Yes, keep going]->insist
     ** [Go home]->bed
 
 * [Go home] 
@@ -1920,7 +1923,6 @@ What do you do?
 *[Contact Uber] You call Uber to contest your deactivation. You spend nearly an hour on the phone, but all you get is a promise that they'll look into it.
     ~add_time(0,44)
 # button
-# bg:home
     **[Go home]
     {home=="sf":
     You drive home and collapse into bed.
@@ -1929,6 +1931,7 @@ What do you do?
     ~timestamp=1502528400
     //saturday 9am
         # button
+        # bg:home
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
     {home=="sac":
@@ -1940,10 +1943,7 @@ What do you do?
         # button
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
-*[Don't contact Uber] You're too tired to try to sort this out over the phone right now.
-    #button
-    #bg:home
-    **[Go home]
+*[Don't contact Uber] You're too tired to sort this out over the phone right now.
     {home=="sf":
     You drive home and collapse into bed.
     ~day_end()
@@ -2165,7 +2165,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 ~ time_passes(3,0,1)
 # button
 * [🚗&nbsp;&nbsp;Drive]
-->track_mileage
+->day_7_afternoon
 
 =drop
 #no_drop_zone.drop
@@ -2174,7 +2174,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 You drop her off quickly. Luckily, there weren't any cops around.
     ~time_passes(3,0,1)
     # button
-    ** [Phew!]->track_mileage
+    ** [Phew!]->day_7_afternoon
 - else: ->caught
 }
 
@@ -2191,27 +2191,14 @@ You get a traffic ticket (-$260). You'll have to go pay that later.
     # button
     **[That's a real setback]
     ->quest_finish->
-    ->track_mileage
-    
-=== track_mileage ===
-# track_mileage
-It's been a long week. You idly wonder just how far you've driven.
-
-# link
-# bg:driving_sf
-* [Good thing you've been keeping track] {home=="sf": You check your notes: 869 miles. That's quite a lot.}{home=="sac":You check your notes: 1567 miles. That's quite a lot.}
-~miles_tracked=true
-
-* [Who cares]It doesn't really matter.
-~miles_tracked=false
-
-- ->day_7_afternoon
+    ->day_7_afternoon
 
 ===day_7_afternoon===
 
 # day_7_afternoon
 ~time_passes(3,0,1)
 # button
+# bg:driving_sf
 * [🚗&nbsp;&nbsp;Drive]
 ->quest_finish->
 {windshield_cracked==true:
@@ -2294,16 +2281,16 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 //calculate gas cost
 {
 - car=="minivan" && home=="sf":
-~gas_cost=days_worked*25
+~gas_cost=days_worked*35
 
 - car=="minivan" && home=="sac":
-~gas_cost=days_worked*30
+~gas_cost=days_worked*45
 
 - car=="Prius" && home=="sf":
 ~gas_cost=days_worked*15
 
 - car=="Prius" && home=="sac":
-~gas_cost=days_worked*20
+~gas_cost=days_worked*25
 }
 
 //calculate total cost

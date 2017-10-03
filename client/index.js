@@ -1,6 +1,7 @@
 import anime from 'animejs';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
+import { throttle } from 'lodash';
 import moment from 'moment-timezone';
 import './styles.scss';
 import json from './uber.json';
@@ -346,10 +347,8 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText = timePassingAmountHours;
-    timePassingDay.innerText = moment(timeObj.value)
-      .tz('Etc/GMT')
-      .format('E');
+    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
+    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -664,7 +663,7 @@ function startStory() {
 }
 
 window.addEventListener('load', handleResize);
-window.addEventListener('resize', handleResize);
+window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
 
