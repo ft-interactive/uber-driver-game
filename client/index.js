@@ -1,6 +1,7 @@
 import anime from 'animejs';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
+import { throttle } from 'lodash';
 import moment from 'moment-timezone';
 import './styles.scss';
 import json from './uber.json';
@@ -609,6 +610,6 @@ function startStory() {
 }
 
 window.addEventListener('load', handleResize);
-window.addEventListener('resize', handleResize);
+window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
