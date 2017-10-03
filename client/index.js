@@ -12,6 +12,8 @@ import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 import gaAnalytics from './components/analytics';
 
+console.log('NODE_ENV', process.env.NODE_ENV);
+
 const endpoint = window.ENV === 'development' ? 'http://localhost:3000' : 'https://ft-ig-uber-game-backend.herokuapp.com';
 
 const story = new Story(json);
