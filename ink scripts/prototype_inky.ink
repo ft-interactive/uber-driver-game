@@ -2080,12 +2080,13 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 ->->
 
 === day_6_afternoon ===
-# link
+
 # day_6_afternoon
 # bg:stadium
 //noon if no pebble repair, 2pm if pebble repair
 You hear on the radio that the baseball game has just ended.
 
+# link
 * [Head over to the stadium]
 
 You make your way to the baseball stadium before the game ends. Sure enough, lots of people are requesting rides there.
@@ -2217,6 +2218,7 @@ As you finish a ride, the passenger opens the door to get out and hits a lamp po
     ~timestamp=1502658000 //SUN 9pm
     ~moments=true
     # button
+    # deactivation
     **[🔧&nbsp;&nbsp;Repair]
     ->reported
 
