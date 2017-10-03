@@ -41,10 +41,10 @@ export default class StateUtils {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getImageServiceURL(url) {
+  getImageServiceURL(url, transparent = false) {
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${encodeURIComponent(
       url,
-    )}?source=ig&width=2000&format=jpg&quality=high`;
+    )}?source=ig&width=2000&format=${transparent ? 'png' : 'jpg'}&quality=high`;
   }
 
   /**
@@ -53,12 +53,11 @@ export default class StateUtils {
    * This returns a blob, which can then be used as a background image via
    * `URL.createObjectURL(blob)`.
    */
-  async loadImage(originalURL) {
+  async loadImage(originalURL, transparent = false) {
     if (!loadImageMemo[originalURL]) {
       loadImageMemo[originalURL] = new Bluebird((resolve, reject) => {
         // convert URL to Image Service
-        const url = this.getImageServiceURL(originalURL);
-
+        const url = this.getImageServiceURL(originalURL, transparent);
         // load the image (with three attempts)
         const retry = async () => {
           await Bluebird.delay(100);
