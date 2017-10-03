@@ -399,23 +399,23 @@ function continueStory() {
     document.body.classList.add('showing-ending');
 
     ending.show({
-      // TODO get real values from game
       // stats overview
-      hoursDriven: 124,
-      ridesCompleted: 35,
-      driverRating: 4.53,
+      hoursDriven: story.variablesState.$('hours_driven_total'),
+      ridesCompleted: story.variablesState.$('ride_count_total'),
+      driverRating: story.variablesState.$('rating')/100,
 
       // income
-      faresAndTips: 3910,
-      weekendQuestBonus: 311,
-      weekdayQuestBonus: 182,
+      faresAndTips: story.variablesState.$('fares_earned_total'),
+      weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
+      weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
+
 
       // costs
-      carRental: -1360,
-      upgrades: -120,
-      fuel: -380,
-      trafficTickets: -80,
-      tax: -80,
+      carRental: story.variablesState.$('car_cost'),
+      upgrades:  story.variablesState.$('accessories_cost'),
+      fuel:  story.variablesState.$('gas_cost'),
+      trafficTickets:  story.variablesState.$('ticket_cost'),
+      tax:  story.variablesState.$('tax_cost'),
     });
   }
 
