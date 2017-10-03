@@ -11,6 +11,11 @@ import GameContainer from './views/GameContainer';
 import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
+const endpoint =
+  window.ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://ft-ig-uber-game-backend.herokuapp.com';
+
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
 
@@ -133,30 +138,58 @@ function showCaveats() {
     });
 }
 
-document.querySelector('.game-container').classList.add('game-container--loading');
+function recordDecision(decision) {
+  const meta = Object.entries(story.variablesState._globalVariables).reduce(
+    (acc, [key, value]) => ((acc[key] = value._value), acc),
+    {},
+  );
 
-function endStory() {
-  storyScreen.style.display = 'none';
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      type: decision,
+      value: story.variablesState.$(decision) === 1,
+      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
+      meta,
+    }),
+  })
+    .then(() => console.info(`${decision} recorded`))
+    .catch(e => console.error(`Error recording: ${e}`));
+}
 
-  ending.show({
-    // TODO get real values from game
-    // stats overview
-    hoursDriven: 124,
-    ridesCompleted: 35,
-    driverRating: 4.53,
+export function recordPlayerResult() {
+  const meta = Object.entries(story.variablesState._globalVariables).reduce(
+    (acc, [key, value]) => ((acc[key] = value._value), acc),
+    {},
+  );
 
-    // income
-    faresAndTips: 3910,
-    weekendQuestBonus: 311,
-    weekdayQuestBonus: 182,
+  const revenue = story.variablesState.$('revenue_total');
+  const costs = story.variablesState.$('cost_total');
+  const difficulty = story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard';
+  const income = revenue - costs;
+  const hourlyWage = income / story.variablesState.$('hours_driven_total');
 
-    // costs
-    carRental: -1360,
-    upgrades: -120,
-    fuel: -380,
-    trafficTickets: -80,
-    tax: -80,
-  });
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      revenue,
+      meta,
+      income,
+      hourlyWage,
+      difficulty,
+      expenses: costs,
+    }),
+  })
+    .then(() => console.info('Endgame data recorded'))
+    .catch(e => console.error(`Error recording: ${e}`));
 }
 
 function continueStory() {
@@ -170,6 +203,14 @@ function continueStory() {
   const showMoment = story.variablesState.$('moments');
   const timePassingObj = { value: null };
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
+
+  if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
+    recordDecision('biz_licence');
+  } else if (story.currentTags.indexOf('day_5_start') > -1) {
+    recordDecision('helped_homework');
+  } else if (story.currentTags.indexOf('day_7_start') > -1) {
+    recordDecision('took_day_off');
+  }
 
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
   // then number of quests is 75, else 65
@@ -680,7 +721,31 @@ window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
 
-// HACK click through first few steps to get to the ending
+function endStory() {
+  storyScreen.style.display = 'none';
+
+  ending.show({
+    // TODO get real values from game
+    // stats overview
+    hoursDriven: 124,
+    ridesCompleted: 35,
+    driverRating: 4.53,
+
+    // income
+    faresAndTips: 3910,
+    weekendQuestBonus: 311,
+    weekdayQuestBonus: 182,
+
+    // costs
+    carRental: -1360,
+    upgrades: -120,
+    fuel: -380,
+    trafficTickets: -80,
+    tax: -80,
+  });
+}
+
+// TEMP end story immediately to ease development of the ending sequence
 (async () => {
   tint.style.display = 'none';
   introScreen.style.display = 'none';
