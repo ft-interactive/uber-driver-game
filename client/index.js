@@ -140,7 +140,7 @@ function recordDecision(decision) {
     method: 'POST',
     body: JSON.stringify({
       type: decision,
-      value: story.variablesState.$(decision),
+      value: story.variablesState.$(decision) === 1,
       difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
       meta,
     }),
