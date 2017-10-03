@@ -46,7 +46,14 @@ type State = {
 export default class Ending extends Component<Props, State> {
   static createIn(container) {
     let component;
-    ReactDOM.render(<Ending ref={_component => (component = _component)} />, container);
+    ReactDOM.render(
+      <Ending
+        ref={(_component) => {
+          component = _component;
+        }}
+      />,
+      container,
+    );
     return component;
   }
 
