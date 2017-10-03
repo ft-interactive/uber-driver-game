@@ -10,6 +10,7 @@ import StateUtils from './StateUtils';
 import GameContainer from './views/GameContainer';
 import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
+import gaAnalytics from './components/analytics';
 
 const endpoint = window.ENV === 'development' ? 'http://localhost:3000' : 'https://ft-ig-uber-game-backend.herokuapp.com';
 
@@ -54,6 +55,9 @@ const momentRides = document.getElementById('moment-rides');
 const momentRideGoal = document.getElementById('moment-ride-goal');
 const momentRideGoalTotal = document.getElementById('moment-ride-goal-total');
 const momentButton = document.getElementById('moment-button');
+
+// keep list of choices made in game for analytics
+const yourChoices = [];
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
@@ -139,6 +143,8 @@ function showCaveats() {
       duration: defaultInDuration,
       easing: 'linear',
     });
+
+  gaAnalytics('uber-game', 'show-caveats');
 }
 
 function recordDecision(decision) {
@@ -221,6 +227,11 @@ function continueStory() {
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
   console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
+
+  //  record events for analytics
+  if (story.currentTags.length > 0 && story.currentTags[0] === 'welcome') {
+    gaAnalytics('uber-game', 'start-game');
+  }
 
   function showPanel() {
     const panelIn = anime.timeline();
@@ -576,7 +587,9 @@ function continueStory() {
     choiceElement.disabled = true;
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
 
-    console.log(`tags: ${story.currentTags}`);
+    if (story.currentTags.length > 0 && story.currentTags[story.currentTags.length - 1].match(/^to_day_\d+/)) {
+      gaAnalytics('uber-game', 'finish-day', parseInt(story.currentTags[story.currentTags.length - 1].split('_')[2], 10) - 1);
+    }
 
     // Make it look different if there's more than one choice available
     if (story.currentTags.indexOf('button') === -1) {
@@ -588,6 +601,9 @@ function continueStory() {
     // Click on choice
     function handleClick(event) {
       event.preventDefault();
+
+      // record choices for analytics
+      yourChoices.push(choice.text);
 
       const panelOut = anime.timeline();
 
@@ -623,6 +639,14 @@ function continueStory() {
 
               p.parentNode.removeChild(p);
             });
+
+            if (story.currentTags.length > 0) {
+              if (story.currentTags[0] === 'choose_difficulty') {
+                gaAnalytics('uber-game', 'choose-difficulty', choice.text);
+              } else if (story.currentTags[story.currentTags.length - 1].match(/^to_day_\d+/)) {
+                gaAnalytics('uber-game', 'start-day', parseInt(story.currentTags[story.currentTags.length - 1].split('_')[2], 10));
+              }
+            }
 
             // Tell the story where to go next
             story.ChooseChoiceIndex(choice.index);
@@ -692,7 +716,15 @@ function startStory() {
         continueStory();
       },
     });
+
+  gaAnalytics('uber-game', 'start-story');
 }
+
+// for analytics when user leaves page
+const unloadEventName = ('onbeforeunload' in window) ? 'beforeunload' : 'unload';
+window.addEventListener(unloadEventName, () => {
+  gaAnalytics('uber-game', 'exit-game', JSON.stringify(yourChoices), yourChoices.length);
+});
 
 window.addEventListener('load', handleResize);
 window.addEventListener('resize', throttle(handleResize, 500));
