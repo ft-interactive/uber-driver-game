@@ -11,10 +11,7 @@ import GameContainer from './views/GameContainer';
 import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 
-const endpoint =
-  window.ENV === 'development'
-    ? 'http://localhost:3000'
-    : 'https://ft-ig-uber-game-backend.herokuapp.com';
+const endpoint = window.ENV === 'development' ? 'http://localhost:3000' : 'https://ft-ig-uber-game-backend.herokuapp.com';
 
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
@@ -109,17 +106,13 @@ function handleResize() {
     fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
     fullscreenButtonsElement.style.display = 'block';
 
-    document.addEventListener(
-      'oForms.toggled',
-      (event) => {
-        if (event.target.checked) {
-          fscreen.requestFullscreen(document.querySelector('main'));
-        } else {
-          fscreen.exitFullscreen();
-        }
-      },
-      false,
-    );
+    document.addEventListener('oForms.toggled', (event) => {
+      if (event.target.checked) {
+        fscreen.requestFullscreen(document.querySelector('main'));
+      } else {
+        fscreen.exitFullscreen();
+      }
+    }, false);
   } else {
     fscreen.removeEventListener('fullscreenchange', handleFullscreen);
     fullscreenButtonsElement.style.display = 'none';
@@ -149,15 +142,13 @@ function showCaveats() {
 }
 
 function recordDecision(decision) {
-  const meta = Object.entries(story.variablesState._globalVariables).reduce(
-    (acc, [key, value]) => ((acc[key] = value._value), acc),
-    {},
-  );
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
 
   return fetch(`${endpoint}/decisions`, {
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     method: 'POST',
     body: JSON.stringify({
@@ -167,15 +158,13 @@ function recordDecision(decision) {
       meta,
     }),
   })
-    .then(() => console.info(`${decision} recorded`))
-    .catch(e => console.error(`Error recording: ${e}`));
+  .then(() => console.info(`${decision} recorded`))
+  .catch((e) => console.error(`Error recording: ${e}`));
 }
 
 export function recordPlayerResult() {
-  const meta = Object.entries(story.variablesState._globalVariables).reduce(
-    (acc, [key, value]) => ((acc[key] = value._value), acc),
-    {},
-  );
+  const meta = Object.entries(story.variablesState._globalVariables)
+    .reduce((acc, [key, value]) => (acc[key] = value._value, acc), {});
 
   const revenue = story.variablesState.$('revenue_total');
   const costs = story.variablesState.$('cost_total');
@@ -186,7 +175,7 @@ export function recordPlayerResult() {
   return fetch(`${endpoint}/decisions`, {
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     method: 'POST',
     body: JSON.stringify({
@@ -198,8 +187,8 @@ export function recordPlayerResult() {
       expenses: costs,
     }),
   })
-    .then(() => console.info('Endgame data recorded'))
-    .catch(e => console.error(`Error recording: ${e}`));
+  .then(() => console.info('Endgame data recorded'))
+  .catch((e) => console.error(`Error recording: ${e}`));
 }
 
 function continueStory() {
@@ -313,9 +302,7 @@ function continueStory() {
           timeDisplay.style.textShadow = '0 0 6px #ffffff';
         },
         update: () => {
-          const timeString = moment(timeObj.value)
-            .tz('Etc/GMT')
-            .format('ddd h:mma');
+          const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
 
           timeDisplay.innerHTML = timeString;
         },
@@ -399,20 +386,12 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText =
-      timePassingAmountHours > 1
-        ? `${timePassingAmountHours} hours`
-        : `${timePassingAmountHours} hour`;
-    stateUtils
-      .loadImage(
-        'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png',
-      )
+    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
+    stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png')
       .then((blob) => {
         timePassingImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
       });
-    timePassingDay.innerText = moment(timeObj.value)
-      .tz('Etc/GMT')
-      .format('E');
+    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -464,12 +443,8 @@ function continueStory() {
         easing: 'linear',
         offset: `-=${timePassingScreenDuration}`,
         update: () => {
-          const timeString = moment(timePassingObj.value)
-            .tz('Etc/GMT')
-            .format('h:mma');
-          const timeStringDay = moment(timePassingObj.value)
-            .tz('Etc/GMT')
-            .format('ddd h:mma');
+          const timeString = moment(timePassingObj.value).tz('Etc/GMT').format('h:mma');
+          const timeStringDay = moment(timePassingObj.value).tz('Etc/GMT').format('ddd h:mma');
 
           timePassingTime.innerHTML = timeString;
           timeDisplay.innerHTML = timeStringDay;
@@ -513,43 +488,29 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      stateUtils
-        .loadImage(
-          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png',
-          true,
-        )
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true)
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      stateUtils
-        .loadImage(
-          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png',
-        )
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png')
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else {
       momentText.innerText = 'Quest completed!';
-      stateUtils
-        .loadImage(
-          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png',
-        )
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png')
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     }
 
-    momentTime.innerText = moment(timeObj.value)
-      .tz('Etc/GMT')
-      .format('h:mma');
-    momentDay.innerText = moment(timeObj.value)
-      .tz('Etc/GMT')
-      .format('E');
+    momentTime.innerText = moment(timeObj.value).tz('Etc/GMT').format('h:mma');
+    momentDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     momentRides.innerText = rideCountTotal;
-    momentRideGoal.innerText = story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal;
-    momentRideGoalTotal.innerText = story.currentTags[1] === 'first_fare' ? '—' : totalQuests;
+    momentRideGoal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : questRidesTotal);
+    momentRideGoalTotal.innerText = (story.currentTags[1] === 'first_fare' ? '—' : totalQuests);
 
     momentButton.addEventListener('click', closeMoment);
 
@@ -578,9 +539,7 @@ function continueStory() {
     const paragraphElement = document.createElement('p');
 
     // if there is a [[[x]]], return string with rounded x (without square brackets)
-    paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) =>
-      Math.round(earningNum),
-    );
+    paragraphElement.innerHTML = paragraphText.replace(/\[{3}(.+?)\]{3}/g, (match, earningNum) => Math.round(earningNum));
 
     // Remove existing choices container element
     if (existingChoicesContainer) {
@@ -594,18 +553,12 @@ function continueStory() {
 
     // Conditionally set panel decoration
     if (story.currentTags.indexOf('uber-message') > -1) {
-      stateUtils
-        .loadImage(
-          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
-        )
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png')
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else {
-      stateUtils
-        .loadImage(
-          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png',
-        )
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png')
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
@@ -686,9 +639,7 @@ function continueStory() {
 
 function startStory() {
   const showStoryScreen = anime.timeline();
-  const timeString = moment(timeObj.value)
-    .tz('Etc/GMT')
-    .format('ddd h:mma');
+  const timeString = moment(timeObj.value).tz('Etc/GMT').format('ddd h:mma');
 
   showStoryScreen
     .add({
@@ -747,30 +698,12 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png',
-  true,
-); // Time passing
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png',
-  true,
-); // First fare
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png',
-  true,
-); // Deactivation
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png',
-  true,
-); // Quest completed
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png',
-  true,
-); // Default panel decoration
-stateUtils.loadImage(
-  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
-  true,
-); // Uber message panel decoration
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png', true); // Time passing
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true); // First fare
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png', true); // Deactivation
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png', true); // Quest completed
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png', true); // Default panel decoration
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png', true); // Uber message panel decoration
 
 function endStory() {
   storyScreen.style.display = 'none';
