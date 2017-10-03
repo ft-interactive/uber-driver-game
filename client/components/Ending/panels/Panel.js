@@ -12,6 +12,7 @@ type Props = {
   magentaStyle?: boolean,
   next?: null | (() => void),
   children?: null | Child | NestedArray<Child>,
+  buttonOpacity?: number,
 };
 
 export default class Panel extends Component<Props> {
@@ -22,10 +23,11 @@ export default class Panel extends Component<Props> {
     next: null,
     magentaStyle: false,
     children: null,
+    buttonOpacity: 1,
   };
 
   render() {
-    const { heading, next, magentaStyle, children } = this.props;
+    const { heading, next, magentaStyle, buttonOpacity, children } = this.props;
 
     const highlightColour = magentaStyle ? colours.magenta : colours.blue;
 
@@ -42,7 +44,7 @@ export default class Panel extends Component<Props> {
         <div className="content">{children}</div>
 
         {next && (
-          <button onClick={next}>
+          <button onClick={next} style={{ opacity: buttonOpacity }}>
             <i className="material-icons">keyboard_arrow_down</i>
             <span>Continue</span>
           </button>

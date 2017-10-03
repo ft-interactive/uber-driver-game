@@ -142,7 +142,7 @@ function endStory() {
     // stats overview
     hoursDriven: 124,
     ridesCompleted: 35,
-    driverRating: 3.5,
+    driverRating: 4.53,
 
     // income
     faresAndTips: 3910,
@@ -347,8 +347,13 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
-    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
+    timePassingTextHours.innerText =
+      timePassingAmountHours > 1
+        ? `${timePassingAmountHours} hours`
+        : `${timePassingAmountHours} hour`;
+    timePassingDay.innerText = moment(timeObj.value)
+      .tz('Etc/GMT')
+      .format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;

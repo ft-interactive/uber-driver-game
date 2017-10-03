@@ -47,7 +47,7 @@ const animate = (callback: AnimateCallback, _options?: Options): Promise<void> =
 
     setTimeout(() => {
       requestAnimationFrame(doFrame);
-    }, options.delay);
+    }, Math.max(options.delay, 0));
   });
 };
 

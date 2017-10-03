@@ -61,6 +61,7 @@
     "copy-webpack-plugin": "^4.1.0",
     "css-loader": "^0.28.7",
     "d3-time-format": "^2.0.5",
+    "eases": "^1.0.8",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-babel": "^4.1.2",

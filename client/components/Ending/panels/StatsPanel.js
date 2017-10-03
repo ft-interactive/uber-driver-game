@@ -2,11 +2,10 @@
 
 import React, { Component } from 'react';
 import Bluebird from 'bluebird';
+import easeQuintInOut from 'eases/quint-in-out';
+import easeQuintOut from 'eases/quint-out';
 import Panel from './Panel';
 import animate from '../../../lib/animate';
-
-// eslint-disable-next-line no-confusing-arrow
-const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1);
 
 type AllValues = {
   /* eslint-disable react/no-unused-prop-types */
@@ -24,14 +23,14 @@ type State = {
   displayValues: AllValues,
   opacities: AllValues,
   verticalOffsets: AllValues,
-  onButtonClick: null | (() => void),
+  buttonOpacity: number,
 };
 
 const statNames = ['hoursDriven', 'ridesCompleted', 'driverRating'];
 
 export default class StatsPanel extends Component<Props, State> {
   state = {
-    onButtonClick: null,
+    buttonOpacity: 0,
     displayValues: {
       hoursDriven: 0,
       ridesCompleted: 0,
@@ -53,8 +52,10 @@ export default class StatsPanel extends Component<Props, State> {
     (async () => {
       // animate them appearing
       await Bluebird.map(statNames, async (statName, i) => {
-        const duration = 500;
-        const delay = i * 300;
+        const baseDuration = 500;
+        const duration = baseDuration - i * 100;
+        const delay = i * duration - 50;
+
         await Promise.all([
           animate(
             (elapsed) => {
@@ -76,7 +77,7 @@ export default class StatsPanel extends Component<Props, State> {
                 },
               });
             },
-            { duration, delay, ease },
+            { duration, delay, ease: easeQuintOut },
           ),
         ]);
 
@@ -88,9 +89,9 @@ export default class StatsPanel extends Component<Props, State> {
 
       // animate all the numbers ticking up
       await Bluebird.map(statNames, async (statName, i) => {
-        const gap = 200;
-        const duration = 650;
-        const delay = i * (650 + gap);
+        const baseDuration = 650;
+        const duration = i * 250 + baseDuration;
+        const delay = i * (duration + 200);
 
         await animate(
           (elapsed) => {
@@ -101,27 +102,27 @@ export default class StatsPanel extends Component<Props, State> {
               },
             });
           },
-          { duration, delay },
+          { duration, delay, ease: easeQuintInOut },
         );
       });
 
-      // enable the 'next' button
-      this.setState({
-        onButtonClick: () => {
-          (async () => {
-            // TODO animate them away
-            this.props.next();
-          })();
+      await Bluebird.delay(300);
+
+      // unhide the 'next' button TODO using buttonOpacity
+      await animate(
+        (elapsed) => {
+          this.setState({ buttonOpacity: 1 * elapsed });
         },
-      });
+        { duration: 300 },
+      );
     })();
   }
 
   props: Props;
 
   render() {
-    // const { next } = this.props;
-    const { displayValues, opacities, verticalOffsets, onButtonClick } = this.state;
+    const { next } = this.props;
+    const { displayValues, opacities, verticalOffsets, buttonOpacity } = this.state;
 
     const items = [
       {
@@ -142,7 +143,7 @@ export default class StatsPanel extends Component<Props, State> {
     ];
 
     return (
-      <Panel heading="Your stats" next={onButtonClick}>
+      <Panel heading="Your stats" next={next} buttonOpacity={buttonOpacity}>
         {items.map(({ title, value, key }) => (
           <div
             className="stat"
