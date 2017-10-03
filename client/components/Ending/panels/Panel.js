@@ -69,6 +69,8 @@ export default class Panel extends Component<Props> {
             flex-direction: column;
             align-items: center;
             text-align: center;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
           }
 
           .spacer {

@@ -180,7 +180,7 @@ export default class StatsPanel extends Component<Props, State> {
             }
 
             .value {
-              font-size: 50px;
+              font-size: 55px;
             }
           }
         `}</style>
