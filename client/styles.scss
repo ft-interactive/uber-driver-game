@@ -26,6 +26,9 @@ $o-loading-is-silent: false;
 
 html, body {
   background-color: rgb(38, 43, 51);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
 
 main {
@@ -684,5 +687,23 @@ main {
   .time-passing-container,
   .moment-container {
     background-color: rgba(38, 43, 51, 0.9) !important;
+  }
+}
+
+body.showing-ending {
+  background: #2a323b;
+}
+
+.ending-container {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+
+  box-sizing: border-box;
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
   }
 }
