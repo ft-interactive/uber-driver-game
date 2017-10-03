@@ -122,11 +122,12 @@ link = choice
 
 
 === welcome ===
+
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week.
 
 Can you earn enough to pay the bill — and make more than other players?
-# welcome
 # button
+# welcome
 * [Yes]
 ->choose_difficulty
 
@@ -340,6 +341,7 @@ It cost ${accessories_cost}. You put it on your credit card so you don't have to
 MESSAGE FROM UBER: “Uber Quest: Drive 75 trips, make ${quest_bonus} extra. You have until 4am on Friday”
 
 # button
+#uber-message
 * [Accept quest]
 
 ->->
@@ -544,6 +546,7 @@ You accept the quest, excited at the prospect of exploring San Francisco while e
 ~time_passes(4,0,1)
 # button
 # bg:driving_sf
+# uber-message
 * [🚗&nbsp;&nbsp;Drive]
 
 ->day_1_sf_morning
@@ -904,6 +907,7 @@ You pick up a friendly passenger and have a pleasant chat during the ride.
 - quest_rides<5 && quest_rides > 0:
 MESSAGE FROM UBER: “Just {quest_rides} more rides until you get ${quest_bonus} bonus!”
 # link
+# uber-message
 * [Keep driving] As you pull up for the next pick up, you find that it's for a long trip to the airport.
 ->pickup
 * [Call it a day]
@@ -1155,7 +1159,7 @@ You take it easy today.
 MESSAGE FROM UBER: “Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!”
 
 But you promised to be home by {home=="sac":8pm}{home=="sf":7pm}.
-
+# uber-message
 * [Keep driving]->keep_driving
 
 * [Go home]->went_home
@@ -1332,6 +1336,7 @@ By now, you've become used to the rhythm of the day and how this works.
     MESSAGE FROM UBER: “Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!”
     But you promised to be home by 7pm to help your son with his homework.
     # link
+    #uber-message
     * [Keep driving] ->keep_driving
     * [Go home] ->go_home
 
@@ -1937,6 +1942,7 @@ What do you do?
     //saturday 9am
         # button
         # bg:home
+        # to_day_6
         *** [💤&nbsp;&nbsp;Sleep]->day_6_deactivated
     }
     {home=="sac":
@@ -2048,6 +2054,7 @@ MESSAGE FROM UBER: “The San Francisco Giants are playing at AT&T park today. E
 ~ time_passes(3,0,1)
 # button
 # bg:stadium
+#uber-message
 *[Got it]
 ->door_dent
 
@@ -2250,6 +2257,7 @@ You are driving when you hear a splintering sound. The chip in your windshield h
     ~quest_completion=true
     ~moments=true
     #bg:driving_sf
+    #uber-message
     *[Finish the quest]
     ->day_7_end
 
@@ -2292,16 +2300,16 @@ You are driving when you hear a splintering sound. The chip in your windshield h
 //calculate gas cost
 {
 - car=="minivan" && home=="sf":
-~gas_cost=days_worked*25
+~gas_cost=days_worked*35
 
 - car=="minivan" && home=="sac":
-~gas_cost=days_worked*30
+~gas_cost=days_worked*45
 
 - car=="Prius" && home=="sf":
 ~gas_cost=days_worked*15
 
 - car=="Prius" && home=="sac":
-~gas_cost=days_worked*20
+~gas_cost=days_worked*25
 }
 
 //calculate total cost
