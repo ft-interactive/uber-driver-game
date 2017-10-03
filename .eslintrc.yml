@@ -14,5 +14,6 @@ plugins:
 rules:
   react/react-in-jsx-scope: off
   react/jsx-filename-extension: off
-  function-paren-newline: off # HACK because of incompatibility with Prettier
   import/no-extraneous-dependencies: [2, {}]
+  function-paren-newline: off # because of incompatibility with Prettier
+  no-mixed-operators: off # because of incompatibility with Prettier

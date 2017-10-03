@@ -1,8 +1,15 @@
 // @flow
 
-type AnimateOptions = {
+type Options = {
+  duration?: number,
+  ease?: number => number,
+  delay?: number,
+};
+
+type FinalisedOptions = {
   duration: number,
   ease: number => number,
+  delay: number,
 };
 
 type AnimateCallback = (elapsedProportion: number) => void;
@@ -12,10 +19,11 @@ const linear = x => x;
 const defaults = {
   ease: linear,
   duration: 1000,
+  delay: 0,
 };
 
-const animate = (callback: AnimateCallback, _options?: any): Promise<void> => {
-  const options: AnimateOptions = { ...defaults, ..._options };
+const animate = (callback: AnimateCallback, _options?: Options): Promise<void> => {
+  const options: FinalisedOptions = { ...defaults, ..._options };
 
   return new Promise((resolve) => {
     let startTime;
@@ -24,7 +32,7 @@ const animate = (callback: AnimateCallback, _options?: any): Promise<void> => {
       if (!startTime) startTime = ms;
 
       // determine how far we are through (between 0 and 1 inclusive)
-      const elapsedProportion = Math.min(options.ease((ms - startTime) / options.duration), 1);
+      const elapsedProportion = options.ease(Math.min((ms - startTime) / options.duration, 1));
 
       // call the user's update function
       callback(elapsedProportion);
@@ -37,7 +45,9 @@ const animate = (callback: AnimateCallback, _options?: any): Promise<void> => {
       }
     };
 
-    requestAnimationFrame(doFrame);
+    setTimeout(() => {
+      requestAnimationFrame(doFrame);
+    }, options.delay);
   });
 };
 
