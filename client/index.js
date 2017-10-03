@@ -154,6 +154,33 @@ function showCaveats() {
   gaAnalytics('uber-game', 'show-caveats');
 }
 
+function endStory() {
+  tint.style.display = 'none';
+  introScreen.style.display = 'none';
+  document.querySelector('.article-head').style.display = 'none';
+  storyScreen.style.display = 'none';
+  document.body.classList.add('showing-ending');
+
+  ending.show({
+    // stats overview
+    hoursDriven: story.variablesState.$('hours_driven_total'),
+    ridesCompleted: story.variablesState.$('ride_count_total'),
+    driverRating: story.variablesState.$('rating') / 100,
+
+    // income
+    faresAndTips: story.variablesState.$('fares_earned_total'),
+    weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
+    weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
+
+    // costs
+    carRental: 0 - story.variablesState.$('car_cost'),
+    upgrades: 0 - story.variablesState.$('accessories_cost'),
+    fuel: 0 - story.variablesState.$('gas_cost'),
+    trafficTickets: 0 - story.variablesState.$('ticket_cost'),
+    tax: 0 - story.variablesState.$('tax_cost'),
+  });
+}
+
 function recordDecision(decision) {
   const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
     acc[key] = value._value;
@@ -401,33 +428,6 @@ function continueStory() {
         momentScreen.style.display = 'none';
         showPanel();
       },
-    });
-  }
-
-  function endStory() {
-    tint.style.display = 'none';
-    introScreen.style.display = 'none';
-    document.querySelector('.article-head').style.display = 'none';
-    storyScreen.style.display = 'none';
-    document.body.classList.add('showing-ending');
-
-    ending.show({
-      // stats overview
-      hoursDriven: story.variablesState.$('hours_driven_total'),
-      ridesCompleted: story.variablesState.$('ride_count_total'),
-      driverRating: story.variablesState.$('rating') / 100,
-
-      // income
-      faresAndTips: story.variablesState.$('fares_earned_total'),
-      weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
-      weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
-
-      // costs
-      carRental: 0 - story.variablesState.$('car_cost'),
-      upgrades: 0 - story.variablesState.$('accessories_cost'),
-      fuel: 0 - story.variablesState.$('gas_cost'),
-      trafficTickets: 0 - story.variablesState.$('ticket_cost'),
-      tax: 0 - story.variablesState.$('tax_cost'),
     });
   }
 
@@ -845,3 +845,27 @@ stateUtils.loadImage(
   'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
   true,
 ); // Uber message panel decoration
+
+// visiting `localhost:8080/?end` skips to the end
+{
+  const { searchParams } = new URL(location.href);
+
+  if (searchParams.has('end')) {
+    story.variablesState.$('hours_driven_total', 1214);
+    story.variablesState.$('fares_earned_total', 1431);
+    story.variablesState.$('ride_count_total', 143);
+    story.variablesState.$('rating', 476);
+    story.variablesState.$('weekday_quest_completion', true);
+    story.variablesState.$('weekday_quest_bonus', 180);
+    story.variablesState.$('weekend_quest_completion', true);
+    story.variablesState.$('weekend_quest_bonus', 150);
+    story.variablesState.$('car_cost', 180);
+    story.variablesState.$('gas_cost', 231);
+    story.variablesState.$('accessories_cost', 90);
+    story.variablesState.$('repair_cost', 140);
+    story.variablesState.$('took_day_off', true);
+
+    continueStory();
+    endStory();
+  }
+}
