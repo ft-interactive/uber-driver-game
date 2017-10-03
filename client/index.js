@@ -40,6 +40,7 @@ const knotElement = document.querySelector('.knot');
 const knotDecoration = document.querySelector('.decoration');
 const timePassingScreen = document.querySelector('.time-passing-container');
 const timePassingTextHours = document.getElementById('time-passing-text__hours');
+const timePassingImage = document.querySelector('.time-passing-image');
 const timePassingEarnings = document.getElementById('tp-earnings');
 const timePassingTime = document.getElementById('tp-time');
 const timePassingDay = document.getElementById('tp-day');
@@ -398,13 +399,12 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText =
-      timePassingAmountHours > 1
-        ? `${timePassingAmountHours} hours`
-        : `${timePassingAmountHours} hour`;
-    timePassingDay.innerText = moment(timeObj.value)
-      .tz('Etc/GMT')
-      .format('E');
+    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
+    stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png')
+      .then((blob) => {
+        timePassingImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+      });
+    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -505,16 +505,22 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      momentImage.style.backgroundImage =
-        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048204-6w6qv.png?source=ig&width=600&height=600&format=png&quality=high)';
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true)
+        .then((blob) => {
+          momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+        });
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      momentImage.style.backgroundImage =
-        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493048057-z6js9.png?source=ig&width=600&height=600&format=png&quality=high)';
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png')
+        .then((blob) => {
+          momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+        });
     } else {
       momentText.innerText = 'Quest completed!';
-      momentImage.style.backgroundImage =
-        'url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fft-ig-images-prod.s3-website-eu-west-1.amazonaws.com%2Fv1%2F8493047957-4ocgd.png?source=ig&width=600&height=600&format=png&quality=high)';
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png')
+        .then((blob) => {
+          momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+        });
     }
 
     momentTime.innerText = moment(timeObj.value)
@@ -570,9 +576,15 @@ function continueStory() {
 
     // Conditionally set panel decoration
     if (story.currentTags.indexOf('uber-message') > -1) {
-      knotDecoration.classList.add('uber-message');
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png')
+        .then((blob) => {
+          knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+        });
     } else {
-      knotDecoration.classList.remove('uber-message');
+      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png')
+        .then((blob) => {
+          knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
+        });
     }
 
     knotElement.appendChild(paragraphElement);
@@ -605,18 +617,6 @@ function continueStory() {
     // Click on choice
     function handleClick(event) {
       event.preventDefault();
-
-      // Remove unclicked choices
-      // const prevChoices = Array.from(storyScreen.querySelectorAll('.choice'));
-      // const clickedChoiceIndex = prevChoices.findIndex(el => el.innerText === choice.text);
-      //
-      // prevChoices.forEach((prevChoice, i) => {
-      //   const el = prevChoice;
-      //
-      //   if (i !== clickedChoiceIndex) {
-      //     el.style.opacity = 0;
-      //   }
-      // });
 
       const panelOut = anime.timeline();
 
@@ -729,6 +729,13 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
+
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png', true); // Time passing
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true); // First fare
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png', true); // Deactivation
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png', true); // Quest completed
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png', true); // Default panel decoration
+stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png', true); // Uber message panel decoration
 
 function endStory() {
   storyScreen.style.display = 'none';
