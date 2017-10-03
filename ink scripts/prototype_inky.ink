@@ -678,7 +678,6 @@ You stop to fill up your tank. Do you get a receipt?
 # day_2_midpoint
 You turn on your Uber app and start driving.
 ~time_passes(3,0,1)
-~ UberXL()
 # button
 # bg:driving_sf
 *[🚗&nbsp;&nbsp;Drive]
@@ -1097,7 +1096,6 @@ As you head out, you remember that you promised your son to be home by 7pm to he
 You take it easy today.
 
 ~time_passes(9,0,1)
-~UberXL()
 # button
 # bg:driving_sac
 *[🚗&nbsp;&nbsp;Drive] You make it home in time to help your son with his homework, as you promised.
@@ -1283,10 +1281,8 @@ By now, you've become used to the rhythm of the day and how this works.
     Without the pressure to finish the quest, you spend a pretty relaxing day driving.
     {napa.napa_ride:
         ~time_passes(4,0,1)
-        ~UberXL()
         - else:
         ~time_passes(6,0,1)
-        ~UberXL()
     }
     # button
     # bg:driving_sf
@@ -1304,10 +1300,8 @@ By now, you've become used to the rhythm of the day and how this works.
 - else:
     {napa.napa_ride:
         ~time_passes(4,0,1)
-        ~UberXL()
         - else:
         ~time_passes(6,0,1)
-        ~UberXL()
     }
     # button
     # bg:driving_sf
@@ -1399,7 +1393,6 @@ You get back in time to keep your promise. Your son is delighted to see you.
 You take it easy today.
 
 ~time_passes(9,0,1)
-~UberXL()
 # button
 # bg:driving_sf
 *[🚗&nbsp;&nbsp;Drive] You make it home in time to help your son with his homework, as you promised.
@@ -2300,6 +2293,7 @@ You just couldn't get enough rides before you became too tired to continue.
 
 ===earnings_calculations===
 //calculate total revenue
+~ UberXL_total=60+RANDOM(-5,5)
 ~ alter(revenue_total,fares_earned_total)
 ~ alter(revenue_total,UberXL_total)
 {weekday_quest_completion==true:
