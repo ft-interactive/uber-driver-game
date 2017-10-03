@@ -79,7 +79,7 @@ You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end o
 ~ day_hours_driven=0
 
 === function UberXL ===
-~ temp XL_bonus= RANDOM(12,40)
+~ temp XL_bonus= RANDOM(12,40) // adds $60 per week on top of the regular fares
 {car=="minivan": 
     //You also got a few UberXL rides that earned you an extra ${XL_bonus}
     ~ alter(day_fares_earned,XL_bonus)
