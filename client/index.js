@@ -399,12 +399,20 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
-    stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png')
+    timePassingTextHours.innerText =
+      timePassingAmountHours > 1
+        ? `${timePassingAmountHours} hours`
+        : `${timePassingAmountHours} hour`;
+    stateUtils
+      .loadImage(
+        'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png',
+      )
       .then((blob) => {
         timePassingImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
       });
-    timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
+    timePassingDay.innerText = moment(timeObj.value)
+      .tz('Etc/GMT')
+      .format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
     timePassingButton.disabled = true;
@@ -505,19 +513,29 @@ function continueStory() {
   } else if (showMoment > 0) {
     if (story.currentTags[1] === 'first_fare') {
       momentText.innerText = 'You completed your first fare!';
-      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true)
+      stateUtils
+        .loadImage(
+          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png',
+          true,
+        )
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else if (story.currentTags[1] === 'deactivation') {
       momentText.innerText = 'You are temporarily deactivated';
-      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png')
+      stateUtils
+        .loadImage(
+          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png',
+        )
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else {
       momentText.innerText = 'Quest completed!';
-      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png')
+      stateUtils
+        .loadImage(
+          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png',
+        )
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
@@ -576,12 +594,18 @@ function continueStory() {
 
     // Conditionally set panel decoration
     if (story.currentTags.indexOf('uber-message') > -1) {
-      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png')
+      stateUtils
+        .loadImage(
+          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
+        )
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
     } else {
-      stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png')
+      stateUtils
+        .loadImage(
+          'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png',
+        )
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
         });
@@ -591,12 +615,6 @@ function continueStory() {
     knotElement.appendChild(choicesContainerElement);
   }
 
-  // Show ending if appropriate
-  console.log('Tags', story.currentTags);
-  if (story.currentTags.indexOf('endscreen') !== -1) {
-    endStory();
-  }
-
   // Create HTML choices from ink choices
   story.currentChoices.forEach((choice) => {
     // Create button element
@@ -604,7 +622,7 @@ function continueStory() {
     choiceElement.classList.add('choice');
     choiceElement.disabled = true;
     choiceElement.innerHTML = `<span>${choice.text}</span>`;
-    choiceElement.setAttribute('data-choice-text', choice.text);
+
     console.log(`tags: ${story.currentTags}`);
 
     // Make it look different if there's more than one choice available
@@ -729,43 +747,27 @@ window.addEventListener('load', handleResize);
 window.addEventListener('resize', throttle(handleResize, 500));
 caveatsButton.addEventListener('click', showCaveats);
 startButton.addEventListener('click', startStory);
-
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png', true); // Time passing
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png', true); // First fare
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png', true); // Deactivation
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png', true); // Quest completed
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png', true); // Default panel decoration
-stateUtils.loadImage('http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png', true); // Uber message panel decoration
-
-function endStory() {
-  storyScreen.style.display = 'none';
-  document.body.classList.add('showing-ending');
-
-  ending.show({
-    // TODO get real values from game
-    // stats overview
-    hoursDriven: 124,
-    ridesCompleted: 35,
-    driverRating: 4.53,
-
-    // income
-    faresAndTips: 3910,
-    weekendQuestBonus: 311,
-    weekdayQuestBonus: 182,
-
-    // costs
-    carRental: -1360,
-    upgrades: -120,
-    fuel: -380,
-    trafficTickets: -80,
-    tax: -80,
-  });
-}
-
-// TEMP end story immediately to ease development of the ending sequence
-(async () => {
-  tint.style.display = 'none';
-  introScreen.style.display = 'none';
-  document.querySelector('.article-head').style.display = 'none';
-  endStory();
-})();
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png',
+  true,
+); // Time passing
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959687-txm6l.png',
+  true,
+); // First fare
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png',
+  true,
+); // Deactivation
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png',
+  true,
+); // Quest completed
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png',
+  true,
+); // Default panel decoration
+stateUtils.loadImage(
+  'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
+  true,
+); // Uber message panel decoration
