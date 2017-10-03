@@ -2,8 +2,8 @@ initialBackgroundImage: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.
 
 backgroundImages:
   main:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492977478-91w2e.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492977478-91w2e.png
   pebble:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131687-uk0fw.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131286-3doz7.png
@@ -26,8 +26,8 @@ backgroundImages:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055927-hvy29.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055803-v2nqe.png
   night:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492977432-vv7cp.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492977432-vv7cp.png
   burger:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055894-v0n27.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493055777-0lapj.png
@@ -55,9 +55,6 @@ backgroundImages:
   nice:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131874-j6agc.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131358-ldzmh.png
-  normal_start:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493658866-h0aa7.png
   night_sac:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131836-kbref.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493131836-kbref.png
@@ -82,3 +79,6 @@ backgroundImages:
   driving_sac:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132193-1tg67.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493132193-1tg67.png
+  night_sf:
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492975329-icp3y.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492975010-tkoz1.png
