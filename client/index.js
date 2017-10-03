@@ -762,10 +762,10 @@ function endStory() {
   });
 }
 
-// TEMP end story immediately to ease development of the ending sequence
-(async () => {
-  tint.style.display = 'none';
-  introScreen.style.display = 'none';
-  document.querySelector('.article-head').style.display = 'none';
-  endStory();
-})();
+// // TEMP end story immediately to ease development of the ending sequence
+// (async () => {
+//   tint.style.display = 'none';
+//   introScreen.style.display = 'none';
+//   document.querySelector('.article-head').style.display = 'none';
+//   endStory();
+// })();
