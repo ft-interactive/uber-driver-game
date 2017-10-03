@@ -314,7 +314,7 @@ function continueStory() {
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
     earningsObj.value = 0;
-    timePassingTextHours.innerText = timePassingAmountHours;
+    timePassingTextHours.innerText = (timePassingAmountHours > 1 ? `${timePassingAmountHours} hours` : `${timePassingAmountHours} hour`);
     timePassingDay.innerText = moment(timeObj.value).tz('Etc/GMT').format('E');
     timePassingRideGoalTotal.innerText = totalQuests;
     timePassingButton.addEventListener('click', closeTimePassing);
