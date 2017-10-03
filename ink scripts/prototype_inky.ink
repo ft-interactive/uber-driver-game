@@ -411,7 +411,7 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🌯&nbsp;&nbsp;Burrito] You go for burritos.
+* [🍔&nbsp;&nbsp;Burger] You go for a cheeseburger.
 * [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni.
 
 - ->day_1_sac_night_in_sf
@@ -493,14 +493,14 @@ You only earned ${day_fares_earned}. At this rate, you're unlikely to make $1000
 =sac_lunch
 # day_1_sacramento.sac_lunch
 
-You like driving in a familiar town, especially since it means you can get lunch at your favourite Tex-Mex restaurant.
+You like driving in a familiar town, especially since it means you can get lunch at your favourite restaurant.
 {phone_mount==true: 
 ~time_passes(4,0,1)
 }
 # link
 # bg:lunch_sac
-* [🌯&nbsp;&nbsp;Burritos]
-* [🌮&nbsp;&nbsp;Tacos]
+* [🍝&nbsp;&nbsp;Italian]
+* [🍱&nbsp;&nbsp;Japanese]
 - ->sac_afternoon
 
 =sac_afternoon
@@ -556,7 +556,7 @@ You accept the quest, excited at the prospect of exploring San Francisco while e
 # bg:lunch_sf
 That was a productive morning! You decide to stop for lunch.
 ~add_time(0,30)
-* [🌯&nbsp;&nbsp;Burrito] You enjoy a burrito from Señor Sisig food truck before continuing on.
+* [🍔&nbsp;&nbsp;Burger] You enjoy a burger from a nearby food truck before continuing on.
 * [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni before getting back on the road.
 - ->day_1_sf_afternoon
 
@@ -1504,7 +1504,8 @@ It's Friday. You look forward to the lucrative weekend period.
 
 NEW UBER QUEST: "Drive {quest_rides} trips, make ${quest_bonus} extra. You have until 4am on Monday"
 # button
-#bg:main
+# bg:main
+# uber-message
 * [Accept quest]
 
 {quest_completion == false:
