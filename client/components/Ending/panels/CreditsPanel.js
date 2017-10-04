@@ -3,7 +3,7 @@
 import React from 'react';
 import Panel from './Panel';
 
-const YourChoicesPanel = () => (
+const CreditsPanel = () => (
   <Panel>
     <p>This game was produced by blah blah blah</p>
 
@@ -29,4 +29,4 @@ const YourChoicesPanel = () => (
   </Panel>
 );
 
-export default YourChoicesPanel;
+export default CreditsPanel;
