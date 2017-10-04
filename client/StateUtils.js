@@ -44,7 +44,7 @@ let preloadDone = false;
 // })();
 
 const maxImageWidth = 1800; // TEMP
-const dpr = (devicePixelRatio ? Math.min(Math.floor(devicePixelRatio), 2) : 1);
+const dpr = (devicePixelRatio ? Math.min(Math.max(Math.floor(devicePixelRatio), 1), 2) : 1);
 
 export default class StateUtils {
   constructor(story, config) {
