@@ -79,7 +79,8 @@ VAR moments=false
 button = no choice
 link = choice
 */
-
+->welcome
+/*
 ->dev_mode
 ===dev_mode===
 FOR DEVELOPMENT ONLY
@@ -121,7 +122,7 @@ FOR DEVELOPMENT ONLY
 ~ took_day_off=true
 ->end_sequence
 
-
+*/
 
 === welcome ===
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week.
