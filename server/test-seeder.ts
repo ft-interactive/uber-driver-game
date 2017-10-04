@@ -6,7 +6,11 @@ import { Result, Decision, sequelize } from './models';
 import { map, all } from 'bluebird';
 
 all([Result.sync({ force: true }), Decision.sync({ force: true })]).then(() => {
-  const decisionTypes = ['llama', 'duck', 'cow', 'chicken', 'orangutan', 'osterich'];
+  const decisionTypes = [
+    'biz_licence',
+    'helped_homework',
+    'took_day_off',
+  ];
   const randEl = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
   const randRange = (max: number, min: number) => Math.random() * (max - min) + min;
 
