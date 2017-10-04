@@ -6,7 +6,7 @@ import invariant from 'invariant';
 import Splash from './Splash';
 import Panel from './panels/Panel';
 import StatsPanel from './panels/StatsPanel';
-import MathsPanel from './panels/MathsPanel';
+import AdditionPanel from './panels/AdditionPanel';
 
 type Props = {};
 
@@ -106,7 +106,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'income':
                   return (
-                    <MathsPanel
+                    <AdditionPanel
                       heading="Your income"
                       figures={[
                         { amount: results.faresAndTips, title: 'Fares and tips' },
@@ -119,7 +119,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'costs':
                   return (
-                    <MathsPanel
+                    <AdditionPanel
                       heading="Your costs"
                       magentaStyle
                       startingTotal={
