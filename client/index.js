@@ -230,17 +230,28 @@ async function endStory() {
     faresAndTips +
     weekdayQuestBonus +
     weekendQuestBonus +
-    uberXLBonus -
-    (carRental + upgrades + fuel + trafficTickets + tax + repairCost);
+    uberXLBonus +
+    carRental +
+    upgrades +
+    fuel +
+    trafficTickets +
+    tax +
+    repairCost;
 
   // fetch this user's global ranking
   const rankPromise = Bluebird.resolve()
-    .then(() =>
-      fetch(
-        `${endpoint}/ranking?difficulty=${difficulty.toLowerCase()}&income=${netIncome}`,
-      ).then(res => res.json()),
-    )
-    .catch(() => null);
+    .then(() => {
+      const url = `${endpoint}/ranking?difficulty=${difficulty.toLowerCase()}&income=${netIncome}`;
+      console.log('about to fetch', url);
+
+      return fetch(url);
+    })
+    .then(res => res.json())
+    .then(obj => obj.percent_rank)
+    .catch((error) => {
+      console.error('error fetching ranking', error);
+      return null;
+    });
 
   // record this player's result
   recordPlayerResult();
@@ -969,8 +980,9 @@ stateUtils.loadImage(
   if (searchParams.has('end')) {
     window.__CHEAT__ = true;
 
+    story.variablesState.$('home', 'sac');
     story.variablesState.$('hours_driven_total', 1814);
-    story.variablesState.$('fares_earned_total', 1345);
+    story.variablesState.$('fares_earned_total', 2000);
     story.variablesState.$('ride_count_total', 143);
     story.variablesState.$('rating', 476);
     story.variablesState.$('weekday_quest_completion', true);
@@ -978,7 +990,7 @@ stateUtils.loadImage(
     story.variablesState.$('weekend_quest_completion', false);
     story.variablesState.$('weekend_quest_bonus', 150);
     story.variablesState.$('car', 'minivan');
-    story.variablesState.$('UberXL_total', 123);
+    story.variablesState.$('UberXL_total', 62);
     story.variablesState.$('car_cost', 180);
     story.variablesState.$('gas_cost', 231);
     story.variablesState.$('accessories_cost', 90);

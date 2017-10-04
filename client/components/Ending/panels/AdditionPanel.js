@@ -17,6 +17,7 @@ type Props = {
   figures: Array<{ title: string, amount: number }>,
   next: () => void,
   startingTotal: number,
+  negativeZero?: boolean,
 };
 
 type State = {
@@ -28,6 +29,7 @@ export default class AdditionPanel extends Component<Props, State> {
   static defaultProps = {
     magentaStyle: false,
     startingTotal: 0,
+    negativeZero: false,
   };
 
   constructor(props: Props) {
@@ -95,6 +97,8 @@ export default class AdditionPanel extends Component<Props, State> {
             {
               <div className="constituent-figure">{`${formatDollars(
                 displayFigures[i],
+                true,
+                false,
                 true,
               )} ${title}`}</div>
             }

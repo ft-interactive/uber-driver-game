@@ -158,6 +158,7 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
                         { amount: results.uberXLBonus, title: 'UberXL bonus' },
                       ]}
+                      negativeZero
                       next={go('costs')}
                     />
                   );
@@ -168,7 +169,10 @@ export default class Ending extends Component<Props, State> {
                       heading="Your costs"
                       magentaStyle
                       startingTotal={
-                        results.faresAndTips + results.weekendQuestBonus + results.weekdayQuestBonus
+                        results.faresAndTips +
+                        results.weekdayQuestBonus +
+                        results.weekendQuestBonus +
+                        results.uberXLBonus
                       }
                       figures={[
                         { amount: results.carRental, title: 'Car rental' },
@@ -184,7 +188,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'total-income-summary': {
                   const rank = results.rankPromise.isFulfilled()
-                    ? results.rankPromise.value()
+                    ? Math.round(results.rankPromise.value() * 100)
                     : null;
 
                   return (
@@ -198,10 +202,10 @@ export default class Ending extends Component<Props, State> {
                       detail={
                         goodNetIncome
                           ? `You made enough to pay your $1,000 mortgage bill.${rank
-                            ? `You also earned more money than ${rank}% of other players on ${results.difficulty}.`
+                            ? ` You also earned more money than ${rank}% of other players on ${results.difficulty}.`
                             : ''}`
                           : `You weren’t able to make enough money to pay your $1,000 mortgage bill${rank
-                            ? `But you did earn more money than ${rank}% of other players on ${results.difficulty}.`
+                            ? ` But you did earn more money than ${rank}% of other players on ${results.difficulty}.`
                             : ''}`
                       }
                       next={go('hourly-rate-summary')}
