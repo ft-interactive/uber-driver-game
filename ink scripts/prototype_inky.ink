@@ -2338,7 +2338,7 @@ You just couldn't get enough rides before you became too tired to continue.
 ===end_sequence===
 # end_sequence
 It's the end of the week. Were you savvy enough to survive as a full-time Uber driver?
-
+/*
 Your stats
 
 Hours driven: {hours_driven_total}
@@ -2365,7 +2365,7 @@ Traffic ticket: {ticket_cost}
 Tax: {tax_cost}
 
 //Congrats/sorry screens
-/*
+
 Total earnings = revenue_total - cost_total
 Earnings per hour = total earnings / hours_driven_total
 
@@ -2373,14 +2373,14 @@ Tests on the two screens are:
     Total earnings > 1000
 and
     Earnings per hour > 12
-*/
+
 
 Your choices screen
 
 Took day off? (days worked: {days_worked}) (or,took_day_off boolean variable: {took_day_off})
 Kept promise to son? {helped_homework}
 Bought biz licence? {biz_licence}
-
+*/
 
 # button
 # end_sequence
