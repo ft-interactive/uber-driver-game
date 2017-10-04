@@ -64,7 +64,7 @@ const yourChoices = [];
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-const ending = Ending.createIn(document.querySelector('.ending-container'));
+const ending = Ending.createIn(document.querySelector('.ending-container'), stateUtils);
 
 let choicesContainerElement;
 // Dimensions
@@ -162,7 +162,7 @@ function endStory() {
   document.body.classList.add('showing-ending');
 
   ending.show({
-    // stats overview
+    // stats
     hoursDriven: story.variablesState.$('hours_driven_total'),
     ridesCompleted: story.variablesState.$('ride_count_total'),
     driverRating: story.variablesState.$('rating') / 100,
@@ -178,6 +178,20 @@ function endStory() {
     fuel: 0 - story.variablesState.$('gas_cost'),
     trafficTickets: 0 - story.variablesState.$('ticket_cost'),
     tax: 0 - story.variablesState.$('tax_cost'),
+
+    // total-income-summary
+    higherIncomeThan: 86, // percent of other players
+
+    // hourly-rate-summary - automatic
+
+    // your-choices
+    difficulty: 'EASY',
+    tookDayOff: true,
+    othersTookDayOff: 78, // per cent
+    helpedWithHomework: true,
+    othersHelpedWithHomework: 57, // per cent
+    boughtBusinessLicense: false,
+    othersBoughtBusinessLicense: 44, // per cent
   });
 
   gaAnalytics('uber-game', 'show-end');
@@ -859,10 +873,8 @@ stateUtils.loadImage(
   const { searchParams } = new URL(location.href);
 
   if (searchParams.has('end')) {
-    window.__CHEAT__ = true;
-
-    story.variablesState.$('hours_driven_total', 1214);
-    story.variablesState.$('fares_earned_total', 1431);
+    story.variablesState.$('hours_driven_total', 1814);
+    story.variablesState.$('fares_earned_total', 1345);
     story.variablesState.$('ride_count_total', 143);
     story.variablesState.$('rating', 476);
     story.variablesState.$('weekday_quest_completion', true);

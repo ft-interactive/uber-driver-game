@@ -17,7 +17,7 @@ type Props = {
   startingTotal: number,
 };
 
-export default class MathsPanel extends Component<Props> {
+export default class AdditionPanel extends Component<Props> {
   static defaultProps = {
     magentaStyle: false,
     startingTotal: 0,
@@ -34,7 +34,7 @@ export default class MathsPanel extends Component<Props> {
         <div className="main-figure">{formatDollars(total)}</div>
 
         {figures.map(({ title, amount }) => (
-          <div className="constituent-figure">
+          <div className="constituent-figure" key={title}>
             {<div className="constituent-figure">{`${formatDollars(amount, true)} ${title}`}</div>}
           </div>
         ))}
