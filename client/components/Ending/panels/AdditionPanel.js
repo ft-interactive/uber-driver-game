@@ -6,8 +6,10 @@
 // @flow
 
 import React, { Component } from 'react';
+import Bluebird from 'bluebird';
 import Panel from './Panel';
 import formatDollars from '../../../lib/formatDollars';
+import animate from '../../../lib/animate';
 
 type Props = {
   heading: string,
@@ -17,25 +19,85 @@ type Props = {
   startingTotal: number,
 };
 
-export default class AdditionPanel extends Component<Props> {
+type State = {
+  displayFigures: Array<number>,
+  buttonOpacity: number,
+};
+
+export default class AdditionPanel extends Component<Props, State> {
   static defaultProps = {
     magentaStyle: false,
     startingTotal: 0,
   };
 
+  constructor(props: Props) {
+    super(props);
+    this.state = this.getInitialState(props);
+  }
+
+  getInitialState(props: Props) {
+    return {
+      displayFigures: props.figures.map(() => 0),
+      buttonOpacity: 0,
+    };
+  }
+
+  componentDidMount() {
+    this.animate();
+  }
+
+  animate() {
+    const { figures } = this.props;
+
+    (async () => {
+      await Bluebird.mapSeries(figures, async ({ amount }, i) => {
+        await Bluebird.delay(500);
+
+        await animate(
+          (elapsedProportion) => {
+            const displayFigures = [...this.state.displayFigures];
+            displayFigures[i] = amount * elapsedProportion;
+            this.setState({ displayFigures });
+          },
+          // { duration: 0 },
+        );
+      });
+
+      await Bluebird.delay(500);
+
+      await animate(
+        (elapsed) => {
+          this.setState({ buttonOpacity: elapsed });
+        },
+        // { duration: 0 },
+      );
+    })();
+  }
+
   props: Props;
 
   render() {
     const { heading, magentaStyle, figures, next, startingTotal } = this.props;
-    const total = figures.reduce((acc, figure) => acc + figure.amount, startingTotal);
+    const { displayFigures, buttonOpacity } = this.state;
+    const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
 
     return (
-      <Panel heading={heading} magentaStyle={magentaStyle} next={next}>
-        <div className="main-figure">{formatDollars(total)}</div>
+      <Panel
+        heading={heading}
+        magentaStyle={magentaStyle}
+        next={next}
+        buttonOpacity={buttonOpacity}
+      >
+        <div className="main-figure">{formatDollars(displayTotal)}</div>
 
-        {figures.map(({ title, amount }) => (
+        {figures.map(({ title }, i) => (
           <div className="constituent-figure" key={title}>
-            {<div className="constituent-figure">{`${formatDollars(amount, true)} ${title}`}</div>}
+            {
+              <div className="constituent-figure">{`${formatDollars(
+                displayFigures[i],
+                true,
+              )} ${title}`}</div>
+            }
           </div>
         ))}
 
