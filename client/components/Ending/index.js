@@ -4,18 +4,23 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 import Splash from './Splash';
-import Panel from './panels/Panel';
 import StatsPanel from './panels/StatsPanel';
-import MathsPanel from './panels/MathsPanel';
+import AdditionPanel from './panels/AdditionPanel';
+import SummaryPanel from './panels/SummaryPanel';
+import YourChoicesPanel from './panels/YourChoicesPanel';
+import CreditsPanel from './panels/CreditsPanel';
+import StateUtils from '../../StateUtils';
+import formatDollars from '../../lib/formatDollars';
 import gaAnalytics from '../analytics';
 
-type Props = {};
+type Props = {
+  stateUtils: StateUtils,
+};
 
 type Results = {
   hoursDriven: number,
   ridesCompleted: number,
   driverRating: number,
-  income: number,
 
   faresAndTips: number,
   weekendQuestBonus: number,
@@ -26,6 +31,9 @@ type Results = {
   fuel: number,
   trafficTickets: number,
   tax: number,
+
+  higherIncomeThan: number,
+  difficulty: 'EASY' | 'HARD',
 };
 
 type SectionName =
@@ -42,13 +50,16 @@ type SectionName =
 type State = {
   currentSection: SectionName,
   results: Results | null,
+  incomeSummaryImage: null | string,
+  hourlyRateSummaryImage: null | string,
 };
 
 export default class Ending extends Component<Props, State> {
-  static createIn(container) {
+  static createIn(container, stateUtils) {
     let component;
     ReactDOM.render(
       <Ending
+        stateUtils={stateUtils}
         ref={(_component) => {
           component = _component;
         }}
@@ -58,20 +69,20 @@ export default class Ending extends Component<Props, State> {
     return component;
   }
 
-  constructor() {
-    super();
-
-    this.state = {
-      currentSection: 'before-start',
-      results: null,
-    };
-  }
+  state = {
+    currentSection: 'before-start',
+    results: null,
+    incomeSummaryImage: null,
+    hourlyRateSummaryImage: null,
+  };
 
   show(results: Results) {
     this.setState({ currentSection: 'splash', results });
+    // this.setState({ currentSection: 'total-income-summary', results });
   }
 
   render() {
+    const { stateUtils } = this.props;
     const { currentSection, results } = this.state;
 
     const go = (section: SectionName) => () => {
@@ -92,8 +103,57 @@ export default class Ending extends Component<Props, State> {
             case 'splash':
               return <Splash onAnimationComplete={go('stats')} />;
 
-            default:
+            default: {
               invariant(results, 'Results must be defined');
+
+              const netIncome =
+                results.faresAndTips +
+                results.weekdayQuestBonus +
+                results.weekendQuestBonus -
+                (results.carRental +
+                  results.upgrades +
+                  results.fuel +
+                  results.trafficTickets +
+                  results.tax);
+
+              const hourlyRate = netIncome / results.hoursDriven;
+              const goodNetIncome = netIncome >= 1000;
+              const goodHourlyRate = hourlyRate >= 12;
+
+              // decide on circular images
+              const incomeSummaryImageURL =
+                stateUtils.config.endingImages[goodNetIncome ? 'happy' : 'sad'];
+              const hourlyRateSummaryImageURL =
+                stateUtils.config.endingImages[goodHourlyRate ? 'happy' : 'sad'];
+
+              // start loading ending images, and update our state when done
+              const incomeSummaryImagePromise = stateUtils.loadImage(incomeSummaryImageURL, true);
+              const hourlyRateImagePromise = stateUtils.loadImage(hourlyRateSummaryImageURL, true);
+
+              // DEBUGGING
+              // console.log(
+              //   `goodNetIncome: ${String(goodNetIncome)}, goodHourlyRate: ${String(
+              //     goodHourlyRate,
+              //   )}`,
+              // );
+              // console.log(
+              //   `incomeSummaryImageURL: ${incomeSummaryImageURL}, hourlyRateSummaryImageURL: ${hourlyRateSummaryImageURL}`,
+              // );
+              // console.log(
+              //   'promises are same?',
+              //   incomeSummaryImagePromise === hourlyRateImagePromise,
+              //   hourlyRateImagePromise,
+              // );
+              //
+              // Promise.all([incomeSummaryImagePromise, hourlyRateImagePromise]).then(([a, b]) => {
+              //   console.log('blobs are same?', a === b);
+              //   console.log(
+              //     'blob urls are same?',
+              //     URL.createObjectURL(a) === URL.createObjectURL(b),
+              //     URL.createObjectURL(a),
+              //     URL.createObjectURL(b),
+              //   );
+              // });
 
               switch (currentSection) {
                 case 'stats':
@@ -108,7 +168,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'income':
                   return (
-                    <MathsPanel
+                    <AdditionPanel
                       heading="Your income"
                       figures={[
                         { amount: results.faresAndTips, title: 'Fares and tips' },
@@ -121,7 +181,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'costs':
                   return (
-                    <MathsPanel
+                    <AdditionPanel
                       heading="Your costs"
                       magentaStyle
                       startingTotal={
@@ -140,21 +200,64 @@ export default class Ending extends Component<Props, State> {
 
                 case 'total-income-summary':
                   return (
-                    <Panel heading="Total income summary (TODO)" next={go('hourly-rate-summary')} />
+                    <SummaryPanel
+                      imagePromise={incomeSummaryImagePromise}
+                      heading={
+                        goodNetIncome
+                          ? `Congrats! You earned ${formatDollars(netIncome)}!`
+                          : `Sorry! You only earned ${formatDollars(netIncome)}!`
+                      }
+                      detail={
+                        goodNetIncome
+                          ? `You made enough to pay your $1,000 mortgage bill. You also earned more money than ${results.higherIncomeThan}% of other players`
+                          : `You weren’t able to make enough money to pay your $1,000 mortgage bill. But you did earn more than ${results.higherIncomeThan}% of other players on ${results.difficulty}`
+                      }
+                      next={go('hourly-rate-summary')}
+                    />
                   );
 
                 case 'hourly-rate-summary':
-                  return <Panel heading="Hourly rate summary (TODO)" next={go('choices')} />;
+                  return (
+                    <SummaryPanel
+                      imagePromise={hourlyRateImagePromise}
+                      heading={`You made ${formatDollars(hourlyRate, false, true)} an hour`}
+                      detail={
+                        goodHourlyRate
+                          ? 'Your working hours mean that you earned more than the $12 minimum hourly wage in California. Well done!'
+                          : 'The long hours you worked means that you earned less than the $12 minimum hourly wage in California'
+                      }
+                      next={go('choices')}
+                    />
+                  );
 
                 case 'choices':
-                  return <Panel heading="Your choices (TODO)" next={go('credits')} />;
+                  return (
+                    <YourChoicesPanel
+                      choices={[
+                        {
+                          text: 'You didnt take a single day off',
+                          note: 'XX% of other players also didnt',
+                        },
+                        {
+                          text: 'You kept your promise to help your son with his homework',
+                          note: 'XX% of other players also did',
+                        },
+                        {
+                          text: 'You were a good citizen and bought a business licence',
+                          note: 'XX% of other players also did',
+                        },
+                      ]}
+                      next={go('credits')}
+                    />
+                  );
 
                 case 'credits':
-                  return <Panel heading="End credits (TODO)" />;
+                  return <CreditsPanel heading="End credits (TODO)" />;
 
                 default:
                   throw new Error(`Unknown section: ${currentSection}`);
               }
+            }
           }
         })()}
 

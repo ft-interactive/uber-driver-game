@@ -5,10 +5,10 @@ import type { Element } from 'react';
 import * as colours from '../colours';
 
 type NestedArray<T> = Array<T | NestedArray<T>>;
-type Child = Element<any>;
+type Child = Element<any> | null;
 
 type Props = {
-  heading?: string,
+  heading?: null | string,
   magentaStyle?: boolean,
   next?: null | (() => void),
   children?: null | Child | NestedArray<Child>,
