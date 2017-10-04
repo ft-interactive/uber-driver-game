@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 import Splash from './Splash';
-import Panel from './panels/Panel';
 import StatsPanel from './panels/StatsPanel';
 import AdditionPanel from './panels/AdditionPanel';
+import SummaryPanel from './panels/SummaryPanel';
+import YourChoicesPanel from './panels/YourChoicesPanel';
+import CreditsPanel from './panels/CreditsPanel';
 
 type Props = {};
 
@@ -138,17 +140,47 @@ export default class Ending extends Component<Props, State> {
 
                 case 'total-income-summary':
                   return (
-                    <Panel heading="Total income summary (TODO)" next={go('hourly-rate-summary')} />
+                    <SummaryPanel
+                      heading={'Congrats! You made xxxxx!'}
+                      detail={
+                        "You reached your goal blah blah that's more than X% of other players blah blah blah"
+                      }
+                      next={go('hourly-rate-summary')}
+                    />
                   );
 
                 case 'hourly-rate-summary':
-                  return <Panel heading="Hourly rate summary (TODO)" next={go('choices')} />;
+                  return (
+                    <SummaryPanel
+                      heading={'...but your hourly rate was $2'}
+                      detail={"That's really low and stuff"}
+                      next={go('choices')}
+                    />
+                  );
 
                 case 'choices':
-                  return <Panel heading="Your choices (TODO)" next={go('credits')} />;
+                  return (
+                    <YourChoicesPanel
+                      choices={[
+                        {
+                          text: 'You didnt take a single day off',
+                          note: 'XX% of other players also didnt',
+                        },
+                        {
+                          text: 'You kept your promise to help your son with his homework',
+                          note: 'XX% of other players also did',
+                        },
+                        {
+                          text: 'You were a good citizen and bought a business licence',
+                          note: 'XX% of other players also did',
+                        },
+                      ]}
+                      next={go('credits')}
+                    />
+                  );
 
                 case 'credits':
-                  return <Panel heading="End credits (TODO)" />;
+                  return <CreditsPanel heading="End credits (TODO)" />;
 
                 default:
                   throw new Error(`Unknown section: ${currentSection}`);

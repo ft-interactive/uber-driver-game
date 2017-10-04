@@ -8,7 +8,7 @@ type NestedArray<T> = Array<T | NestedArray<T>>;
 type Child = Element<any>;
 
 type Props = {
-  heading?: string,
+  heading?: null | string,
   magentaStyle?: boolean,
   next?: null | (() => void),
   children?: null | Child | NestedArray<Child>,

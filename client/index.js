@@ -162,7 +162,7 @@ function endStory() {
   document.body.classList.add('showing-ending');
 
   ending.show({
-    // stats overview
+    // stats
     hoursDriven: story.variablesState.$('hours_driven_total'),
     ridesCompleted: story.variablesState.$('ride_count_total'),
     driverRating: story.variablesState.$('rating') / 100,
@@ -178,6 +178,19 @@ function endStory() {
     fuel: 0 - story.variablesState.$('gas_cost'),
     trafficTickets: 0 - story.variablesState.$('ticket_cost'),
     tax: 0 - story.variablesState.$('tax_cost'),
+
+    // total-income-summary
+    higherIncomeThan: 86, // percent of other players
+
+    // hourly-rate-summary - automatic
+
+    // your-choices
+    tookDayOff: true,
+    othersTookDayOff: 78, // per cent
+    helpedWithHomework: true,
+    othersHelpedWithHomework: 57, // per cent
+    boughtBusinessLicense: false,
+    othersBoughtBusinessLicense: 44, // per cent
   });
 }
 
