@@ -51,7 +51,7 @@
 }
 
 {rating<460:
-~alter(rating, RANDOM(0,10))
+~alter(rating, RANDOM(5,15))
 }
 
 {quest_rides<0: 
