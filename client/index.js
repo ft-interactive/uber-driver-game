@@ -205,17 +205,17 @@ async function endStory() {
 
   // grab some variables
   const difficulty = story.variablesState.$('home') === 'sf' ? 'EASY' : 'HARD';
-  const hoursDriven = story.variablesState.$('hours_driven_total');
-  const ridesCompleted = story.variablesState.$('ride_count_total');
-  const driverRating = story.variablesState.$('rating') / 100;
-  const faresAndTips = story.variablesState.$('fares_earned_total');
-  const weekdayQuestBonus = story.variablesState.$('weekday_quest_bonus');
-  const weekendQuestBonus = story.variablesState.$('weekend_quest_bonus');
-  const carRental = 0 - story.variablesState.$('car_cost');
-  const upgrades = 0 - story.variablesState.$('accessories_cost');
-  const fuel = 0 - story.variablesState.$('gas_cost');
-  const trafficTickets = 0 - story.variablesState.$('ticket_cost');
-  const tax = 0 - story.variablesState.$('tax_cost');
+  const hoursDriven = story.variablesState.$('hours_driven_total') || 0;
+  const ridesCompleted = story.variablesState.$('ride_count_total') || 0;
+  const driverRating = (story.variablesState.$('rating') || 0) / 100;
+  const faresAndTips = story.variablesState.$('fares_earned_total') || 0;
+  const weekdayQuestBonus = story.variablesState.$('weekday_quest_bonus') || 0;
+  const weekendQuestBonus = story.variablesState.$('weekend_quest_bonus') || 0;
+  const carRental = 0 - (story.variablesState.$('car_cost') || 0);
+  const upgrades = 0 - (story.variablesState.$('accessories_cost') || 0);
+  const fuel = 0 - (story.variablesState.$('gas_cost') || 0);
+  const trafficTickets = 0 - (story.variablesState.$('ticket_cost') || 0);
+  const tax = 0 - (story.variablesState.$('tax_cost') || 0);
   const netIncome =
     faresAndTips +
     weekdayQuestBonus +
@@ -263,8 +263,7 @@ async function endStory() {
   const boughtBusinessLicence = story.variablesState.$('biz_licence') === 1;
   const othersBoughtBusinessLicence = getDecisionPercent('biz_licence');
 
-  // render!
-  ending.show({
+  const options = {
     netIncome,
 
     // stats
@@ -297,7 +296,12 @@ async function endStory() {
     othersHelpedWithHomework,
     boughtBusinessLicence,
     othersBoughtBusinessLicence,
-  });
+  };
+
+  console.log('ending options', options);
+
+  // render!
+  ending.show(options);
 
   gaAnalytics('uber-game', 'show-end');
 }
