@@ -209,8 +209,12 @@ async function endStory() {
   const ridesCompleted = story.variablesState.$('ride_count_total') || 0;
   const driverRating = (story.variablesState.$('rating') || 0) / 100;
   const faresAndTips = story.variablesState.$('fares_earned_total') || 0;
-  const weekdayQuestBonus = story.variablesState.$('weekday_quest_bonus') || 0;
-  const weekendQuestBonus = story.variablesState.$('weekend_quest_bonus') || 0;
+  const weekdayQuestBonus = story.variablesState.$('weekday_quest_completion')
+    ? story.variablesState.$('weekday_quest_bonus') || 0
+    : 0;
+  const weekendQuestBonus = story.variablesState.$('weekend_quest_completion')
+    ? story.variablesState.$('weekend_quest_bonus') || 0
+    : 0;
   const carRental = 0 - (story.variablesState.$('car_cost') || 0);
   const upgrades = 0 - (story.variablesState.$('accessories_cost') || 0);
   const fuel = 0 - (story.variablesState.$('gas_cost') || 0);
@@ -962,7 +966,7 @@ stateUtils.loadImage(
     story.variablesState.$('rating', 476);
     story.variablesState.$('weekday_quest_completion', true);
     story.variablesState.$('weekday_quest_bonus', 180);
-    story.variablesState.$('weekend_quest_completion', true);
+    story.variablesState.$('weekend_quest_completion', false);
     story.variablesState.$('weekend_quest_bonus', 150);
     story.variablesState.$('car_cost', 180);
     story.variablesState.$('gas_cost', 231);
