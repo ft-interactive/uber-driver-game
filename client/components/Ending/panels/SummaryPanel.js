@@ -48,12 +48,16 @@ export default class SummaryPanel extends Component<Props, State> {
         <style jsx>{`
           h1 {
             color: white;
+            font: 700 30px MetricWeb, sans-serif;
+            margin-top: 32px;
           }
 
           .image-container {
             position: relative;
             width: 200px;
             height: 200px;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .image-container > img {
@@ -62,7 +66,10 @@ export default class SummaryPanel extends Component<Props, State> {
           }
 
           p {
+            font: 400 18px MetricWeb, sans-serif;
+            line-height: 1.6em;
             color: white;
+            margin: 32px 0;
           }
         `}</style>
       </Panel>
