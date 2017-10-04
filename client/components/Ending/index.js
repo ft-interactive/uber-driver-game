@@ -158,7 +158,6 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
                         { amount: results.uberXLBonus, title: 'UberXL bonus' },
                       ]}
-                      negativeZero
                       next={go('costs')}
                     />
                   );
@@ -168,6 +167,7 @@ export default class Ending extends Component<Props, State> {
                     <AdditionPanelHack
                       heading="Your costs"
                       magentaStyle
+                      negativeZero
                       startingTotal={
                         results.faresAndTips +
                         results.weekdayQuestBonus +
