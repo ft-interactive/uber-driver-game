@@ -532,10 +532,11 @@ It's 4pm, and you've only earned ${day_fares_earned}.
 
 =sac_evening
 # day_1_sacramento.sac_evening
-# link
-# bg:home
-It's getting late, and you don't want to burn out too quickly.
 
+
+It's getting late, and you don't want to burn out too quickly.
+# bg:home
+# button
 * [Call it a day]->day_1_end
 
 
@@ -1016,8 +1017,10 @@ You don't feel like getting in the queue for a ride back, so you drive back to t
 =day_4_quest_completed
 # link
 # day_4_start.day_4_quest_completed
-# bg:main
+
 Since you've already finished the quest and the next one won't start until Friday, do you want to take the day off?
+
+# bg:main
 * [Take day off]
 ~ took_day_off=true
 ->day_off
@@ -1055,7 +1058,7 @@ Today is the last day to complete enough rides for the bonus.
 # link
 # day_4_start.day_4_quest_impossible
 There's no way you'll complete enough rides to finish the quest. Do you want to take the day off and start afresh when you get a new quest on Friday?
-
+# bg:main
 * [Take day off]
 ->day_off
 
@@ -1066,6 +1069,7 @@ There's no way you'll complete enough rides to finish the quest. Do you want to 
 # day_4_morning
 As you head out, you remember that you promised your son to be home by 7pm to help him with his homework.
 {home=="sac":
+# bg:main
 * [Drive in Sacramento today]
 ~ current_city = "sac"
 -> day_4_sacramento
@@ -1087,6 +1091,7 @@ As you head out, you remember that you promised your son to be home by 7pm to he
 
 {home=="sf":
 # button
+# bg:main
 * [I'll be back in time!]
 ~ current_city = "sf"
 ->day_4_sf
