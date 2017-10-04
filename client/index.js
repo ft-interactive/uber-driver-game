@@ -276,6 +276,14 @@ function continueStory() {
     const panelIn = anime.timeline();
     let delay = 0;
 
+    // Update background image if appropriate
+    const bgImageURL = stateUtils.getBackgroundImageURL();
+
+    if (bgImageURL) {
+      delay = 1100;
+      gameContainer.setBackgroundImage(bgImageURL);
+    }
+
     panelIn
       .add({
         targets: knotContainer,
@@ -283,15 +291,6 @@ function continueStory() {
         duration: 150,
         easing: 'linear',
         offset: 0,
-        begin: () => {
-          // Update background image if appropriate
-          const bgImageURL = stateUtils.getBackgroundImageURL();
-
-          if (bgImageURL) {
-            delay = 1100;
-            gameContainer.setBackgroundImage(bgImageURL);
-          }
-        },
         delay,
       })
       .add({
@@ -608,7 +607,9 @@ function continueStory() {
   } else {
     console.log('>>>'); // eslint-disable-line no-console
 
-    showPanel();
+    setTimeout(() => { // Handle race condition by forcing it to wait 150ms
+      showPanel();
+    }, 150);
   }
 
   // Generate story text - loop through available content
