@@ -274,14 +274,7 @@ function continueStory() {
 
   function showPanel() {
     const panelIn = anime.timeline();
-
-    // Update background image if appropriate
-    const bgImageURL = stateUtils.getBackgroundImageURL();
     let delay = 0;
-    if (bgImageURL) {
-      delay = 1100;
-      gameContainer.setBackgroundImage(bgImageURL);
-    }
 
     panelIn
       .add({
@@ -290,6 +283,15 @@ function continueStory() {
         duration: 150,
         easing: 'linear',
         offset: 0,
+        begin: () => {
+          // Update background image if appropriate
+          const bgImageURL = stateUtils.getBackgroundImageURL();
+
+          if (bgImageURL) {
+            delay = 1100;
+            gameContainer.setBackgroundImage(bgImageURL);
+          }
+        },
         delay,
       })
       .add({
@@ -304,8 +306,6 @@ function continueStory() {
 
           existingChoices.forEach((existingChoice) => {
             const e = existingChoice;
-
-            console.log(e);
 
             e.disabled = false;
           });
