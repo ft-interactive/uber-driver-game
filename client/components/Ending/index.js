@@ -11,6 +11,7 @@ import YourChoicesPanel from './panels/YourChoicesPanel';
 import CreditsPanel from './panels/CreditsPanel';
 import StateUtils from '../../StateUtils';
 import formatDollars from '../../lib/formatDollars';
+import gaAnalytics from '../analytics';
 
 type Props = {
   stateUtils: StateUtils,
@@ -86,6 +87,7 @@ export default class Ending extends Component<Props, State> {
 
     const go = (section: SectionName) => () => {
       this.setState({ currentSection: section });
+      gaAnalytics('uber-game', 'scroll-end', section);
     };
 
     return (

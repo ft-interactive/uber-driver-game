@@ -193,6 +193,8 @@ function endStory() {
     boughtBusinessLicense: false,
     othersBoughtBusinessLicense: 44, // per cent
   });
+
+  gaAnalytics('uber-game', 'show-end');
 }
 
 function recordDecision(decision) {
