@@ -152,8 +152,8 @@ export default class Ending extends Component<Props, State> {
                       heading="Your income"
                       figures={[
                         { amount: results.faresAndTips, title: 'Fares and tips' },
-                        { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
                         { amount: results.weekdayQuestBonus, title: 'Weekday quest bonus' },
+                        { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
                       ]}
                       next={go('costs')}
                     />
