@@ -50,7 +50,7 @@ export default class CreditsPanel extends Component<Props> {
       <Panel>
         <div className="credits-panel">
           <p>
-            This game was produced by{' '}
+            The Uber Game was produced by{' '}
             <span className="people">
               {credits.map(({ name, link }, i) => {
                 let append;
@@ -75,29 +75,43 @@ export default class CreditsPanel extends Component<Props> {
             </span>
           </p>
 
-          <p>{blurb}</p>
-
-          <a className="article-link" href={relatedArticleURL}>
-            <img alt="" src={relatedArticleImageURL} />
-            <article>{relatedArticleHeadline}</article>
-          </a>
-
-          <p>Share this game:</p>
+          <p className="share-text">Share this game:</p>
           <div
             className="share-links"
             ref={(el) => {
               this.shareLinksContainer = el;
             }}
           />
+
+          <p className="blurb">{blurb}</p>
+
+          <a className="article-link" href={relatedArticleURL}>
+            <img alt="" src={relatedArticleImageURL} />
+            <article>{relatedArticleHeadline}</article>
+          </a>
         </div>
         <style jsx>{`
           .credits-panel {
             color: white;
+            padding: 0 10px;
           }
 
           .credits-panel p {
             font-family: MetricWeb, sans-serif;
             color: white;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+          }
+
+          .credits-panel p.share-text,
+          .credits-panel p.blurb {
+            text-align: center;
+          }
+
+          .credits .text-style-1 {
+            font-weight: normal;
           }
 
           .people {
@@ -109,6 +123,10 @@ export default class CreditsPanel extends Component<Props> {
             color: white;
             text-decoration: none;
             border-bottom: 0;
+          }
+
+          .share-links {
+            margin-bottom: 10px;
           }
 
           .article-link {
