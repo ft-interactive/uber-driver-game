@@ -180,7 +180,7 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.fuel, title: 'Fuel' },
                         { amount: results.trafficTickets, title: 'Traffic tickets' },
                         { amount: results.repairCost, title: 'Repair costs' },
-                        { amount: results.tax, title: 'Tax' },
+                        { amount: results.tax, title: 'Business tax' },
                       ]}
                       next={go('total-income-summary')}
                     />

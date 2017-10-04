@@ -269,6 +269,12 @@ async function endStory() {
     if (!otherUserDecisions) return null;
 
     const stats = otherUserDecisions[type];
+
+    if (!stats) {
+      console.warn(`Unknown decision type: ${type}`);
+      return null;
+    }
+
     return 100 * (stats.true / (stats.true + stats.false));
   };
 
@@ -995,6 +1001,8 @@ stateUtils.loadImage(
     story.variablesState.$('gas_cost', 231);
     story.variablesState.$('accessories_cost', 90);
     story.variablesState.$('repair_cost', 140);
+    story.variablesState.$('tax_cost', 64);
+    story.variablesState.$('ticket_cost', 25);
     story.variablesState.$('took_day_off', true);
 
     continueStory();
