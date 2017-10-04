@@ -1,10 +1,12 @@
 # uber-driver-game
 
+[![CircleCI](https://circleci.com/gh/ft-interactive/uber-driver-game.svg?style=svg&circle-token=9da40011645b2cc1dc762da666f83bd665e198c0)](https://circleci.com/gh/ft-interactive/uber-driver-game)
+
 Can you make it in the gig economy?
 
 The Uber Game is a narrative news game by the Financial Times on the economics and experience of being an Uber drivers. Players have a week to try to earn $1,000 and have to make choices faced by real Uber drivers interviewed for the game.
 
-[Play here](https://ig.ft.com/uber-game/) 
+[Play here](https://ig.ft.com/uber-game/)
 
 ## Local
 

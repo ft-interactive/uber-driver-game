@@ -5,6 +5,7 @@
 import micro, { json, send } from 'micro';
 import { Result, Decision, sequelize } from './models';
 import { IncomingMessage, ServerResponse } from 'http';
+import { parse } from 'url';
 
 Promise.all([Result.sync(), Decision.sync()])
 .then(() => {
@@ -14,7 +15,9 @@ Promise.all([Result.sync(), Decision.sync()])
     if (req.method && req.method.toLowerCase() === 'options') {
       return {};
     }
-    switch (req.url) {
+
+    const path = parse(req.url || '');
+    switch (path.pathname) {
       case '/decisions':
         if (req.method && req.method.toLowerCase() === 'post') {
           try {
@@ -52,21 +55,31 @@ Promise.all([Result.sync(), Decision.sync()])
             console.error(e);
             send(res, 500, 'Server Error');
           }
-        } else {
-          try {
-            return (await sequelize.query(
-              `
-              SELECT percentile_cont(array[.1,.2,.3,.4,.5,.6,.7,.8,.9,1])
-              WITHIN GROUP (ORDER BY income) AS deciles
-              FROM results;
-              `,
-              {
-                type: sequelize.QueryTypes.SELECT,
-              })).shift();  
-          } catch (e) {
-            console.error(e);
-            send(res, 500, 'Server Error');
-          }
+        }
+      case '/ranking':
+        try {
+          const queryArgs = path.query.split('&')
+            .map((frag: string) => frag.split('='));
+
+          const [, difficulty] = queryArgs
+            .find((item: string[]) => item[0] === 'difficulty');
+
+          const [, income] = queryArgs
+            .find((item: string[]) => item[0] === 'income');
+
+          return (await sequelize.query(
+            `
+            SELECT percent_rank(${Number(income)})
+            WITHIN GROUP (ORDER BY income)
+            FROM results
+            WHERE difficulty = '${difficulty}';
+            `,
+            {
+              type: sequelize.QueryTypes.SELECT,
+            })).shift();
+        } catch (e) {
+          console.error(e);
+          send(res, 500, 'Server Error');
         }
     }
 

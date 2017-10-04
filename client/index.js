@@ -192,16 +192,44 @@ function recordPlayerResult() {
     .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
 }
 
+<<<<<<< HEAD
 // fetch other users' decisions up-front
 const decisionsPromise = fetch(`${endpoint}/decisions`).then(res => res.json());
 
 async function endStory() {
   // hide/prepare various surrounding elements
+=======
+// fetch other users' results and decisions up-front, ready for the end screen
+const resultsPromise = fetch(`${endpoint}/results`).then(res => res.json());
+const decisionsPromise = fetch(`${endpoint}/decisions`).then(res => res.json());
+
+async function endStory() {
+>>>>>>> master
   tint.style.display = 'none';
   introScreen.style.display = 'none';
   document.querySelector('.article-head').style.display = 'none';
   storyScreen.style.display = 'none';
   document.body.classList.add('showing-ending');
+  recordPlayerResult();
+
+  let otherUsersResults;
+  let otherUserDecisions;
+
+  try {
+    [otherUsersResults, otherUserDecisions] = await Promise.all([resultsPromise, decisionsPromise]);
+  } catch (error) {
+    console.error(error);
+  }
+
+  console.log('otherUsersResults', otherUsersResults);
+  console.log('otherUserDecisions', otherUserDecisions);
+
+  const getDecisionPercent = (type) => {
+    if (!otherUserDecisions) return null;
+
+    const stats = otherUserDecisions[type];
+    return 100 * (stats.true / (stats.true + stats.false));
+  };
 
   // grab some variables
   const difficulty = story.variablesState.$('home') === 'sf' ? 'EASY' : 'HARD';
@@ -285,18 +313,32 @@ async function endStory() {
     tax,
 
     // total-income-summary
+<<<<<<< HEAD
     rankPromise,
     difficulty,
+=======
+    higherIncomeThan: 86, // TODO percent of other players
+>>>>>>> master
 
     // hourly-rate-summary - automatic
 
     // your-choices
+<<<<<<< HEAD
     tookDayOff,
     othersTookDayOff,
     helpedWithHomework,
     othersHelpedWithHomework,
     boughtBusinessLicence,
     othersBoughtBusinessLicence,
+=======
+    difficulty: 'EASY',
+    tookDayOff: true, // TODO
+    othersTookDayOff: getDecisionPercent('took_day_off'),
+    helpedWithHomework: true, // TODO
+    othersHelpedWithHomework: getDecisionPercent('helped_homework'),
+    boughtBusinessLicence: false, // TODO
+    othersBoughtBusinessLicence: getDecisionPercent('biz_licence'),
+>>>>>>> master
   });
 
   gaAnalytics('uber-game', 'show-end');
