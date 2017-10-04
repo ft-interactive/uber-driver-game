@@ -223,8 +223,8 @@ export default class Ending extends Component<Props, State> {
                       heading={`You made ${formatDollars(hourlyRate, false, true)} an hour`}
                       detail={
                         goodHourlyRate
-                          ? 'Your working hours mean that you earned more than the $12 minimum hourly wage in California. Well done!'
-                          : 'The long hours you worked means that you earned less than the $12 minimum hourly wage in California.'
+                          ? 'Your working hours meant that you earned more than the $12 minimum hourly wage in California. Well done!'
+                          : 'The long hours you worked meant that you earned less than the $12 minimum hourly wage in California.'
                       }
                       next={go('choices')}
                     />
@@ -235,8 +235,8 @@ export default class Ending extends Component<Props, State> {
                     <YourChoicesPanel
                       choices={[
                         {
-                          text: 'You didnt take a single day off',
-                          note: 'XX% of other players also didnt',
+                          text: 'You didn\'t take a single day off',
+                          note: 'XX% of other players also didn\'t',
                         },
                         {
                           text: 'You kept your promise to help your son with his homework',
