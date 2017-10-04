@@ -873,6 +873,8 @@ stateUtils.loadImage(
   const { searchParams } = new URL(location.href);
 
   if (searchParams.has('end')) {
+    window.__CHEAT__ = true;
+
     story.variablesState.$('hours_driven_total', 1814);
     story.variablesState.$('fares_earned_total', 1345);
     story.variablesState.$('ride_count_total', 143);
