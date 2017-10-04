@@ -215,6 +215,10 @@ async function endStory() {
   const weekendQuestBonus = story.variablesState.$('weekend_quest_completion')
     ? story.variablesState.$('weekend_quest_bonus') || 0
     : 0;
+
+  const uberXLBonus =
+    story.variablesState.$('car') === 'minivan' ? story.variablesState.$('UberXL_total') || 0 : 0;
+
   const carRental = 0 - (story.variablesState.$('car_cost') || 0);
   const upgrades = 0 - (story.variablesState.$('accessories_cost') || 0);
   const fuel = 0 - (story.variablesState.$('gas_cost') || 0);
@@ -223,7 +227,8 @@ async function endStory() {
   const netIncome =
     faresAndTips +
     weekdayQuestBonus +
-    weekendQuestBonus -
+    weekendQuestBonus +
+    uberXLBonus -
     (carRental + upgrades + fuel + trafficTickets + tax);
 
   // fetch this user's global ranking
@@ -279,6 +284,7 @@ async function endStory() {
     faresAndTips,
     weekdayQuestBonus,
     weekendQuestBonus,
+    uberXLBonus,
 
     // costs
     carRental,
@@ -968,6 +974,8 @@ stateUtils.loadImage(
     story.variablesState.$('weekday_quest_bonus', 180);
     story.variablesState.$('weekend_quest_completion', false);
     story.variablesState.$('weekend_quest_bonus', 150);
+    story.variablesState.$('car', 'minivan');
+    story.variablesState.$('UberXL_total', 123);
     story.variablesState.$('car_cost', 180);
     story.variablesState.$('gas_cost', 231);
     story.variablesState.$('accessories_cost', 90);

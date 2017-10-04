@@ -154,6 +154,7 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.faresAndTips, title: 'Fares and tips' },
                         { amount: results.weekdayQuestBonus, title: 'Weekday quest bonus' },
                         { amount: results.weekendQuestBonus, title: 'Weekend quest bonus' },
+                        { amount: results.uberXLBonus, title: 'UberXL bonus' },
                       ]}
                       next={go('costs')}
                     />
