@@ -94,6 +94,7 @@ export default class CreditsPanel extends Component<Props> {
           .credits-panel {
             color: white;
             padding: 0 10px;
+            max-width: 600px;
           }
 
           .credits-panel p {
