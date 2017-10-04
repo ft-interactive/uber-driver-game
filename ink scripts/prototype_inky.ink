@@ -79,9 +79,13 @@ VAR moments=false
 button = no choice
 link = choice
 */
-
+->welcome
+/*
 ->dev_mode
 ===dev_mode===
+FOR DEVELOPMENT ONLY
+*[goto start]
+->welcome
 * [goto first fare] ->day_1_locate_passenger.driving
 * [goto time passing]
 ~home="sac"
@@ -117,9 +121,8 @@ link = choice
 ~ repair_cost=140
 ~ took_day_off=true
 ->end_sequence
-*[goto start]
-->welcome
 
+*/
 
 === welcome ===
 You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week.
@@ -412,8 +415,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🍔&nbsp;&nbsp;Burger] You go for a cheeseburger.
-* [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni.
+* [🍔&nbsp;&nbsp;Burger]
+* [🍕&nbsp;&nbsp;Pizza]
 
 - ->day_1_sac_night_in_sf
 
@@ -670,7 +673,7 @@ You stop to fill up your tank. Do you get a receipt?
 
 *[Yes] You keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
 ~kept_receipt=true
-*[No] You don’t have time to keep track of stuff like that.
+*[No] You don’t have time to keep track of stuff like that. 
 ~kept_receipt=false
 - ->day_2_midpoint
 
@@ -809,6 +812,7 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
 ~alter(repair_cost,30)
 ~add_time(1,0)
+~ windshield_cracked=false
 
 {unlimited_data==false:
 ~time_passes(2,0,1)
@@ -1576,6 +1580,7 @@ You check your chipped windshield. You can't tell whether the small crack it has
 
 =get_it_fixed
 ~time_passes(3,0,1)
+~windshield_cracked=false
 # button
 *[🚗&nbsp;&nbsp;Drive]
 ->day_5_afternoon
@@ -1804,11 +1809,11 @@ You're too tired to drive two hours to go back home. You find a quiet spot to pa
     -> day_6_slept_in_car
 
 ===vomit===
-# link
 # vomit
-# bg:vomit
-You arrive at a pick up and see a passenger vomiting on the side of the road.
 
+You arrive at a pick up and see a passenger vomiting on the side of the road.
+# link
+# bg:vomit
 * [Cancel and drive away] You decide it's not worth it.
     # link
     ** [Keep driving]
@@ -1828,7 +1833,7 @@ She looks like she needs a ride home. You open a window, maybe some fresh air wi
 ~alter(day_fares_earned,7)
 ~alter(fares_earned_total,7)
 # button
-* [Drive to her destination] As the passenger is getting out, she vomits again. Ugh!
+* [Drive to her destination] As the passenger is getting out, she vomits again.
 -> cleanup
 
 =cleanup
@@ -1843,7 +1848,7 @@ She looks like she needs a ride home. You open a window, maybe some fresh air wi
 ~alter(fares_earned_total,-30)
 }
 # button
-*[😷]
+*[😷&nbsp;&nbsp;Ugh!]
 
 { cleaning_supplies==true:
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
@@ -2171,7 +2176,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 #no_drop_zone.drop
 ~ temp ticket = RANDOM(1,3)
 {ticket>1:
-You drop her off quickly. Luckily, there weren't any cops around.
+You drop her off quickly. Luckily, there weren't any cops around so you avoided getting a ticket.
     ~time_passes(3,0,1)
     # button
     ** [Phew!]->day_7_afternoon

@@ -288,10 +288,11 @@ function continueStory() {
 
   function showPanel() {
     const panelIn = anime.timeline();
+    let delay = 0;
 
     // Update background image if appropriate
     const bgImageURL = stateUtils.getBackgroundImageURL();
-    let delay = 0;
+
     if (bgImageURL) {
       delay = 1100;
       gameContainer.setBackgroundImage(bgImageURL);
@@ -318,8 +319,6 @@ function continueStory() {
 
           existingChoices.forEach((existingChoice) => {
             const e = existingChoice;
-
-            // console.log(e);
 
             e.disabled = false;
           });
@@ -622,7 +621,10 @@ function continueStory() {
   } else {
     console.log('>>>'); // eslint-disable-line no-console
 
-    showPanel();
+    setTimeout(() => {
+      // Handle race condition by forcing it to wait 150ms
+      showPanel();
+    }, 150);
   }
 
   // Generate story text - loop through available content
