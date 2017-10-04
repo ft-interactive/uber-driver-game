@@ -414,8 +414,8 @@ After driving for so long, you're starting to get hungry.
 }
 
 ~add_time(0,30)
-* [🍔&nbsp;&nbsp;Burger] You go for a cheeseburger.
-* [🍕&nbsp;&nbsp;Pizza] You grab a quick slice of pepperoni.
+* [🍔&nbsp;&nbsp;Burger]
+* [🍕&nbsp;&nbsp;Pizza]
 
 - ->day_1_sac_night_in_sf
 
@@ -672,7 +672,7 @@ You stop to fill up your tank. Do you get a receipt?
 
 *[Yes] You keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
 ~kept_receipt=true
-*[No] You don’t have time to keep track of stuff like that.
+*[No] You don’t have time to keep track of stuff like that. 
 ~kept_receipt=false
 - ->day_2_midpoint
 
@@ -2175,7 +2175,7 @@ She slams the door as she gets out. You get a bad rating from her but that's bet
 #no_drop_zone.drop
 ~ temp ticket = RANDOM(1,3)
 {ticket>1:
-You drop her off quickly. Luckily, there weren't any cops around.
+You drop her off quickly. Luckily, there weren't any cops around so you avoided getting a ticket.
     ~time_passes(3,0,1)
     # button
     ** [Phew!]->day_7_afternoon
