@@ -465,6 +465,7 @@ function continueStory() {
     stateUtils
       .loadImage(
         'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959515-koemz.png',
+        true,
       )
       .then((blob) => {
         timePassingImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
@@ -585,6 +586,7 @@ function continueStory() {
       stateUtils
         .loadImage(
           'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959681-ssvg5.png',
+          true,
         )
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
@@ -594,6 +596,7 @@ function continueStory() {
       stateUtils
         .loadImage(
           'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png',
+          true,
         )
         .then((blob) => {
           momentImage.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
@@ -661,6 +664,7 @@ function continueStory() {
       stateUtils
         .loadImage(
           'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492973346-7mu0u.png',
+          true,
         )
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
@@ -669,6 +673,7 @@ function continueStory() {
       stateUtils
         .loadImage(
           'http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8493380088-0jv5b.png',
+          true,
         )
         .then((blob) => {
           knotDecoration.style.backgroundImage = `url(${URL.createObjectURL(blob)})`;
