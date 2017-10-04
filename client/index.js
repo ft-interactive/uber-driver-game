@@ -198,6 +198,8 @@ function endStory() {
 }
 
 function recordDecision(decision) {
+  if (window.__CHEAT__) return Promise.resolve();
+
   const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
     acc[key] = value._value;
     return acc;
@@ -221,6 +223,8 @@ function recordDecision(decision) {
 }
 
 function recordPlayerResult() {
+  if (window.__CHEAT__) return Promise.resolve();
+
   const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
     acc[key] = value._value;
     return acc;
