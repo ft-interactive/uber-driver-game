@@ -627,6 +627,10 @@ main {
     display: inline !important;
     opacity: 1 !important;
   }
+
+  .ending-container {
+    display: none !important;
+  }
 }
 
 @include oGridRespondTo(M) {
