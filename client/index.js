@@ -179,6 +179,8 @@ function endStory() {
     trafficTickets: 0 - story.variablesState.$('ticket_cost'),
     tax: 0 - story.variablesState.$('tax_cost'),
   });
+
+  gaAnalytics('uber-game', 'show-end');
 }
 
 function recordDecision(decision) {
