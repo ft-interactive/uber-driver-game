@@ -123,7 +123,7 @@ export default class Ending extends Component<Props, State> {
 
               const hourlyRate = results.netIncome / results.hoursDriven;
               const goodNetIncome = results.netIncome >= 1000;
-              const goodHourlyRate = hourlyRate >= 12;
+              const goodHourlyRate = hourlyRate >= 14;
 
               // decide on circular images
               const incomeSummaryImageURL =
@@ -211,8 +211,8 @@ export default class Ending extends Component<Props, State> {
                       heading={`You made ${formatDollars(hourlyRate, false, true)} an hour`}
                       detail={
                         goodHourlyRate
-                          ? 'Your working hours meant that you earned more than the $12 minimum hourly wage in California. Well done!'
-                          : 'The long hours you worked meant that you earned less than the $12 minimum hourly wage in California.'
+                          ? 'Your working hours meant that you earned more than the $14 minimum hourly wage in San Francisco. Well done!'
+                          : 'The long hours you worked meant that you earned less than the $14 minimum hourly wage in San Francisco.'
                       }
                       next={go('choices')}
                     />
