@@ -65,7 +65,7 @@ export default (environment = 'development') => ({ // eslint-disable-line
         optional social meta data?
   */
   // General social
-  // socialImage: '',
+  socialImage: 'https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fim.ft-static.com%2Fcontent%2Fimages%2Fbf20a4f6-a82f-11e7-ab55-27219df83c97.img?source=ig',
   socialHeadline: 'The Uber Game: Can you make it in the gig economy?',
   socialDescription: 'A news game based on interviews with dozens of Uber drivers',
   twitterCreator: '@FT', // shows up in summary_large_image cards
@@ -80,12 +80,12 @@ export default (environment = 'development') => ({ // eslint-disable-line
   // override the General social options above
 
   // TWITTER METADATA (for Twitter cards)
-  // twitterImage: '',
+  twitterImage: 'https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fim.ft-static.com%2Fcontent%2Fimages%2Fbf20a4f6-a82f-11e7-ab55-27219df83c97.img?source=ig',
   twitterHeadline: 'The Uber Game',
   twitterDescription: 'Can you make it in the gig economy?',
 
   // FACEBOOK
-  // facebookImage: '',
+  facebookImage: 'https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fim.ft-static.com%2Fcontent%2Fimages%2Fbf20a4f6-a82f-11e7-ab55-27219df83c97.img?source=ig',
   facebookHeadline: 'Could you make it as an Uber driver?',
   facebookDescription: 'A news game based on interviews with dozens of Uber drivers',
 
