@@ -29,12 +29,14 @@ type Results = {
   faresAndTips: number,
   weekendQuestBonus: number,
   weekdayQuestBonus: number,
+  uberXLBonus: number,
 
   carRental: number,
   upgrades: number,
   fuel: number,
   trafficTickets: number,
   tax: number,
+  repairCost: number,
 
   rankPromise: Bluebird<number | null>,
   difficulty: 'EASY' | 'HARD',
@@ -173,6 +175,7 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.upgrades, title: 'Upgrades' },
                         { amount: results.fuel, title: 'Fuel' },
                         { amount: results.trafficTickets, title: 'Traffic tickets' },
+                        { amount: results.repairCost, title: 'Repair costs' },
                         { amount: results.tax, title: 'Tax' },
                       ]}
                       next={go('total-income-summary')}
