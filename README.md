@@ -34,5 +34,7 @@ Please note the MIT licence includes only the software, and does not cover any F
 ## Built using
 
 Ink: Copyright (c) 2017 inkle Ltd. MIT licence
+
 Inkjs: Copyright (c) 2017 Yannick Lohse MIT licence
+
 Anime: Copyright (c) 2017 Julian Garnier MIT licence
