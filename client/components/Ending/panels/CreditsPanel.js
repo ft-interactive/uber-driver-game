@@ -112,7 +112,44 @@ export default class CreditsPanel extends Component<Props> {
           }
 
           .article-link {
-            /* TODO */
+            padding: .5em 1em;
+            margin-top: 3em;
+            border: 2px solid #00757f;
+            display: inline-block;
+            width: 77%;
+          }
+
+          .article-link img {
+            position: relative;
+            top: -4em;
+            width: 100%;
+          }
+
+          .article-link article {
+            font-size: 1.3em;
+            position: relative;
+            top: -1em;
+            width: 80%;
+            margin: 0 auto;
+          }
+
+          @media (min-width: 740px) {
+            .article-link {
+              padding: 1em 2em;
+              margin-top: 4em;
+              display: inline-block;
+              width: auto;
+            }
+
+            .article-link img {
+              position: relative;
+              top: -4em;
+              width: auto;
+            }
+
+            .article-link article {
+              font-size: 2em;
+            }
           }
         `}</style>
 
