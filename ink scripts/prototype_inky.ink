@@ -1281,7 +1281,6 @@ You pick up some tourists who want to drive across the Golden Gate Bridge and go
 
 ===day_4_sf_from_sac===
 # day_4_sf_from_sac
-~ temp remaining=quest_rides-3
 //11am if no napa ride, 1pm if napa ride
 By now, you've become used to the rhythm of the day and how this works.
 
@@ -1295,16 +1294,7 @@ By now, you've become used to the rhythm of the day and how this works.
     }
     # button
     # bg:driving_sf
-    *[🚗&nbsp;&nbsp;Drive] It's time to head back to Sacramento to keep your promise to your son. //5pm
-
-    ~ add_time(1,56)
-    ~ alter(day_hours_driven,2)
-    ~ alter(hours_driven_total,2)
-    # button
-    ** [Go home]
-    ~helped_homework=true
-    You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
-    -> day_4_end
+    *[🚗&nbsp;&nbsp;Drive]->back_to_sac
 
 - else:
     {napa.napa_ride:
@@ -1317,13 +1307,26 @@ By now, you've become used to the rhythm of the day and how this works.
     *[🚗&nbsp;&nbsp;Drive]->time_to_go_home
 }
 
+=back_to_sac
+# day_4_sf_from_sac.back_to_sac
+ It's time to head back to Sacramento to keep your promise to your son. //5pm
+
+~ add_time(1,56)
+~ alter(day_hours_driven,2)
+~ alter(hours_driven_total,2)
+# button
+* [Go home]
+~helped_homework=true
+You spend a pleasant evening helping your son with his homework. Afterwards, he gives you a goodnight kiss as you tuck him into bed.
+-> day_4_end
+
 =time_to_go_home
 //5pm
 # day_4_sf_from_sac.time_to_go_home
 
 {
 - quest_completion==true:
-->quest_finish->
+    ->quest_finish->
     It's time to head back to Sacramento to keep your promise to your son.
     ~ add_time(1,56)
     ~ alter(day_hours_driven,2)
@@ -1339,11 +1342,11 @@ By now, you've become used to the rhythm of the day and how this works.
     MESSAGE FROM UBER: “Just {quest_rides} more trip{quest_rides>1:s} until you complete your quest!”
     But you promised to be home by 7pm to help your son with his homework.
     # link
-    #uber-message
+    # uber-message
     * [Keep driving] ->keep_driving
     * [Go home] ->go_home
 
-- quest_completion==false && quest_rides > 7:
+- quest_completion==false && quest_rides >= 7:
     It doesn't look like you'll be able to finish the quest. You might as well go keep your promise and go home.
     ~ add_time(1,56)
     ~ alter(day_hours_driven,2)
