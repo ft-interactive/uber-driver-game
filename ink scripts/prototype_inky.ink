@@ -1806,11 +1806,11 @@ You're too tired to drive two hours to go back home. You find a quiet spot to pa
     -> day_6_slept_in_car
 
 ===vomit===
-# link
 # vomit
-# bg:vomit
-You arrive at a pick up and see a passenger vomiting on the side of the road.
 
+You arrive at a pick up and see a passenger vomiting on the side of the road.
+# link
+# bg:vomit
 * [Cancel and drive away] You decide it's not worth it.
     # link
     ** [Keep driving]
@@ -1830,7 +1830,7 @@ She looks like she needs a ride home. You open a window, maybe some fresh air wi
 ~alter(day_fares_earned,7)
 ~alter(fares_earned_total,7)
 # button
-* [Drive to her destination] As the passenger is getting out, she vomits again. Ugh!
+* [Drive to her destination] As the passenger is getting out, she vomits again.
 -> cleanup
 
 =cleanup
@@ -1845,7 +1845,7 @@ She looks like she needs a ride home. You open a window, maybe some fresh air wi
 ~alter(fares_earned_total,-30)
 }
 # button
-*[😷]
+*[😷&nbsp;&nbsp;Ugh!]
 
 { cleaning_supplies==true:
 Luckily, you have cleaning supplies in your trunk. You pull over and spend some time cleaning up.
