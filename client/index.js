@@ -64,7 +64,11 @@ const yourChoices = [];
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-const ending = Ending.createIn(document.querySelector('.ending-container'), stateUtils);
+
+const ending = Ending.createIn(document.querySelector('.ending-container'), {
+  stateUtils,
+  endpoint,
+});
 
 let choicesContainerElement;
 // Dimensions
@@ -154,74 +158,6 @@ function showCaveats() {
   gaAnalytics('uber-game', 'show-caveats');
 }
 
-function endStory() {
-  tint.style.display = 'none';
-  introScreen.style.display = 'none';
-  document.querySelector('.article-head').style.display = 'none';
-  storyScreen.style.display = 'none';
-  document.body.classList.add('showing-ending');
-
-  ending.show({
-    // stats
-    hoursDriven: story.variablesState.$('hours_driven_total'),
-    ridesCompleted: story.variablesState.$('ride_count_total'),
-    driverRating: story.variablesState.$('rating') / 100,
-
-    // income
-    faresAndTips: story.variablesState.$('fares_earned_total'),
-    weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
-    weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
-
-    // costs
-    carRental: 0 - story.variablesState.$('car_cost'),
-    upgrades: 0 - story.variablesState.$('accessories_cost'),
-    fuel: 0 - story.variablesState.$('gas_cost'),
-    trafficTickets: 0 - story.variablesState.$('ticket_cost'),
-    tax: 0 - story.variablesState.$('tax_cost'),
-
-    // total-income-summary
-    higherIncomeThan: 86, // percent of other players
-
-    // hourly-rate-summary - automatic
-
-    // your-choices
-    difficulty: 'EASY',
-    tookDayOff: true,
-    othersTookDayOff: 78, // per cent
-    helpedWithHomework: true,
-    othersHelpedWithHomework: 57, // per cent
-    boughtBusinessLicense: false,
-    othersBoughtBusinessLicense: 44, // per cent
-  });
-
-  gaAnalytics('uber-game', 'show-end');
-}
-
-function recordDecision(decision) {
-  if (window.__CHEAT__) return Promise.resolve();
-
-  const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
-    acc[key] = value._value;
-    return acc;
-  }, {});
-
-  return fetch(`${endpoint}/decisions`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      type: decision,
-      value: story.variablesState.$(decision) === 1,
-      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
-      meta,
-    }),
-  })
-    .then(() => console.info(`${decision} recorded`))
-    .catch(e => console.error(`Error recording: ${e}`));
-}
-
 function recordPlayerResult() {
   if (window.__CHEAT__) return Promise.resolve();
 
@@ -251,7 +187,99 @@ function recordPlayerResult() {
       expenses: costs,
     }),
   })
-    .then(() => console.info('Endgame data recorded'))
+    .then(() => console.info('Endgame data recorded')) // eslint-disable-line
+    .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
+}
+
+// fetch other users' results and decisions up-front, ready for the end screen
+const resultsPromise = fetch(`${endpoint}/results`).then(res => res.json());
+const decisionsPromise = fetch(`${endpoint}/decisions`).then(res => res.json());
+
+async function endStory() {
+  tint.style.display = 'none';
+  introScreen.style.display = 'none';
+  document.querySelector('.article-head').style.display = 'none';
+  storyScreen.style.display = 'none';
+  document.body.classList.add('showing-ending');
+  recordPlayerResult();
+
+  let otherUsersResults;
+  let otherUserDecisions;
+
+  try {
+    [otherUsersResults, otherUserDecisions] = await Promise.all([resultsPromise, decisionsPromise]);
+  } catch (error) {
+    console.error(error);
+  }
+
+  console.log('otherUsersResults', otherUsersResults);
+  console.log('otherUserDecisions', otherUserDecisions);
+
+  const getDecisionPercent = (type) => {
+    if (!otherUserDecisions) return null;
+
+    const stats = otherUserDecisions[type];
+    return 100 * (stats.true / (stats.true + stats.false));
+  };
+
+  ending.show({
+    // stats
+    hoursDriven: story.variablesState.$('hours_driven_total'),
+    ridesCompleted: story.variablesState.$('ride_count_total'),
+    driverRating: story.variablesState.$('rating') / 100,
+
+    // income
+    faresAndTips: story.variablesState.$('fares_earned_total'),
+    weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
+    weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
+
+    // costs
+    carRental: 0 - story.variablesState.$('car_cost'),
+    upgrades: 0 - story.variablesState.$('accessories_cost'),
+    fuel: 0 - story.variablesState.$('gas_cost'),
+    trafficTickets: 0 - story.variablesState.$('ticket_cost'),
+    tax: 0 - story.variablesState.$('tax_cost'),
+
+    // total-income-summary
+    higherIncomeThan: 86, // TODO percent of other players
+
+    // hourly-rate-summary - automatic
+
+    // your-choices
+    difficulty: 'EASY',
+    tookDayOff: true, // TODO
+    othersTookDayOff: getDecisionPercent('took_day_off'),
+    helpedWithHomework: true, // TODO
+    othersHelpedWithHomework: getDecisionPercent('helped_homework'),
+    boughtBusinessLicence: false, // TODO
+    othersBoughtBusinessLicence: getDecisionPercent('biz_licence'),
+  });
+
+  gaAnalytics('uber-game', 'show-end');
+}
+
+function recordDecision(decision) {
+  if (window.__CHEAT__) return Promise.resolve();
+
+  const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
+    acc[key] = value._value;
+    return acc;
+  }, {});
+
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      type: decision,
+      value: story.variablesState.$(decision) === 1,
+      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
+      meta,
+    }),
+  })
+    .then(() => console.info(`${decision} recorded`))
     .catch(e => console.error(`Error recording: ${e}`));
 }
 

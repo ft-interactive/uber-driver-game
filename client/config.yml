@@ -89,23 +89,27 @@ endingImages:
 
 credits:
   people:
-    - name: David Blood
-      link: https://www.ft.com/david-blood
-    - name: Joanna Kao
-      link: https://www.ft.com/joanna-s-kao
-    - name: Nicolai Knoll
     - name: Robin Kwong
       link: https://www.ft.com/stream/3947e926-da60-335e-b41c-7eb6dd2dd26b
+    - name: David Blood
+      link: https://twitter.com/davidcblood
+    - name: Leslie Hook
+      link: https://www.ft.com/stream/0bd76a95-4aa7-358a-bf78-d70657658f53
+    - name: Rebecca Turner
+      link: https://twitter.com/BeckyTTurner
     - name: Callum Locke
       link: https://twitter.com/callumlocke
     - name: Ændrew Rininsland
       link: https://www.ft.com/ændrew-rininsland
-    - name: Rebecca Turner
+    - name: Nicolai Knoll
+      link: https://twitter.com/knicolai
+    - name: Joanna Kao
+      link: https://www.ft.com/joanna-s-kao
 
 
   blurb: 'This game is based on FT reporting and interviews with Uber drivers. Read more about their story:'
 
   relatedArticle:
-    url: https://www.ft.com/ # TODO
-    headline: Uber loses its licence to operate in London
+    url: https://www.ft.com/content/c9a8b592-a81d-11e7-ab55-27219df83c97
+    headline: 'Uber: The uncomfortable view from the driving seat'
     imageURL: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492861816-wjtcv.jpg

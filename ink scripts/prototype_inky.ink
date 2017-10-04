@@ -605,7 +605,7 @@ Your rating is getting low. If it falls below 4.6, you might be placed under rev
 # link
 * [Try extra hard to be nice and to drive carefully]Your emotional labour pays off, but leaves you feeling more tired at the end of the day.
     ~alter (rating, 7)
-* [Stock amenities ($20)]You spend $20 buying water bottles and mints for your passengers.  You're not really sure if they'll have a big impact.
+* [Stock amenities ($20)]You buy water bottles and mints for your passengers.  You're not really sure if they'll have a big impact.
     ~alter (rating, 3)
     ~alter (accessories_cost,30)
 * [Don't worry about it]It's not like you earn more money with a higher rating anyways.
@@ -672,9 +672,9 @@ It's Tuesday. Your back aches from having spent the whole day in the car yesterd
 # gas_receipt
 You stop to fill up your tank. Do you get a receipt?
 
-*[Yes] You keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
+*[Yes] You carefully keep it in a folder for your expenses. You also take some time to track your mileage, so you can claim tax deductions later.
 ~kept_receipt=true
-*[No] You don’t have time to keep track of stuff like that. 
+*[No] You don’t have time to keep track of stuff like that (even if it means you won't be able to claim tax deductions without the receipt)
 ~kept_receipt=false
 - ->day_2_midpoint
 

@@ -51,7 +51,7 @@
 }
 
 {rating<460:
-~alter(rating, RANDOM(0,10))
+~alter(rating, RANDOM(5,15))
 }
 
 {quest_rides<0: 
@@ -70,7 +70,10 @@ NEXT SCREEN: You drive for {hours} hour{hours>1:s}. During this time, you comple
 
 Today, you drove for {day_hours_driven} hours, completed {day_ride_count} rides and earned $[[[{day_fares_earned}]]] in fares. /* Your driver rating is {rating/100}. */<>
 
-{quest_rides>0:
+{
+- quest_rides> 0 && day_7_evening:
+You weren't able to complete the weekend quest in time.
+- quest_rides > 0 && !day_7_evening:
 You still need {quest_rides} ride{quest_rides>1:s} before {day_5_start:the end of Sunday | Friday} to get the bonus.
 }
 

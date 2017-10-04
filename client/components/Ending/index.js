@@ -34,6 +34,13 @@ type Results = {
 
   higherIncomeThan: number,
   difficulty: 'EASY' | 'HARD',
+
+  tookDayOff: boolean,
+  othersTookDayOff: null | number,
+  helpedWithHomework: boolean,
+  othersHelpedWithHomework: null | number,
+  boughtBusinessLicence: boolean,
+  othersBoughtBusinessLicence: null | number,
 };
 
 type SectionName =
@@ -55,8 +62,9 @@ type State = {
 };
 
 export default class Ending extends Component<Props, State> {
-  static createIn(container, stateUtils) {
+  static createIn(container, { stateUtils }) {
     let component;
+
     ReactDOM.render(
       <Ending
         stateUtils={stateUtils}
@@ -133,31 +141,6 @@ export default class Ending extends Component<Props, State> {
               const incomeSummaryImagePromise = stateUtils.loadImage(incomeSummaryImageURL, true);
               const hourlyRateImagePromise = stateUtils.loadImage(hourlyRateSummaryImageURL, true);
 
-              // DEBUGGING
-              // console.log(
-              //   `goodNetIncome: ${String(goodNetIncome)}, goodHourlyRate: ${String(
-              //     goodHourlyRate,
-              //   )}`,
-              // );
-              // console.log(
-              //   `incomeSummaryImageURL: ${incomeSummaryImageURL}, hourlyRateSummaryImageURL: ${hourlyRateSummaryImageURL}`,
-              // );
-              // console.log(
-              //   'promises are same?',
-              //   incomeSummaryImagePromise === hourlyRateImagePromise,
-              //   hourlyRateImagePromise,
-              // );
-              //
-              // Promise.all([incomeSummaryImagePromise, hourlyRateImagePromise]).then(([a, b]) => {
-              //   console.log('blobs are same?', a === b);
-              //   console.log(
-              //     'blob urls are same?',
-              //     URL.createObjectURL(a) === URL.createObjectURL(b),
-              //     URL.createObjectURL(a),
-              //     URL.createObjectURL(b),
-              //   );
-              // });
-
               switch (currentSection) {
                 case 'stats':
                   return (
@@ -233,26 +216,73 @@ export default class Ending extends Component<Props, State> {
                     />
                   );
 
-                case 'choices':
+                case 'choices': {
+                  const dayOffChoice = {};
+                  if (results.tookDayOff) {
+                    dayOffChoice.text = 'You took one day off.';
+                    dayOffChoice.note =
+                      results.othersTookDayOff !== null
+                        ? `${Math.round(results.othersTookDayOff)}% of other players did the same.`
+                        : null;
+                  } else {
+                    dayOffChoice.text = 'You took no days off.';
+                    dayOffChoice.note =
+                      results.othersTookDayOff !== null
+                        ? `${Math.round(
+                          100 - results.othersTookDayOff,
+                        )}% of other players did the same.`
+                        : null;
+                  }
+
+                  const helpedWithHomeworkChoice = {};
+                  if (results.helpedWithHomework) {
+                    helpedWithHomeworkChoice.text = 'You helped your son with his homework.';
+                    helpedWithHomeworkChoice.note =
+                      results.othersHelpedWithHomework !== null
+                        ? `${Math.round(
+                          results.othersHelpedWithHomework,
+                        )}% of other players did the same.`
+                        : null;
+                  } else {
+                    helpedWithHomeworkChoice.text = 'You didn’t help your son with his homework.';
+                    helpedWithHomeworkChoice.note =
+                      results.othersHelpedWithHomework !== null
+                        ? `${Math.round(
+                          100 - results.othersHelpedWithHomework,
+                        )}% of other players also didn’t.`
+                        : null;
+                  }
+
+                  const boughtBusinessLicenceChoice = {};
+                  if (results.boughtBusinessLicence) {
+                    boughtBusinessLicenceChoice.text = 'You bought a business licence.';
+                    boughtBusinessLicenceChoice.note =
+                      results.othersBoughtBusinessLicence !== null
+                        ? `${Math.round(
+                          results.othersBoughtBusinessLicence,
+                        )}% of other players did the same.`
+                        : null;
+                  } else {
+                    boughtBusinessLicenceChoice.text = 'You didn’t buy a business licence.';
+                    boughtBusinessLicenceChoice.note =
+                      results.othersBoughtBusinessLicence !== null
+                        ? `${Math.round(
+                          100 - results.othersBoughtBusinessLicence,
+                        )}% of other players also didn’t.`
+                        : null;
+                  }
+
                   return (
                     <YourChoicesPanel
                       choices={[
-                        {
-                          text: 'You didn\'t take a single day off',
-                          note: 'XX% of other players also didn\'t',
-                        },
-                        {
-                          text: 'You kept your promise to help your son with his homework',
-                          note: 'XX% of other players also did',
-                        },
-                        {
-                          text: 'You were a good citizen and bought a business licence',
-                          note: 'XX% of other players also did',
-                        },
+                        dayOffChoice,
+                        helpedWithHomeworkChoice,
+                        boughtBusinessLicenceChoice,
                       ]}
                       next={go('credits')}
                     />
                   );
+                }
 
                 case 'credits': {
                   const data = stateUtils.config.credits;

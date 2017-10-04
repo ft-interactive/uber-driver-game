@@ -15,7 +15,7 @@ type State = {
 };
 
 export default class SummaryPanel extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     props.imagePromise.then((blob) => {
       const imageURL = URL.createObjectURL(blob);
@@ -27,7 +27,7 @@ export default class SummaryPanel extends Component<Props, State> {
     imageURL: null,
   };
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: Props) {
     newProps.imagePromise.then((blob) => {
       const imageURL = URL.createObjectURL(blob);
       this.setState({ imageURL });
