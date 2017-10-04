@@ -82,6 +82,9 @@ link = choice
 
 ->dev_mode
 ===dev_mode===
+FOR DEVELOPMENT ONLY
+*[goto start]
+->welcome
 * [goto first fare] ->day_1_locate_passenger.driving
 * [goto time passing]
 ~home="sac"
@@ -117,8 +120,7 @@ link = choice
 ~ repair_cost=140
 ~ took_day_off=true
 ->end_sequence
-*[goto start]
-->welcome
+
 
 
 === welcome ===
