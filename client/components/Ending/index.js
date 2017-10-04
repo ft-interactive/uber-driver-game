@@ -77,8 +77,11 @@ export default class Ending extends Component<Props, State> {
   };
 
   show(results: Results) {
-    this.setState({ currentSection: 'splash', results });
-    // this.setState({ currentSection: 'total-income-summary', results });
+    // make it possible to jump straight into a given panel using e.g. `?end=total-income-summary`
+    const jumpTo = new URL(location.href).searchParams.get('end');
+
+    // $FlowFixMe
+    this.setState({ currentSection: jumpTo || 'splash', results });
   }
 
   render() {
@@ -251,9 +254,23 @@ export default class Ending extends Component<Props, State> {
                     />
                   );
 
-                case 'credits':
-                  return <CreditsPanel heading="End credits (TODO)" />;
+                case 'credits': {
+                  const data = stateUtils.config.credits;
 
+                  return (
+                    <CreditsPanel
+                      credits={data.people}
+                      blurb={data.blurb}
+                      relatedArticleURL={data.relatedArticle.url}
+                      relatedArticleHeadline={data.relatedArticle.headline}
+                      relatedArticleImageURL={stateUtils.getImageServiceURL(
+                        data.relatedArticle.imageURL,
+                        false,
+                        400,
+                      )}
+                    />
+                  );
+                }
                 default:
                   throw new Error(`Unknown section: ${currentSection}`);
               }
