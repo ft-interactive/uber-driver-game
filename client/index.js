@@ -1,4 +1,5 @@
 import anime from 'animejs';
+import Bluebird from 'bluebird';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import { throttle } from 'lodash';
@@ -191,30 +192,57 @@ function recordPlayerResult() {
     .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
 }
 
-// fetch other users' results and decisions up-front, ready for the end screen
-const resultsPromise = fetch(`${endpoint}/results`).then(res => res.json());
+// fetch other users' decisions up-front
 const decisionsPromise = fetch(`${endpoint}/decisions`).then(res => res.json());
 
 async function endStory() {
+  // hide/prepare various surrounding elements
   tint.style.display = 'none';
   introScreen.style.display = 'none';
   document.querySelector('.article-head').style.display = 'none';
   storyScreen.style.display = 'none';
   document.body.classList.add('showing-ending');
+
+  // grab some variables
+  const difficulty = story.variablesState.$('home') === 'sf' ? 'EASY' : 'HARD';
+  const hoursDriven = story.variablesState.$('hours_driven_total');
+  const ridesCompleted = story.variablesState.$('ride_count_total');
+  const driverRating = story.variablesState.$('rating') / 100;
+  const faresAndTips = story.variablesState.$('fares_earned_total');
+  const weekdayQuestBonus = story.variablesState.$('weekday_quest_bonus');
+  const weekendQuestBonus = story.variablesState.$('weekend_quest_bonus');
+  const carRental = 0 - story.variablesState.$('car_cost');
+  const upgrades = 0 - story.variablesState.$('accessories_cost');
+  const fuel = 0 - story.variablesState.$('gas_cost');
+  const trafficTickets = 0 - story.variablesState.$('ticket_cost');
+  const tax = 0 - story.variablesState.$('tax_cost');
+  const netIncome =
+    faresAndTips +
+    weekdayQuestBonus +
+    weekendQuestBonus -
+    (carRental + upgrades + fuel + trafficTickets + tax);
+
+  // fetch this user's global ranking
+  const rankPromise = Bluebird.resolve()
+    .then(() =>
+      fetch(
+        `${endpoint}/ranking?difficulty=${difficulty.toLowerCase()}&income=${netIncome}`,
+      ).then(res => res.json()),
+    )
+    .catch(() => null);
+
+  // record this player's result
   recordPlayerResult();
 
-  let otherUsersResults;
+  // wait for data showing what other users chose
   let otherUserDecisions;
-
   try {
-    [otherUsersResults, otherUserDecisions] = await Promise.all([resultsPromise, decisionsPromise]);
+    otherUserDecisions = await decisionsPromise;
   } catch (error) {
     console.error(error);
   }
 
-  console.log('otherUsersResults', otherUsersResults);
-  console.log('otherUserDecisions', otherUserDecisions);
-
+  // function to convert the data about a given choice into a percent
   const getDecisionPercent = (type) => {
     if (!otherUserDecisions) return null;
 
@@ -222,37 +250,53 @@ async function endStory() {
     return 100 * (stats.true / (stats.true + stats.false));
   };
 
+  // decide remaining variables
+  console.assert(
+    story.variablesState.$('took_day_off') === 0 || story.variablesState.$('took_day_off') === 1,
+    'should be 1 or 0',
+  );
+
+  const tookDayOff = story.variablesState.$('took_day_off') === 1;
+  const othersTookDayOff = getDecisionPercent('took_day_off');
+  const helpedWithHomework = story.variablesState.$('helped_homework') === 1;
+  const othersHelpedWithHomework = getDecisionPercent('helped_homework');
+  const boughtBusinessLicence = story.variablesState.$('biz_licence') === 1;
+  const othersBoughtBusinessLicence = getDecisionPercent('biz_licence');
+
+  // render!
   ending.show({
+    netIncome,
+
     // stats
-    hoursDriven: story.variablesState.$('hours_driven_total'),
-    ridesCompleted: story.variablesState.$('ride_count_total'),
-    driverRating: story.variablesState.$('rating') / 100,
+    hoursDriven,
+    ridesCompleted,
+    driverRating,
 
     // income
-    faresAndTips: story.variablesState.$('fares_earned_total'),
-    weekdayQuestBonus: story.variablesState.$('weekday_quest_bonus'),
-    weekendQuestBonus: story.variablesState.$('weekend_quest_bonus'),
+    faresAndTips,
+    weekdayQuestBonus,
+    weekendQuestBonus,
 
     // costs
-    carRental: 0 - story.variablesState.$('car_cost'),
-    upgrades: 0 - story.variablesState.$('accessories_cost'),
-    fuel: 0 - story.variablesState.$('gas_cost'),
-    trafficTickets: 0 - story.variablesState.$('ticket_cost'),
-    tax: 0 - story.variablesState.$('tax_cost'),
+    carRental,
+    upgrades,
+    fuel,
+    trafficTickets,
+    tax,
 
     // total-income-summary
-    higherIncomeThan: 86, // TODO percent of other players
+    rankPromise,
+    difficulty,
 
     // hourly-rate-summary - automatic
 
     // your-choices
-    difficulty: 'EASY',
-    tookDayOff: true, // TODO
-    othersTookDayOff: getDecisionPercent('took_day_off'),
-    helpedWithHomework: true, // TODO
-    othersHelpedWithHomework: getDecisionPercent('helped_homework'),
-    boughtBusinessLicence: false, // TODO
-    othersBoughtBusinessLicence: getDecisionPercent('biz_licence'),
+    tookDayOff,
+    othersTookDayOff,
+    helpedWithHomework,
+    othersHelpedWithHomework,
+    boughtBusinessLicence,
+    othersBoughtBusinessLicence,
   });
 
   gaAnalytics('uber-game', 'show-end');
