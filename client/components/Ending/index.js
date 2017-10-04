@@ -15,8 +15,6 @@ import gaAnalytics from '../analytics';
 
 type Props = {
   stateUtils: StateUtils,
-  decisionsData: Promise,
-  resultsData: Promise,
 };
 
 type Results = {
@@ -36,6 +34,13 @@ type Results = {
 
   higherIncomeThan: number,
   difficulty: 'EASY' | 'HARD',
+
+  tookDayOff: boolean,
+  othersTookDayOff: null | number,
+  helpedWithHomework: boolean,
+  othersHelpedWithHomework: null | number,
+  boughtBusinessLicence: boolean,
+  othersBoughtBusinessLicence: null | number,
 };
 
 type SectionName =
@@ -57,15 +62,12 @@ type State = {
 };
 
 export default class Ending extends Component<Props, State> {
-  static createIn(container, { stateUtils, endpoint }) {
+  static createIn(container, { stateUtils }) {
     let component;
-    const resultsPromise = fetch(`${endpoint}/results`);
-    const decisionsPromise = fetch(`${endpoint}/decisions`);
+
     ReactDOM.render(
       <Ending
         stateUtils={stateUtils}
-        resultsData={resultsPromise}
-        decisionsData={decisionsPromise}
         ref={(_component) => {
           component = _component;
         }}
@@ -73,20 +75,6 @@ export default class Ending extends Component<Props, State> {
       container,
     );
     return component;
-  }
-
-  constructor(props) {
-    super(props);
-    Promise.all([
-      props.decisionsData.then(res => res.json()),
-      props.resultsData.then(res => res.json()),
-    ])
-      .then(([decisionsData, resultsData]) => {
-        this.setState({
-          decisionsData,
-          resultsData,
-        });
-      });
   }
 
   state = {
@@ -225,14 +213,73 @@ export default class Ending extends Component<Props, State> {
                     />
                   );
 
-                case 'choices':
+                case 'choices': {
+                  const dayOffChoice = {};
+                  if (results.tookDayOff) {
+                    dayOffChoice.text = 'You took one day off.';
+                    dayOffChoice.note =
+                      results.othersTookDayOff !== null
+                        ? `${Math.round(results.othersTookDayOff)}% of other players did the same.`
+                        : null;
+                  } else {
+                    dayOffChoice.text = 'You took no days off.';
+                    dayOffChoice.note =
+                      results.othersTookDayOff !== null
+                        ? `${Math.round(
+                          100 - results.othersTookDayOff,
+                        )}% of other players did the same.`
+                        : null;
+                  }
+
+                  const helpedWithHomeworkChoice = {};
+                  if (results.helpedWithHomework) {
+                    helpedWithHomeworkChoice.text = 'You helped your son with his homework.';
+                    helpedWithHomeworkChoice.note =
+                      results.othersHelpedWithHomework !== null
+                        ? `${Math.round(
+                          results.othersHelpedWithHomework,
+                        )}% of other players did the same.`
+                        : null;
+                  } else {
+                    helpedWithHomeworkChoice.text = 'You didn’t help your son with his homework.';
+                    helpedWithHomeworkChoice.note =
+                      results.othersHelpedWithHomework !== null
+                        ? `${Math.round(
+                          100 - results.othersHelpedWithHomework,
+                        )}% of other players also didn’t.`
+                        : null;
+                  }
+
+                  const boughtBusinessLicenceChoice = {};
+                  if (results.boughtBusinessLicence) {
+                    boughtBusinessLicenceChoice.text = 'You bought a business licence.';
+                    boughtBusinessLicenceChoice.note =
+                      results.othersBoughtBusinessLicence !== null
+                        ? `${Math.round(
+                          results.othersBoughtBusinessLicence,
+                        )}% of other players did the same.`
+                        : null;
+                  } else {
+                    boughtBusinessLicenceChoice.text = 'You didn’t buy a business licence.';
+                    boughtBusinessLicenceChoice.note =
+                      results.othersBoughtBusinessLicence !== null
+                        ? `${Math.round(
+                          100 - results.othersBoughtBusinessLicence,
+                        )}% of other players also didn’t.`
+                        : null;
+                  }
+
                   return (
                     <YourChoicesPanel
-                      decisionsData={this.state.decisionsData}
-                      stateUtils={this.props.stateUtils}
+                      choices={[
+                        dayOffChoice,
+                        helpedWithHomeworkChoice,
+                        boughtBusinessLicenceChoice,
+                      ]}
                       next={go('credits')}
                     />
                   );
+                }
 
                 case 'credits':
                   return <CreditsPanel heading="End credits (TODO)" />;
