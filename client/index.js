@@ -609,7 +609,8 @@ function continueStory() {
   } else {
     console.log('>>>'); // eslint-disable-line no-console
 
-    setTimeout(() => { // Handle race condition by forcing it to wait 150ms
+    setTimeout(() => {
+      // Handle race condition by forcing it to wait 150ms
       showPanel();
     }, 150);
   }
@@ -854,6 +855,8 @@ stateUtils.loadImage(
   const { searchParams } = new URL(location.href);
 
   if (searchParams.has('end')) {
+    window.__CHEAT__ = true;
+
     story.variablesState.$('hours_driven_total', 1214);
     story.variablesState.$('fares_earned_total', 1431);
     story.variablesState.$('ride_count_total', 143);
