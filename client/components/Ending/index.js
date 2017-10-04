@@ -7,6 +7,7 @@ import invariant from 'invariant';
 import Splash from './Splash';
 import StatsPanel from './panels/StatsPanel';
 import AdditionPanel from './panels/AdditionPanel';
+import AdditionPanelHack from './panels/AdditionPanelHack';
 import SummaryPanel from './panels/SummaryPanel';
 import YourChoicesPanel from './panels/YourChoicesPanel';
 import CreditsPanel from './panels/CreditsPanel';
@@ -160,7 +161,7 @@ export default class Ending extends Component<Props, State> {
 
                 case 'costs':
                   return (
-                    <AdditionPanel
+                    <AdditionPanelHack
                       heading="Your costs"
                       magentaStyle
                       startingTotal={

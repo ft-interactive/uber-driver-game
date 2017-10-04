@@ -43,21 +43,11 @@ export default class AdditionPanel extends Component<Props, State> {
   }
 
   componentDidMount() {
-    console.log('//////////////////////////////////componentDidMount');
     this.animate();
-  }
-
-  componentWillReceiveProps(newProps) {
-    console.log('//////////////////////////////////componentWillReceiveProps');
-    this.setState(this.getInitialState(newProps));
   }
 
   animate() {
     const { figures } = this.props;
-
-    // console.log('>>>>>>>>>>>>', figures);
-
-    // const { displayFigures } = this.state;
 
     (async () => {
       await Bluebird.mapSeries(figures, async ({ amount }, i) => {
@@ -90,9 +80,6 @@ export default class AdditionPanel extends Component<Props, State> {
     const { heading, magentaStyle, figures, next, startingTotal } = this.props;
     const { displayFigures, buttonOpacity } = this.state;
     const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
-
-    // console.log('/////////////////figures', figures);
-    // console.log('/////////////////state', this.state);
 
     return (
       <Panel
