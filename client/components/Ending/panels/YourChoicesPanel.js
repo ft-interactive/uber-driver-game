@@ -22,14 +22,22 @@ const YourChoicesPanel = ({ next, choices }: Props) => (
     <style jsx>{`
       h3 {
         color: white;
-        font: 700 32px MetricWeb, sans-serif;
-        line-height: 40px;
+        max-width: 580px;
+        margin: 0.3em 0 0.8em;
+        font-family: MetricWeb, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 28px;
       }
 
       p {
         color: white;
-        font: 400 18px MetricWeb, sans-serif;
-        line-height: 26px;
+        max-width: 580px;
+        margin: 0.3em 0 0.8em;
+        font-family: MetricWeb, sans-serif;
+        font-size: 18px;
+        line-height: 1.4;
+        text-align: center;
       }
     `}</style>
   </Panel>
