@@ -53,6 +53,7 @@ export default class SummaryPanel extends Component<Props, State> {
             font-size: 24px;
             font-weight: 600;
             line-height 28px;
+            margin-top: 0.3em;
           }
 
           .image-container {
