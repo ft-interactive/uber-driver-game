@@ -15,14 +15,21 @@ type State = {
 };
 
 export default class SummaryPanel extends Component<Props, State> {
+  constructor(props) {
+    super(props);
+    props.imagePromise.then((blob) => {
+      const imageURL = URL.createObjectURL(blob);
+      this.setState({ imageURL });
+    });
+  }
+
   state = {
     imageURL: null,
   };
 
-  componentDidMount() {
-    this.props.imagePromise.then((blob) => {
+  componentWillReceiveProps(newProps) {
+    newProps.imagePromise.then((blob) => {
       const imageURL = URL.createObjectURL(blob);
-      // console.log('SummaryPanel image URL:', imageURL);
       this.setState({ imageURL });
     });
   }
