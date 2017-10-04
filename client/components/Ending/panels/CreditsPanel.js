@@ -1,32 +1,139 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
+import invariant from 'invariant';
 import Panel from './Panel';
 
-const CreditsPanel = () => (
-  <Panel>
-    <p>This game was produced by blah blah blah</p>
+type Props = {
+  credits: { name: string, link?: string }[],
+  blurb: string,
+  relatedArticleURL: string,
+  relatedArticleHeadline: string,
+  relatedArticleImageURL: string,
+};
 
-    <p>
-      This game is based on reporting and interviews with Uber drivers. Read more about their story:
-    </p>
+export default class CreditsPanel extends Component<Props> {
+  componentDidMount() {
+    // dirty hack to clone the o-share from the page into this element
+    if (this.shareLinksContainer) {
+      const oldOShare = document.querySelector('.article__share [data-o-component="o-share"]');
 
-    <article className="article-link">Uber loses licence to operate in London</article>
+      if (oldOShare) {
+        const oShare = oldOShare.cloneNode(true);
 
-    <p>Share this game:</p>
+        invariant(this.shareLinksContainer, 'cannot have changed');
 
-    <div className="share-links">origami share links TKTK</div>
+        this.shareLinksContainer.appendChild(oShare);
 
-    <style jsx>{`
-      h1 {
-        color: white;
+        if (window.Origami) {
+          const OShare = window.Origami['o-share'];
+          new OShare(oShare); // eslint-disable-line no-new
+        } else {
+          console.warn('Origami not loaded');
+        }
       }
+    }
+  }
 
-      p {
-        color: white;
-      }
-    `}</style>
-  </Panel>
-);
+  shareLinksContainer: null | HTMLDivElement;
 
-export default CreditsPanel;
+  render() {
+    const {
+      credits,
+      blurb,
+      relatedArticleURL,
+      relatedArticleHeadline,
+      relatedArticleImageURL,
+    } = this.props;
+
+    return (
+      <Panel>
+        <div className="credits-panel">
+          <p>
+            This game was produced by{' '}
+            <span className="people">
+              {credits.map(({ name, link }, i) => {
+                let append;
+
+                if (i === credits.length - 1) append = '.';
+                else if (i === credits.length - 2) append = ' and ';
+                else if (i < credits.length - 2) append = ', ';
+
+                return (
+                  <span key={name}>
+                    {link ? (
+                      <a className="person" href={link}>
+                        {name}
+                      </a>
+                    ) : (
+                      <span className="person">{name}</span>
+                    )}
+                    {append}
+                  </span>
+                );
+              })}
+            </span>
+          </p>
+
+          <p>{blurb}</p>
+
+          <a className="article-link" href={relatedArticleURL}>
+            <img alt="" src={relatedArticleImageURL} />
+            <article>{relatedArticleHeadline}</article>
+          </a>
+
+          <p>Share this game:</p>
+          <div
+            className="share-links"
+            ref={(el) => {
+              this.shareLinksContainer = el;
+            }}
+          />
+        </div>
+        <style jsx>{`
+          .credits-panel {
+            color: white;
+          }
+
+          .credits-panel p {
+            font-family: MetricWeb, sans-serif;
+            color: white;
+          }
+
+          .people {
+            font-weight: 700;
+          }
+
+          .person,
+          .person:hover {
+            color: white;
+            text-decoration: none;
+            border-bottom: 0;
+          }
+
+          .article-link {
+            /* TODO */
+          }
+        `}</style>
+
+        <style jsx global>{`
+          /* this counteracts o-typography styles we don't want */
+
+          .o-share li:before {
+            content: none !important;
+          }
+
+          .o-share li {
+            padding-left: 0 !important;
+          }
+
+          @media (min-width: 490px) {
+            .o-share__action--whatsapp {
+              display: none !important;
+            }
+          }
+        `}</style>
+      </Panel>
+    );
+  }
+}

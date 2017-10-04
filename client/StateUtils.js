@@ -79,10 +79,10 @@ export default class StateUtils {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getImageServiceURL(url, transparent = false) {
+  getImageServiceURL(url, transparent = false, width) {
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${encodeURIComponent(
       url,
-    )}?source=ig&width=${maxImageWidth}&dpr=${dpr}&fit=scale-down&format=${transparent
+    )}?source=ig&width=${width || maxImageWidth}&dpr=${dpr}&fit=scale-down&format=${transparent
       ? 'png'
       : 'jpg'}&quality=high`;
   }
