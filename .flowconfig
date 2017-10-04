@@ -7,8 +7,12 @@
 [libs]
 #./types-lib.js
 
+[lints]
+all=warn
+
 [options]
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
 experimental.strict_call_arity=true
 experimental.const_params=true
 emoji=true
+include_warnings=true

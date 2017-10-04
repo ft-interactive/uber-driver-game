@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Bluebird from 'bluebird';
 import invariant from 'invariant';
 import Splash from './Splash';
 import StatsPanel from './panels/StatsPanel';
@@ -18,6 +19,8 @@ type Props = {
 };
 
 type Results = {
+  netIncome: number,
+
   hoursDriven: number,
   ridesCompleted: number,
   driverRating: number,
@@ -32,7 +35,7 @@ type Results = {
   trafficTickets: number,
   tax: number,
 
-  higherIncomeThan: number,
+  rankPromise: Bluebird<number | null>,
   difficulty: 'EASY' | 'HARD',
 
   tookDayOff: boolean,
@@ -117,18 +120,8 @@ export default class Ending extends Component<Props, State> {
             default: {
               invariant(results, 'Results must be defined');
 
-              const netIncome =
-                results.faresAndTips +
-                results.weekdayQuestBonus +
-                results.weekendQuestBonus -
-                (results.carRental +
-                  results.upgrades +
-                  results.fuel +
-                  results.trafficTickets +
-                  results.tax);
-
-              const hourlyRate = netIncome / results.hoursDriven;
-              const goodNetIncome = netIncome >= 1000;
+              const hourlyRate = results.netIncome / results.hoursDriven;
+              const goodNetIncome = results.netIncome >= 1000;
               const goodHourlyRate = hourlyRate >= 12;
 
               // decide on circular images
@@ -184,24 +177,32 @@ export default class Ending extends Component<Props, State> {
                     />
                   );
 
-                case 'total-income-summary':
+                case 'total-income-summary': {
+                  const rank = results.rankPromise.isFulfilled()
+                    ? results.rankPromise.value()
+                    : null;
+
                   return (
                     <SummaryPanel
                       imagePromise={incomeSummaryImagePromise}
                       heading={
                         goodNetIncome
-                          ? `Congrats! You earned ${formatDollars(netIncome)}!`
-                          : `Sorry! You only earned ${formatDollars(netIncome)}!`
+                          ? `Congrats! You earned ${formatDollars(results.netIncome)}!`
+                          : `Sorry! You only earned ${formatDollars(results.netIncome)}!`
                       }
                       detail={
                         goodNetIncome
-                          ? `You made enough to pay your $1,000 mortgage bill. You also earned more money than ${results.higherIncomeThan}% of other players.`
-                          : `You weren’t able to make enough money to pay your $1,000 mortgage bill. But you did earn more than ${results.higherIncomeThan}% of other players on ${results.difficulty}.`
+                          ? `You made enough to pay your $1,000 mortgage bill.${rank
+                            ? `You also earned more money than ${rank}% of other players on ${results.difficulty}.`
+                            : ''}`
+                          : `You weren’t able to make enough money to pay your $1,000 mortgage bill${rank
+                            ? `But you did earn more money than ${rank}% of other players on ${results.difficulty}.`
+                            : ''}`
                       }
                       next={go('hourly-rate-summary')}
                     />
                   );
-
+                }
                 case 'hourly-rate-summary':
                   return (
                     <SummaryPanel

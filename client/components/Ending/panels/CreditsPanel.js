@@ -94,7 +94,6 @@ export default class CreditsPanel extends Component<Props> {
           .credits-panel {
             color: white;
             padding: 0 10px;
-            max-width: 600px;
           }
 
           .credits-panel p {
@@ -131,7 +130,7 @@ export default class CreditsPanel extends Component<Props> {
           }
 
           .article-link {
-            padding: .5em 1em;
+            padding: 0.5em 1em;
             margin-top: 3em;
             border: 2px solid #00757f;
             display: inline-block;
