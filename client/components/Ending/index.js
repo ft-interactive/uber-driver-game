@@ -7,6 +7,7 @@ import Splash from './Splash';
 import Panel from './panels/Panel';
 import StatsPanel from './panels/StatsPanel';
 import MathsPanel from './panels/MathsPanel';
+import gaAnalytics from '../analytics';
 
 type Props = {};
 
@@ -75,6 +76,7 @@ export default class Ending extends Component<Props, State> {
 
     const go = (section: SectionName) => () => {
       this.setState({ currentSection: section });
+      gaAnalytics('uber-game', 'scroll-end', section);
     };
 
     return (
