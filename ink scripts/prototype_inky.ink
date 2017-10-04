@@ -811,6 +811,7 @@ As you drive along the highway, a pebble hits your windshield and leaves a chip.
 You find a nearby auto shop. They take an hour to fix your windscreen, and charge you $30. You put it on your credit card.
 ~alter(repair_cost,30)
 ~add_time(1,0)
+~ windshield_cracked=false
 
 {unlimited_data==false:
 ~time_passes(2,0,1)
@@ -1578,6 +1579,7 @@ You check your chipped windshield. You can't tell whether the small crack it has
 
 =get_it_fixed
 ~time_passes(3,0,1)
+~windshield_cracked=false
 # button
 *[🚗&nbsp;&nbsp;Drive]
 ->day_5_afternoon
