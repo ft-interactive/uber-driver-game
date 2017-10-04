@@ -79,7 +79,7 @@ export default class AdditionPanel extends Component<Props, State> {
   props: Props;
 
   render() {
-    const { heading, magentaStyle, figures, next, startingTotal } = this.props;
+    const { heading, magentaStyle, figures, next, startingTotal, negativeZero } = this.props;
     const { displayFigures, buttonOpacity } = this.state;
     const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
 
@@ -99,7 +99,7 @@ export default class AdditionPanel extends Component<Props, State> {
                 displayFigures[i],
                 true,
                 false,
-                true,
+                negativeZero,
               )} ${title}`}</div>
             }
           </div>
