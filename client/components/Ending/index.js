@@ -15,6 +15,8 @@ import gaAnalytics from '../analytics';
 
 type Props = {
   stateUtils: StateUtils,
+  decisionsData: Promise,
+  resultsData: Promise,
 };
 
 type Results = {
@@ -55,11 +57,15 @@ type State = {
 };
 
 export default class Ending extends Component<Props, State> {
-  static createIn(container, stateUtils) {
+  static createIn(container, { stateUtils, endpoint }) {
     let component;
+    const resultsPromise = fetch(`${endpoint}/results`);
+    const decisionsPromise = fetch(`${endpoint}/decisions`);
     ReactDOM.render(
       <Ending
         stateUtils={stateUtils}
+        resultsData={resultsPromise}
+        decisionsData={decisionsPromise}
         ref={(_component) => {
           component = _component;
         }}
@@ -67,6 +73,20 @@ export default class Ending extends Component<Props, State> {
       container,
     );
     return component;
+  }
+
+  constructor(props) {
+    super(props);
+    Promise.all([
+      props.decisionsData.then(res => res.json()),
+      props.resultsData.then(res => res.json()),
+    ])
+      .then(([decisionsData, resultsData]) => {
+        this.setState({
+          decisionsData,
+          resultsData,
+        });
+      });
   }
 
   state = {
@@ -129,31 +149,6 @@ export default class Ending extends Component<Props, State> {
               // start loading ending images, and update our state when done
               const incomeSummaryImagePromise = stateUtils.loadImage(incomeSummaryImageURL, true);
               const hourlyRateImagePromise = stateUtils.loadImage(hourlyRateSummaryImageURL, true);
-
-              // DEBUGGING
-              // console.log(
-              //   `goodNetIncome: ${String(goodNetIncome)}, goodHourlyRate: ${String(
-              //     goodHourlyRate,
-              //   )}`,
-              // );
-              // console.log(
-              //   `incomeSummaryImageURL: ${incomeSummaryImageURL}, hourlyRateSummaryImageURL: ${hourlyRateSummaryImageURL}`,
-              // );
-              // console.log(
-              //   'promises are same?',
-              //   incomeSummaryImagePromise === hourlyRateImagePromise,
-              //   hourlyRateImagePromise,
-              // );
-              //
-              // Promise.all([incomeSummaryImagePromise, hourlyRateImagePromise]).then(([a, b]) => {
-              //   console.log('blobs are same?', a === b);
-              //   console.log(
-              //     'blob urls are same?',
-              //     URL.createObjectURL(a) === URL.createObjectURL(b),
-              //     URL.createObjectURL(a),
-              //     URL.createObjectURL(b),
-              //   );
-              // });
 
               switch (currentSection) {
                 case 'stats':
@@ -233,20 +228,8 @@ export default class Ending extends Component<Props, State> {
                 case 'choices':
                   return (
                     <YourChoicesPanel
-                      choices={[
-                        {
-                          text: 'You didnt take a single day off',
-                          note: 'XX% of other players also didnt',
-                        },
-                        {
-                          text: 'You kept your promise to help your son with his homework',
-                          note: 'XX% of other players also did',
-                        },
-                        {
-                          text: 'You were a good citizen and bought a business licence',
-                          note: 'XX% of other players also did',
-                        },
-                      ]}
+                      decisionsData={this.state.decisionsData}
+                      stateUtils={this.props.stateUtils}
                       next={go('credits')}
                     />
                   );

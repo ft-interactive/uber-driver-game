@@ -64,7 +64,11 @@ const yourChoices = [];
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-const ending = Ending.createIn(document.querySelector('.ending-container'), stateUtils);
+
+const ending = Ending.createIn(document.querySelector('.ending-container'), {
+  stateUtils,
+  endpoint,
+});
 
 let choicesContainerElement;
 // Dimensions
@@ -154,13 +158,46 @@ function showCaveats() {
   gaAnalytics('uber-game', 'show-caveats');
 }
 
+function recordPlayerResult() {
+  if (window.__CHEAT__) return Promise.resolve();
+
+  const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
+    acc[key] = value._value;
+    return acc;
+  }, {});
+
+  const revenue = story.variablesState.$('revenue_total');
+  const costs = story.variablesState.$('cost_total');
+  const difficulty = story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard';
+  const income = revenue - costs;
+  const hourlyWage = income / story.variablesState.$('hours_driven_total');
+
+  return fetch(`${endpoint}/decisions`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      revenue,
+      meta,
+      income,
+      hourlyWage,
+      difficulty,
+      expenses: costs,
+    }),
+  })
+    .then(() => console.info('Endgame data recorded')) // eslint-disable-line
+    .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
+}
+
 function endStory() {
   tint.style.display = 'none';
   introScreen.style.display = 'none';
   document.querySelector('.article-head').style.display = 'none';
   storyScreen.style.display = 'none';
   document.body.classList.add('showing-ending');
-
+  recordPlayerResult();
   ending.show({
     // stats
     hoursDriven: story.variablesState.$('hours_driven_total'),
@@ -219,39 +256,6 @@ function recordDecision(decision) {
     }),
   })
     .then(() => console.info(`${decision} recorded`))
-    .catch(e => console.error(`Error recording: ${e}`));
-}
-
-function recordPlayerResult() {
-  if (window.__CHEAT__) return Promise.resolve();
-
-  const meta = Object.entries(story.variablesState._globalVariables).reduce((acc, [key, value]) => {
-    acc[key] = value._value;
-    return acc;
-  }, {});
-
-  const revenue = story.variablesState.$('revenue_total');
-  const costs = story.variablesState.$('cost_total');
-  const difficulty = story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard';
-  const income = revenue - costs;
-  const hourlyWage = income / story.variablesState.$('hours_driven_total');
-
-  return fetch(`${endpoint}/decisions`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      revenue,
-      meta,
-      income,
-      hourlyWage,
-      difficulty,
-      expenses: costs,
-    }),
-  })
-    .then(() => console.info('Endgame data recorded'))
     .catch(e => console.error(`Error recording: ${e}`));
 }
 
