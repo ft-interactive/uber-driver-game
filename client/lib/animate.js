@@ -12,7 +12,7 @@ type FinalisedOptions = {
   delay: number,
 };
 
-type AnimateCallback = (elapsedProportion: number) => void;
+type AnimateCallback = (elapsed: number) => void;
 
 const linear = x => x;
 
@@ -29,16 +29,31 @@ const animate = (callback: AnimateCallback, _options?: Options): Promise<void> =
     let startTime;
 
     const doFrame = (ms) => {
+      // special case for zero duration
+      if (options.duration === 0) {
+        callback(1);
+        resolve();
+        return;
+      }
+
       if (!startTime) startTime = ms;
 
       // determine how far we are through (between 0 and 1 inclusive)
-      const elapsedProportion = options.ease(Math.min((ms - startTime) / options.duration, 1));
+      const delta = ms - startTime;
+      let elapsed = delta / options.duration;
+      elapsed = Math.min(elapsed, 1);
+
+      if (isNaN(elapsed) || typeof elapsed !== 'number') {
+        throw new Error('elapsed must be a number');
+      }
+
+      elapsed = options.ease(elapsed);
 
       // call the user's update function
-      callback(elapsedProportion);
+      callback(elapsed);
 
       // draw next frame if appropriate, otherwise resolve
-      if (elapsedProportion < 1) requestAnimationFrame(doFrame);
+      if (elapsed < 1) requestAnimationFrame(doFrame);
       else {
         callback(1);
         resolve();
