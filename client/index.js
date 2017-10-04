@@ -64,7 +64,7 @@ const yourChoices = [];
 
 const gameContainer = new GameContainer(document.querySelector('.game-container'), stateUtils);
 gameContainer.initialise();
-const ending = Ending.createIn(document.querySelector('.ending-container'));
+const ending = Ending.createIn(document.querySelector('.ending-container'), stateUtils);
 
 let choicesContainerElement;
 // Dimensions
@@ -185,6 +185,7 @@ function endStory() {
     // hourly-rate-summary - automatic
 
     // your-choices
+    difficulty: 'EASY',
     tookDayOff: true,
     othersTookDayOff: 78, // per cent
     helpedWithHomework: true,
@@ -318,7 +319,7 @@ function continueStory() {
           existingChoices.forEach((existingChoice) => {
             const e = existingChoice;
 
-            console.log(e);
+            // console.log(e);
 
             e.disabled = false;
           });
@@ -864,8 +865,8 @@ stateUtils.loadImage(
   const { searchParams } = new URL(location.href);
 
   if (searchParams.has('end')) {
-    story.variablesState.$('hours_driven_total', 1214);
-    story.variablesState.$('fares_earned_total', 1431);
+    story.variablesState.$('hours_driven_total', 1814);
+    story.variablesState.$('fares_earned_total', 1345);
     story.variablesState.$('ride_count_total', 143);
     story.variablesState.$('rating', 476);
     story.variablesState.$('weekday_quest_completion', true);

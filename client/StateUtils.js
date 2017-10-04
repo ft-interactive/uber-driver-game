@@ -82,7 +82,7 @@ export default class StateUtils {
   getImageServiceURL(url, transparent = false) {
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${encodeURIComponent(
       url,
-    )}?source=ig&width=${maxImageWidth}&dpr=${dpr}&format=${transparent
+    )}?source=ig&width=${maxImageWidth}&dpr=${dpr}&fit=scale-down&format=${transparent
       ? 'png'
       : 'jpg'}&quality=high`;
   }
@@ -95,6 +95,8 @@ export default class StateUtils {
    */
   async loadImage(originalURL, transparent = false) {
     const token = `${transparent}_${originalURL}`;
+
+    // console.log('loadImage', token);
 
     if (!loadImageMemo[token]) {
       loadImageMemo[token] = new Bluebird((resolve, reject) => {

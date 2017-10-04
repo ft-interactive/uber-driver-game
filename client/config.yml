@@ -82,3 +82,7 @@ backgroundImages:
   vomit:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492952790-iovbq.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492952358-8qc2d.png
+
+endingImages:
+  happy: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492959674-3xf4r.png
+  sad: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492880811-t8unk.png

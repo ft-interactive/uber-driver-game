@@ -5,7 +5,7 @@ import type { Element } from 'react';
 import * as colours from '../colours';
 
 type NestedArray<T> = Array<T | NestedArray<T>>;
-type Child = Element<any>;
+type Child = Element<any> | null;
 
 type Props = {
   heading?: null | string,

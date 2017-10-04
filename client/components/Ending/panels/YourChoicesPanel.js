@@ -14,13 +14,13 @@ type Props = {
 const YourChoicesPanel = ({ choices, next }: Props) => (
   <Panel next={next} heading="Your choices">
     {choices.map(({ text, note }) => (
-      <div className="choice">
+      <div className="choice" key={text}>
         <h3>{text}</h3>
         <p>{note}</p>
       </div>
     ))}
     <style jsx>{`
-      h1 {
+      h3 {
         color: white;
       }
 
