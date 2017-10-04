@@ -56,8 +56,8 @@ backgroundImages:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492953318-5kyk3.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492952550-cig6f.png
   main:
-    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492953249-55mpn.png
-    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492953249-55mpn.png
+    prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492888233-2cotl.png
+    minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492888233-2cotl.png
   napa:
     prius: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492952800-12si0.png
     minivan: http://ft-ig-images-prod.s3-website-eu-west-1.amazonaws.com/v1/8492952369-mrt6u.png
