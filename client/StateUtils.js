@@ -8,6 +8,44 @@ import Bluebird from 'bluebird';
 const loadImageMemo = {};
 let preloadDone = false;
 
+// decide the maximum image width up front
+// const maxImageWidth = (() => {
+//   // This approach isn't completely optimised, and it doesn't cover the case where a user moves
+//   // from one screen to another or changes their orientation. But it should give acceptable results,
+//   // and prevent cases of silly bandwidth usage, like loading 2000px images on a small phone.
+//
+//   // define a limited set of possible widths so we don't hammer the image service with too many
+//   // image variations
+//   const acceptableWidths = [320, 480, 768, 1024, 1280, 1440, 1920];
+//
+//   // choose the closest acceptable width for the current viewport (rounding up)
+//   const minWidth = acceptableWidths.shift();
+//   const maxWidth = acceptableWidths.pop();
+//
+//   let idealWidth = minWidth;
+//
+//   acceptableWidths.forEach((width, i) => {
+//     if (i === 0) return;
+//     const current = acceptableWidths[i - 1];
+//     const previous = acceptableWidths[i - 1];
+//
+//     if (innerWidth > previous && innerWidth <= current) {
+//       idealWidth = current;
+//     }
+//   });
+//
+//   if (idealWidth > maxWidth) idealWidth = maxWidth;
+//
+//   invariant(idealWidth >= innerWidth, 'ideal width must be big enough for screen');
+//   invariant(idealWidth >= 320, 'idealWidth cannot be less than 320');
+//   invariant(idealWidth <= 1920, 'idealWidth cannot be greater than 1920');
+//
+//   return idealWidth * 2; // because ugh these images are cropped... might be best to crop via image service
+// })();
+
+const maxImageWidth = 1800; // TEMP
+const dpr = devicePixelRatio || 1;
+
 export default class StateUtils {
   constructor(story, config) {
     this.config = config;
@@ -44,7 +82,9 @@ export default class StateUtils {
   getImageServiceURL(url, transparent = false) {
     return `https://www.ft.com/__origami/service/image/v2/images/raw/${encodeURIComponent(
       url,
-    )}?source=ig&width=2000&format=${transparent ? 'png' : 'jpg'}&quality=high`;
+    )}?source=ig&width=${maxImageWidth}&dpr=${dpr}&format=${transparent
+      ? 'png'
+      : 'jpg'}&quality=high`;
   }
 
   /**
@@ -54,8 +94,10 @@ export default class StateUtils {
    * `URL.createObjectURL(blob)`.
    */
   async loadImage(originalURL, transparent = false) {
-    if (!loadImageMemo[originalURL]) {
-      loadImageMemo[originalURL] = new Bluebird((resolve, reject) => {
+    const token = `${transparent}_${originalURL}`;
+
+    if (!loadImageMemo[token]) {
+      loadImageMemo[token] = new Bluebird((resolve, reject) => {
         // convert URL to Image Service
         const url = this.getImageServiceURL(originalURL, transparent);
         // load the image (with three attempts)
@@ -70,7 +112,7 @@ export default class StateUtils {
           .then(res => res.blob())
           .then(resolve, (error) => {
             // delete from memo so it's still possible to load it later
-            delete loadImageMemo[originalURL];
+            delete loadImageMemo[token];
             reject(error);
           });
       });
@@ -86,7 +128,7 @@ export default class StateUtils {
       preloadDone = true;
     }
 
-    return loadImageMemo[originalURL];
+    return loadImageMemo[token];
   }
 
   // eslint-disable-next-line class-methods-use-this
