@@ -275,7 +275,10 @@ async function endStory() {
       return null;
     }
 
-    const result = 100 * (stats.true / (stats.true + stats.false));
+    const yes = Number(stats.true);
+    const no = Number(stats.false);
+
+    const result = 100 * (yes / (yes + no));
     if (isNaN(result)) return null;
     return result;
   };
