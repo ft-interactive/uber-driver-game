@@ -173,7 +173,7 @@ function recordPlayerResult() {
   const income = revenue - costs;
   const hourlyWage = income / story.variablesState.$('hours_driven_total');
 
-  return fetch(`${endpoint}/decisions`, {
+  return fetch(`${endpoint}/results`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
