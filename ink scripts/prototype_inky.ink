@@ -1574,7 +1574,7 @@ You decide to stick to your normal schedule and start driving during the day. <>
 
 ===windshield_reminder===
 # windshield_reminder
-You check your chipped windshield. You can't tell whether the small crack it has become bigger or not.
+You check your chipped windshield. You can't tell whether the small crack has become bigger or not.
 # link
 # bg:pebble
 * [Repair it ($30)]
