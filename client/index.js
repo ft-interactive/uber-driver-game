@@ -380,14 +380,6 @@ function continueStory() {
   const timePassingAmountHours = Math.round((time - timeObj.value) / 3600000);
   const showEnding = story.variablesState.$('go_to_endscreen');
 
-  if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
-    recordDecision('biz_licence');
-  } else if (story.currentTags.indexOf('day_5_start') > -1) {
-    recordDecision('helped_homework');
-  } else if (story.currentTags.indexOf('day_7_start') > -1) {
-    recordDecision('took_day_off');
-  }
-
   // if timestamp between Monday at 12:00 a.m. and Friday at 4:00 a.m.,
   // then number of quests is 75, else 65
   // 1502424000000 is timestamp at 4 a.m. on Friday
@@ -753,6 +745,15 @@ function continueStory() {
     const existingChoicesContainer = knotElement.querySelector('.choices-container');
     // Get ink to generate the next paragraph
     const paragraphText = story.Continue();
+
+    if (story.currentTags.indexOf('sf_or_sacramento') > -1) {
+      recordDecision('biz_licence');
+    } else if (story.currentTags.indexOf('day_5_start') > -1) {
+      recordDecision('helped_homework');
+    } else if (story.currentTags.indexOf('day_7_start') > -1) {
+      recordDecision('took_day_off');
+    }
+
     // Create paragraph element
     const paragraphElement = document.createElement('p');
 
