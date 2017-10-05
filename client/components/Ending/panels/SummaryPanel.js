@@ -48,7 +48,7 @@ export default class SummaryPanel extends Component<Props, State> {
         </div>
         <style jsx>{`
           .summary {
-            padding: 0 40px;
+            padding: 0 40px 40px;
           }
 
           h1 {
@@ -58,7 +58,7 @@ export default class SummaryPanel extends Component<Props, State> {
             font-size: 24px;
             font-weight: 600;
             line-height 28px;
-            margin-top: 0.3em;
+            margin: 40px 0 0;
           }
 
           .image-container {
@@ -76,10 +76,10 @@ export default class SummaryPanel extends Component<Props, State> {
           p {
             color: white;
             max-width: 580px;
-            margin: .3em 0 .8em;
+            margin: 20px 0 0;
             font-family: MetricWeb, sans-serif;
             font-size: 18px;
-            line-height: 20px;
+            line-height: 1.35;
           }
         `}</style>
       </Panel>

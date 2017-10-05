@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import invariant from 'invariant';
 import Panel from './Panel';
+import * as colours from '../colours';
 
 type Props = {
   credits: { name: string, link?: string }[],
@@ -87,7 +88,7 @@ export default class CreditsPanel extends Component<Props> {
 
           <a className="article-link" href={relatedArticleURL}>
             <img alt="" src={relatedArticleImageURL} />
-            <article>{relatedArticleHeadline}</article>
+            <div>{relatedArticleHeadline}</div>
           </a>
         </div>
         <style jsx>{`
@@ -104,6 +105,9 @@ export default class CreditsPanel extends Component<Props> {
             font-weight: 400;
             line-height: 1.5;
             text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .credits-panel p.share-text,
@@ -119,11 +123,13 @@ export default class CreditsPanel extends Component<Props> {
             font-weight: 700;
           }
 
-          .person,
-          .person:hover {
+          .person {
             color: white;
             text-decoration: none;
             border-bottom: 0;
+          }
+          .person:hover {
+            colour: ${colours.blue};
           }
 
           .share-links {
@@ -131,24 +137,30 @@ export default class CreditsPanel extends Component<Props> {
           }
 
           .article-link {
-            padding: 0.5em 1em;
-            margin-top: 3em;
-            border: 2px solid #00757f;
+            position: relative;
+            padding: 20px 40px;
+            margin-top: 50px;
+            border: 2px solid ${colours.blue};
             display: inline-block;
             width: 77%;
+            color: ${colours.blue};
+          }
+
+          .article-link:hover {
+            color: ${colours.blue};
+            border-color: ${colours.blue};
           }
 
           .article-link img {
             position: relative;
-            top: -4em;
+            top: -40px;
             width: 100%;
           }
 
-          .article-link article {
+          .article-link > div {
             font-size: 1.3em;
-            position: relative;
-            top: -1em;
-            width: 80%;
+            margin-top: -70px;
+            padding: 0 20px;
             margin: 0 auto;
           }
 

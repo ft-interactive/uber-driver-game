@@ -30,6 +30,7 @@ const YourChoicesPanel = ({ next, choices }: Props) => (
       .choice {
         margin: 20px 0;
       }
+
       h3 {
         color: white;
         max-width: 580px;

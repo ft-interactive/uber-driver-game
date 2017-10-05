@@ -202,10 +202,10 @@ export default class Ending extends Component<Props, State> {
                       detail={
                         goodNetIncome
                           ? `You made enough to pay your $1,000 mortgage bill.${rank
-                            ? ` You also earned more money than ${rank}% of other players on ${results.difficulty}.`
+                            ? ` You also earned more money than ${rank}% of other players on ${results.difficulty} mode.`
                             : ''}`
                           : `You weren’t able to make enough money to pay your $1,000 mortgage bill${rank
-                            ? ` But you did earn more money than ${rank}% of other players on ${results.difficulty}.`
+                            ? ` But you did earn more money than ${rank}% of other players on ${results.difficulty} mode.`
                             : ''}`
                       }
                       next={go('hourly-rate-summary')}
