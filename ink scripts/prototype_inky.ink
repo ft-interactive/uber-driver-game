@@ -125,7 +125,7 @@ FOR DEVELOPMENT ONLY
 */
 
 === welcome ===
-You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment coming due in a week.
+You're a full-time Uber driver with two kids to support, and a $1000 mortgage payment due in a week.
 
 Can you earn enough to pay the bill — and make more than other players?
 # welcome
@@ -614,8 +614,8 @@ Your rating is getting low. If it falls below 4.6, you might be placed under rev
 ===day_1_sf_keep_going===
 # day_1_sf_keep_going
 
-It's getting late, and you don't want to burn out too quickly.
-# link
+You don't want to burn out too quickly.
+# button
 # bg:driving_sf
 * [Go home]->day_1_end
 
@@ -828,11 +828,7 @@ You find a nearby auto shop. They take an hour to fix your windscreen, and charg
 # pebble_start.ignore
 It's just a small chip, and you don't want to spend the time and money repairing a car you leased.
 ~ windshield_cracked=true
-{unlimited_data==false:
-~time_passes(2,0,1)
-- else:
 ~time_passes(4,0,1)
-}
 # button
 *[🚗&nbsp;&nbsp;Drive]
 ->day_3_morning
@@ -852,7 +848,7 @@ You get a message from your phone provider: You've exceeded your data limit.
 
 In retrospect, maybe you should've upgraded to the unlimited data plan.
 ~alter(accessories_cost,30)
-~time_passes(2,0,1)
+
 #bg:main
 #button
 *[Incur overage charges ($30/week)]
@@ -2100,9 +2096,9 @@ You make your way to the baseball stadium before the game ends. Sure enough, lot
     ~ alter(day_fares_earned, 30)
     ~ alter(fares_earned_total, 30)
     ~add_time(0,48)
-# button
-** [Great!] You get lucky with a relatively long ride to Outer Richmond, and earn $30 on a boosted fare.
-->day_6_evening
+    # button
+    ** [Great!] You get lucky with a relatively long ride to Outer Richmond, and earn $30 on a boosted fare.
+    ->day_6_evening
 
 * [Don't head over]
 
@@ -2112,7 +2108,7 @@ You make your way to the baseball stadium before the game ends. Sure enough, lot
 
 # day_6_evening
 It sure is busy this Saturday evening.
-~time_passes(3,1,1)
+~time_passes(4,1,1)
 # button
 # bg:driving_sf
 *[Time to make some money]
