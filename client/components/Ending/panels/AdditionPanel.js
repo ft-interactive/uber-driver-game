@@ -53,8 +53,8 @@ export default class AdditionPanel extends Component<Props, State> {
     const { figures } = this.props;
 
     (async () => {
-      await Bluebird.mapSeries(figures, async ({ amount }, i) => {
-        await Bluebird.delay(500);
+      await Bluebird.mapSeries(figures, async ({ amount, title }, i) => {
+        if (amount !== 0) await Bluebird.delay(500);
 
         await animate(
           (elapsedProportion) => {
@@ -62,7 +62,7 @@ export default class AdditionPanel extends Component<Props, State> {
             displayFigures[i] = amount * elapsedProportion;
             this.setState({ displayFigures });
           },
-          // { duration: 0 },
+          { duration: amount !== 0 ? 1000 : 0 },
         );
       });
 
@@ -72,7 +72,7 @@ export default class AdditionPanel extends Component<Props, State> {
         (elapsed) => {
           this.setState({ buttonOpacity: elapsed });
         },
-        // { duration: 0 },
+        { duration: 500 },
       );
     })();
   }
