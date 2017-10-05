@@ -75,7 +75,16 @@ export default class Panel extends Component<Props> {
 
           .spacer {
             flex: 1;
-            min-height: 20px;
+            height: 0;
+            min-height: 0;
+          }
+
+          @media (min-width: 740px) {
+            .spacer {
+              flex: 1;
+              min-height: 20px;
+              height: auto;
+            }
           }
 
           .inner {

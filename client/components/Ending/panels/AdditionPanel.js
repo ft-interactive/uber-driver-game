@@ -110,12 +110,12 @@ export default class AdditionPanel extends Component<Props, State> {
           .addition {
             text-align: left;
             min-width: 260px;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
           }
 
           .main-figure {
             font: 600 84px MetricWeb, sans-serif !important;
-            margin: 20px 0;
+            margin: 20px 0 0;
             letter-spacing: 0.05em;
           }
 
@@ -125,7 +125,21 @@ export default class AdditionPanel extends Component<Props, State> {
             height: 5px;
             width: 60px;
             background: ${highlightColour};
-            margin: 40px 0 30px;
+            margin: 20px 0 30px;
+          }
+
+          @media (min-width: 740px) {
+            .addition {
+              margin-bottom: 40px;
+            }
+
+            .main-figure {
+              margin: 20px 0;
+            }
+
+            .main-figure:after {
+              margin: 40px 0 30px;
+            }
           }
 
           .constituent-figure {
