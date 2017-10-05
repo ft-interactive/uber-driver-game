@@ -110,7 +110,7 @@ export default class AdditionPanel extends Component<Props, State> {
           .addition {
             text-align: left;
             min-width: 260px;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
           }
 
           .main-figure {
@@ -129,6 +129,10 @@ export default class AdditionPanel extends Component<Props, State> {
           }
 
           @media (min-width: 740px) {
+            .addition {
+              margin-bottom: 40px;
+            }
+
             .main-figure {
               margin: 20px 0;
             }
