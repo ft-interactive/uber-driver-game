@@ -120,16 +120,16 @@ export default class CreditsPanel extends Component<Props> {
           }
 
           .people {
-            font-weight: 700;
+            font-weight: 600;
           }
 
-          .person {
+          .credits-panel .person {
             color: white;
             text-decoration: none;
             border-bottom: 0;
           }
-          .person:hover {
-            colour: ${colours.blue};
+          .credits-panel a.person:hover {
+            color: ${colours.blue};
           }
 
           .share-links {
