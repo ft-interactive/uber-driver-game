@@ -41,7 +41,7 @@ Promise.all([Result.sync(), Decision.sync()])
               true: 0,
               false: 0,
             };
-            acc[item.type][item.value] = count[idx].count;
+            acc[item.type][item.value] = Number(count[idx].count);
 
             return acc;
           }, <DecisionResult>{});
