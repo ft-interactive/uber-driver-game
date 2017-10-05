@@ -35,7 +35,7 @@ Promise.all([Result.sync(), Decision.sync()])
 
           const { rows, count } = result;
 
-          return rows.reduce((
+          const reduced = rows.reduce((
             acc: DecisionResult, item: {type: string, value: 'true'|'false'}, idx: number) => {
             if (!acc[item.type]) acc[item.type] = {
               true: 0,
@@ -45,6 +45,21 @@ Promise.all([Result.sync(), Decision.sync()])
 
             return acc;
           }, <DecisionResult>{});
+
+          return Object.assign({
+            biz_licence: {
+              true: 0,
+              false: 0,
+            },
+            helped_homework: {
+              true: 0,
+              false: 0,
+            },
+            took_day_off: {
+              true: 0,
+              false: 0,
+            },
+          }, reduced);
         }
       case '/results':
         if (req.method && req.method.toLowerCase() === 'post') {
