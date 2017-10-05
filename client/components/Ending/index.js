@@ -165,7 +165,7 @@ export default class Ending extends Component<Props, State> {
                 case 'costs':
                   return (
                     <AdditionPanelHack
-                      heading="Your costs"
+                      heading="Minus costs"
                       magentaStyle
                       negativeZero
                       startingTotal={
