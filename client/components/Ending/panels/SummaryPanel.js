@@ -40,12 +40,17 @@ export default class SummaryPanel extends Component<Props, State> {
 
     return (
       <Panel next={next}>
-        <div className="image-container">{imageURL ? <img alt="" src={imageURL} /> : null}</div>
+        <div className="summary">
+          <div className="image-container">{imageURL ? <img alt="" src={imageURL} /> : null}</div>
 
-        <h1>{heading}</h1>
-        <p>{detail}</p>
-
+          <h1>{heading}</h1>
+          <p>{detail}</p>
+        </div>
         <style jsx>{`
+          .summary {
+            padding: 0 40px;
+          }
+
           h1 {
             color: white;
             max-width: 580px;

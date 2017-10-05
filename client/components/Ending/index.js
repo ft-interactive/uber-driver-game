@@ -125,7 +125,7 @@ export default class Ending extends Component<Props, State> {
 
               const hourlyRate = results.netIncome / results.hoursDriven;
               const goodNetIncome = results.netIncome >= 1000;
-              const goodHourlyRate = hourlyRate >= 14;
+              const goodHourlyRate = hourlyRate >= 10.5;
 
               // decide on circular images
               const incomeSummaryImageURL =
@@ -219,8 +219,8 @@ export default class Ending extends Component<Props, State> {
                       heading={`You made ${formatDollars(hourlyRate, false, true)} an hour`}
                       detail={
                         goodHourlyRate
-                          ? 'Your working hours meant that you earned more than the $14 minimum hourly wage in San Francisco. Well done!'
-                          : 'The long hours you worked meant that you earned less than the $14 minimum hourly wage in San Francisco.'
+                          ? 'Your working hours meant that you earned more than the $10.50 minimum hourly wage in California. Well done!'
+                          : 'The long hours you worked meant that you earned less than the $10.50 minimum hourly wage in California.'
                       }
                       next={go('choices')}
                     />
@@ -229,7 +229,7 @@ export default class Ending extends Component<Props, State> {
                 case 'choices': {
                   const dayOffChoice = {};
                   if (results.tookDayOff) {
-                    dayOffChoice.text = 'You took one day off.';
+                    dayOffChoice.text = 'You took a day off.';
                     dayOffChoice.note =
                       results.othersTookDayOff !== null
                         ? `${Math.round(results.othersTookDayOff)}% of other players did the same.`
