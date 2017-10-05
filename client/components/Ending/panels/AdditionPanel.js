@@ -7,6 +7,7 @@
 
 import React, { Component } from 'react';
 import Bluebird from 'bluebird';
+import easeQuintOut from 'eases/quint-out';
 import Panel from './Panel';
 import formatDollars from '../../../lib/formatDollars';
 import animate from '../../../lib/animate';
@@ -46,14 +47,10 @@ export default class AdditionPanel extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.animate();
-  }
-
-  animate() {
     const { figures } = this.props;
 
     (async () => {
-      await Bluebird.mapSeries(figures, async ({ amount, title }, i) => {
+      await Bluebird.mapSeries(figures, async ({ amount }, i) => {
         if (amount !== 0) await Bluebird.delay(500);
 
         await animate(
@@ -72,7 +69,7 @@ export default class AdditionPanel extends Component<Props, State> {
         (elapsed) => {
           this.setState({ buttonOpacity: elapsed });
         },
-        { duration: 500 },
+        { duration: 500, ease: easeQuintOut },
       );
     })();
   }
