@@ -10,6 +10,7 @@ import Bluebird from 'bluebird';
 import Panel from './Panel';
 import formatDollars from '../../../lib/formatDollars';
 import animate from '../../../lib/animate';
+import * as colours from '../colours';
 
 type Props = {
   heading: string,
@@ -83,6 +84,8 @@ export default class AdditionPanel extends Component<Props, State> {
     const { displayFigures, buttonOpacity } = this.state;
     const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
 
+    const highlightColour = magentaStyle ? colours.magenta : colours.blue;
+
     return (
       <Panel
         heading={heading}
@@ -90,28 +93,48 @@ export default class AdditionPanel extends Component<Props, State> {
         next={next}
         buttonOpacity={buttonOpacity}
       >
-        <div className="main-figure">{formatDollars(displayTotal)}</div>
+        <div className="addition">
+          <div className="main-figure">{formatDollars(displayTotal)}</div>
 
-        {figures.map(({ title }, i) => (
-          <div className="constituent-figure" key={title}>
-            {
-              <div className="constituent-figure">{`${formatDollars(
-                displayFigures[i],
-                true,
-                false,
-                negativeZero,
-              )} ${title}`}</div>
-            }
-          </div>
-        ))}
-
+          {figures.map(({ title }, i) => (
+            <div className="constituent-figure" key={title}>
+              {
+                <div className="constituent-figure">{`${formatDollars(
+                  displayFigures[i],
+                  true,
+                  false,
+                  negativeZero,
+                )} ${title}`}</div>
+              }
+            </div>
+          ))}
+        </div>
         <style jsx>{`
+          .addition {
+            text-align: left;
+            min-width: 260px;
+            margin-bottom: 40px;
+          }
+
           .main-figure {
-            font: 700 50px MetricWeb, sans-serif;
+            font: 600 84px MetricWeb, sans-serif !important;
+            margin: 20px 0;
+            letter-spacing: 0.05em;
+          }
+
+          .main-figure:after {
+            content: '';
+            display: block;
+            height: 5px;
+            width: 60px;
+            background: ${highlightColour};
+            margin: 40px 0 30px;
           }
 
           .constituent-figure {
-            font: 400 24px MetricWeb, sans-serif;
+            font: 400 20px MetricWeb, sans-serif;
+            color: ${highlightColour};
+            margin-bottom: 15px;
           }
         `}</style>
       </Panel>

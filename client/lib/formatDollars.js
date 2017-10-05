@@ -14,10 +14,10 @@ const formatDollars = (
 
   let result = Math.abs(num);
   if (includeCents) {
-    result = (Math.round(result * 100) / 100).toFixed(2);
+    result = Number((Math.round(result * 100) / 100).toFixed(2));
   } else result = Math.round(result);
 
-  return `${sign}$${result}`;
+  return `${sign}$${result.toLocaleString()}`;
 };
 
 export default formatDollars;
