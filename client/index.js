@@ -275,7 +275,9 @@ async function endStory() {
       return null;
     }
 
-    return 100 * (stats.true / (stats.true + stats.false));
+    const result = 100 * (stats.true / (stats.true + stats.false));
+    if (isNaN(result)) return null;
+    return result;
   };
 
   // decide remaining variables
