@@ -1527,7 +1527,7 @@ NEW UBER QUEST: "Drive {quest_rides} trips, make ${quest_bonus} extra. You have 
 Friday and Saturday nights are some of the busiest times for rides, but the peak period doesn't start until 10pm.
 # link
 # normal_start
-* [Start driving now] ->day_5_daytime
+* [Start driving now]->day_5_daytime
 
 * [Start in the evening] You take a rest and try to nap a bit during the day.
 ~timestamp=1502478400 //7pm
@@ -1537,7 +1537,7 @@ Friday and Saturday nights are some of the busiest times for rides, but the peak
 
 ===day_5_daytime===
 # day_5_daytime
-You decide that it's not worth it to disrupt your normal schedule. <>
+You decide to stick to your normal schedule and start driving during the day. <>
 
 {home=="sac":
 <> You head into San Francisco at your usual hour.
