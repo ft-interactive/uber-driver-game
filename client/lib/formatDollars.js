@@ -2,12 +2,12 @@
 
 const formatDollars = (
   num: number,
-  includeSign: boolean = false,
+  alwaysIncludeSign: boolean = false,
   includeCents: boolean = false,
   negativeZero: boolean = false,
 ) => {
   let sign = '';
-  if (includeSign || num < 0) {
+  if (alwaysIncludeSign || num < 0) {
     if (num < 0 || (negativeZero && num <= 0)) sign = '– ';
     else sign = '+ ';
   }
