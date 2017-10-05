@@ -224,7 +224,7 @@ async function endStory() {
   const fuel = 0 - (story.variablesState.$('gas_cost') || 0);
   const trafficTickets = 0 - (story.variablesState.$('ticket_cost') || 0);
   const tax = 0 - (story.variablesState.$('tax_cost') || 0);
-  const repairCost = 0 - (story.variablesState.$('repair_cost') || 0);
+  const repairCost = 0 - (Math.abs(story.variablesState.$('repair_cost')) || 0);
 
   const netIncome =
     faresAndTips +
