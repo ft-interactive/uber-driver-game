@@ -30,7 +30,7 @@ export default class CreditsPanel extends Component<Props> {
           const OShare = window.Origami['o-share'];
           new OShare(oShare); // eslint-disable-line no-new
         } else {
-          console.warn('Origami not loaded');
+          console.warn('Origami not loaded; unable to augment buttons');
         }
       }
     }

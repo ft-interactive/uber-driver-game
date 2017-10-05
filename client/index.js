@@ -112,7 +112,7 @@ function handleResize() {
 
   knotContainer.style.maxHeight = `${knotContainerMaxHeight}px`;
 
-  console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
+  // console.log(`Window resized ${d.toLocaleTimeString()}`); // eslint-disable-line no-console
 
   if (fscreen.fullscreenEnabled && window.outerWidth < 1024) {
     fscreen.addEventListener('fullscreenchange', handleFullscreen, false);
@@ -242,14 +242,14 @@ async function endStory() {
   const rankPromise = Bluebird.resolve()
     .then(() => {
       const url = `${endpoint}/ranking?difficulty=${difficulty.toLowerCase()}&income=${netIncome}`;
-      console.log('about to fetch', url);
+      // console.log('about to fetch', url);
 
       return fetch(url);
     })
     .then(res => res.json())
     .then(obj => obj.percent_rank)
     .catch((error) => {
-      console.error('error fetching ranking', error);
+      console.warn('Error fetching ranking', error);
       return null;
     });
 
@@ -261,7 +261,7 @@ async function endStory() {
   try {
     otherUserDecisions = await decisionsPromise;
   } catch (error) {
-    console.error(error);
+    console.warn("Error loading others' decisions", error);
   }
 
   // function to convert the data about a given choice into a percent
@@ -330,7 +330,7 @@ async function endStory() {
     othersBoughtBusinessLicence,
   };
 
-  console.log('ending options', options);
+  // console.log('ending options', options);
 
   // render!
   ending.show(options);
@@ -359,8 +359,12 @@ function recordDecision(decision) {
       meta,
     }),
   })
-    .then(() => console.info(`${decision} recorded`))
-    .catch(e => console.error(`Error recording: ${e}`));
+    .then(() => {
+      console.log(`${decision} recorded`);
+    })
+    .catch((error) => {
+      console.error('Error recording decision', error);
+    });
 }
 
 function continueStory() {
@@ -393,7 +397,7 @@ function continueStory() {
   }
   const questRidesTotal = totalQuests - story.variablesState.$('quest_rides');
 
-  console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
+  // console.log(`rideCountTotal: ${rideCountTotal}, ridesObj: ${ridesObj}`);
 
   //  record events for analytics
   if (story.currentTags.length > 0 && story.currentTags[0] === 'welcome') {
@@ -441,7 +445,7 @@ function continueStory() {
 
     // Animate meter readouts
     if (earnings !== earningsObj.totalValue) {
-      console.log('Earnings changed, animating meter readout'); // eslint-disable-line no-console
+      // console.log('Earnings changed, animating meter readout'); // eslint-disable-line no-console
       earningsObj.value = earningsObj.totalValue;
 
       anime({
@@ -468,7 +472,7 @@ function continueStory() {
     }
 
     if (time !== timeObj.value) {
-      console.log('Time changed, animating meter readout'); // eslint-disable-line no-console
+      // console.log('Time changed, animating meter readout'); // eslint-disable-line no-console
 
       anime({
         targets: timeObj,
@@ -494,7 +498,7 @@ function continueStory() {
     }
 
     if (rating !== ratingObj.value) {
-      console.log('Rating changed, animating meter readout'); // eslint-disable-line no-console
+      // console.log('Rating changed, animating meter readout'); // eslint-disable-line no-console
 
       anime({
         targets: ratingObj,
@@ -561,7 +565,7 @@ function continueStory() {
   if (timePassing > 0) {
     const showTimePassingScreen = anime.timeline();
 
-    console.log('Time is passing...'); // eslint-disable-line no-console
+    // console.log('Time is passing...'); // eslint-disable-line no-console
 
     timePassingObj.value = timeObj.value;
     ridesObj.value = 0; // reset ridesObj value to 0 each time
@@ -736,7 +740,7 @@ function continueStory() {
   } else if (showEnding) {
     endStory();
   } else {
-    console.log('>>>'); // eslint-disable-line no-console
+    // console.log('>>>'); // eslint-disable-line no-console
 
     setTimeout(() => {
       // Handle race condition by forcing it to wait 150ms
