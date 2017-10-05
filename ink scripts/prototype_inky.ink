@@ -2077,7 +2077,7 @@ MESSAGE FROM UBER: “The San Francisco Giants are playing at AT&T park today. E
 # pebble_crack
 
 You are driving when you hear a splintering sound. The chip in your windshield has cracked across the whole windshield. You have no choice but to get it repaired.
-~alter(repair_cost,-250)
+~alter(repair_cost,250)
 ~add_time(1,58)
 ~windshield_cracked=false
 # button
