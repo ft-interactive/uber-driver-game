@@ -196,8 +196,8 @@ export default class Ending extends Component<Props, State> {
                       imagePromise={incomeSummaryImagePromise}
                       heading={
                         goodNetIncome
-                          ? `Congrats! You earned ${formatDollars(results.netIncome)}!`
-                          : `Sorry! You only earned ${formatDollars(results.netIncome)}!`
+                          ? `Congrats! You earned ${formatDollars(results.netIncome, true)}!`
+                          : `Sorry! You only earned ${formatDollars(results.netIncome, true)}!`
                       }
                       detail={
                         goodNetIncome
