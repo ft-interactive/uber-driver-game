@@ -258,13 +258,13 @@ You're going to be spending a lot of time in your car. What model do you lease?
 + [Toyota Prius]
 The Prius is fuel efficient, getting up to 50 miles per gallon. {credit_rating == "good":Your good credit rating means it only costs ${prius_cost} per week.}{credit_rating=="bad":Unfortunately, your poor credit means it costs ${prius_cost} per week.}
 ~ car="Prius"
-~ alter(car_cost, prius_cost)
+~ car_cost=prius_cost
 ->confirm
 
 + [Dodge minivan]
 The Dodge minivan qualifies for UberXL rides, which earn higher fares.  {credit_rating == "good":Your good credit rating means it only costs ${minivan_cost} per week.}{ credit_rating=="bad":Unfortunately, your poor credit means it costs ${minivan_cost} per week.}
 ~ car="minivan"
-~ alter(car_cost, minivan_cost)
+~ car_cost=minivan_cost
 ->confirm
 
 =confirm
