@@ -185,7 +185,7 @@ export default class Ending extends Component<Props, State> {
                           title: 'Tax',
                           tooltip:
                             results.tax === 0
-                              ? 'You didn’t keep fuel receipts for tax deductions'
+                              ? 'You kept fuel receipts for tax deductions'
                               : 'You didn’t keep fuel receipts for tax deductions',
                         },
                       ]}
