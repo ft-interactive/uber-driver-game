@@ -180,7 +180,14 @@ export default class Ending extends Component<Props, State> {
                         { amount: results.fuel, title: 'Fuel' },
                         { amount: results.trafficTickets, title: 'Traffic tickets' },
                         { amount: results.repairCost, title: 'Repair costs' },
-                        { amount: results.tax, title: 'Business tax' },
+                        {
+                          amount: results.tax,
+                          title: 'Tax',
+                          tooltip:
+                            results.tax === 0
+                              ? 'You didn’t keep fuel receipts for tax deductions'
+                              : 'You didn’t keep fuel receipts for tax deductions',
+                        },
                       ]}
                       next={go('total-income-summary')}
                     />
