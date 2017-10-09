@@ -16,7 +16,7 @@ import * as colours from '../colours';
 type Props = {
   heading: string,
   magentaStyle?: boolean,
-  figures: Array<{ title: string, amount: number }>,
+  figures: Array<{ title: string, amount: number, tooltip?: string }>,
   next: () => void,
   startingTotal: number,
   negativeZero?: boolean,
@@ -24,7 +24,9 @@ type Props = {
 
 type State = {
   displayFigures: Array<number>,
+  figuresFinalised: Array<boolean>,
   buttonOpacity: number,
+  tooltipActive: null | number,
 };
 
 export default class AdditionPanel extends Component<Props, State> {
@@ -42,7 +44,10 @@ export default class AdditionPanel extends Component<Props, State> {
   getInitialState(props: Props) {
     return {
       displayFigures: props.figures.map(() => 0),
+      figuresFinalised: props.figures.map(() => false),
       buttonOpacity: 0,
+      tooltipActive: null,
+      tooltipAvailable: null,
     };
   }
 
@@ -61,6 +66,10 @@ export default class AdditionPanel extends Component<Props, State> {
           },
           { duration: amount !== 0 ? 1000 : 0 },
         );
+
+        const figuresFinalised = [...this.state.figuresFinalised];
+        figuresFinalised[i] = true;
+        this.setState({ figuresFinalised });
       });
 
       await Bluebird.delay(500);
@@ -78,7 +87,7 @@ export default class AdditionPanel extends Component<Props, State> {
 
   render() {
     const { heading, magentaStyle, figures, next, startingTotal, negativeZero } = this.props;
-    const { displayFigures, buttonOpacity } = this.state;
+    const { displayFigures, buttonOpacity, tooltipActive, figuresFinalised } = this.state;
     const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
 
     const highlightColour = magentaStyle ? colours.magenta : colours.blue;
@@ -91,17 +100,41 @@ export default class AdditionPanel extends Component<Props, State> {
         buttonOpacity={buttonOpacity}
       >
         <div className="addition">
-          <div className="main-figure">{formatDollars(displayTotal)}</div>
+          <div className="total">{formatDollars(displayTotal)}</div>
 
-          {figures.map(({ title }, i) => (
-            <div className="constituent-figure" key={title}>
+          {figures.map(({ title, tooltip }, i) => (
+            <div className="item" key={title}>
               {
-                <div className="constituent-figure">{`${formatDollars(
-                  displayFigures[i],
-                  true,
-                  false,
-                  negativeZero,
-                )} ${title}`}</div>
+                <div className="item">
+                  {`${formatDollars(displayFigures[i], true, false, negativeZero)} ${title}`}
+                  {tooltip && figuresFinalised[i] ? (
+                    <span className="tooltip-container">
+                      {tooltipActive === i ? (
+                        <span
+                          className="tooltip-text"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => {
+                            this.setState({ tooltipActive: null });
+                          }}
+                        >
+                          {tooltip}
+                        </span>
+                      ) : (
+                        <span
+                          className="tooltip-button"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => {
+                            this.setState({ tooltipActive: i });
+                          }}
+                        >
+                          ?
+                        </span>
+                      )}
+                    </span>
+                  ) : null}
+                </div>
               }
             </div>
           ))}
@@ -113,13 +146,13 @@ export default class AdditionPanel extends Component<Props, State> {
             margin-bottom: 10px;
           }
 
-          .main-figure {
+          .total {
             font: 600 84px MetricWeb, sans-serif !important;
             margin: 20px 0 0;
             letter-spacing: 0.05em;
           }
 
-          .main-figure:after {
+          .total:after {
             content: '';
             display: block;
             height: 5px;
@@ -133,19 +166,59 @@ export default class AdditionPanel extends Component<Props, State> {
               margin-bottom: 40px;
             }
 
-            .main-figure {
+            .total {
               margin: 20px 0;
             }
 
-            .main-figure:after {
+            .total:after {
               margin: 40px 0 30px;
             }
           }
 
-          .constituent-figure {
+          .item {
             font: 400 20px MetricWeb, sans-serif;
             color: ${highlightColour};
             margin-bottom: 15px;
+            height: 25px;
+          }
+
+          .tooltip-container {
+            display: inline-block;
+            height: 0;
+            width: 0;
+            position: relative;
+            top: -20px;
+            left: 10px;
+          }
+
+          .tooltip-button {
+            display: inline-block;
+            position: absolute;
+            color: white;
+            border: 2px solid white;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            text-align: center;
+            line-height: 25px;
+            opacity: 0.7;
+          }
+
+          .tooltip-text {
+            position: absolute;
+            background: white;
+            width: 130px;
+            font-size: 14px;
+            color: black;
+            opacity: 0.9;
+            padding: 3px 5px;
+            border-radius: 2px;
+          }
+
+          .tooltip-button:hover {
+            opacity: 1;
           }
         `}</style>
       </Panel>
