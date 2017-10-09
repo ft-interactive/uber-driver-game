@@ -24,8 +24,9 @@ type Props = {
 
 type State = {
   displayFigures: Array<number>,
+  figuresFinalised: Array<boolean>,
   buttonOpacity: number,
-  tooltipVisible: null | number,
+  tooltipActive: null | number,
 };
 
 export default class AdditionPanel extends Component<Props, State> {
@@ -43,8 +44,10 @@ export default class AdditionPanel extends Component<Props, State> {
   getInitialState(props: Props) {
     return {
       displayFigures: props.figures.map(() => 0),
+      figuresFinalised: props.figures.map(() => false),
       buttonOpacity: 0,
-      tooltipVisible: null,
+      tooltipActive: null,
+      tooltipAvailable: null,
     };
   }
 
@@ -63,6 +66,10 @@ export default class AdditionPanel extends Component<Props, State> {
           },
           { duration: amount !== 0 ? 1000 : 0 },
         );
+
+        const figuresFinalised = [...this.state.figuresFinalised];
+        figuresFinalised[i] = true;
+        this.setState({ figuresFinalised });
       });
 
       await Bluebird.delay(500);
@@ -80,7 +87,7 @@ export default class AdditionPanel extends Component<Props, State> {
 
   render() {
     const { heading, magentaStyle, figures, next, startingTotal, negativeZero } = this.props;
-    const { displayFigures, buttonOpacity, tooltipVisible } = this.state;
+    const { displayFigures, buttonOpacity, tooltipActive, figuresFinalised } = this.state;
     const displayTotal = displayFigures.reduce((acc, num) => acc + num, startingTotal);
 
     const highlightColour = magentaStyle ? colours.magenta : colours.blue;
@@ -100,15 +107,15 @@ export default class AdditionPanel extends Component<Props, State> {
               {
                 <div className="item">
                   {`${formatDollars(displayFigures[i], true, false, negativeZero)} ${title}`}
-                  {tooltip ? (
+                  {tooltip && figuresFinalised[i] ? (
                     <span className="tooltip-container">
-                      {tooltipVisible === i ? (
+                      {tooltipActive === i ? (
                         <span
                           className="tooltip-text"
                           role="button"
                           tabIndex={0}
                           onClick={() => {
-                            this.setState({ tooltipVisible: null });
+                            this.setState({ tooltipActive: null });
                           }}
                         >
                           {tooltip}
@@ -119,7 +126,7 @@ export default class AdditionPanel extends Component<Props, State> {
                           role="button"
                           tabIndex={0}
                           onClick={() => {
-                            this.setState({ tooltipVisible: i });
+                            this.setState({ tooltipActive: i });
                           }}
                         >
                           ?
@@ -207,6 +214,7 @@ export default class AdditionPanel extends Component<Props, State> {
             color: black;
             opacity: 0.9;
             padding: 3px 5px;
+            border-radius: 2px;
           }
 
           .tooltip-button:hover {
