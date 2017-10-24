@@ -79,6 +79,10 @@ Promise.all([Result.sync(), Decision.sync()])
           const [, difficulty] = queryArgs
             .find((item: string[]) => item[0] === 'difficulty');
 
+          if (['easy', 'hard'].indexOf(difficulty) === -1) {
+            throw new Error('Invalid difficulty detected');
+          }
+
           const [, income] = queryArgs
             .find((item: string[]) => item[0] === 'income');
 
