@@ -7,6 +7,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Update container to support Puppeteer (pa11y)
+          command: |
+            apt-get update && apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
+            libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
+            ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+      - run:
           name: Backup package-lock.json
           # This file gets modified during setup, which would break our use of
           # it as a cache key. So we back it up to tmp first.
@@ -57,27 +65,16 @@ jobs:
           command: |
             if [ "$PREVIEW" == "true" ]
             then
-              npm run check-accessibility:preview
+              npm run a11y:preview
             else
-              npm run check-accessibility
+              npm run a11y
             fi
       - run:
-          name: General QA checks
-          command: npm run qa || echo "Automatic QA checks failed. Continuing anyway"
-      - setup_remote_docker
-      - run:
-          name: Install Docker client
+          name: General QA tests
           command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
-      - deploy:
-          name: Deploy server to Heroku container registry
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ];
-              then docker login -u $DOCKER_USER -p $DOCKER_PASS registry.heroku.com;
-              docker build --rm=false -t registry.heroku.com/ft-ig-uber-game-backend/web:latest .;
-              docker push registry.heroku.com/ft-ig-uber-game-backend/web:latest;
+            if [ $CIRCLE_BRANCH = "master" ]
+            then
+              npm run test
+            else
+              npm run test || echo "General QA tests failed. Continuing anyway"
             fi
