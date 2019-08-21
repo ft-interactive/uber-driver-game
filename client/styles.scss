@@ -207,6 +207,7 @@ main {
               padding: 6px 15px 6px 54px;
               background-color: rgba(38, 43, 51, 0.8);
               -webkit-backdrop-filter: blur(12px);
+              backdrop-filter: blur(12px);
               text-align: right;
               font-weight: 600;
               -webkit-font-feature-settings: 'tnum';
@@ -278,6 +279,7 @@ main {
             margin: 0 10px 85px;
             background-color: rgba(38, 43, 51, 0.8);
             -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
             overflow: auto;
             border-radius: 15px;
             z-index: 1;
@@ -352,7 +354,9 @@ main {
             background-color: rgba(38, 43, 51, 0.8);
             color: #ffffff;
             -webkit-backdrop-filter: blur(12px);
-            -webkit-transition: -webkit-backdrop-filter 200ms linear;
+            backdrop-filter: blur(12px);
+            transition: -webkit-backdrop-filter 200ms linear;
+            transition: backdrop-filter 200ms linear;
             opacity: 0;
 
             .time-passing-upper,
@@ -578,6 +582,7 @@ main {
         align-items: center;
         background-color: rgba(38, 43, 51, 0.8);
         -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
         padding: 20px;
         height: 100px;
         width: 150px;
@@ -607,7 +612,9 @@ main {
   background-color: rgba(38, 43, 51, 0.2);
   opacity: 1;
   -webkit-backdrop-filter: blur(12px);
-  -webkit-transition: -webkit-backdrop-filter 200ms linear;
+  backdrop-filter: blur(12px);
+  transition: -webkit-backdrop-filter 200ms linear;
+  transition: backdrop-filter 200ms linear;
 }
 
 // "Please rotate device" screen
