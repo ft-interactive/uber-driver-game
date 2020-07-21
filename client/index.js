@@ -12,11 +12,9 @@ import GameContainer from './components/GameContainer';
 import Ending from './components/Ending';
 import Modernizr from './modernizr'; // eslint-disable-line no-unused-vars
 import gaAnalytics from './components/analytics';
-
-const endpoint =
-  window.ENV === 'development'
-    ? 'http://localhost:3000'
-    : 'https://ft-ig-uber-game-backend.herokuapp.com';
+import percentilesEasy from './percentiles_easy';
+import percentilesHard from './percentiles_hard';
+import decisionsData from './decisions';
 
 const story = new Story(json);
 const stateUtils = new StateUtils(story, config);
@@ -68,7 +66,6 @@ gameContainer.initialise();
 
 const ending = Ending.createIn(document.querySelector('.ending-container'), {
   stateUtils,
-  endpoint,
 });
 
 let choicesContainerElement;
@@ -173,27 +170,30 @@ function recordPlayerResult() {
   const income = revenue - costs;
   const hourlyWage = income / story.variablesState.$('hours_driven_total');
 
-  return fetch(`${endpoint}/results`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      revenue,
-      meta,
-      income,
-      hourlyWage,
-      difficulty,
-      expenses: costs,
-    }),
-  })
-    .then(() => console.info('Endgame data recorded')) // eslint-disable-line
-    .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
+  return Promise.resolve();
+
+  // Results recording disabled as of 21 July 2020
+  // return fetch(`${endpoint}/results`, {
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   method: 'POST',
+  //   body: JSON.stringify({
+  //     revenue,
+  //     meta,
+  //     income,
+  //     hourlyWage,
+  //     difficulty,
+  //     expenses: costs,
+  //   }),
+  // })
+  //   .then(() => console.info('Endgame data recorded')) // eslint-disable-line
+  //   .catch(e => console.error(`Error recording: ${e}`)); // eslint-disable-line
 }
 
 // fetch other users' decisions up-front
-const decisionsPromise = fetch(`${endpoint}/decisions`).then(res => res.json());
+const decisionsPromise = Promise.resolve(decisionsData);
 
 async function endStory() {
   // hide/prepare various surrounding elements
@@ -238,23 +238,11 @@ async function endStory() {
     tax +
     repairCost;
 
+  const percentiles = (difficulty.toLowerCase() === 'easy' ? percentilesEasy : percentilesHard).sort((a, b) => a.percentile_cont - b.percentile_cont);
+
   // fetch this user's global ranking
-  const rankPromise = Bluebird.resolve()
-    .then(() => {
-      const url = `${endpoint}/ranking?difficulty=${difficulty.toLowerCase()}&income=${netIncome}`;
-      // console.log('about to fetch', url);
-
-      return fetch(url);
-    })
-    .then(res => res.json())
-    .then(obj => obj.percent_rank)
-    .catch((error) => {
-      console.warn('Error fetching ranking', error);
-      return null;
-    });
-
-  // record this player's result
-  recordPlayerResult();
+  const pctileIdx = percentiles.findIndex(d => netIncome < d.percentile_cont) - 1;
+  const rankPromise = Bluebird.resolve(percentiles[pctileIdx].k);
 
   // wait for data showing what other users chose
   let otherUserDecisions;
@@ -349,25 +337,28 @@ function recordDecision(decision) {
     return acc;
   }, {});
 
-  return fetch(`${endpoint}/decisions`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      type: decision,
-      value: story.variablesState.$(decision) === 1,
-      difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
-      meta,
-    }),
-  })
-    .then(() => {
-      console.log(`${decision} recorded`);
-    })
-    .catch((error) => {
-      console.error('Error recording decision', error);
-    });
+  return Promise.resolve();
+
+  // No longer recording as of 21 July 2020
+  // return fetch(`${endpoint}/decisions`, {
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   method: 'POST',
+  //   body: JSON.stringify({
+  //     type: decision,
+  //     value: story.variablesState.$(decision) === 1,
+  //     difficulty: story.variablesState.$('credit_rating') === 'good' ? 'easy' : 'hard',
+  //     meta,
+  //   }),
+  // })
+  //   .then(() => {
+  //     console.log(`${decision} recorded`);
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error recording decision', error);
+  //   });
 }
 
 function continueStory() {
