@@ -1,5 +1,5 @@
 import anime from 'animejs';
-import * as Promise from 'bluebird';
+import Bluebird from 'bluebird';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import { throttle } from 'lodash';
@@ -66,7 +66,6 @@ gameContainer.initialise();
 
 const ending = Ending.createIn(document.querySelector('.ending-container'), {
   stateUtils,
-  endpoint,
 });
 
 let choicesContainerElement;
@@ -243,7 +242,7 @@ async function endStory() {
 
   // fetch this user's global ranking
   const pctileIdx = percentiles.findIndex(d => netIncome < d.percentile_cont) - 1;
-  const rankPromise = Promise.resolve(percentiles[pctileIdx].k);
+  const rankPromise = Bluebird.resolve(percentiles[pctileIdx].k);
 
   // wait for data showing what other users chose
   let otherUserDecisions;
