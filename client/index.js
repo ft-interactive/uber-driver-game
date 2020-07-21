@@ -1,5 +1,5 @@
 import anime from 'animejs';
-import Bluebird from 'bluebird';
+import * as Promise from 'bluebird';
 import fscreen from 'fscreen';
 import { Story } from 'inkjs';
 import { throttle } from 'lodash';
