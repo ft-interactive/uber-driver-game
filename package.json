@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@financial-times/g-deploy": "^3.0.8",
     "ajv": "^5.2.3",
     "animejs": "^2.2.0",
     "axios": "^0.16.2",
@@ -72,7 +73,6 @@
     "extract-loader": "^1.0.1",
     "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^1.1.4",
-    "@financial-times/g-deploy": "^3.0.8",
     "flow-bin": "^0.56.0",
     "fscreen": "^1.0.2",
     "html-loader": "^0.5.1",
@@ -86,7 +86,7 @@
     "minimist": "^1.2.0",
     "mocha": "^3.5.3",
     "moment-timezone": "^0.5.13",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.12.1",
     "nunjucks": "^3.0.1",
     "nunjucks-html-loader": "github:ft-interactive/nunjucks-html-loader",
