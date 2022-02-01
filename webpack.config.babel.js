@@ -1,5 +1,5 @@
 import 'babel-register';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ImageminWebpackPlugin from 'imagemin-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { DefinePlugin } from 'webpack';
@@ -30,7 +30,10 @@ module.exports = async (env = 'development') => ({
       {
         test: /\.ya?ml$/,
         exclude: /(node_modules|bower_components)/,
-        use: ['json-loader', 'yaml-loader'],
+        type: 'json',
+        use: {
+          loader: 'yaml-loader',
+        },
       },
       {
         test: /\.js$/,
@@ -74,6 +77,9 @@ module.exports = async (env = 'development') => ({
           },
           {
             loader: 'extract-loader',
+            options: {
+              publicPath: "",
+            },
           },
           { loader: 'css-loader', options: { sourceMap: true, url: true } },
           { loader: 'postcss-loader', options: { sourceMap: true } },
@@ -100,36 +106,41 @@ module.exports = async (env = 'development') => ({
         ],
       },
       {
-        test: /\.scss/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            { loader: 'css-loader', options: { sourceMap: true } },
-            { loader: 'postcss-loader', options: { sourceMap: true } },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: true,
-                includePaths: ['bower_components'],
-              },
+        test: /\.scss$/,
+        resolve: {
+          extensions: ['.scss', '.sass'],
+        },
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: env === 'development',
             },
-          ],
-          fallback: 'style-loader',
-        }),
+          },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              includePaths: ['node_modules', 'node_modules/@financial-times', 'bower_components'],
+            },
+          },
+        ],
       },
     ],
   },
   devServer: {
     hot: false, // Needed for live-reloading Nunjucks templates.
-    allowedHosts: ['.ngrok.io'],
+    allowedHosts: ['.ngrok.io', 'local.ft.com', 'bs-local.com'],
   },
-  devtool: 'source-map',
+  devtool: env === 'development' ? 'inline-source-map' : 'source-map',
   plugins: [
     new DefinePlugin({
       'window.ENV': JSON.stringify(env),
     }),
     // new HotModuleReplacementPlugin(), // Re-enable if devServer.hot is set to true
-    new ExtractTextPlugin({
-      filename: env === 'production' ? '[name].[contenthash].css' : '[name].css',
+    new MiniCssExtractPlugin({
+      filename: env === 'development' ? '[name].css' : '[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       template: 'client/index.html',

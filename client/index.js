@@ -240,8 +240,8 @@ async function endStory() {
 
   const percentiles = (difficulty.toLowerCase() === 'easy' ? percentilesEasy : percentilesHard).sort((a, b) => a.percentile_cont - b.percentile_cont);
 
-  // fetch this user's global ranking
-  const pctileIdx = percentiles.findIndex(d => netIncome < d.percentile_cont) - 1;
+  // fetch this user's global ranking and make sure that pctileIdx isn't negative
+  const pctileIdx = Math.max(percentiles.findIndex(d => netIncome < d.percentile_cont) - 1, 0);
   const rankPromise = Bluebird.resolve(percentiles[pctileIdx].k);
 
   // wait for data showing what other users chose
