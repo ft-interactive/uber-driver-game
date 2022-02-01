@@ -46,7 +46,7 @@
     "@financial-times/g-deploy": "^3.0.8",
     "ajv": "^5.2.3",
     "animejs": "^2.2.0",
-    "axios": "^0.16.2",
+    "axios": "^0.21.2",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
